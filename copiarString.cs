@@ -1,14 +1,12 @@
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Sales.Editors;
-
-// Referências: BasBE100 e VndBE100
+// ReferÃªncias: BasBE100 e VndBE100
 
 namespace copiarString.Sales
 {
-    public class copiarString : EditorVendas
+    public class copiarStringVendas : EditorVendas
     {
-
-        // Classe usada para testes. Adicionar um artigo força interacção com Armazém que activa a classe.
+        // Classe usada para testes. Adicionar um artigo forÃ§a interacÃ§Ã£o com ArmazÃ©m que activa a classe.
         //public override void ArmazemIdentificado(string Armazem, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
         //{
         //    System.Windows.Forms.MessageBox.Show(DocumentoVenda.Linhas.NumItens.ToString());
@@ -31,22 +29,25 @@ namespace copiarString.Sales
         //}
 
 
-        // Classe para produção, igual à de cima mas activada no evento AntesDeGravar
+        // Classe para produÃ§Ã£o, igual Ã  de cima mas activada no evento AntesDeGravar
 
-        // Classe de Produção
+        // Classe de ProduÃ§Ã£o
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
-            for (int i = 1; i <= DocumentoVenda.Linhas.NumItens; i++)
+            if (DocumentoVenda.Tipodoc == "FAPO" || DocumentoVenda.Tipodoc == "NCPO")
             {
-                if (DocumentoVenda.Linhas.GetEdita(i).TipoLinha == "10")
+                for (int i = 1; i <= DocumentoVenda.Linhas.NumItens; i++)
                 {
-                    DocumentoVenda.Observacoes = DocumentoVenda.Linhas.GetEdita(i).Descricao;
-                    break;
+                    if (DocumentoVenda.Linhas.GetEdita(i).TipoLinha == "10")
+                    {
+                        DocumentoVenda.Observacoes = DocumentoVenda.Linhas.GetEdita(i).Descricao;
+                        break;
+                    }
+                    else { continue; }
                 }
-                else { continue; }
             }
         }
-
     }
 }
+
 
