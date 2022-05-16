@@ -7,4 +7,4 @@
 
 ### --- FILE LIST --- ###
 
-**copiarString** - Copy the value of a table cell to a textbox in the Sales form of Primavera v10 if the value type (internal defined by a variable) meets certain criteria.
+**MDL-Obs** - Copy the value of a table cell to a textbox in the Sales form of Primavera v10 if the value type (internal defined by a variable) meets certain criteria.
