@@ -1,0 +1,60 @@
+using System;
+using System.Diagnostics;
+using System.Drawing;
+using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
+using Primavera.Extensibility.Platform.Services;
+using StdPlatBS100;
+using ASRLB_ImportacaoFatura;
+
+namespace Primavera.CustomRibbon
+{
+    public class PrimaveraRibbon : Plataforma
+    {
+        const string cIDTAB = "10000";
+        const string cIDGROUP = "100001";
+        const string cIDBUTTON1 = "1000011";
+        const string cIDBUTTON2 = "1000012";
+        private StdBSPRibbon RibbonEvents;
+        ///
+        /// This event will execute for all ribbon changes.
+        ///
+        ///
+        public override void DepoisDeCriarMenus(ExtensibilityEventArgs e)
+        {
+            // Register the Ribbon events.
+            RibbonEvents = this.PSO.Ribbon;
+            RibbonEvents.Executa += RibbonEvents_Executa;
+            // Create a new TAB.
+            this.PSO.Ribbon.CriaRibbonTab("Ferramentas", cIDTAB, 15);
+            // Create a new Group.
+            this.PSO.Ribbon.CriaRibbonGroup(cIDTAB, "Importar", cIDGROUP);
+            // Create a new 32x32 Button.
+            this.PSO.Ribbon.CriaRibbonButton(cIDTAB, cIDGROUP, cIDBUTTON1, "Faturas em Bulk", true, null);
+        }
+        ///
+        /// Ribbon events.
+        ///
+        ///
+        ///
+        private void RibbonEvents_Executa(string Id, string Comando)
+        {
+            try
+            {
+                switch (Id)
+                {
+                    case cIDBUTTON1:
+                        using (var result = BSO.Extensibility.CreateCustomFormInstance(typeof(janelaImportarFatura)))
+                        {
+                            new janelaImportarFatura();
+                            (result.Result as janelaImportarFatura).ShowDialog();
+                        }
+                        break;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                PSO.Dialogos.MostraAviso("Falha a executar comando.", StdBSTipos.IconId.PRI_Informativo, ex.Message);
+            }
+        }
+    }
+}

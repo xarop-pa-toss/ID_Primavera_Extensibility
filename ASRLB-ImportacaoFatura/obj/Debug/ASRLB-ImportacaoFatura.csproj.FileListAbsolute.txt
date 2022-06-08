@@ -1,0 +1,19 @@
+C:\Users\Ricardo Santos\Source\Repos\ASRLB-ImportacaoFatura\bin\Debug\ASRLB-ImportacaoFatura.dll
+C:\Users\Ricardo Santos\Source\Repos\ASRLB-ImportacaoFatura\bin\Debug\ASRLB-ImportacaoFatura.pdb
+C:\Users\Ricardo Santos\Source\Repos\ASRLB-ImportacaoFatura\obj\Debug\ASRLB-ImportacaoFatura.csproj.AssemblyReference.cache
+C:\Users\Ricardo Santos\Source\Repos\ASRLB-ImportacaoFatura\obj\Debug\ASRLB_ImportacaoFatura.Sales.janelaImportarFatura.resources
+C:\Users\Ricardo Santos\Source\Repos\ASRLB-ImportacaoFatura\obj\Debug\ASRLB-ImportacaoFatura.csproj.GenerateResource.cache
+C:\Users\Ricardo Santos\Source\Repos\ASRLB-ImportacaoFatura\obj\Debug\ASRLB-ImportacaoFatura.csproj.CoreCompileInputs.cache
+C:\Users\Ricardo Santos\Source\Repos\ASRLB-ImportacaoFatura\obj\Debug\ASRLB-ImportacaoFatura.dll
+C:\Users\Ricardo Santos\Source\Repos\ASRLB-ImportacaoFatura\obj\Debug\ASRLB-ImportacaoFatura.pdb
+C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\bin\Debug\ASRLB-ImportacaoFatura.dll
+C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\bin\Debug\ASRLB-ImportacaoFatura.pdb
+C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\bin\Debug\ConstantesPrimavera100.dll
+C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\obj\Debug\ASRLB-ImportacaoFatura.csproj.AssemblyReference.cache
+C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\obj\Debug\ASRLB_ImportacaoFatura.janelaImportarFatura.resources
+C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\obj\Debug\ASRLB-ImportacaoFatura.csproj.GenerateResource.cache
+C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\obj\Debug\ASRLB-ImportacaoFatura.csproj.CoreCompileInputs.cache
+C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\obj\Debug\ASRLB-ImportacaoFatura.csproj.CopyComplete
+C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\obj\Debug\ASRLB-ImportacaoFatura.dll
+C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\obj\Debug\ASRLB-ImportacaoFatura.pdb
+C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\bin\Debug\ASRLB-ImportacaoFatura.dll.config
