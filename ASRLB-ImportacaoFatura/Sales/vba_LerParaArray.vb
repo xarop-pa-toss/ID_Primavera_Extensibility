@@ -165,7 +165,6 @@ Private Function Processar() As String
             End If
             
             Set Doc = Nothing
-            
     End If
         i = k
 Wend

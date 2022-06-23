@@ -22,14 +22,14 @@ namespace Primavera.CustomRibbon
         public override void DepoisDeCriarMenus(ExtensibilityEventArgs e)
         {
             // Register the Ribbon events.
-            RibbonEvents = this.PSO.Ribbon;
+            RibbonEvents = PSO.Ribbon;
             RibbonEvents.Executa += RibbonEvents_Executa;
             // Create a new TAB.
-            this.PSO.Ribbon.CriaRibbonTab("Ferramentas", cIDTAB, 15);
+            PSO.Ribbon.CriaRibbonTab("Ferramentas", cIDTAB, 15);
             // Create a new Group.
-            this.PSO.Ribbon.CriaRibbonGroup(cIDTAB, "Importar", cIDGROUP);
+            PSO.Ribbon.CriaRibbonGroup(cIDTAB, "Importar", cIDGROUP);
             // Create a new 32x32 Button.
-            this.PSO.Ribbon.CriaRibbonButton(cIDTAB, cIDGROUP, cIDBUTTON1, "Faturas em Bulk", true, null);
+            PSO.Ribbon.CriaRibbonButton(cIDTAB, cIDGROUP, cIDBUTTON1, "Faturas em Bulk", true, null);
         }
         ///
         /// Ribbon events.
