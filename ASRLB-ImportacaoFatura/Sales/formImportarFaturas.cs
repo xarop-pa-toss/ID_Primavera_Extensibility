@@ -14,12 +14,11 @@ using System.Windows.Forms;
  * TODO:
  * - Mudar path hardcoded do ficheiro em servidor.
  *  
- * DONE:
  *  
  * EDITS:
  * - Restrições de validação são agora com qualquer elemento das listas.
  * - Ordem da validação de linha/cliente. Não impacta funcionamento.
- * - Redução do número de consultas à base de dados Primavera utilizando listas/arrays em memória aumentando a eficiência.
+ * - Redução do número de consultas à base de dados Primavera utilizando listas/arrays em memória aumentando a eficiência e rapidez.
  */
 
 namespace ASRLB_ImportacaoFatura
@@ -29,21 +28,27 @@ namespace ASRLB_ImportacaoFatura
         public janelaImportarFatura()
         {
             InitializeComponent();
+            datePicker.Value = DateTime.Today;
         }
         string[] linha;
         string ficheiro = null;
+        int countFaturas = 0;
 
 
         //OK
         internal void btnIniciar_Click(object sender, EventArgs e)
         {
-            // Os métodos são chamados dentro de if's para criar fail-states. Se a condição falhar, o método chama o interromperComErro() que mostra erro e faz return, terminando a execução.
+            /* ** INTERRUPÇÃO DE EXECUÇÃO POR FAIL STATES **
+                        Os métodos validarFicheiro() e processarDados() são chamados através de if's que determinam o seu resultado (valor do return). Se return true, continua; se return false, então há um outro return void ao método pai (btnIniciar_Click()) que interrompe a sua execução.
+                        O return false acontece quando o método interrompeComErro() é chamado.
+                        O método validarPath() retorna string e não bool, por isso a sua validação é feita através do resultado do path do ficheiro, igualmente tratado pelo interrompeComErro() */
 
-            // Lê conteudo da txtBox e valida se ficheiro existe. Copia o ficheiro para o mesmo directório e retorna o path da cópia.
+            //Lê conteudo da txtBox e valida se ficheiro existe.Copia o ficheiro para o mesmo directório e retorna o path da cópia.
+            listBox.Items.Clear();
             ficheiro = validarPath();
             if (ficheiro == "") return;
 
-            // Cria listas em memória fáceis de iterar para evitar chamar métodos Primavera. Acessiveis por referência (morada na memória em vez do valor da variável).
+            // Cria listas em memória fáceis de iterar para evitar chamar métodos Primavera. Acedidos por referência (morada na memória em vez do valor da variável).
             List<string> listaArtigos = new List<string>();
             List<string> listaClientes = new List<string>();
             List<string> listaCondPag = new List<string>();
@@ -52,7 +57,7 @@ namespace ASRLB_ImportacaoFatura
             // Valida dados no ficheiro comparando com os das listas criadas em criarListasPri();
             List<string> valoresIva = new List<string> { "06,0", "12,0", "23,0" };
             string[] linhasFicheiro = File.ReadAllLines(@"" + ficheiro);
-            if (!validarFicheiro(linhasFicheiro, ref listaArtigos, ref listaClientes, ref listaCondPag, valoresIva)) { listBox.Items.Clear(); return; }
+            if (!validarFicheiro(linhasFicheiro, ref listaArtigos, ref listaClientes, ref listaCondPag, valoresIva)) { return; }
 
             // Cria um DocumentoVendas para cada Cliente e preenche com as Linhas correspondentes. Quando recebe novo Cliente, valida os dados e grava a fatura.
             if (!processarDados(linhasFicheiro)) { return; }
@@ -146,6 +151,7 @@ namespace ASRLB_ImportacaoFatura
                     // TEST PRINT
                     listBox.Items.Add(String.Format("validarFicheiro -> Linha 0: {0}; Linha 1: {1}; Linha 2: {2}; Linha 3: {3}; Linha 4: {4}; Linha 5: {5};", linha[0], linha[1], linha[2], linha[3], linha[4], linha[5]));
                     // END TEST PRINT
+                    countFaturas += 1;
                     if (!listaArtigos.Contains(linha[0]))
                     {
                         return interromperComErro(String.Format("Código de Artigo {0} inválido na linha {1}.", linha[0], (i + 1).ToString()));
@@ -168,15 +174,23 @@ namespace ASRLB_ImportacaoFatura
         internal bool processarDados(string[] linhasFicheiro)
         {
             bool temLinha = false;
+            int faturaActual = 0;
             string serie = "";
             string linhaArmazem = "";
             string linhaLocal = "";
             int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosTodos;
             int vdDadosCondPag = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosCondPag;
             VndBE100.VndBEDocumentoVenda docVenda = new VndBE100.VndBEDocumentoVenda();
-            // Import dos valores do IVA
+            // Import dos valores do IVA da BD
             StdBELista BELista = new StdBELista();
             BELista = BSO.Consulta("SELECT Iva FROM IVA");
+            // Inicialização da barra de progresso
+            ProgressBar barraProg = new ProgressBar();
+            barraProg.Visible = true;
+            barraProg.Minimum = 0;
+            barraProg.Maximum = countFaturas;
+            barraProg.Value = 0;
+            barraProg.Step = 1;
 
             BSO.IniciaTransaccao();
 
@@ -184,6 +198,7 @@ namespace ASRLB_ImportacaoFatura
             {
                 try
                 {
+                    barraProg.PerformStep();
                     linha = linhasFicheiro[i].Split(',');
                     for (int u = 0; u < linha.Count(); u++) { linha[u] = linha[u].Replace(",", ""); linha[u] = linha[u].Replace(".", ","); linha[u] = linha[u].Trim(); }
 
@@ -197,16 +212,15 @@ namespace ASRLB_ImportacaoFatura
 
                             // Introduz fatura na Transacção
                             BSO.Vendas.Documentos.CalculaValoresTotais(docVenda);
-                            listBox.Items.Add(String.Format("PARA VALIDAR: Data Doc: {0}; Data Carga: {1}; Data Descarga: {2}", docVenda.DataDoc, docVenda.DataHoraCarga, docVenda.DataHoraDescarga));
+                            //listBox.Items.Add(String.Format("PARA VALIDAR: Data Doc: {0}; Data Carga: {1}; Data Descarga: {2}", docVenda.DataDoc, docVenda.DataHoraCarga, docVenda.DataHoraDescarga));
                             if (BSO.Vendas.Documentos.ValidaActualizacao(docVenda, BSO.Vendas.TabVendas.Edita(docVenda.Tipodoc), ref serie, ref strErro))
                             {
                                 BSO.Vendas.Documentos.Actualiza(docVenda, ref strAvisos);
-                                listBox.Items.Add(String.Format("Fatura {0} para cliente {1} inserida com sucesso.", docVenda.NumDoc, docVenda.Entidade));
+                                listBox.Items.Add(String.Format("Fatura {0} para cliente {1} processada com sucesso.", docVenda.NumDoc, docVenda.Entidade));
                                 if (i == linhasFicheiro.Count() - 1) { return false; }
                             }
                             else
                             {
-                                MessageBox.Show("ValidaActualizacao = Falso. ERRO: " + strErro);
                                 listBox.Items.Add(String.Format("Ocorreram erros ao gerar a Fatura {0}. ERRO: {1} \n A INFORMAÇÃO NÃO FOI PROCESSADA!", docVenda.NumDoc, strErro));
                                 if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
                                 return interromperComErro(strErro);
@@ -214,8 +228,7 @@ namespace ASRLB_ImportacaoFatura
                             temLinha = false;
                         }
 
-                        listBox.Items.Add(String.Format("É CABEC --> Cliente: {0}; CondPag: {1}", linha[0], linha[1]));
-
+                        //listBox.Items.Add(String.Format("É CABEC --> Cliente: {0}; CondPag: {1}", linha[0], linha[1]));
                         docVenda = new VndBE100.VndBEDocumentoVenda();
                         docVenda.Entidade = linha[0];
                         docVenda.TipoEntidade = "C";
@@ -230,6 +243,7 @@ namespace ASRLB_ImportacaoFatura
                         docVenda.CondPag = linha[1];
                         BSO.Vendas.Documentos.PreencheDadosRelacionados(docVenda, ref vdDadosCondPag);
 
+                        faturaActual = 0;
                         temLinha = false;
                     }
                     // Se for Linha
@@ -247,6 +261,9 @@ namespace ASRLB_ImportacaoFatura
 
                         // Adiciona linha ao Doc
                         BSO.Vendas.Documentos.AdicionaLinha(docVenda, linhaArtigo, ref linhaQuantidade, ref linhaArmazem, ref linhaLocal, linhaPrecUnit, linhaDesconto1);
+                        faturaActual++;
+                        docVenda.Linhas.GetEdita(faturaActual).Descricao = linhaDescricao;
+
                         temLinha = true;
                     }
                 }
@@ -254,12 +271,13 @@ namespace ASRLB_ImportacaoFatura
                 {
                     MessageBox.Show("EXCEPTION: " + e);
                     BSO.DesfazTransaccao();
-                    interromperComErro("ERRO: " + e);
+                    return interromperComErro("ERRO: " + e);
                 }
             }
             if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); MessageBox.Show("Faturas submetidas com sucesso!"); }
             return true;
         }
+
 
 
         public bool interromperComErro(string error = "")

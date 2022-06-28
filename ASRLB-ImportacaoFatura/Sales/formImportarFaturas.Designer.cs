@@ -49,7 +49,7 @@ namespace ASRLB_ImportacaoFatura
             // btnIniciar
             // 
             this.btnIniciar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnIniciar.Location = new System.Drawing.Point(348, 351);
+            this.btnIniciar.Location = new System.Drawing.Point(357, 351);
             this.btnIniciar.Name = "btnIniciar";
             this.btnIniciar.Size = new System.Drawing.Size(75, 23);
             this.btnIniciar.TabIndex = 0;
@@ -60,7 +60,7 @@ namespace ASRLB_ImportacaoFatura
             // btnCancelar
             // 
             this.btnCancelar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnCancelar.Location = new System.Drawing.Point(429, 351);
+            this.btnCancelar.Location = new System.Drawing.Point(438, 351);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(75, 23);
             this.btnCancelar.TabIndex = 1;
@@ -75,7 +75,7 @@ namespace ASRLB_ImportacaoFatura
             this.listBox.FormattingEnabled = true;
             this.listBox.Location = new System.Drawing.Point(13, 68);
             this.listBox.Name = "listBox";
-            this.listBox.Size = new System.Drawing.Size(491, 277);
+            this.listBox.Size = new System.Drawing.Size(500, 277);
             this.listBox.TabIndex = 2;
             // 
             // label1
@@ -91,13 +91,13 @@ namespace ASRLB_ImportacaoFatura
             // 
             this.txtFicheiroPath.Location = new System.Drawing.Point(63, 13);
             this.txtFicheiroPath.Name = "txtFicheiroPath";
-            this.txtFicheiroPath.Size = new System.Drawing.Size(338, 20);
+            this.txtFicheiroPath.Size = new System.Drawing.Size(347, 20);
             this.txtFicheiroPath.TabIndex = 4;
             this.txtFicheiroPath.Text = "import.txt no servidor";
             // 
             // btnEscolherFicheiro
             // 
-            this.btnEscolherFicheiro.Location = new System.Drawing.Point(407, 12);
+            this.btnEscolherFicheiro.Location = new System.Drawing.Point(416, 12);
             this.btnEscolherFicheiro.Name = "btnEscolherFicheiro";
             this.btnEscolherFicheiro.Size = new System.Drawing.Size(97, 22);
             this.btnEscolherFicheiro.TabIndex = 5;
@@ -123,7 +123,7 @@ namespace ASRLB_ImportacaoFatura
             this.datePicker.Name = "datePicker";
             this.datePicker.Size = new System.Drawing.Size(99, 20);
             this.datePicker.TabIndex = 10;
-            this.datePicker.Value = new System.DateTime(2022, 6, 22, 0, 0, 0, 0);
+            this.datePicker.Value = new System.DateTime(2022, 6, 28, 10, 7, 59, 0);
             // 
             // label2
             // 
@@ -195,8 +195,8 @@ namespace ASRLB_ImportacaoFatura
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnIniciar);
             this.Name = "janelaImportarFatura";
-            this.Size = new System.Drawing.Size(519, 381);
-            this.Text = "b";
+            this.Size = new System.Drawing.Size(528, 381);
+            this.Text = "Faturas em Lote";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -29,7 +29,7 @@ namespace Primavera.CustomRibbon
             // Create a new Group.
             PSO.Ribbon.CriaRibbonGroup(cIDTAB, "Importar", cIDGROUP);
             // Create a new 32x32 Button.
-            PSO.Ribbon.CriaRibbonButton(cIDTAB, cIDGROUP, cIDBUTTON1, "Faturas em Bulk", true, null);
+            PSO.Ribbon.CriaRibbonButton(cIDTAB, cIDGROUP, cIDBUTTON1, "Faturas em Lote", true, null);
         }
         ///
         /// Ribbon events.
