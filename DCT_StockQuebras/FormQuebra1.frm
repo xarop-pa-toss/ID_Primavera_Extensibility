@@ -14,6 +14,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
+
 Private Sub btnConfirmar_Click()
     
     Dim operador, motivo As String
@@ -23,8 +24,7 @@ Private Sub btnConfirmar_Click()
         resposta = MsgBox("É necessário introduzir um motivo. A linha será apagada. Deseja continuar?", vbQuestion + vbYesNo + vbDefaultButton2, "Cancelar submissão")
         
         If resposta = vbYes Then
-          Me.Hide
-          apagaLinha = True
+            Fechar
         End If
     Else
         operador = cboxOperadorQuebra.Value
@@ -52,8 +52,18 @@ End Sub
 
 Private Sub btnCancelar_Click()
     
-    Me.Hide
-    apagaLinha = True
+    Fechar
            
 End Sub
 
+
+Sub Fechar()
+
+    Me.Hide
+    If Not EditorStocks.DocumentoStock.Linhas(nLinha).IdLinhaPai = "" Then
+        apagaPai = True
+    Else
+        apagaLinha = True
+    End If
+
+End Sub

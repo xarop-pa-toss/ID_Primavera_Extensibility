@@ -4,7 +4,8 @@ Public arrTipoDoc As New ArrayList '1-D Array com tipos de documentos a validar
 Public arrTDU, arrSerie As Variant '2-D Array com conteúdo integral da TDU_OperadorQuebra
 Public arrTDUFiltrado As New ArrayList '1-D Array com Operadores baseado no arrTDU após identificação dos pares Operador-Armazém relevantes
 Public formActivo As Boolean 'Usados para controlo de estado do FormQuebra1 e controlo de fluxo
-Public apagaLinha As Boolean 'Usado para apagar linha caso haja dados insuficientes. Obriga a que Operador e Motivo sejam preenchidos
+Public apagaLinha As Boolean ' DEVE SER IMPLEMENTADO no ValidaLinha no EditorStocks. Usado para apagar linha caso haja dados insuficientes. Obriga a que Operador e Motivo sejam preenchidos
+Public apagaPai As Boolean 'Apaga linha pai e filhos se um dos filhos não for válido.
 Public nLinha As Long
 
 
@@ -56,22 +57,19 @@ Sub Filtrar_arrTDU(ByVal armazemLinha As String)
     
 End Sub
 
-
-'------ FUNÇÕES NÃO USADAS NESTE CONTEXTO ------
-'Encontra uma string num array 1-D
-'Function ExisteNoArray(ByVal stringAEncontrar As String, ByVal arr As Variant) As Boolean
+'Apaga linhas pai e irmaos se linha original for filho (quando FormQuebra é cancelado)
+'Corre as linhas anteriores do documento até encontrar pai (linha pai tem IdLinhaPai = ""), apagando tudo até lá inclusivé
+Sub EliminarPai_e_Filhos()
     
-'    ExisteNoArray = (UBound(Filter(arr, stringAEncontrar)) > -1)
+    Dim k As Long
+    k = EditorStocks.DocumentoStock.Linhas.NumItens
     
-'End Function
-
-'Array 1-D com tipos de documento relevantes (quebras).
-'Editar aqui se houver alterações aos tipo de documentos.
-'Function CriarArrTipoDoc()
+    'Apaga sequencialmente da última linha pra cima até ao Pai exclusivé
+    While Not EditorStocks.DocumentoStock.Linhas(k).IdLinhaPai = ""
+        EditorStocks.DocumentoStock.Linhas.Remove (k)
+        k = k - 1
+    Wend
+    'Apaga pai
+    EditorStocks.DocumentoStock.Linhas.Remove (k)
     
-'    arrTipoDoc.Clear
-'    arrTipoDoc.Add ("SSQ")
-'    arrTipoDoc.Add ("SSQL")
-'    arrTipoDoc.Add ("SSQP")
-    
-'End Function
+End Sub
