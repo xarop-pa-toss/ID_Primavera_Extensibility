@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-/* Actualiza o Objetivo de acordo com o que for inserido na Margem e o valor em VendasAnoAnterior
+/* -- Actualiza o Objetivo de acordo com o que for inserido na Margem e o valor em VendasAnoAnterior --
 CREATE TRIGGER dbo.AtualizaObjetivos ON dbo.TDU_Objetivos AFTER UPDATE
 AS 
 BEGIN
@@ -20,7 +20,7 @@ END
 */
 
 
-/* Apaga as linhas de objetivos para um vendedor se o seu estado VendedorMSS passar para False
+/* -- Apaga as linhas de objetivos para um vendedor se o seu estado VendedorMSS passar para False --
 CREATE TRIGGER dbo.ApagaObjetivosInativos ON dbo.Vendedores AFTER UPDATE
 AS
 BEGIN
@@ -36,7 +36,7 @@ END
 GO*/
 
 
---Insere as linhas na tabela de Objetivos se o estado do VendedorMSS passar para True
+/* --Insere as linhas na tabela de Objetivos se o estado do VendedorMSS passar para True --
 CREATE TRIGGER dbo.InsereObjetivosAtivos ON dbo.Vendedores AFTER UPDATE
 AS
 BEGIN
@@ -93,4 +93,41 @@ BEGIN
 		DROP TABLE #VendasAnoAtual_tempTable
 	END
 END
-GO
+GO */
+
+
+/* -- JOB para Update à coluna ValoresAnoAtual --
+USE [PRIDECANTE]
+SET LANGUAGE Portuguese
+DECLARE @count BIGINT;
+SET @count = (SELECT MAX(CDU_ID) FROM TDU_Objetivos);
+
+SELECT s.Vendedor,
+	s.DataInicio,
+	s.DataFim,
+	SUM(s.TotalVendas) AS VendasAnoAtual
+INTO #VendasAnoAtual_tempTable
+FROM 
+	(SELECT TRY_CONVERT(int, ld.Vendedor) AS Vendedor,
+		SUM(ld.PrecoLiquido) AS TotalVendas,
+		DATEADD(YEAR, -1, DATEADD(DAY, 1, EOMONTH(ld.Data, -1))) AS DataInicio,
+		DATEADD(YEAR, -1, EOMONTH(ld.Data)) AS DataFim
+	FROM LinhasDoc ld
+	INNER JOIN CabecDoc cd ON cd.Id = ld.IdCabecDoc
+	INNER JOIN CabecDocStatus cds ON ld.IdCabecDoc = cds.IdCabecDoc
+	INNER JOIN DocumentosVenda dv ON cd.TipoDoc = dv.Documento
+	INNER JOIN Vendedores vd ON ld.Vendedor = vd.Vendedor
+	WHERE dv.TipoDocumento = '4' AND cds.Anulado = '0' AND ld.Artigo <> '' AND YEAR(ld.data) = YEAR(GETDATE())AND ld.Vendedor NOT IN(0, 2, 13) AND ld.Vendedor IS NOT NULL
+	GROUP BY ld.Vendedor, vd.Nome, ld.PrecoLiquido, MONTH(ld.Data), ld.Data ) AS s
+GROUP BY s.Vendedor, s.DataInicio, s.DataFim
+ORDER BY s.Vendedor, s.DataInicio
+SELECT * FROM #VendasAnoAtual_tempTable ORDER BY Vendedor, DataInicio
+
+UPDATE TDU_Objetivos
+SET TDU_Objetivos.CDU_VendasAnoAtual = temp.VendasAnoAtual
+FROM TDU_Objetivos AS obj
+LEFT JOIN #VendasAnoAtual_tempTable AS temp
+ON obj.CDU_Vendedor = temp.Vendedor AND obj.CDU_DataInicio = temp.DataInicio
+
+DROP TABLE #VendasAnoAtual_tempTable
+		
