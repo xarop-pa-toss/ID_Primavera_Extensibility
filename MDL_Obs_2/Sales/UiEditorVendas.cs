@@ -40,11 +40,14 @@ namespace MDL_Obs.Sales
         {
             if (DocumentoVenda.Tipodoc == "FAPO" || DocumentoVenda.Tipodoc == "NCPO")
             {
+                // Terceiro argumento define se o campo é uma condição (true = WHERE) ou um campo onde definir dados (false)
                 StdBEExecSql ligacaoBD = new StdBEExecSql();
                 ligacaoBD.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
                 ligacaoBD.Tabela = "Historico";
                 ligacaoBD.AddCampo("Texto", descricao, false, StdBETipos.EnumTipoCampoSimplificado.tsTexto);
-                ligacaoBD.AddCampo("NumDoc", numDoc, true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);
+                ligacaoBD.AddCampo("NumDoc", NumDoc, true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);
+                ligacaoBD.AddCampo("TipoDoc", Tipo, true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);
+                ligacaoBD.AddCampo("Serie", Serie, true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);
 
                 PSO.ExecSql.Executa(ligacaoBD);
             }

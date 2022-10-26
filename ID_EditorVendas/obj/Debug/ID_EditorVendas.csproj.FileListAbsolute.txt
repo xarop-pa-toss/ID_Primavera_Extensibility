@@ -1,0 +1,15 @@
+C:\Users\Ricardo Santos\source\repos\ID_EditorVendas\obj\Debug\ID_EditorVendas.csproj.AssemblyReference.cache
+C:\Users\Ricardo Santos\source\repos\ID_EditorVendas\obj\Debug\Interop.BasBE900.dll
+C:\Users\Ricardo Santos\source\repos\ID_EditorVendas\obj\Debug\Interop.IBasBS900.dll
+C:\Users\Ricardo Santos\source\repos\ID_EditorVendas\obj\Debug\Interop.StdBE900.dll
+C:\Users\Ricardo Santos\source\repos\ID_EditorVendas\obj\Debug\ID_EditorVendas.csproj.ResolveComReference.cache
+C:\Users\Ricardo Santos\source\repos\ID_EditorVendas\obj\Debug\ID_EditorVendas.csproj.GenerateResource.cache
+C:\Users\Ricardo Santos\source\repos\ID_EditorVendas\obj\Debug\ID_EditorVendas.csproj.CoreCompileInputs.cache
+C:\Users\Ricardo Santos\source\repos\ID_EditorVendas\bin\Debug\ID_EditorVendas.dll
+C:\Users\Ricardo Santos\source\repos\ID_EditorVendas\bin\Debug\ID_EditorVendas.pdb
+C:\Users\Ricardo Santos\source\repos\ID_EditorVendas\bin\Debug\BasBE100.dll
+C:\Users\Ricardo Santos\source\repos\ID_EditorVendas\bin\Debug\IBasBS100.dll
+C:\Users\Ricardo Santos\source\repos\ID_EditorVendas\obj\Debug\ID_EditorVendas.csproj.CopyComplete
+C:\Users\Ricardo Santos\source\repos\ID_EditorVendas\obj\Debug\ID_EditorVendas.dll
+C:\Users\Ricardo Santos\source\repos\ID_EditorVendas\obj\Debug\ID_EditorVendas.pdb
+C:\Users\Ricardo Santos\source\repos\ID_EditorVendas\obj\Debug\ID_EditorVendas.Sales.form_tecnico.resources

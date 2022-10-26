@@ -18,3 +18,5 @@ C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\obj\Debug\ASR
 C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\obj\Debug\ASRLB-ImportacaoFatura.pdb
 C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\bin\Debug\ASRLB-ImportacaoFatura.dll.config
 C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\obj\Debug\ASRLB_ImportacaoFatura.Properties.Resources.resources
+C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\obj\Debug\Interop.Microsoft.Office.Core.dll
+C:\Users\Ricardo Santos\Desktop\VS Projects\ASRLB-ImportacaoFatura\obj\Debug\ASRLB-ImportacaoFatura.csproj.ResolveComReference.cache
