@@ -53,7 +53,7 @@ namespace Primavera.CustomRibbon
             }
             catch (System.Exception ex)
             {
-                PSO.Dialogos.MostraAviso("Falha a executar comando.", StdBSTipos.IconId.PRI_Informativo, ex.Message);
+                PSO.MensagensDialogos.MostraAviso("Falha a executar comando.", StdBSTipos.IconId.PRI_Informativo, ex.Message);
             }
         }
     }

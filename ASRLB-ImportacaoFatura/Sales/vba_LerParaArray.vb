@@ -150,6 +150,7 @@ Private Function Processar() As String
                     k = k - 1
                 End If
                 Set BELista = Nothing
+                
             Wend
             
             Aplicacao.BSO.Comercial.Vendas.CalculaValoresTotais Doc
@@ -165,6 +166,7 @@ Private Function Processar() As String
             End If
             
             Set Doc = Nothing
+            
     End If
         i = k
 Wend

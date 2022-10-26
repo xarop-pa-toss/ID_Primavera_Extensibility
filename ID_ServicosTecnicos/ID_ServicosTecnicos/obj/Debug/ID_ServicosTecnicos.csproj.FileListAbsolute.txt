@@ -1,0 +1,11 @@
+C:\Users\Ricardo Santos\source\repos\ID_PrimaveraV10_Code\ID_ServicosTecnicos\ID_ServicosTecnicos\bin\Debug\ID_ServicosTecnicos.dll
+C:\Users\Ricardo Santos\source\repos\ID_PrimaveraV10_Code\ID_ServicosTecnicos\ID_ServicosTecnicos\bin\Debug\ID_ServicosTecnicos.pdb
+C:\Users\Ricardo Santos\source\repos\ID_PrimaveraV10_Code\ID_ServicosTecnicos\ID_ServicosTecnicos\bin\Debug\BasBE100.dll
+C:\Users\Ricardo Santos\source\repos\ID_PrimaveraV10_Code\ID_ServicosTecnicos\ID_ServicosTecnicos\bin\Debug\StpBE100.dll
+C:\Users\Ricardo Santos\source\repos\ID_PrimaveraV10_Code\ID_ServicosTecnicos\ID_ServicosTecnicos\obj\Debug\ID_ServicosTecnicos.csproj.AssemblyReference.cache
+C:\Users\Ricardo Santos\source\repos\ID_PrimaveraV10_Code\ID_ServicosTecnicos\ID_ServicosTecnicos\obj\Debug\ID_ServicosTecnicos.csproj.CoreCompileInputs.cache
+C:\Users\Ricardo Santos\source\repos\ID_PrimaveraV10_Code\ID_ServicosTecnicos\ID_ServicosTecnicos\obj\Debug\ID_ServicosTecnicos.csproj.CopyComplete
+C:\Users\Ricardo Santos\source\repos\ID_PrimaveraV10_Code\ID_ServicosTecnicos\ID_ServicosTecnicos\obj\Debug\ID_ServicosTecnicos.dll
+C:\Users\Ricardo Santos\source\repos\ID_PrimaveraV10_Code\ID_ServicosTecnicos\ID_ServicosTecnicos\obj\Debug\ID_ServicosTecnicos.pdb
+C:\Users\Ricardo Santos\source\repos\ID_PrimaveraV10_Code\ID_ServicosTecnicos\ID_ServicosTecnicos\bin\Debug\ConstantesPrimavera100.dll
+C:\Users\Ricardo Santos\source\repos\ID_PrimaveraV10_Code\ID_ServicosTecnicos\ID_ServicosTecnicos\bin\Debug\IBasBS100.dll
