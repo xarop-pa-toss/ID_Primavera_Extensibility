@@ -57,10 +57,11 @@ namespace ASRLB_ImportacaoFatura
             // Valida dados no ficheiro comparando com os das listas criadas em criarListasPri();
             List<string> valoresIva = new List<string> { "06,0", "12,0", "23,0" };
             string[] linhasFicheiro = File.ReadAllLines(@"" + ficheiro);
-            if (!validarFicheiro(linhasFicheiro, ref listaArtigos, ref listaClientes, ref listaCondPag, valoresIva)) { return; }
+            int linhasFicheiroTotal = linhasFicheiro.Count();
+            if (!validarFicheiro(linhasFicheiro, ref listaArtigos, ref listaClientes, ref listaCondPag, valoresIva, linhasFicheiroTotal)) { return; }
 
             // Cria um DocumentoVendas para cada Cliente e preenche com as Linhas correspondentes. Quando recebe novo Cliente, valida os dados e grava a fatura.
-            if (!processarDados(linhasFicheiro)) { return; }
+            if (!processarDados(linhasFicheiro, linhasFicheiroTotal)) { return; }
 
             File.Delete(ficheiro);
         }
@@ -126,10 +127,10 @@ namespace ASRLB_ImportacaoFatura
 
 
         //OK
-        internal bool validarFicheiro(string[] linhasFicheiro, ref List<string> listaArtigos, ref List<string> listaClientes, ref List<string> listaCondPag, List<string> valoresIva)
+        internal bool validarFicheiro(string[] linhasFicheiro, ref List<string> listaArtigos, ref List<string> listaClientes, ref List<string> listaCondPag, List<string> valoresIva, int linhasFicheiroTotal)
         {
             // Valida os valores (separados por ',') com os presentes nas listas criadas
-            for (int i = 0; i < linhasFicheiro.Count(); i++)
+            for (int i = 0; i < linhasFicheiroTotal; i++)
             {
                 linha = linhasFicheiro[i].Split(',');
                 for (int u = 0; u < linha.Count(); u++) { linha[u] = linha[u].Replace(",", ""); linha[u] = linha[u].Replace(".", ","); linha[u] = linha[u].Trim(); }
@@ -171,7 +172,7 @@ namespace ASRLB_ImportacaoFatura
 
 
         //OK
-        internal bool processarDados(string[] linhasFicheiro)
+        internal bool processarDados(string[] linhasFicheiro, int linhasFicheiroTotal)
         {
             bool temLinha = false;
             int faturaActual = 0;
@@ -192,9 +193,10 @@ namespace ASRLB_ImportacaoFatura
             barraProg.Value = 0;
             barraProg.Step = 1;
 
+
             BSO.IniciaTransaccao();
 
-            for (int i = 0; i < linhasFicheiro.Count(); i++)
+            for (int i = 0; i < linhasFicheiroTotal; i++)
             {
                 try
                 {
@@ -203,7 +205,7 @@ namespace ASRLB_ImportacaoFatura
                     for (int u = 0; u < linha.Count(); u++) { linha[u] = linha[u].Replace(",", ""); linha[u] = linha[u].Replace(".", ","); linha[u] = linha[u].Trim(); }
 
                     // Se for Cabec
-                    if (linha.Count() == 2)
+                    if (linha.Count() == 2 || i == linhasFicheiroTotal - 1)
                     {
                         if (temLinha)
                         {
@@ -217,7 +219,7 @@ namespace ASRLB_ImportacaoFatura
                             {
                                 BSO.Vendas.Documentos.Actualiza(docVenda, ref strAvisos);
                                 listBox.Items.Add(String.Format("Fatura {0} para cliente {1} processada com sucesso.", docVenda.NumDoc, docVenda.Entidade));
-                                if (i == linhasFicheiro.Count() - 1) { return false; }
+                                if (i == linhasFicheiroTotal - 1) { return false; }
                             }
                             else
                             {
@@ -227,24 +229,26 @@ namespace ASRLB_ImportacaoFatura
                             }
                             temLinha = false;
                         }
+                        if (i != linhasFicheiroTotal - 1)
+                        {
+                            //listBox.Items.Add(String.Format("É CABEC --> Cliente: {0}; CondPag: {1}", linha[0], linha[1]));
+                            docVenda = new VndBE100.VndBEDocumentoVenda();
+                            docVenda.Entidade = linha[0];
+                            docVenda.TipoEntidade = "C";
+                            docVenda.Tipodoc = cBoxDoc.Text;
+                            docVenda.Serie = BSO.Base.Series.DaSerieDefeito("V", docVenda.Tipodoc);
+                            BSO.Vendas.Documentos.PreencheDadosRelacionados(docVenda, ref vdDadosTodos);
 
-                        //listBox.Items.Add(String.Format("É CABEC --> Cliente: {0}; CondPag: {1}", linha[0], linha[1]));
-                        docVenda = new VndBE100.VndBEDocumentoVenda();
-                        docVenda.Entidade = linha[0];
-                        docVenda.TipoEntidade = "C";
-                        docVenda.Tipodoc = cBoxDoc.Text;
-                        docVenda.Serie = BSO.Base.Series.DaSerieDefeito("V", docVenda.Tipodoc);
-                        BSO.Vendas.Documentos.PreencheDadosRelacionados(docVenda, ref vdDadosTodos);
+                            DateTime horaAgora = DateTime.Now;
+                            docVenda.DataDoc = datePicker.Value.Add(horaAgora.TimeOfDay);
+                            docVenda.DataHoraCarga = docVenda.DataDoc.AddMinutes(5).AddSeconds(i);
+                            docVenda.HoraDefinida = true;
+                            docVenda.CondPag = linha[1];
+                            BSO.Vendas.Documentos.PreencheDadosRelacionados(docVenda, ref vdDadosCondPag);
 
-                        DateTime horaAgora = DateTime.Now;
-                        docVenda.DataDoc = datePicker.Value.Add(horaAgora.TimeOfDay);
-                        docVenda.DataHoraCarga = docVenda.DataDoc.AddMinutes(5).AddSeconds(i);
-                        docVenda.HoraDefinida = true;
-                        docVenda.CondPag = linha[1];
-                        BSO.Vendas.Documentos.PreencheDadosRelacionados(docVenda, ref vdDadosCondPag);
-
-                        faturaActual = 0;
-                        temLinha = false;
+                            faturaActual = 0;
+                            temLinha = false;
+                        }
                     }
                     // Se for Linha
                     else if (linha.Count() == 6)
