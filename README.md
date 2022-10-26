@@ -1,4 +1,4 @@
-# ID_PrimaveraV10_CodeSnippets
+# ID_PrimaveraV10_Code
 
 ## Repository of Class Libraries written to extend the functionality and workflow of Primavera ERP v10.0. 
 
