@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="BasBE100">
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\BasBE100.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ConstantesPrimavera100">
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\ConstantesPrimavera100.dll</HintPath>
@@ -43,13 +44,24 @@
     </Reference>
     <Reference Include="IBasBS100">
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\IBasBS100.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="IVndBS100">
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\IVndBS100.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.Excel, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Primavera.Extensibility.Attributes">
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Attributes.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Primavera.Extensibility.Base">
+      <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Base.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Primavera.Extensibility.BusinessEntities">
@@ -64,19 +76,21 @@
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.CustomForm.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Primavera.Extensibility.CustomTab">
+      <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.CustomTab.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Primavera.Extensibility.Integration">
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Integration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Primavera.Extensibility.Platform">
+      <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Platform.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Primavera.Extensibility.Sales">
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Sales.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="Spire.Pdf, Version=8.10.5.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>packages\Spire.XLS.12.10.1\lib\net40\Spire.Pdf.dll</HintPath>
-    </Reference>
-    <Reference Include="Spire.XLS, Version=12.10.1.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <HintPath>packages\Spire.XLS.12.10.1\lib\net40\Spire.XLS.dll</HintPath>
     </Reference>
     <Reference Include="StdBE100">
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\StdBE100.dll</HintPath>
@@ -103,11 +117,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< Updated upstream
-=======
-    <Compile Include="ExcelControl.cs" />
->>>>>>> Stashed changes
+    <Compile Include="Excel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Sales\ribbonImportarFaturas.cs" />
+    <Compile Include="Settings.cs" />
     <Content Include="Sales\vba_LerParaArray.vb" />
     <Compile Include="Sales\formImportarFaturas.cs">
       <SubType>UserControl</SubType>
@@ -115,34 +138,25 @@
     <Compile Include="Sales\formImportarFaturas.Designer.cs">
       <DependentUpon>formImportarFaturas.cs</DependentUpon>
     </Compile>
-    <Compile Include="Sales\UiEditorVendas.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Sales\formImportarFaturas.resx">
       <DependentUpon>formImportarFaturas.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-<<<<<<< Updated upstream
-=======
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="app.config" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="JetES">
-      <Guid>{2358C810-62BA-11D1-B3DB-00600832C573}</Guid>
-      <VersionMajor>4</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
     <COMReference Include="Microsoft.Office.Core">
       <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
       <VersionMajor>2</VersionMajor>
@@ -152,18 +166,12 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-    <COMReference Include="VBIDE">
-      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>5</VersionMajor>
-      <VersionMinor>3</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
->>>>>>> Stashed changes
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

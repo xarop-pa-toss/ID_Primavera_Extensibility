@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS0612: O tipo ou membro é obsoleto
+dotnet_diagnostic.CS0612.severity = silent
