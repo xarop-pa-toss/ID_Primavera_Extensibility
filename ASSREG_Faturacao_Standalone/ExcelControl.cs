@@ -21,7 +21,7 @@ namespace ASSREG_Faturacao_ExcelStandalone
         }
 
         // Abre ligação e preenche DataSet com query ao ficheiro Excel. Fecha ligação no final.
-        public DataTable CarregarSheet(int sheet)
+        public DataSet CarregarSheet(int sheet)
         {
             using (OleDb.OleDbConnection Ligacao = new OleDb.OleDbConnection(conString))
             {
@@ -30,61 +30,33 @@ namespace ASSREG_Faturacao_ExcelStandalone
                 OleDb.OleDbCommand cmd = new OleDb.OleDbCommand("SELECT Count(*) FROM [Cantão " + sheet + "$]", Ligacao);
                 linhasTotal = (int)cmd.ExecuteScalar() - 5;
 
-                // Datasets a preencher com diferentes colunas. Serão merged para uma única DataTable
-                DataSet DtSet = new DataSet("DtSet");
-                DataSet DtSet2 = new DataSet("DtSet2");
-                DataTable DtTable = new DataTable("DtTable");
+                // Datasets a preencher e query
+                DataSet DtSet = new DataSet();
+                string query = "SELECT F3,F4,F5,F6,F7,F9,F11,F12 FROM [Cantão " + sheet + "$]";
 
-                // Queries a executar com o Adapter
-                List<string> queries = new List<string>();
-
-                queries.Add("SELECT * FROM [Cantão " + sheet + "$C6:G" + linhasTotal + "]");
-                queries.Add("SELECT * FROM [Cantão " + sheet + "$I6:J" + linhasTotal + "]");
-                queries.Add("SELECT * FROM [Cantão " + sheet + "$I6:J" + linhasTotal + "]");
-                queries.Add("SELECT * FROM [Cantão " + sheet + "$L6:M" + linhasTotal + "]");
-                queries.Add("SELECT * FROM [Cantão " + sheet + "$O6:R" + linhasTotal + "]");
-
-                // Execução de queries ao Excel.
-                // Inicialização do Adapter (query engine) inclui a primeira query que vai directamente para o DataSet principal. As seguintes usam um buffer para permitir merging.
+                // Inicialização do Adapter que faz de imediato a query ao Excel. Preenchimento e configuração do Dataset.
                 try
                 {
-                    OleDb.OleDbDataAdapter Adapter = new OleDb.OleDbDataAdapter(queries[0], Ligacao);
-                    Adapter.Fill(DtSet);
+                    OleDb.OleDbDataAdapter Adapter = new OleDb.OleDbDataAdapter(query, Ligacao);
+                    Adapter.Fill(DtSet, "Tabela0");
                     Adapter.Dispose();
 
-                    int counter = 0;
+                    // Cabeçalhos das colunas e remoção de linhas não usadas (1 a 4)
+                    DtSet.Tables[0].Columns[0].ColumnName = "Prédio";
+                    DtSet.Tables[0].Columns[1].ColumnName = "Nº Contador";
+                    DtSet.Tables[0].Columns[2].ColumnName = "Benef.";
+                    DtSet.Tables[0].Columns[3].ColumnName = "Nome";
+                    DtSet.Tables[0].Columns[4].ColumnName = "Última Leitura";
+                    DtSet.Tables[0].Columns[5].ColumnName = "Ligado";
+                    DtSet.Tables[0].Columns[6].ColumnName = "Data 1";
+                    DtSet.Tables[0].Columns[7].ColumnName = "Leitura 1";
 
-                    foreach (string query in queries)
-                    {
-                        Adapter.SelectCommand.CommandText = query;
-                        Adapter.Fill(DtSet, "Tabela " + query);
-                        DtSet.Tables.Add(DtTable);
-                        DtTable.Clear();
-                        counter++;
-                    }
-                    // Fechar objectos 
-                    DtTable.Dispose(); Adapter.Dispose(); Ligacao.Close();
-
-                    // Cabeçalhos das colunas
-                    DtTable.Columns[0].ColumnName = "Prédio";
-                    DtTable.Columns[1].ColumnName = "Nº Contador";
-                    DtTable.Columns[2].ColumnName = "Benef.";
-                    DtTable.Columns[3].ColumnName = "Nome";
-                    DtTable.Columns[4].ColumnName = "Última Leitura";
-                    DtTable.Columns[5].ColumnName = "Ligado";
-                    DtTable.Columns[6].ColumnName = "Data 1";
-                    DtTable.Columns[7].ColumnName = "Leitura 1";
-                    DtTable.Columns[8].ColumnName = "Data 2";
-                    DtTable.Columns[9].ColumnName = "Leitura 2";
-                    DtTable.Columns[10].ColumnName = "Data 3";
-                    DtTable.Columns[11].ColumnName = "Leitura 3";
-
-                    return DtTable;
-                    
+                    Ligacao.Close();
+                    return DtSet;                    
                 }
                 catch (Exception e)
                 {
-                    System.Windows.Forms.MessageBox.Show("Não foi possível estabelecer ligação! Erro: " + e); return DtTable;
+                    System.Windows.Forms.MessageBox.Show("Não foi possível estabelecer ligação! Erro: " + e); return DtSet;
                     //PSO.MensagensDialogos.MostraErro("Não foi possível estabelecer ligação! Erro: " + e); return DtTable;
                 }
             }
@@ -114,7 +86,7 @@ namespace ASSREG_Faturacao_ExcelStandalone
             //{
                 return conString = @"Provider=Microsoft.ACE.OLEDB.12.0;"
                                 + "Data Source='" + path + "'"
-                                + ";Extended Properties=\"Excel 12.0;HDR=NO;\"";
+                                + ";Extended Properties=\"Excel 12.0;HDR=YES;\"";
             //}
             //System.Windows.Forms.MessageBox.Show("Ficheiro não válido. Deve ser ficheiro Excel (.xls ou .xlsx.)"); return null;
             //PSO.MensagensDialogos.MostraErro("Ficheiro não válido. Deve ser ficheiro Excel (.xls ou .xlsx.)"); return null;
