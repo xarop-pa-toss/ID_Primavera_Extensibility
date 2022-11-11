@@ -21,7 +21,7 @@ namespace ASSREG_Faturacao_ExcelStandalone
         }
 
         // Abre ligação e preenche DataSet com query ao ficheiro Excel. Fecha ligação no final.
-        public DataTable CarregarSheet(int sheet)
+        public DataSet CarregarSheet(int sheet)
         {
             using (OleDb.OleDbConnection Ligacao = new OleDb.OleDbConnection(conString))
             {
@@ -30,10 +30,10 @@ namespace ASSREG_Faturacao_ExcelStandalone
                 OleDb.OleDbCommand cmd = new OleDb.OleDbCommand("SELECT Count(*) FROM [Cantão " + sheet + "$]", Ligacao);
                 linhasTotal = (int)cmd.ExecuteScalar() - 5;
 
-                // Datasets a preencher com diferentes colunas. Serão merged para uma única DataTable
+                // Datasets a preencher com cada query .
                 DataSet DtSet = new DataSet("DtSet");
-                DataSet DtSet2 = new DataSet("DtSet2");
-                DataTable DtTable = new DataTable("DtTable");
+                DataSet DtSetBuffer = new DataSet("DtSetBuffer");
+                DataTable DtCopy = new DataTable("DtSetBuffer");
 
                 // Queries a executar com o Adapter
                 List<string> queries = new List<string>();
@@ -48,43 +48,43 @@ namespace ASSREG_Faturacao_ExcelStandalone
                 // Inicialização do Adapter (query engine) inclui a primeira query que vai directamente para o DataSet principal. As seguintes usam um buffer para permitir merging.
                 try
                 {
-                    OleDb.OleDbDataAdapter Adapter = new OleDb.OleDbDataAdapter(queries[0], Ligacao);
-                    Adapter.Fill(DtSet);
-                    Adapter.Dispose();
-
                     int counter = 0;
-
                     foreach (string query in queries)
                     {
-                        Adapter.SelectCommand.CommandText = query;
-                        Adapter.Fill(DtSet, "Tabela " + query);
-                        DtSet.Tables.Add(DtTable);
-                        DtTable.Clear();
-                        counter++;
+                        OleDb.OleDbDataAdapter Adapter = new OleDb.OleDbDataAdapter(query, Ligacao);
+
+                        Adapter.Fill(DtSet.Tables[counter]);
+                        Adapter.Dispose();
                     }
-                    // Fechar objectos 
-                    DtTable.Dispose(); Adapter.Dispose(); Ligacao.Close();
+
+                    for (int i = 1; i < ds.Tables.Count - 1; i++)
+                        ds.Tables[i].Merge(ds.Tables[0]);
+                    {
+                        t.Merge(ds.Tables[0]);
+                    }
 
                     // Cabeçalhos das colunas
-                    DtTable.Columns[0].ColumnName = "Prédio";
-                    DtTable.Columns[1].ColumnName = "Nº Contador";
-                    DtTable.Columns[2].ColumnName = "Benef.";
-                    DtTable.Columns[3].ColumnName = "Nome";
-                    DtTable.Columns[4].ColumnName = "Última Leitura";
-                    DtTable.Columns[5].ColumnName = "Ligado";
-                    DtTable.Columns[6].ColumnName = "Data 1";
-                    DtTable.Columns[7].ColumnName = "Leitura 1";
-                    DtTable.Columns[8].ColumnName = "Data 2";
-                    DtTable.Columns[9].ColumnName = "Leitura 2";
-                    DtTable.Columns[10].ColumnName = "Data 3";
-                    DtTable.Columns[11].ColumnName = "Leitura 3";
+                    DtSet.Tables[0].Columns[0].ColumnName = "Prédio";
+                    DtSet.Tables[0].Columns[1].ColumnName = "Nº Contador";
+                    DtSet.Tables[0].Columns[2].ColumnName = "Benef.";
+                    DtSet.Tables[0].Columns[3].ColumnName = "Nome";
+                    DtSet.Tables[0].Columns[4].ColumnName = "Última Leitura";
+                    DtSet.Tables[0].Columns[5].ColumnName = "Ligado";
+                    DtSet.Tables[0].Columns[6].ColumnName = "Data 1";
+                    DtSet.Tables[0].Columns[7].ColumnName = "Leitura 1";
+                    DtSet.Tables[0].Columns[8].ColumnName = "Data 2";
+                    DtSet.Tables[0].Columns[9].ColumnName = "Leitura 2";
+                    DtSet.Tables[0].Columns[10].ColumnName = "Data 3";
+                    DtSet.Tables[0].Columns[11].ColumnName = "Leitura 3";
+                    
+                    return DtSet;
 
-                    return DtTable;
+                    Ligacao.Close();
                     
                 }
                 catch (Exception e)
                 {
-                    System.Windows.Forms.MessageBox.Show("Não foi possível estabelecer ligação! Erro: " + e); return DtTable;
+                    System.Windows.Forms.MessageBox.Show("Não foi possível estabelecer ligação! Erro: " + e); return DtSet;
                     //PSO.MensagensDialogos.MostraErro("Não foi possível estabelecer ligação! Erro: " + e); return DtTable;
                 }
             }
