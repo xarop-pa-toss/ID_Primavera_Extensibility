@@ -27,42 +27,43 @@ namespace ASSREG_Faturacao_ExcelStandalone
             {
                 Ligacao.Open();
                 // Conta linhas preenchidas
-                OleDb.OleDbCommand cmd = new OleDb.OleDbCommand("SELECT Count(*) FROM [Sheet" + sheet + "$]", Ligacao);
+                OleDb.OleDbCommand cmd = new OleDb.OleDbCommand("SELECT Count(*) FROM [Cantão " + sheet + "$]", Ligacao);
                 linhasTotal = (int)cmd.ExecuteScalar() - 5;
 
                 // Datasets a preencher com diferentes colunas. Serão merged para uma única DataTable
-                DataSet DtSet = new DataSet();
-                DataSet DtSetBuffer = new DataSet();
-                DataTable DtTable = new DataTable();
+                DataSet DtSet = new DataSet("DtSet");
+                DataSet DtSet2 = new DataSet("DtSet2");
+                DataTable DtTable = new DataTable("DtTable");
 
                 // Queries a executar com o Adapter
                 List<string> queries = new List<string>();
-                queries.Add("SELECT * FROM [Sheet" + sheet + "$C6:G" + linhasTotal);
-                queries.Add("SELECT * FROM [Sheet" + sheet + "$I6:J" + linhasTotal);
-                queries.Add("SELECT * FROM [Sheet" + sheet + "$I6:J" + linhasTotal);
-                queries.Add("SELECT * FROM [Sheet" + sheet + "$L6:M" + linhasTotal);
-                queries.Add("SELECT * FROM [Sheet" + sheet + "$O6:R" + linhasTotal);
+
+                queries.Add("SELECT * FROM [Cantão " + sheet + "$C6:G" + linhasTotal + "]");
+                queries.Add("SELECT * FROM [Cantão " + sheet + "$I6:J" + linhasTotal + "]");
+                queries.Add("SELECT * FROM [Cantão " + sheet + "$I6:J" + linhasTotal + "]");
+                queries.Add("SELECT * FROM [Cantão " + sheet + "$L6:M" + linhasTotal + "]");
+                queries.Add("SELECT * FROM [Cantão " + sheet + "$O6:R" + linhasTotal + "]");
 
                 // Execução de queries ao Excel.
                 // Inicialização do Adapter (query engine) inclui a primeira query que vai directamente para o DataSet principal. As seguintes usam um buffer para permitir merging.
                 try
                 {
-                    OleDb.OleDbDataAdapter Adapter = new OleDb.OleDbDataAdapter("SELECT * FROM [Sheet" + sheet + "$C6:G" + linhasTotal, Ligacao);
-                    Adapter.Fill(DtSet, "Tabela 0");
-                    int counter = 1;
+                    OleDb.OleDbDataAdapter Adapter = new OleDb.OleDbDataAdapter(queries[0], Ligacao);
+                    Adapter.Fill(DtSet);
+                    Adapter.Dispose();
 
-                    foreach (string q in queries)
+                    int counter = 0;
+
+                    foreach (string query in queries)
                     {
-                        Adapter.SelectCommand.CommandText = q;
-                        Adapter.Fill(DtSetBuffer, "Tabela " + counter);
-                        DtSet.Tables[0].Merge(DtSetBuffer.Tables[0]);
-                        DtSetBuffer.Clear();
+                        Adapter.SelectCommand.CommandText = query;
+                        Adapter.Fill(DtSet, "Tabela " + query);
+                        DtSet.Tables.Add(DtTable);
+                        DtTable.Clear();
                         counter++;
                     }
-                    // DataTable a retornar
-                    DtTable = DtSet.Tables[0];
                     // Fechar objectos 
-                    DtSetBuffer.Dispose(); Adapter.Dispose(); Ligacao.Close();
+                    DtTable.Dispose(); Adapter.Dispose(); Ligacao.Close();
 
                     // Cabeçalhos das colunas
                     DtTable.Columns[0].ColumnName = "Prédio";
