@@ -13,12 +13,11 @@ namespace ASSREG_Faturacao_Standalone
         private void Form_Tabela_Load(object sender, EventArgs e)
         {
             ExcelControl Excel = new ExcelControl(@"C:\Users\Ricardo Santos\source\repos\ID_Primavera_Extensibility\ASSREG-Faturacao\Leitura de contadores Silves1.xlsx");
-            BindingSource Bind = new BindingSource();
-            Bind.DataSource = Excel.CarregarSheet(2);
-
-            DtGrid_unfiltered.Columns.Clear();
+            DataSet DataSource = Excel.CarregarSheet(2);
+            
             DtGrid_unfiltered.AutoGenerateColumns = false;
-            DtGrid_unfiltered.DataSource = Bind;
+            DtGrid_unfiltered.AutoSize = true;
+            DtGrid_unfiltered.DataSource = DataSource.Tables[0];
             DtGrid_unfiltered.Refresh();
 
 

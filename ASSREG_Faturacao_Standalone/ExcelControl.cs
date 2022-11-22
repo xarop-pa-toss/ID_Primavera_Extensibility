@@ -49,7 +49,7 @@ namespace ASSREG_Faturacao_ExcelStandalone
                     DtSet.Tables[0].Columns[4].ColumnName = "Última Leitura";
                     DtSet.Tables[0].Columns[5].ColumnName = "Ligado";
                     DtSet.Tables[0].Columns[6].ColumnName = "Data 1";
-                    DtSet.Tables[0].Columns[7].ColumnName = "Leitura 1";
+                    DtSet.Tables[0].Columns[7].ColumnName = "Leitura 1"; 
 
                     Ligacao.Close();
                     return DtSet;                    
