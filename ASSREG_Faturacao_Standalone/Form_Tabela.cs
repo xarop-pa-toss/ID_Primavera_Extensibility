@@ -12,14 +12,14 @@ namespace ASSREG_Faturacao_Standalone
 
         private void Form_Tabela_Load(object sender, EventArgs e)
         {
-            ExcelControl Excel = new ExcelControl(@"C:\Users\Ricardo Santos\source\repos\ID_Primavera_Extensibility\ASSREG-Faturacao\Leitura de contadores Silves1.xlsx");
-            DataSet DataSource = Excel.CarregarSheet(2);
+            ExcelControl Excel = new ExcelControl(@"C:/Users/VM/source/repos/ID_Primavera_Extensibility/ASSREG-Faturacao/Leitura de contadores Silves1.xlsx");
+            DataSet DataSource = Excel.CarregarSheet("Cantão 2"); // Folhas Excel começam com index 0
             
-            DtGrid_unfiltered.AutoGenerateColumns = false;
+            DtGrid_unfiltered.AutoGenerateColumns = true;
             DtGrid_unfiltered.AutoSize = true;
+            DtGrid_unfiltered.ScrollBars = ScrollBars.Both;
             DtGrid_unfiltered.DataSource = DataSource.Tables[0];
             DtGrid_unfiltered.Refresh();
-
 
         }
     }

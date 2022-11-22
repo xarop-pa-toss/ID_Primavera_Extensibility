@@ -21,18 +21,18 @@ namespace ASSREG_Faturacao_ExcelStandalone
         }
 
         // Abre ligação e preenche DataSet com query ao ficheiro Excel. Fecha ligação no final.
-        public DataSet CarregarSheet(int sheet)
+        public DataSet CarregarSheet(string folha)
         {
             using (OleDb.OleDbConnection Ligacao = new OleDb.OleDbConnection(conString))
             {
                 Ligacao.Open();
                 // Conta linhas preenchidas
-                OleDb.OleDbCommand cmd = new OleDb.OleDbCommand("SELECT Count(*) FROM [Cantão " + sheet + "$]", Ligacao);
+                OleDb.OleDbCommand cmd = new OleDb.OleDbCommand("SELECT Count(*) FROM [" + folha + "$]", Ligacao);
                 linhasTotal = (int)cmd.ExecuteScalar() - 5;
 
                 // Datasets a preencher e query
                 DataSet DtSet = new DataSet();
-                string query = "SELECT F3,F4,F5,F6,F7,F9,F11,F12 FROM [Cantão " + sheet + "$]";
+                string query = "SELECT F3,F4,F5,F6,F7,F9,F11,F12 FROM [" + folha + "$A6:Z]";
 
                 // Inicialização do Adapter que faz de imediato a query ao Excel. Preenchimento e configuração do Dataset.
                 try
@@ -41,15 +41,21 @@ namespace ASSREG_Faturacao_ExcelStandalone
                     Adapter.Fill(DtSet, "Tabela0");
                     Adapter.Dispose();
 
+                    DataTable DtTable = DtSet.Tables[0];
                     // Cabeçalhos das colunas e remoção de linhas não usadas (1 a 4)
-                    DtSet.Tables[0].Columns[0].ColumnName = "Prédio";
-                    DtSet.Tables[0].Columns[1].ColumnName = "Nº Contador";
-                    DtSet.Tables[0].Columns[2].ColumnName = "Benef.";
-                    DtSet.Tables[0].Columns[3].ColumnName = "Nome";
-                    DtSet.Tables[0].Columns[4].ColumnName = "Última Leitura";
-                    DtSet.Tables[0].Columns[5].ColumnName = "Ligado";
-                    DtSet.Tables[0].Columns[6].ColumnName = "Data 1";
-                    DtSet.Tables[0].Columns[7].ColumnName = "Leitura 1"; 
+                    DtTable.Columns[0].ColumnName = "Prédio";
+                    DtTable.Columns[1].ColumnName = "Nº Contador";
+                    DtTable.Columns[2].ColumnName = "Benef.";
+                    DtTable.Columns[3].ColumnName = "Nome";
+                    DtTable.Columns[4].ColumnName = "Última Leitura";
+                    DtTable.Columns[5].ColumnName = "Ligado";
+                    DtTable.Columns[6].ColumnName = "Data 1";
+                    DtTable.Columns[7].ColumnName = "Leitura 1";
+
+                    // Primeira coluna com numeração das linhas
+                    DtTable.Columns.Add("#", typeof(int)).SetOrdinal(0);
+                    for (int i = 0; i < DtTable.Rows.Count; i++) { DtTable.Rows[i][0] = i + 1; }
+
 
                     Ligacao.Close();
                     return DtSet;                    
@@ -86,7 +92,7 @@ namespace ASSREG_Faturacao_ExcelStandalone
             //{
                 return conString = @"Provider=Microsoft.ACE.OLEDB.12.0;"
                                 + "Data Source='" + path + "'"
-                                + ";Extended Properties=\"Excel 12.0;HDR=YES;\"";
+                                + ";Extended Properties=\"Excel 12.0;HDR=NO;\"";
             //}
             //System.Windows.Forms.MessageBox.Show("Ficheiro não válido. Deve ser ficheiro Excel (.xls ou .xlsx.)"); return null;
             //PSO.MensagensDialogos.MostraErro("Ficheiro não válido. Deve ser ficheiro Excel (.xls ou .xlsx.)"); return null;

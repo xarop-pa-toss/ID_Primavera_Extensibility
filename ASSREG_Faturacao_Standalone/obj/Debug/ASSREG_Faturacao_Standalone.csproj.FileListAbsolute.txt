@@ -17,3 +17,4 @@ C:\Users\VM\Source\Repos\ID_Primavera_Extensibility\ASSREG_Faturacao_Standalone\
 C:\Users\VM\Source\Repos\ID_Primavera_Extensibility\ASSREG_Faturacao_Standalone\obj\Debug\ASSREG_Faturacao_Standalone.csproj.CoreCompileInputs.cache
 C:\Users\VM\Source\Repos\ID_Primavera_Extensibility\ASSREG_Faturacao_Standalone\obj\Debug\ASSREG_Faturacao_Standalone.exe
 C:\Users\VM\Source\Repos\ID_Primavera_Extensibility\ASSREG_Faturacao_Standalone\obj\Debug\ASSREG_Faturacao_Standalone.pdb
+C:\Users\VM\Source\Repos\ID_Primavera_Extensibility\ASSREG_Faturacao_Standalone\obj\Debug\ASSREG_Faturacao_Standalone.csproj.AssemblyReference.cache
