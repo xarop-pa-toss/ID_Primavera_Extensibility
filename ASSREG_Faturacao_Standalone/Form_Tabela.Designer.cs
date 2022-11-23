@@ -38,10 +38,11 @@ namespace ASSREG_Faturacao_Standalone
             this.DtGrid_unfiltered.AllowUserToAddRows = false;
             this.DtGrid_unfiltered.AllowUserToDeleteRows = false;
             this.DtGrid_unfiltered.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DtGrid_unfiltered.Location = new System.Drawing.Point(12, 12);
+            this.DtGrid_unfiltered.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DtGrid_unfiltered.Location = new System.Drawing.Point(0, 0);
             this.DtGrid_unfiltered.Name = "DtGrid_unfiltered";
             this.DtGrid_unfiltered.RowHeadersWidth = 51;
-            this.DtGrid_unfiltered.Size = new System.Drawing.Size(1348, 719);
+            this.DtGrid_unfiltered.Size = new System.Drawing.Size(1372, 743);
             this.DtGrid_unfiltered.TabIndex = 0;
             // 
             // Form_Tabela

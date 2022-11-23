@@ -1,23 +1,37 @@
-﻿using System; using System.Collections.Generic; using System.Linq; using System.Text; using System.Threading.Tasks; 
+﻿using System; using System.Collections.Generic; using System.Linq; using System.Text; using System.Threading.Tasks; using System.IO;
 using OleDb = System.Data.OleDb; using DataSet = System.Data.DataSet; using DataTable = System.Data.DataTable;
 
 //using Microsoft.Office.Interop.Excel; using _Excel = Microsoft.Office.Interop.Excel; using System.Runtime.InteropServices;
-
 
 namespace ASSREG_Faturacao_ExcelStandalone
 {
     public class ExcelControl
     {
-        int linhasTotal;
-        string path; string conString;
+        string conString;
         //_Application ExcelApp;
         //Workbook wb;
         //Worksheet ws;
         public ExcelControl(string path)
         {
-            // Cria connect string de acordo com a versão do ficheiro. Abre ligação entre Primavera e Excel por OLEDB. Mostra erro no ecrã se ficheiro não for valido.
+            // Cria connect string para uma cópia do ficheiro original. Abre ligação entre Primavera e Excel por OLEDB. Devolve erro e termina se ficheiro não for valido.
+            path = ExcelCopia(path);
+            if (path == null) return;
             conString = ConnectString(path);
-            if (conString == null) { return; } //
+            if (conString == null) return;
+        }
+        
+
+        // Encontra o texto após a última / (nome do ficheiro Excel) e cria a cópia a ser usada pelo resto do programa. Usado no constructor.
+        public string ExcelCopia(string origem)
+        {
+            try
+            {
+                string destino = Path.GetDirectoryName(origem) + "AssReg_Leituras_Copia.xlsx";
+                File.Copy(origem, destino, true);
+                return destino;
+            }
+            catch (IOException e) { System.Windows.Forms.MessageBox.Show(e.Message); return null; }
+            catch (UnauthorizedAccessException e) { System.Windows.Forms.MessageBox.Show(e.Message);return null; }
         }
 
         // Abre ligação e preenche DataSet com query ao ficheiro Excel. Fecha ligação no final.
@@ -28,11 +42,13 @@ namespace ASSREG_Faturacao_ExcelStandalone
                 Ligacao.Open();
                 // Conta linhas preenchidas
                 OleDb.OleDbCommand cmd = new OleDb.OleDbCommand("SELECT Count(*) FROM [" + folha + "$]", Ligacao);
-                linhasTotal = (int)cmd.ExecuteScalar() - 5;
+                int linhasTotal = (int)cmd.ExecuteScalar() - 5;
 
                 // Datasets a preencher e query
                 DataSet DtSet = new DataSet();
                 string query = "SELECT F3,F4,F5,F6,F7,F9,F11,F12 FROM [" + folha + "$A6:Z]";
+
+                
 
                 // Inicialização do Adapter que faz de imediato a query ao Excel. Preenchimento e configuração do Dataset.
                 try
@@ -77,6 +93,7 @@ namespace ASSREG_Faturacao_ExcelStandalone
         ultLinha = ws.Cells.SpecialCells(XlCellType.xlCellTypeLastCell).Row;
         */
 
+        // Usado no Constructor.
         private string ConnectString(string path)
         {
             // Provider = OLEDB Provider para o ficheiro de Excel. Jet.OLEDB.4.0 para ficheiros .xls e ACE.OLEDB.12.0 para ficheiros .xlsx
