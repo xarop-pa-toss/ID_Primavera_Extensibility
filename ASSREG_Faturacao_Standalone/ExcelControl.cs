@@ -1,28 +1,38 @@
-﻿using System; using System.Collections.Generic; using System.Linq; using System.Text; using System.Threading.Tasks; using System.IO;
+﻿using System; using System.Collections.Generic; using System.Linq; using System.Text; using System.Threading.Tasks; using System.IO; using System.Data;
 using OleDb = System.Data.OleDb; using DataSet = System.Data.DataSet; using DataTable = System.Data.DataTable;
 
-//using Microsoft.Office.Interop.Excel; using _Excel = Microsoft.Office.Interop.Excel; using System.Runtime.InteropServices;
+using _Excel = Microsoft.Office.Interop.Excel; using System.Runtime.InteropServices;
 
 namespace ASSREG_Faturacao_ExcelStandalone
 {
     public class ExcelControl
     {
-        string conString;
-        //_Application ExcelApp;
-        //Workbook wb;
-        //Worksheet ws;
-        public ExcelControl(string path)
+        internal string FicheiroCopiado { get; }
+        public DataSet DtSet { get; }
+        public string conString { get; set; }
+
+
+        public ExcelControl(string origem)
         {
-            // Cria connect string para uma cópia do ficheiro original. Abre ligação entre Primavera e Excel por OLEDB. Devolve erro e termina se ficheiro não for valido.
-            path = ExcelCopia(path);
-            if (path == null) return;
-            conString = ConnectString(path);
-            if (conString == null) return;
+            try
+            {
+                // Copía ficheiro original com ligação ao Excel por OLEDB (na cópia). Devolve erro e termina se ficheiro não for valido.
+                FicheiroCopiado = CopiarExcel(origem);
+                if (FicheiroCopiado == null) throw new ExcelControlException("Erro ao copiar ficheiro Excel.");
+
+                string conString = @"Provider=Microsoft.ACE.OLEDB.12.0;"
+                            + "Data Source='" + FicheiroCopiado + "'"
+                            + ";Extended Properties=\"Excel 12.0;HDR=NO;\"";
+
+                // Trata ficheiro e carrega para DataSet
+                RemoverCelulasUnidas(FicheiroCopiado);
+            }
+            catch (ExcelControlException e) { System.Windows.Forms.MessageBox.Show(e);}
+
         }
         
-
         // Encontra o texto após a última / (nome do ficheiro Excel) e cria a cópia a ser usada pelo resto do programa. Usado no constructor.
-        public string ExcelCopia(string origem)
+        private string CopiarExcel(string origem)
         {
             try
             {
@@ -30,12 +40,55 @@ namespace ASSREG_Faturacao_ExcelStandalone
                 File.Copy(origem, destino, true);
                 return destino;
             }
-            catch (IOException e) { System.Windows.Forms.MessageBox.Show(e.Message); return null; }
-            catch (UnauthorizedAccessException e) { System.Windows.Forms.MessageBox.Show(e.Message);return null; }
+            catch (IOException e) { throw new ExcelControlException("Não foi possível aceder ao ficheiro. \nSerá que está aberto no Excel?"); }
+            catch (UnauthorizedAccessException) { throw new ExcelControlException("Este utilizador não tem permissões para aceder ao ficheiro Excel. "); }
+        }
+
+        // Corre todas as células de todas as folhas do Workbook. Se encontrar células unidas (merged) remove a união e preenche o espaço com o valor original da célula unída.
+        internal void RemoverCelulasUnidas (string path)
+        {
+            _Excel.Application App = new _Excel.Application();
+            _Excel.Workbook wb = App.Workbooks.Open(path, 0, false, 5, "", "", true, _Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
+
+            // Corre apenas folhas com "Cantão" no nome para reduzir impacto na performance.
+            // https://stackoverflow.com/questions/60493386/unmerging-excel-rows-and-duplicate-data-c-sharp
+            foreach (_Excel.Worksheet folha in App.Worksheets)
+            {
+                if (folha.Name.Substring(0, 6) == "Cantão")
+                {
+                    _Excel.Worksheet ws = App.Worksheets[folha.Index];
+                    int ultLinha = ws.Cells.SpecialCells(_Excel.XlCellType.xlCellTypeLastCell).Row;
+
+                    foreach (_Excel.Range cell in ws.UsedRange)
+                    {
+                        if (cell.MergeCells)
+                        {
+                            _Excel.Range cellUnidas = cell.MergeArea;
+                            cell.MergeCells = false;
+                            cellUnidas.Value = cell.Value;
+                        }
+                    }
+                }
+            }
+
+            // É necessário terminar correctamente os processos do Interop para que a folha de Excel não fique pendurada em memória
+            wb.Close(true, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
+            App.Quit();
+            try
+            {
+                Marshal.ReleaseComObject(App);
+                App = null;
+            }
+            catch
+            {
+                throw new ExcelControlException("Não foi possivel terminar a instância de Excel. Por favor termine o Microsoft Excel no Gestor de Tarefas.");
+                App = null;
+            }
+            finally { GC.Collect(); }
         }
 
         // Abre ligação e preenche DataSet com query ao ficheiro Excel. Fecha ligação no final.
-        public DataSet CarregarSheet(string folha)
+        internal DataSet CarregarDataSet(string folha, string conString)
         {
             using (OleDb.OleDbConnection Ligacao = new OleDb.OleDbConnection(conString))
             {
@@ -47,8 +100,6 @@ namespace ASSREG_Faturacao_ExcelStandalone
                 // Datasets a preencher e query
                 DataSet DtSet = new DataSet();
                 string query = "SELECT F3,F4,F5,F6,F7,F9,F11,F12 FROM [" + folha + "$A6:Z]";
-
-                
 
                 // Inicialização do Adapter que faz de imediato a query ao Excel. Preenchimento e configuração do Dataset.
                 try
@@ -68,13 +119,31 @@ namespace ASSREG_Faturacao_ExcelStandalone
                     DtTable.Columns[6].ColumnName = "Data 1";
                     DtTable.Columns[7].ColumnName = "Leitura 1";
 
-                    // Primeira coluna com numeração das linhas
+                    // Validação das linhas de acordo com os seguintes critérios:
+                    // Ligado == S
+                    // Contador 1 - 1 Benef.
+                    // Contador != null
+                    for (int lin = 0; lin < DtTable.Rows.Count; lin++)
+	                {
+                        string contador = DtTable.Rows[lin].Field<string>("Nº Contador");
+                        if ( contador == null ) { DtTable.Rows[lin].Delete(); continue; }
+                        
+                        string benef = DtTable.Rows[lin].Field<string>("Benef.");
+                        bool x;
+
+                        while ()
+                        {
+
+                        }
+
+	                }
+
+                    // Nova primeira coluna com numeração das linhas
                     DtTable.Columns.Add("#", typeof(int)).SetOrdinal(0);
                     for (int i = 0; i < DtTable.Rows.Count; i++) { DtTable.Rows[i][0] = i + 1; }
 
-
                     Ligacao.Close();
-                    return DtSet;                    
+                    return DtSet;
                 }
                 catch (Exception e)
                 {
@@ -82,86 +151,19 @@ namespace ASSREG_Faturacao_ExcelStandalone
                     //PSO.MensagensDialogos.MostraErro("Não foi possível estabelecer ligação! Erro: " + e); return DtTable;
                 }
             }
-        }//
-
-        /* 
-         **** IMPLEMENTAÇÃO COM INTEROP ****
-        ExcelApp = new _Excel.Application();
-        this.path = path;
-        this.wb = ExcelApp.Workbooks.Open(path, 0, false, 5, "", "", true, _Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
-        this.ws = ExcelApp.Worksheets[sheet];
-        ultLinha = ws.Cells.SpecialCells(XlCellType.xlCellTypeLastCell).Row;
-        */
-
-        // Usado no Constructor.
-        private string ConnectString(string path)
-        {
-            // Provider = OLEDB Provider para o ficheiro de Excel. Jet.OLEDB.4.0 para ficheiros .xls e ACE.OLEDB.12.0 para ficheiros .xlsx
-            // Data Source = caminho do ficheiro no sistema
-            // Extended Properties = versão da driver do Excel e HDR=Sim/Nao se a primeira linha conter os cabeçalhos (tornar-se-ão nomes das colunas no DataSet)
-            //if (path.Substring(-4, 4) == "*.xls")
-            //{
-               //return          @"Provider=Microsoft.Jet.OLEDB.4.0;"
-               //                + "Data Source = '" + path + "'"
-               //                + ";Extended Properties=\"Excel 8.0;HDR=NO;\"";
-            //}
-            //if (path.Substring(-5, 5) == "*.xlsx")
-            //{
-                return conString = @"Provider=Microsoft.ACE.OLEDB.12.0;"
-                                + "Data Source='" + path + "'"
-                                + ";Extended Properties=\"Excel 12.0;HDR=NO;\"";
-            //}
-            //System.Windows.Forms.MessageBox.Show("Ficheiro não válido. Deve ser ficheiro Excel (.xls ou .xlsx.)"); return null;
-            //PSO.MensagensDialogos.MostraErro("Ficheiro não válido. Deve ser ficheiro Excel (.xls ou .xlsx.)"); return null;
         }
-
-
-        /* **** IMPLEMENTAÇÃO COM INTEROP ****
-         * 
-         * 
-         * public void AbrirExcel()
-        {
-            DataSet DtSet = new DataSet();
-            OleDb.OleDbDataAdapter Comando;
-        }
-        public string LerCelula(int linha, int col)
-        {
-            linha++; col++;
-            string conteudo = ws.Cells[linha, col].Value2 != null ? ws.Cells[linha, col].Value2 : "";
-            return conteudo.ToString();
-        }
-
-
-        public void EscreverCelula(int linha, int col, string valor)
-        {
-            linha++; col++;
-            ws.Cells[linha, col].Value2 = valor.ToString();
-        }
-
-        public int UltLinha() { return ultLinha; }
 
         
-        // Termina os processos COM do Excel com segurança e activa o Garbage Collector para prevenir má gestão da RAM.
-        // Deve ser chamado sempre que um Workbook deixe de ser necessário. Grava antes de fechar.
-        public void Terminar(object obj)
+        [Serializable]
+        public class ExcelControlException : Exception
         {
-            object semValor = System.Reflection.Missing.Value;
-
-            if (obj.GetType() == wb.GetType()) { wb.Close(true, semValor, semValor); }
-            else if (obj.GetType() == ExcelApp.GetType()) { ExcelApp.Quit(); }
-
-            try
-            {
-                Marshal.ReleaseComObject(obj);
-                obj = null;
-            }
-            catch (Exception e)
-            {
-                PSO.MensagensDialogos.MostraErro("Não foi possivel terminar o objecto: " + e.ToString());
-                obj = null;
-            }
-            finally { GC.Collect(); }
-        } */
+            public ExcelControlException() { }
+            public ExcelControlException(string message) : base(message) { }
+            public ExcelControlException(string message, Exception inner) : base(message, inner) { }
+            protected ExcelControlException(
+              System.Runtime.Serialization.SerializationInfo info,
+              System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+        }
     }
 }
 

@@ -13,8 +13,8 @@ namespace ASSREG_Faturacao_Standalone
         private void Form_Tabela_Load(object sender, EventArgs e)
         {
             ExcelControl Excel = new ExcelControl(@"C:/Users/VM/source/repos/ID_Primavera_Extensibility/ASSREG-Faturacao/Leitura de contadores Silves1.xlsx");
-            DataSet DataSource = Excel.CarregarSheet("Cantão 2"); // Folhas Excel começam com index 0
-            
+            DataSet DataSource = Excel.CarregarFolha("Cantão 2", conString);
+
             DtGrid_unfiltered.AutoGenerateColumns = true;
             DtGrid_unfiltered.AutoSize = true;
             DtGrid_unfiltered.ScrollBars = ScrollBars.Both;
