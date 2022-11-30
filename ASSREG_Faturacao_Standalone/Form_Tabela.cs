@@ -12,8 +12,8 @@ namespace ASSREG_Faturacao_Standalone
 
         private void Form_Tabela_Load(object sender, EventArgs e)
         {
-            ExcelControl Excel = new ExcelControl(@"C:/Users/VM/source/repos/ID_Primavera_Extensibility/ASSREG-Faturacao/Leitura de contadores Silves1.xlsx");
-            DataSet DataSource = Excel.CarregarDataSet("Cantão 2", Excel.conString);
+            ExcelControl Excel = new ExcelControl(@"C:/Users/VM/source/repos/ID_Primavera_Extensibility/ASSREG-Faturacao/Mapa de contadores.xlsx");
+            DataSet DataSource = Excel.CarregarDataSet("CANTAO 1", Excel.conString);
 
             DtGrid_unfiltered.AutoGenerateColumns = true;
             DtGrid_unfiltered.AutoSize = true;

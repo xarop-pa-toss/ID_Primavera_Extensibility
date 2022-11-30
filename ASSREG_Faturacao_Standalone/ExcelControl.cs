@@ -1,7 +1,11 @@
-﻿using System; using System.Collections.Generic; using System.Linq; using System.Text; using System.Threading.Tasks; using System.IO; using System.Data;
-using OleDb = System.Data.OleDb; using DataSet = System.Data.DataSet; using DataTable = System.Data.DataTable;
-
-using _Excel = Microsoft.Office.Interop.Excel; using System.Runtime.InteropServices;
+﻿using System;
+using System.Data;
+using System.IO;
+using System.Runtime.InteropServices;
+using _Excel = Microsoft.Office.Interop.Excel;
+using DataSet = System.Data.DataSet;
+using DataTable = System.Data.DataTable;
+using OleDb = System.Data.OleDb;
 
 namespace ASSREG_Faturacao_ExcelStandalone
 {
@@ -32,13 +36,13 @@ namespace ASSREG_Faturacao_ExcelStandalone
                 System.Windows.Forms.MessageBox.Show(e.ToString());
             }
         }
-        
+
         // Encontra o texto após a última / (nome do ficheiro Excel) e cria a cópia a ser usada pelo resto do programa. Usado no constructor.
         private string CopiarExcel(string origem)
         {
             try
             {
-                string destino = Path.GetDirectoryName(origem) + "AssReg_Leituras_Copia.xlsx";
+                string destino = Path.GetDirectoryName(origem) + "\\\\copia.xlsx";
                 File.Copy(origem, destino, true);
                 return destino;
             }
@@ -47,7 +51,7 @@ namespace ASSREG_Faturacao_ExcelStandalone
         }
 
         // Corre todas as células de todas as folhas do Workbook. Se encontrar células unidas (merged) remove a união e preenche o espaço com o valor original da célula unída.
-        internal void RemoverCelulasUnidas (string path)
+        internal void RemoverCelulasUnidas(string path)
         {
             _Excel.Application App = new _Excel.Application();
             _Excel.Workbook wb = App.Workbooks.Open(path, 0, false, 5, "", "", true, _Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
@@ -56,7 +60,7 @@ namespace ASSREG_Faturacao_ExcelStandalone
             // https://stackoverflow.com/questions/60493386/unmerging-excel-rows-and-duplicate-data-c-sharp
             foreach (_Excel.Worksheet folha in App.Worksheets)
             {
-                if (folha.Name.Substring(0, 6) == "Cantão")
+                if (folha.Name.Substring(0, 6) == "CANTAO")
                 {
                     _Excel.Worksheet ws = App.Worksheets[folha.Index];
                     int ultLinha = ws.Cells.SpecialCells(_Excel.XlCellType.xlCellTypeLastCell).Row;
@@ -101,7 +105,7 @@ namespace ASSREG_Faturacao_ExcelStandalone
 
                 // Datasets a preencher e query
                 DataSet DtSet = new DataSet();
-                string query = "SELECT F3,F4,F5,F6,F7,F9,F12,F13 FROM [" + folha + "$A6:Z]";
+                string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + folha + "$A6:Z]";
 
                 // Inicialização do Adapter que faz de imediato a query ao Excel. Preenchimento e configuração do Dataset.
                 try
@@ -109,56 +113,64 @@ namespace ASSREG_Faturacao_ExcelStandalone
                     OleDb.OleDbDataAdapter Adapter = new OleDb.OleDbDataAdapter(query, Ligacao);
                     Adapter.Fill(DtSet, "Tabela0");
                     Adapter.Dispose();
+                    Ligacao.Close();
 
                     DataTable DtTable = DtSet.Tables[0];
-                    // Cabeçalhos das colunas e remoção de linhas não usadas (1 a 4)
+                    // Cabeçalhos das colunas
                     DtTable.Columns[0].ColumnName = "Prédio";
-                    DtTable.Columns[1].ColumnName = "Nº Contador";
-                    DtTable.Columns[2].ColumnName = "Benef.";
-                    DtTable.Columns[3].ColumnName = "Nome";
-                    DtTable.Columns[4].ColumnName = "Última Leitura";
-                    DtTable.Columns[5].ColumnName = "Ligado";
-                    DtTable.Columns[6].ColumnName = "Data 1";
-                    DtTable.Columns[7].ColumnName = "Leitura 1";
+                    DtTable.Columns[1].ColumnName = "Área";
+                    DtTable.Columns[2].ColumnName = "Cultura";
+                    DtTable.Columns[3].ColumnName = "Processar";
+                    DtTable.Columns[4].ColumnName = "Contador Ligado";
+                    DtTable.Columns[5].ColumnName = "TRH";
+                    DtTable.Columns[6].ColumnName = "Tx Penalizadora";
+                    DtTable.Columns[7].ColumnName = "Nº Contador";
+                    DtTable.Columns[8].ColumnName = "Benef";
+                    DtTable.Columns[9].ColumnName = "Nome";
+                    DtTable.Columns[10].ColumnName = "Última Leitura";
+                    DtTable.Columns[11].ColumnName = "Data 1";
+                    DtTable.Columns[12].ColumnName = "Leitura 1";
+                    DtTable.Columns[13].ColumnName = "Data 2";
+                    DtTable.Columns[14].ColumnName = "Leitura 2";
+
 
                     // *** Validação das linhas de acordo com critérios ***
-                    // DataTable.Delete() não apaga no momento mas marca para ser apagada. Só quando se chama DataTable.AcceptChanges() é que todas as linhas marcadas são removidas. ***
+                    // DataTable.Delete() não apaga linha no momento mas marca para ser apagada. Só quando se chama DataTable.AcceptChanges() é que todas as linhas marcadas são removidas. ***
                     DtTable.AcceptChanges(); // Deixa a DataTable num estado estável para poder ser manipulada sem erros.
 
+                    string processar, predio, contador, benef;
+
                     for (int lin = 0; lin < DtTable.Rows.Count; lin++)
-	                {
+                    {
                         // Contador != null
-                        double? contador = DtTable.Rows[lin].Field<double?>("Nº Contador");
+                        contador = DtTable.Rows[lin].Field<string>("Nº Contador");
                         if (contador == null) { DtTable.Rows[lin].Delete(); continue; }
 
-                        // Ligado == S
-                        string ligado = DtTable.Rows[lin].Field<string>("Ligado");
-                        if (ligado == "N") { DtTable.Rows[lin].Delete(); continue; }
-                        if (ligado != "S") { throw new ExcelControlException("Valor da coluna 'Ligado' na linha " + (lin - 5).ToString() + " do Excel não é valido."); }
+                        // Processar = S
+                        processar = DtTable.Rows[lin].Field<string>("Processar");
+                        if (processar == "N") { DtTable.Rows[lin].Delete(); continue; }
+                        if (processar != "S") { throw new ExcelControlException("Valor da coluna 'Processar' na linha " + (lin - 5).ToString() + " do Excel não é valido."); return DtSet; }
 
-                        
-                        double? benef = DtTable.Rows[lin].Field<double?>("Benef.");
-                        string predio = DtTable.Rows[lin].Field<string>("Prédio");
+                        benef = DtTable.Rows[lin].Field<string>("Benef");
+                        predio = DtTable.Rows[lin].Field<string>("Prédio");
 
+                        /*
                         int x = 0;
                         while (x == x)
                         {
-                            // Contador 1 - 1 Benef.
+                        // Contador 1 - 1 Benef.
                             if (DtTable.Rows[lin + x + 1].Field<double?>("Nº Contador") == contador && DtTable.Rows[lin + x + 1].Field<double?>("Benef.") != benef)
                             { 
                                 DtTable.Rows[lin + x + 1].Delete(); 
                                 x += 1; }
-                            // Contador 1 - ∞ Prédio
-                            else if (DtTable.Rows[lin + x + 1].Field<double?>("Nº Contador") == contador && DtTable.Rows[lin + x + 1].Field<string>("Prédio") != predio)
+                        // Contador 1 - ∞ Prédio
+                            if (DtTable.Rows[lin + x + 1].Field<double?>("Nº Contador") == contador && DtTable.Rows[lin + x + 1].Field<string>("Prédio") != predio)
                             { 
                                 DtTable.Rows[lin][0] = DtTable.Rows[lin][0] + "," + DtTable.Rows[lin + x + 1].Field<string>("Prédio"); 
                                 DtTable.Rows[lin + x + 1].Delete();
                                 x += 1; }
                             else { lin += x;  break; }
-                        }
-                        //LINQ
-                        //TabelaSemContadores.AsEnumerable().Where(x => x["Nº Contador"] == null) ;
-                        //TabelaBenefs.AsEnumerable().GroupBy(x => x["Nº Contador"]).Where(x => x.Count() > 1);
+                        } */
                     }
                     DtTable.AcceptChanges();
 
@@ -169,8 +181,8 @@ namespace ASSREG_Faturacao_ExcelStandalone
                     Ligacao.Close();
                     return DtSet;
                 }
-                catch (IOException e) { System.Windows.Forms.MessageBox.Show("Não foi possível estabelecer ligação! Erro: " + e); Ligacao.Close();  return DtSet; }
-                catch (Exception e) { System.Windows.Forms.MessageBox.Show("Excepção não tratada: "+ e); Ligacao.Close(); return DtSet; }
+                catch (IOException e) { System.Windows.Forms.MessageBox.Show("Não foi possível estabelecer ligação ao ficheiro! \n\n " + e); return DtSet; }
+                catch (Exception e) { System.Windows.Forms.MessageBox.Show("Excepção não tratada! \n\n " + e); return DtSet; }
             }
         }
 
