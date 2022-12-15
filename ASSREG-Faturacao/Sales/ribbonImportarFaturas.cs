@@ -27,14 +27,13 @@ namespace Primavera.CustomRibbon
             // Create a new TAB.
             PSO.Ribbon.CriaRibbonTab("Ferramentas", cIDTAB, 15);
             // Create a new Group.
-            PSO.Ribbon.CriaRibbonGroup(cIDTAB, "Importar", cIDGROUP);
+            PSO.Ribbon.CriaRibbonGroup(cIDTAB, "Importar Faturas", cIDGROUP);
             // Create a new 32x32 Button.
-            PSO.Ribbon.CriaRibbonButton(cIDTAB, cIDGROUP, cIDBUTTON1, "Faturas em Lote", true, null);
+            PSO.Ribbon.CriaRibbonButton(cIDTAB, cIDGROUP, cIDBUTTON1, "Faturas TE", true, null);
+            PSO.Ribbon.CriaRibbonButton(cIDTAB, cIDGROUP, cIDBUTTON2, "Importar de Excel", true, null);
         }
         ///
         /// Ribbon events.
-        ///
-        ///
         ///
         private void RibbonEvents_Executa(string Id, string Comando)
         {
@@ -47,6 +46,13 @@ namespace Primavera.CustomRibbon
                         {
                             new janelaImportarFatura();
                             (result.Result as janelaImportarFatura).ShowDialog();
+                        }
+                        break;
+                    case cIDBUTTON2:
+                        using (var result = BSO.Extensibility.CreateCustomFormInstance(typeof(ASRLB_ImportacaoFatura.Sales.janelaFaturasExploracao)))
+                        {
+                            new ASRLB_ImportacaoFatura.Sales.janelaFaturasExploracao();
+                            (result.Result as ASRLB_ImportacaoFatura.Sales.janelaFaturasExploracao).ShowDialog();
                         }
                         break;
                 }

@@ -83,7 +83,7 @@ namespace ASRLB_ImportacaoFatura
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(10, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 13);
+            this.label1.Size = new System.Drawing.Size(54, 15);
             this.label1.TabIndex = 3;
             this.label1.Text = "Ficheiro:";
             // 
@@ -99,7 +99,7 @@ namespace ASRLB_ImportacaoFatura
             // 
             this.btnEscolherFicheiro.Location = new System.Drawing.Point(416, 12);
             this.btnEscolherFicheiro.Name = "btnEscolherFicheiro";
-            this.btnEscolherFicheiro.Size = new System.Drawing.Size(97, 22);
+            this.btnEscolherFicheiro.Size = new System.Drawing.Size(97, 50);
             this.btnEscolherFicheiro.TabIndex = 5;
             this.btnEscolherFicheiro.Text = "Escolher Ficheiro";
             this.btnEscolherFicheiro.UseVisualStyleBackColor = true;
@@ -130,7 +130,7 @@ namespace ASRLB_ImportacaoFatura
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(23, 43);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(33, 13);
+            this.label2.Size = new System.Drawing.Size(36, 15);
             this.label2.TabIndex = 11;
             this.label2.Text = "Data:";
             // 
@@ -139,7 +139,7 @@ namespace ASRLB_ImportacaoFatura
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(292, 43);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(37, 13);
+            this.label3.Size = new System.Drawing.Size(41, 15);
             this.label3.TabIndex = 12;
             this.label3.Text = "Artigo:";
             // 
@@ -161,7 +161,7 @@ namespace ASRLB_ImportacaoFatura
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(176, 43);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(30, 13);
+            this.label4.Size = new System.Drawing.Size(32, 15);
             this.label4.TabIndex = 14;
             this.label4.Text = "Doc:";
             // 
@@ -197,9 +197,11 @@ namespace ASRLB_ImportacaoFatura
             this.Name = "janelaImportarFatura";
             this.Size = new System.Drawing.Size(528, 381);
             this.Text = "Faturas em Lote";
+            this.Load += new System.EventHandler(this.janelaImportarFatura_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

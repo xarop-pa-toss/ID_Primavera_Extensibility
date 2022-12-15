@@ -1,6 +1,6 @@
-﻿using Primavera.Extensibility.CustomForm;
-using StdBE100; 
-using BasBE100;using IBasBS100;
+﻿using BasBE100;
+using Primavera.Extensibility.CustomForm;
+using StdBE100;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,7 +33,6 @@ namespace ASRLB_ImportacaoFatura
         string[] linha;
         string ficheiro = null;
         int countFaturas = 0;
-
 
         //OK
         internal void btnIniciar_Click(object sender, EventArgs e)
@@ -312,6 +311,11 @@ namespace ASRLB_ImportacaoFatura
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void janelaImportarFatura_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

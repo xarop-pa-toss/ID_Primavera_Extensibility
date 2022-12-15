@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\ASSREG_Faturacao_Standalone"
+    "\\ASSREG-Faturacao",
+    "\\ASSREG-Faturacao\\Sales"
   ],
-  "SelectedNode": "\\ASSREG_Faturacao_Standalone\\ASSREG_Faturacao_Standalone.csproj",
+  "SelectedNode": "\\ASSREG-Faturacao\\Sales\\formFaturasExploracao.cs",
   "PreviewInSolutionExplorer": false
 }
