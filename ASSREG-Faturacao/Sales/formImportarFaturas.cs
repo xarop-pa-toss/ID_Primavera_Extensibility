@@ -282,9 +282,9 @@ namespace ASRLB_ImportacaoFatura
 
 
 
-        public bool interromperComErro(string error = "")
+        public bool interromperComErro(string error = null)
         {
-            if (error == "")
+            if (error is null)
             { error = "Erro inesperado não definido."; }
             listBox.Items.Add(error); PSO.Dialogos.MostraErro(error);
             File.Delete(ficheiro);
