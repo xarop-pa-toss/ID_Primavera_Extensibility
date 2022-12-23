@@ -23,7 +23,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         private int _ano, _consumoTotal, _ultimaLeitura, _leitura1, _leitura2, _leitura3;
         private int _escalao1, _escalao2;
         private decimal  _taxa1, _taxa2, _taxa3;
-        private double _consumo1, _consumo2, _consumo3, _hectares;
+        private double _consumo1, _consumo2, _consumo3;
 
         public CalcRegantes(Dictionary<string, string> linhaDict)
         {
@@ -31,7 +31,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             _dataFull = linhaDict["Data1"];
             _leitura1 = Convert.ToInt32(linhaDict["Leitura1"]);
             _leitura2 = Convert.ToInt32(linhaDict["Leitura2"]);
-            _leitura3 = Convert.ToInt32(linhaDict["Leitura3"]);
+            //_leitura3 = Convert.ToInt32(linhaDict["Leitura3"]);
             _ultimaLeitura = Convert.ToInt32(linhaDict["UltimaLeitura"]);
 
             //int
@@ -72,19 +72,19 @@ namespace ASRLB_ImportacaoFatura.Sales
                 linhaDict["TotalLeituras"] = "1";
                 return _leitura1 - _ultimaLeitura; }
 
-            if (linhaDict["Leitura3"] == null) 
+            //if (linhaDict["Leitura3"] == null) 
+            //{ 
+            //    linhaDict["DataLeituraFinal"] = linhaDict["Data2"];
+            //    linhaDict["LeituraFinal"] = linhaDict["Leitura2"];
+            //    linhaDict["TotalLeituras"] = "2";
+            //    return _leitura2 - _ultimaLeitura; 
+            //} 
+            else 
             { 
                 linhaDict["DataLeituraFinal"] = linhaDict["Data2"];
                 linhaDict["LeituraFinal"] = linhaDict["Leitura2"];
                 linhaDict["TotalLeituras"] = "2";
-                return _leitura2 - _ultimaLeitura; 
-            } 
-            else 
-            { 
-                linhaDict["DataLeituraFinal"] = linhaDict["Data3"];
-                linhaDict["LeituraFinal"] = linhaDict["Leitura3"];
-                linhaDict["TotalLeituras"] = "3";
-                return _leitura3 - _ultimaLeitura; }
+                return _leitura2 - _ultimaLeitura; }
             }
 
         private void ConsumosRegantes()

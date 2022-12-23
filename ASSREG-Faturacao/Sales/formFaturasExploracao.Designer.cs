@@ -38,18 +38,23 @@ namespace ASRLB_ImportacaoFatura.Sales
             // DtGridExploracao
             // 
             this.DtGridExploracao.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DtGridExploracao.Location = new System.Drawing.Point(17, 16);
+            this.DtGridExploracao.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.DtGridExploracao.Location = new System.Drawing.Point(23, 20);
+            this.DtGridExploracao.Margin = new System.Windows.Forms.Padding(4);
+            this.DtGridExploracao.MaximumSize = new System.Drawing.Size(1726, 599);
+            this.DtGridExploracao.MinimumSize = new System.Drawing.Size(1726, 599);
             this.DtGridExploracao.Name = "DtGridExploracao";
+            this.DtGridExploracao.ReadOnly = true;
             this.DtGridExploracao.RowHeadersWidth = 51;
-            this.DtGridExploracao.Size = new System.Drawing.Size(834, 602);
+            this.DtGridExploracao.Size = new System.Drawing.Size(1726, 599);
             this.DtGridExploracao.TabIndex = 0;
             // 
             // btnConfirmar
             // 
-            this.btnConfirmar.Location = new System.Drawing.Point(1190, 632);
-            this.btnConfirmar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnConfirmar.Location = new System.Drawing.Point(1660, 779);
+            this.btnConfirmar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnConfirmar.Name = "btnConfirmar";
-            this.btnConfirmar.Size = new System.Drawing.Size(67, 23);
+            this.btnConfirmar.Size = new System.Drawing.Size(89, 28);
             this.btnConfirmar.TabIndex = 1;
             this.btnConfirmar.Text = "Confirmar";
             this.btnConfirmar.UseVisualStyleBackColor = true;
@@ -57,25 +62,32 @@ namespace ASRLB_ImportacaoFatura.Sales
             // 
             // listBox
             // 
+            this.listBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox.FormattingEnabled = true;
-            this.listBox.Location = new System.Drawing.Point(860, 16);
+            this.listBox.ItemHeight = 16;
+            this.listBox.Location = new System.Drawing.Point(23, 627);
+            this.listBox.Margin = new System.Windows.Forms.Padding(4);
+            this.listBox.MaximumSize = new System.Drawing.Size(1726, 148);
+            this.listBox.MinimumSize = new System.Drawing.Size(1726, 148);
             this.listBox.Name = "listBox";
-            this.listBox.Size = new System.Drawing.Size(397, 602);
+            this.listBox.Size = new System.Drawing.Size(1726, 148);
             this.listBox.TabIndex = 2;
             // 
             // janelaFaturasExploracao
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.listBox);
             this.Controls.Add(this.btnConfirmar);
             this.Controls.Add(this.DtGridExploracao);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "janelaFaturasExploracao";
-            this.Size = new System.Drawing.Size(1280, 684);
+            this.Size = new System.Drawing.Size(1769, 817);
             this.Text = "janelaFaturasExploracao";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.janelaFaturasExploracao_FormClosing);
             this.Load += new System.EventHandler(this.formFaturasExploracao_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DtGridExploracao)).EndInit();
             this.ResumeLayout(false);

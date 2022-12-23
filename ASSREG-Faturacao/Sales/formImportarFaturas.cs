@@ -229,7 +229,6 @@ namespace ASRLB_ImportacaoFatura
                         }
                         if (i != linhasFicheiroTotal - 1)
                         {
-                            //listBox.Items.Add(String.Format("É CABEC --> Cliente: {0}; CondPag: {1}", linha[0], linha[1]));
                             docVenda = new VndBE100.VndBEDocumentoVenda();
                             docVenda.Entidade = linha[0];
                             docVenda.TipoEntidade = "C";

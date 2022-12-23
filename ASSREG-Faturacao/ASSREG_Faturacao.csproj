@@ -131,7 +131,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Sales\FaturarExploração.cs" />
     <Compile Include="Sales\formFaturasExploracao.cs">
       <SubType>UserControl</SubType>
     </Compile>
