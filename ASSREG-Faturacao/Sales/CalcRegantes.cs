@@ -28,6 +28,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
             // Referência ao public Dictionary da janelaFaturasExploraçao. Necessário para alterar directamente esse elemento.
             var linhaDict = janelaFaturasExploracao.linhaDict;
+            EditorVendas edVendas = new EditorVendas();
 
             _cultura = linhaDict["Cultura"];
             _dataFull = linhaDict["Data1"];
@@ -43,7 +44,6 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             //Define _consumo1, _consumo2, _consumo3
             ConsumosRegantes();
-            PSO.MensagensDialogos.MostraAviso("pois não sei");
             //Define _taxa1, _taxa2, _taxa3 a serem aplicadas a cada consumo. _taxa1 é a mais baixa da tabela se _ano = 2022;
             TaxasPenalizadoras();
 
