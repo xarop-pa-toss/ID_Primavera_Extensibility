@@ -100,7 +100,7 @@ namespace ASRLB_ImportacaoFatura
 
                 // Datasets a preencher e query
                 DataSet DtSet = new DataSet();
-                string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18,F19,F20 FROM [" + folha + "$A6:Z]";
+                string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + folha + "$A6:Z]";
 
                 // Inicialização do Adapter que faz de imediato a query ao Excel. Preenchimento e configuração do Dataset.
                 try
@@ -109,7 +109,6 @@ namespace ASRLB_ImportacaoFatura
                     Adapter.Fill(DtSet, "Tabela0");
                     Adapter.Dispose();
                     Ligacao.Close();
-
 
                     DataTable DtTable = DtSet.Tables[0];
                     // Cabeçalhos das colunas
@@ -128,10 +127,8 @@ namespace ASRLB_ImportacaoFatura
                     DtTable.Columns[12].ColumnName = "Leitura 1";
                     DtTable.Columns[13].ColumnName = "Data 2";
                     DtTable.Columns[14].ColumnName = "Leitura 2";
-                    DtTable.Columns[15].ColumnName = "Data 3";
-                    DtTable.Columns[16].ColumnName = "Leitura 3";
 
-                    DtTable.DefaultView.Sort = "Benef";
+                    //DtTable.DefaultView.Sort = "Benef";
 
 
                     // *** Validação das linhas de acordo com critérios ***
@@ -151,7 +148,7 @@ namespace ASRLB_ImportacaoFatura
                         if (processar == "N") { DtTable.Rows[lin].Delete(); continue; }
                         if (processar != "S") { throw new ExcelControlException("Valor da coluna 'Processar' na linha " + (lin - 5).ToString() + " do Excel não é valido."); return DtSet; }
 
-                        benef = DtTable.Rows[lin].Field<string>("Benef");
+                        benef = DtTable.Rows[lin].Field<string>("Benef").PadLeft(5, '0');
                         predio = DtTable.Rows[lin].Field<string>("Prédio");
 
                         /*
