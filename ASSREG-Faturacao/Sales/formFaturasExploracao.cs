@@ -1,6 +1,6 @@
 ﻿using Primavera.Extensibility.BusinessEntities; using Primavera.Extensibility.CustomForm;
 using Primavera.Extensibility.Sales.Editors;
-using System; using System.Data; using System.Windows.Forms; using System.Collections.Concurrent;
+using System; using System.Data; using System.Windows.Forms; using System.Collections.Concurrent; using System.Threading;
 using BasBE100; using StdBE100; using VndBE100;
 using System.Collections.Generic; using System.IO; using System.Linq; using System.Text; using System.Threading.Tasks; 
 
@@ -101,8 +101,8 @@ namespace ASRLB_ImportacaoFatura.Sales
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
             VndBEDocumentoVenda DocVenda = new VndBEDocumentoVenda();
-            _novaFatura = true;
-            _counterLinha = 3;
+            //_novaFatura = true;
+            //_counterLinha = 3;
 
             for (int i = 0; i < DtSet.Tables[0].Rows.Count; i++)
             {
@@ -112,24 +112,32 @@ namespace ASRLB_ImportacaoFatura.Sales
                 // benefIgual é True se Benef na nova linha for igual ao da linha anterior (ainda no linhaDict)
                 // Se Benef for diferente, então é necessário emitir a fatura antes de começar uma nova.
                 bool benefIgual = DtRow.Field<string>("Benef").PadLeft(5, '0').Equals(linhaDict["Benef"]);
-                if (!benefIgual && i > 0) //exclui primeira linha 
-                {
-                    EmitirFatura(DocVenda);
-                    DocVenda = new VndBEDocumentoVenda();
-                    _novaFatura = true;
-                    _counterLinha = 3;
-                }
-
                 // Se contador for o mesmo que o anterior, então é um caso de 1 contador -> multiplos prédios. Neste caso a linha tem de ser completamente ignorada pois os valores são iguais ao da primeira.
                 // Contador é inicializado como "" por isso não vai bater igual na primeira linha.
                 bool contadorIgual = DtRow.Field<string>("Nº Contador").Equals(linhaDict["Contador"]);
-                if (contadorIgual) { continue; }
 
-                PrepararDict(DtRow); // Preenche dicionário com dados necessários.
-                
-                CalcRegantes(); // Efectua cálculos de valores e taxas associadas.
-                if (_novaFatura) { ProcessarCabecDoc(DocVenda); _novaFatura = false; }
-                ProcessarLinha(DocVenda);
+                PSO.MensagensDialogos.MostraErro("" + _counterLinha, StdPlatBS100.StdBSTipos.IconId.PRI_Exclama, "benefIgual: " + benefIgual + "\ncontadorIgual: " + contadorIgual + "\nlinha " + (i + 1));
+                if (contadorIgual && i > 0) { continue; } // Contador é igual ao da linha anterior em casos de desunião de linhas que têm 'Um contador -> Vários prédios/áreas'. Ignora-se estas linhas pois têm valores duplicados.
+
+                if (!benefIgual)
+                {
+                    if (i > 0) EmitirFatura(DocVenda); // Exclui primeira linha por ainda não existir nada
+                    DocVenda = new VndBEDocumentoVenda();
+                    _novaFatura = true;
+                    _counterLinha = 3;
+
+                    PrepararDict(DtRow); // Preenche dicionário com dados necessários.
+                    ProcessarCabecDoc(DocVenda);
+                    CalcRegantes(); // Efectua cálculos de valores e taxas associadas.
+                    //if (_novaFatura) { ; _novaFatura = false; }
+                    ProcessarLinha(DocVenda); // Preenche linhasDoc com descrições e leituras com seus valores calculados.
+                }
+                else if (benefIgual && !contadorIgual && i > 0) // Um benef -> Vários contadores. Vão todos os contadores para a mesma fatura
+                {
+                    PrepararDict(DtRow);
+                    CalcRegantes();
+                    ProcessarLinha(DocVenda);
+                }
 
                 if (i == DtSet.Tables[0].Rows.Count - 1) { EmitirFatura(DocVenda); } // Catch para a última linha do DataSet
             }
@@ -244,7 +252,10 @@ namespace ASRLB_ImportacaoFatura.Sales
                 _counterLinha++;
 
                 // Linha em branco para separar do próximo contador
-                BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: " "); break;
+                BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "-"); break;
+                _counterLinha++;
+
+                BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
             }
         }
         
@@ -265,10 +276,12 @@ namespace ASRLB_ImportacaoFatura.Sales
         private void EmitirFatura(VndBEDocumentoVenda DocVenda)
         {
             string strAvisos = "", strErro = "", serie = "";
-
+            
             BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
 
-            if (BSO.Vendas.Documentos.ValidaActualizacao(DocVenda, BSO.Vendas.TabVendas.Edita(DocVenda.Tipodoc), ref serie, ref strErro))
+            PSO.MensagensDialogos.MostraAviso("EmitirFatura _counterLinha: " + _counterLinha, StdPlatBS100.StdBSTipos.IconId.PRI_Exclama, "DocVenda: " + DocVenda.Tipodoc + "\nDocvenda.Tipodoc: " + DocVenda.Tipodoc + "\nSerie: " + serie + "\nstrErro: " + strErro);
+
+            if (BSO.Vendas.Documentos.ValidaActualizacao(DocVenda, BSO.Vendas.TabVendas.Edita(DocVenda.Tipodoc), ref serie, ref strErro))       
             {
                 try
                 {
