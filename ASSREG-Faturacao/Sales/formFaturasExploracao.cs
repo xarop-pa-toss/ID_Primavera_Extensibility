@@ -42,6 +42,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
             ExcelControl Excel = new ExcelControl(@"C:/Users/VM/source/repos/ID_Primavera_Extensibility/ASSREG-Faturacao/Mapa de contadores.xlsx");
             linhaDict = new Dictionary<string, string>();
+
             DtSet = Excel.CarregarDataSet("CANTAO 1", Excel.conString);
             //DtSet.Tables[0].DefaultView.Sort = "Benef ASC";
 
@@ -97,8 +98,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
             VndBEDocumentoVenda DocVenda = new VndBEDocumentoVenda();
-            //_novaFatura = true;
-            //_counterLinha = 3;
+            ResetVariaveis();
 
             for (int i = 0; i < DtSet.Tables[0].Rows.Count; i++)
             {
@@ -115,7 +115,11 @@ namespace ASRLB_ImportacaoFatura.Sales
 
                 if (!benefIgual)
                 {
-                    if (i > 0) EmitirFatura(DocVenda); // Exclui primeira linha por ainda não existir nada
+                    if (i > 0) // Exclui primeira linha por ainda não existir nada
+                        if (!EmitirFatura(DocVenda))
+                            ErroAoEmitir();
+
+
                     DocVenda = new VndBEDocumentoVenda();
                     _novaFatura = true;
                     _counterLinha = 1;
@@ -123,7 +127,6 @@ namespace ASRLB_ImportacaoFatura.Sales
                     PrepararDict(DtRow); // Preenche dicionário com dados necessários.
                     ProcessarCabecDoc(DocVenda);
                     CalcRegantes(); // Efectua cálculos de valores e taxas associadas.
-                    //if (_novaFatura) { ; _novaFatura = false; }
                     ProcessarLinha(DocVenda); // Preenche linhasDoc com descrições e leituras com seus valores calculados.
                 }
                 else if (benefIgual && !contadorIgual && i > 0) // Um benef -> Vários contadores. Vão todos os contadores para a mesma fatura
@@ -134,7 +137,9 @@ namespace ASRLB_ImportacaoFatura.Sales
                 }
 
                 BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
-                if (i == DtSet.Tables[0].Rows.Count - 1) { EmitirFatura(DocVenda); } // Catch para a última linha do DataSet
+                if (i == DtSet.Tables[0].Rows.Count - 1) // Catch para a última linha do DataSet
+                    if (!EmitirFatura(DocVenda))
+                        ErroAoEmitir();
             }
 
             // Se não ocorrerem erros durante EmitirFatura() que desfaçam transacção, terminará a transacção normalmente.
@@ -268,12 +273,13 @@ namespace ASRLB_ImportacaoFatura.Sales
             BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
 
             // Faturas com valor de 1,99€ ou menor não são emitidas
-            if ( DocVenda.TotalDocumento >= 2 && BSO.Vendas.Documentos.ValidaActualizacao(DocVenda, BSO.Vendas.TabVendas.Edita(DocVenda.Tipodoc), ref serie, ref strErro))
+            if (DocVenda.TotalDocumento >= 2 && BSO.Vendas.Documentos.ValidaActualizacao(DocVenda, BSO.Vendas.TabVendas.Edita(DocVenda.Tipodoc), ref serie, ref strErro))
             {
                 try
                 {
                     BSO.Vendas.Documentos.Actualiza(DocVenda, ref strAvisos, ref strErro);
                     listBox.Items.Add(String.Format("Contador {0} para Benef {1} processado com sucesso na Fatura {2}.", linhaDict["Contador"], DocVenda.Entidade, DocVenda.NumDoc));
+                    return true;
                 }
                 catch { return false; }
             } else { return false; }
@@ -352,28 +358,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             {
                 _consumo1 = _escalao1; _consumo2 = _consumoTotal - _escalao1; _consumo3 = 0;
             }
-            else
-            {
-                _consumo1 = _consumoTotal; _escalao2 = 0; _consumo3 = 0;
-            }
-
-            //double consumoCorrente;
-            //bool calcFinal= false;
-
-            //consumoCorrente = _escalao1 - _consumoTotal;
-            //if (consumoCorrente < 0) {
-            //    _consumo1 = _escalao1; 
-            //    consumoCorrente =- consumoCorrente; } 
-            //else { 
-            //    _consumo1 = consumoCorrente;
-            //    }
-
-            //if (consumoCorrente > 0) {
-            //    consumoCorrente = _escalao2 - consumoCorrente;
-            //    _consumo2 = _escalao2;
-            //    consumoCorrente =- consumoCorrente; }
-            //else {
-            //    _consumo2 = consumoCorrente; }
+            else { _consumo1 = _consumoTotal; _escalao2 = 0; _consumo3 = 0; }
         }
 
         private void CalcRegantes_TaxasPenalizadoras()
@@ -445,12 +430,19 @@ namespace ASRLB_ImportacaoFatura.Sales
             linhaDict = new Dictionary<string, string>();
             
             DtSet.Clear();
+            listBox.Items.Clear();
             _counterLinha = 1;
         }
 
         private void ErroAoEmitir()
         {
+            listBox.Items.Add("*** ERRO ***");
+            listBox.Items.Add(String.Format("Contador {0} para Benef {1} - {2} não foi processado correctamente.", linhaDict["Contador"], linhaDict["Benef"], linhaDict["Nome"]));
+            listBox.Items.Add(""); 
+            listBox.Items.Add("Por favor verificar os dados na folha de Excel relativos a este contador.");
+            listBox.Items.Add("ATENÇÃO: Nenhuma fatura foi emitida. Só serão emitidas faturas quando todas as linhas do ficheiro Excel forem válidas.");
 
+            if (BSO.EmTransaccao()) BSO.DesfazTransaccao();
         }
     }
 }
