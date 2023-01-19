@@ -55,21 +55,18 @@ namespace ASRLB_ImportacaoFatura
             // https://stackoverflow.com/questions/60493386/unmerging-excel-rows-and-duplicate-data-c-sharp
             foreach (_Excel.Worksheet folha in App.Worksheets)
             {
-                if (folha.Name.Substring(0, 6) == "CANTAO")
-                {
-                    _Excel.Worksheet ws = App.Worksheets[folha.Index];
-                    int ultLinha = ws.Cells.SpecialCells(_Excel.XlCellType.xlCellTypeLastCell).Row;
+                _Excel.Worksheet ws = App.Worksheets[folha.Index];
+                int ultLinha = ws.Cells.SpecialCells(_Excel.XlCellType.xlCellTypeLastCell).Row;
 
-                    foreach (_Excel.Range cell in ws.UsedRange)
+                foreach (_Excel.Range cell in ws.UsedRange)
+                {
+                    if (cell.MergeCells)
                     {
-                        if (cell.MergeCells)
-                        {
-                            _Excel.Range cellUnidas = cell.MergeArea;
-                            cell.MergeCells = false;
-                            cellUnidas.Value = cell.Value;
-                        }
+                        _Excel.Range cellUnidas = cell.MergeArea;
+                        cell.MergeCells = false;
+                        cellUnidas.Value = cell.Value;
                     }
-                }
+                }  
             }
 
             // É necessário terminar correctamente os processos do Interop para que a folha de Excel não fique pendurada em memória
@@ -89,18 +86,23 @@ namespace ASRLB_ImportacaoFatura
         }
 
         // Abre ligação e preenche DataSet com query ao ficheiro Excel. Fecha ligação no final.
-        public DataSet CarregarDataSet(string folha, string conString)
+        public DataSet CarregarDataSet(string conString)
         {
             using (OleDb.OleDbConnection Ligacao = new OleDb.OleDbConnection(conString))
             {
                 Ligacao.Open();
+
+                // Busca DataTable com nomes das folhas na única coluna
+                DataTable dtSheetName = Ligacao.GetOleDbSchemaTable(OleDb.OleDbSchemaGuid.Tables, null);
+                string sheet = dtSheetName.Rows[0]["Table_Name"].ToString();
+
                 // Conta linhas preenchidas
-                OleDb.OleDbCommand cmd = new OleDb.OleDbCommand("SELECT Count(*) FROM [" + folha + "$]", Ligacao);
+                OleDb.OleDbCommand cmd = new OleDb.OleDbCommand("SELECT Count(*) FROM [" + sheet + "]", Ligacao);
                 int linhasTotal = (int)cmd.ExecuteScalar() - 5;
 
                 // Datasets a preencher e query
                 DataSet DtSet = new DataSet();
-                string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + folha + "$A6:Z]";
+                string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + sheet + "A6:Z]";
 
                 // Inicialização do Adapter que faz de imediato a query ao Excel. Preenchimento e configuração do Dataset.
                 try
@@ -128,9 +130,6 @@ namespace ASRLB_ImportacaoFatura
                     DtTable.Columns[13].ColumnName = "Data 2";
                     DtTable.Columns[14].ColumnName = "Leitura 2";
 
-                    //DtTable.DefaultView.Sort = "Benef";
-
-
                     // *** Validação das linhas de acordo com critérios ***
                     // DataTable.Delete() não apaga linha no momento mas marca para ser apagada. Só quando se chama DataTable.AcceptChanges() é que todas as linhas marcadas são removidas. ***
                     DtTable.AcceptChanges(); // Deixa a DataTable num estado estável para poder ser manipulada sem erros.
@@ -150,24 +149,6 @@ namespace ASRLB_ImportacaoFatura
 
                         benef = DtTable.Rows[lin].Field<string>("Benef").PadLeft(5, '0');
                         predio = DtTable.Rows[lin].Field<string>("Prédio");
-
-                        /*
-                        int x = 0;
-                        while (x == x)
-                        {
-                        // Contador 1 - 1 Benef.
-                            if (DtTable.Rows[lin + x + 1].Field<double?>("Nº Contador") == contador && DtTable.Rows[lin + x + 1].Field<double?>("Benef.") != benef)
-                            { 
-                                DtTable.Rows[lin + x + 1].Delete(); 
-                                x += 1; }
-                        // Contador 1 - ∞ Prédio
-                            if (DtTable.Rows[lin + x + 1].Field<double?>("Nº Contador") == contador && DtTable.Rows[lin + x + 1].Field<string>("Prédio") != predio)
-                            { 
-                                DtTable.Rows[lin][0] = DtTable.Rows[lin][0] + "," + DtTable.Rows[lin + x + 1].Field<string>("Prédio"); 
-                                DtTable.Rows[lin + x + 1].Delete();
-                                x += 1; }
-                            else { lin += x;  break; }
-                        } */
                     }
                     DtTable.AcceptChanges();
 
@@ -176,11 +157,19 @@ namespace ASRLB_ImportacaoFatura
                     for (int i = 0; i < DtTable.Rows.Count; i++) { DtTable.Rows[i][0] = i + 1; }
 
                     Ligacao.Close();
+
+                    System.Windows.Forms.MessageBox.Show("ExcelControl OK");
                     return DtSet;
                 }
                 catch (IOException e) { System.Windows.Forms.MessageBox.Show("Não foi possível estabelecer ligação ao ficheiro! \n\n " + e); return DtSet; }
                 catch (Exception e) { System.Windows.Forms.MessageBox.Show("Excepção não tratada! \n\n " + e); return DtSet; }
             }
+        }
+
+        public void EliminarCopia (string origem)
+        {
+            string copiaPath = Path.GetDirectoryName(origem) + "\\\\copia.xlsx";
+            if (File.Exists(copiaPath)) { File.Delete(copiaPath); }
         }
 
         [Serializable]
