@@ -1,6 +1,7 @@
-﻿using System; using System.Data; using System.IO;using System.Runtime.InteropServices;
+﻿using System; using System.Data; using System.Linq; using System.IO;using System.Runtime.InteropServices;
 using _Excel = Microsoft.Office.Interop.Excel; using DataSet = System.Data.DataSet; using DataTable = System.Data.DataTable; using OleDb = System.Data.OleDb;
 using Primavera.Extensibility.Sales.Editors; using Primavera.Extensibility.BusinessEntities;
+using System.Collections.Generic; using ExcelInterop = Microsoft.Office.Interop.Excel;
 
 namespace ASRLB_ImportacaoFatura
 {
@@ -21,7 +22,7 @@ namespace ASRLB_ImportacaoFatura
 
                 conString = @"Provider=Microsoft.ACE.OLEDB.12.0;"
                             + "Data Source='" + FicheiroCopiado + "'"
-                            + ";Extended Properties=\"Excel 12.0;HDR=NO;\"";
+                            + ";Extended Properties=\"Excel 12.0;HDR=NO;IMEX=1;\"";
 
                 // Trata ficheiro e carrega para DataSet
                 RemoverCelulasUnidas(FicheiroCopiado);
@@ -66,7 +67,7 @@ namespace ASRLB_ImportacaoFatura
                         cell.MergeCells = false;
                         cellUnidas.Value = cell.Value;
                     }
-                }  
+                }
             }
 
             // É necessário terminar correctamente os processos do Interop para que a folha de Excel não fique pendurada em memória
@@ -86,33 +87,48 @@ namespace ASRLB_ImportacaoFatura
         }
 
         // Abre ligação e preenche DataSet com query ao ficheiro Excel. Fecha ligação no final.
-        public DataSet CarregarDataSet(string conString)
+        public DataSet CarregarDataSet(string origem, string conString)
         {
             using (OleDb.OleDbConnection Ligacao = new OleDb.OleDbConnection(conString))
             {
-                Ligacao.Open();
-
-                // Busca DataTable com nomes das folhas na única coluna
-                DataTable dtSheetName = Ligacao.GetOleDbSchemaTable(OleDb.OleDbSchemaGuid.Tables, null);
-                string sheet = dtSheetName.Rows[0]["Table_Name"].ToString();
-
-                // Conta linhas preenchidas
-                OleDb.OleDbCommand cmd = new OleDb.OleDbCommand("SELECT Count(*) FROM [" + sheet + "]", Ligacao);
-                int linhasTotal = (int)cmd.ExecuteScalar() - 5;
-
-                // Datasets a preencher e query
-                DataSet DtSet = new DataSet();
-                string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + sheet + "A6:Z]";
-
-                // Inicialização do Adapter que faz de imediato a query ao Excel. Preenchimento e configuração do Dataset.
                 try
                 {
-                    OleDb.OleDbDataAdapter Adapter = new OleDb.OleDbDataAdapter(query, Ligacao);
-                    Adapter.Fill(DtSet, "Tabela0");
-                    Adapter.Dispose();
-                    Ligacao.Close();
+                    OleDb.OleDbCommand cmdTotalLinhas = new OleDb.OleDbCommand();
+                    OleDb.OleDbCommand cmdLinhas = new OleDb.OleDbCommand();
+                    OleDb.OleDbDataAdapter Adapter = new OleDb.OleDbDataAdapter();
+                    cmdTotalLinhas.Connection = Ligacao;
+                    cmdLinhas.Connection = Ligacao;
+                    Ligacao.Open();
 
-                    DataTable DtTable = DtSet.Tables[0];
+                    DataTable dtExcelSchema = Ligacao.GetOleDbSchemaTable(OleDb.OleDbSchemaGuid.Tables, null);
+                    List<string> nomesFolhas = new List<string>(dtExcelSchema.Rows.Count);
+                    foreach (DataRow row in dtExcelSchema.Rows)
+                    {
+                        nomesFolhas.Add(row["TABLE_NAME"].ToString());
+                    }
+
+                    DataSet DtSet = new DataSet();
+                    DtSet.Tables.Add("Tabela0");
+
+                    foreach (string nomeFolha in nomesFolhas)
+                    {
+                        //// Necessário remover plicas ' no inicio e fim do nome
+                        //string nomeFolha = dtExcelSchema.Rows[row]["TABLE_NAME"].ToString();
+                        //nomeFolha = nomeFolha.Remove(nomeFolha.Length - 2, 2);
+                        //nomeFolha = nomeFolha.Remove(0, 1);
+                        System.Windows.Forms.MessageBox.Show(nomeFolha);
+                        // Get total linhas usadas
+                        cmdTotalLinhas.CommandText = "SELECT Count(*) FROM [" + nomeFolha + "]";
+                        int linhasTotal = (int)cmdTotalLinhas.ExecuteScalar() - 5;
+
+                        // Get linhas da folha. Preenche adapter
+                        Adapter = new OleDb.OleDbDataAdapter(cmdTotalLinhas);
+                        cmdLinhas.CommandText = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + nomeFolha + "A6:Z] WHERE [F6] = 'S'";
+                        Adapter.SelectCommand = cmdLinhas;
+                        Adapter.Fill(DtSet, "Tabela0");
+                    }
+
+                    DataTable DtTable = DtSet.Tables["Tabela0"];
                     // Cabeçalhos das colunas
                     DtTable.Columns[0].ColumnName = "Prédio";
                     DtTable.Columns[1].ColumnName = "Área";
@@ -156,17 +172,15 @@ namespace ASRLB_ImportacaoFatura
                     DtTable.Columns.Add("#", typeof(int)).SetOrdinal(0);
                     for (int i = 0; i < DtTable.Rows.Count; i++) { DtTable.Rows[i][0] = i + 1; }
 
-                    Ligacao.Close();
-
-                    System.Windows.Forms.MessageBox.Show("ExcelControl OK");
                     return DtSet;
                 }
-                catch (IOException e) { System.Windows.Forms.MessageBox.Show("Não foi possível estabelecer ligação ao ficheiro! \n\n " + e); return DtSet; }
-                catch (Exception e) { System.Windows.Forms.MessageBox.Show("Excepção não tratada! \n\n " + e); return DtSet; }
+                catch (IOException e) { System.Windows.Forms.MessageBox.Show("Não foi possível estabelecer ligação ao ficheiro! \n\n " + e); Ligacao.Close(); return DtSet; }
+                catch (Exception e) { System.Windows.Forms.MessageBox.Show("Excepção não tratada! \n\n " + e); Ligacao.Close(); return DtSet; }
+
+                return DtSet;
             }
         }
-
-        public void EliminarCopia (string origem)
+        public void EliminarCopia(string origem)
         {
             string copiaPath = Path.GetDirectoryName(origem) + "\\\\copia.xlsx";
             if (File.Exists(copiaPath)) { File.Delete(copiaPath); }
@@ -179,9 +193,13 @@ namespace ASRLB_ImportacaoFatura
             public ExcelControlException(string message) : base(message) { }
             public ExcelControlException(string message, Exception inner) : base(message, inner) { }
             protected ExcelControlException(
-              System.Runtime.Serialization.SerializationInfo info,
-              System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+                System.Runtime.Serialization.SerializationInfo info,
+                System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         }
     }
 }
+
+
+
+
 

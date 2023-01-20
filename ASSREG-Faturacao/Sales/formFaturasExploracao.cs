@@ -13,7 +13,6 @@ namespace ASRLB_ImportacaoFatura.Sales
         public static Dictionary<string, string> linhaDict { get; set; }
         public Dictionary<int, string> _escaloes = new Dictionary<int, string>();
         public Dictionary<int, string> _escaloesArroz = new Dictionary<int, string>();
-        DataSet DtSet = new DataSet();
         private int _counterLinha = 1;
         private bool _novaFatura;
 
@@ -80,13 +79,16 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             foreach (string path in ficheiros)
             {
-                ResetVariaveis();
+                DataSet DtSet = new DataSet();
+                ResetVariaveis(DtSet);
                 Reset_linhaDict();
                 VndBEDocumentoVenda DocVenda = new VndBEDocumentoVenda();
 
                 ExcelControl Excel = new ExcelControl(@"" + path);
-                DtSet = Excel.CarregarDataSet(Excel.conString);
+                DtSet = Excel.CarregarDataSet(@"" + path, Excel.conString);
                 Excel.EliminarCopia(@"" + path);
+
+                MessageBox.Show("main -> " + DtSet.Tables["Tabela0"].Rows.Count.ToString());
 
                 for (int i = 0; i < DtSet.Tables[0].Rows.Count; i++)
                 {
@@ -101,6 +103,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                     bool contadorIgual = DtRow.Field<string>("Nº Contador").Equals(linhaDict["Contador"]);
                     if (contadorIgual && i > 0) { continue; } // Contador é igual ao da linha anterior em casos de desunião de linhas que têm 'Um contador -> Vários prédios/áreas'. Ignora-se estas linhas pois têm valores duplicados.
 
+                    MessageBox.Show("meio");
                     if (!benefIgual)
                     {
                         //Exclui primeira linha por ainda não existir nada
@@ -119,7 +122,8 @@ namespace ASRLB_ImportacaoFatura.Sales
                     {
                         PrepararDict(DtRow);
                         CalcRegantes();
-                        ProcessarLinha(DocVenda);
+                        ProcessarLinha(DocVenda)    
+                                ;
                     }
 
                     BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
@@ -127,6 +131,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                     if ((i == DtSet.Tables[0].Rows.Count - 1) && !EmitirFatura(DocVenda)) { ErroAoEmitir(); }
                 }
 
+                MessageBox.Show("final");
                 // Se não ocorrerem erros durante EmitirFatura() que desfaçam transacção, terminará a transacção normalmente.
                 if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); }
             }
@@ -160,22 +165,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             linhaDict["Consumo2"] = null;
             linhaDict["Taxa3"] = null;
             linhaDict["Consumo3"] = null;
-
-
-            listBoxErros.Items.Add(linhaDict["Predio"] = DtRow.Field<string>("Prédio"));
-            listBoxErros.Items.Add(linhaDict["Area"] = DtRow.Field<double>("Área").ToString());
-            listBoxErros.Items.Add(linhaDict["Cultura"] = DtRow.Field<string>("Cultura"));
-            listBoxErros.Items.Add(linhaDict["TRH"] = DtRow.Field<string>("TRH").ToString());
-            listBoxErros.Items.Add(linhaDict["TaxaPenalizadora"] = DtRow.Field<string>("Tx Penalizadora"));
-            listBoxErros.Items.Add(linhaDict["Contador"] = DtRow.Field<string>("Nº Contador"));
-
-            listBoxErros.Items.Add(linhaDict["Benef"] = DtRow.Field<string>("Benef").PadLeft(5, '0'));
-            listBoxErros.Items.Add(linhaDict["Nome"] = DtRow.Field<string>("Nome"));
-            listBoxErros.Items.Add(linhaDict["UltimaLeitura"] = DtRow.Field<double>("Última Leitura").ToString());
-            listBoxErros.Items.Add(linhaDict["Data1"] = DtRow.Field<DateTime>("Data 1").ToString());
-            listBoxErros.Items.Add(linhaDict["Leitura1"] = DtRow.Field<double>("Leitura 1").ToString());
-            listBoxErros.Items.Add(linhaDict["Data2"] = DtRow.Field<DateTime>("Data 2").ToString());
-            listBoxErros.Items.Add(linhaDict["Leitura2"] = DtRow.Field<double>("Leitura 2").ToString());
 
             // Reset aos valores calculados por CalcRegantes;
             linhaDict["Taxa3"] = null;
@@ -411,7 +400,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         }
 
 
-        private void ResetVariaveis()
+        private void ResetVariaveis(DataSet DtSet)
         {
             linhaDict = null; 
             linhaDict = new Dictionary<string, string>();
