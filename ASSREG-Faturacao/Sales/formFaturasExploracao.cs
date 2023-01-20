@@ -80,61 +80,69 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             foreach (string path in ficheiros)
             {
-                Reset_linhaDict(); _firstPass = false;
-
                 VndBEDocumentoVenda DocVenda = new VndBEDocumentoVenda();
 
                 ExcelControl Excel = new ExcelControl(@"" + path);
                 DataSet DtSet = Excel.CarregarDataSet(@"" + path, Excel.conString);
+
                 MessageBox.Show("main -> " + DtSet.Tables["Tabela0"].Rows.Count.ToString());
                 Excel.EliminarCopia(@"" + path);
 
                 MessageBox.Show("main -> " + DtSet.Tables["Tabela0"].Rows.Count.ToString());
 
-                for (int i = 0; i < DtSet.Tables[0].Rows.Count; i++)
+                for (int i = 0; i < DtSet.Tables.Count; i++)
                 {
-                    DataRow DtRow = DtSet.Tables[0].Rows[i];
-                    if (!BSO.EmTransaccao()) { BSO.IniciaTransaccao(); }
+                    DataTable DtTable = DtSet.Tables["Tabela" + i];
 
-                    // benefIgual é True se Benef na nova linha for igual ao da linha anterior (ainda no linhaDict)
-                    // Se Benef for diferente, então é necessário emitir a fatura antes de começar uma nova.
-                    bool benefIgual = DtRow.Field<string>("Benef").PadLeft(5, '0').Equals(linhaDict["Benef"]);
-                    // Se contador for o mesmo que o anterior, então é um caso de 1 contador -> multiplos prédios. Neste caso a linha tem de ser completamente ignorada pois os valores são iguais ao da primeira.
-                    // Contador é inicializado como "" por isso não vai bater igual na primeira linha.
-                    bool contadorIgual = DtRow.Field<string>("Nº Contador").Equals(linhaDict["Contador"]);
-                    if (contadorIgual && i > 0) { continue; } // Contador é igual ao da linha anterior em casos de desunião de linhas que têm 'Um contador -> Vários prédios/áreas'. Ignora-se estas linhas pois têm valores duplicados.
-
-                    MessageBox.Show("meio");
-                    if (!benefIgual)
+                    foreach (DataRow DtRow in DtTable.Rows)
                     {
-                        //Exclui primeira linha por ainda não existir nada
-                        if (i > 0 && !EmitirFatura(DocVenda)) { ErroAoEmitir(); }
+                        if (!BSO.EmTransaccao()) { BSO.IniciaTransaccao(); }
 
-                        DocVenda = new VndBEDocumentoVenda();
-                        _novaFatura = true;
-                        _counterLinha = 1;
+                        // benefIgual é True se Benef na nova linha for igual ao da linha anterior (ainda no linhaDict)
+                        // Se Benef for diferente, então é necessário emitir a fatura antes de começar uma nova.
+                        bool benefIgual = DtRow.Field<string>("Benef").PadLeft(5, '0').Equals(linhaDict["Benef"]);
+                        // Se contador for o mesmo que o anterior, então é um caso de 1 contador -> multiplos prédios. Neste caso a linha tem de ser completamente ignorada pois os valores são iguais ao da primeira.
+                        // Contador é inicializado como "" por isso não vai bater igual na primeira linha.
+                        bool contadorIgual = DtRow.Field<string>("Nº Contador").Equals(linhaDict["Contador"]);
+                        if (contadorIgual && i > 0) { continue; } // Contador é igual ao da linha anterior em casos de desunião de linhas que têm 'Um contador -> Vários prédios/áreas'. Ignora-se estas linhas pois têm valores duplicados.
 
-                        PrepararDict(DtRow); // Preenche dicionário com dados necessários.
-                        ProcessarCabecDoc(DocVenda);
-                        CalcRegantes(); // Efectua cálculos de valores e taxas associadas.
-                        ProcessarLinha(DocVenda); // Preenche linhasDoc com descrições e leituras com seus valores calculados.
+                        MessageBox.Show("meio");
+                        if (!benefIgual)
+                        {
+                            //Exclui primeira linha por ainda não existir nada
+                            if (i > 0 && !EmitirFatura(DocVenda)) { ErroAoEmitir(); }
+
+                            DocVenda = new VndBEDocumentoVenda();
+                            _novaFatura = true;
+                            _counterLinha = 1;
+
+                            PrepararDict(DtRow); // Preenche dicionário com dados necessários.
+                            ProcessarCabecDoc(DocVenda);
+                            CalcRegantes(); // Efectua cálculos de valores e taxas associadas.
+                            ProcessarLinha(DocVenda); // Preenche linhasDoc com descrições e leituras com seus valores calculados.
+                        }
+                        else if (benefIgual && !contadorIgual && i > 0) // Um benef -> Vários contadores. Vão todos os contadores para a mesma fatura
+                        {
+                            PrepararDict(DtRow);
+                            CalcRegantes();
+                            ProcessarLinha(DocVenda);
+                        }
+
+                        BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
+                        // Catch para a última linha do DataSet
+                        if ((i == DtSet.Tables[0].Rows.Count - 1) && !EmitirFatura(DocVenda)) { ErroAoEmitir(); }
                     }
-                    else if (benefIgual && !contadorIgual && i > 0) // Um benef -> Vários contadores. Vão todos os contadores para a mesma fatura
-                    {
-                        PrepararDict(DtRow);
-                        CalcRegantes();
-                        ProcessarLinha(DocVenda)    
-                                ;
-                    }
-
-                    BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
-                    // Catch para a última linha do DataSet
-                    if ((i == DtSet.Tables[0].Rows.Count - 1) && !EmitirFatura(DocVenda)) { ErroAoEmitir(); }
+                    
                 }
 
                 MessageBox.Show("final");
                 // Se não ocorrerem erros durante EmitirFatura() que desfaçam transacção, terminará a transacção normalmente.
-                if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); }
+                if (BSO.EmTransaccao())
+                {
+                    ResetVariaveis(DtSet);
+                    Reset_linhaDict();
+                    BSO.TerminaTransaccao(); 
+                }
             }
         }
            
@@ -413,16 +421,13 @@ namespace ASRLB_ImportacaoFatura.Sales
 
         private void Reset_linhaDict()
         {
-            // Re-inicialização do Dicionário a ser populado com o conteúdo de cada linha do DtSet. 
-            if (_firstPass) { linhaDict.Clear(); }
-
             // Dados importados do Excel
             linhaDict.Add("Predio", null);
             linhaDict.Add("Area", null);
             linhaDict.Add("Cultura", null);
             linhaDict.Add("TRH", null);
             linhaDict.Add("TaxaPenalizadora", null);
-            linhaDict.Add("Contador", null);
+            linhaDict.Add("Contador", null);            
             linhaDict.Add("ContadorAnt", "");
             linhaDict.Add("Benef", "");
             linhaDict.Add("Nome", null);
