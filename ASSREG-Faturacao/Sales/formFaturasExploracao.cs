@@ -15,6 +15,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         public Dictionary<int, string> _escaloesArroz = new Dictionary<int, string>();
         private int _counterLinha = 1;
         private bool _novaFatura;
+        private bool _firstPass = true;
 
         //CalcRegantes globals
         private string _dataFull, _cultura;
@@ -79,13 +80,13 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             foreach (string path in ficheiros)
             {
-                DataSet DtSet = new DataSet();
-                ResetVariaveis(DtSet);
-                Reset_linhaDict();
+                Reset_linhaDict(); _firstPass = false;
+
                 VndBEDocumentoVenda DocVenda = new VndBEDocumentoVenda();
 
                 ExcelControl Excel = new ExcelControl(@"" + path);
-                DtSet = Excel.CarregarDataSet(@"" + path, Excel.conString);
+                DataSet DtSet = Excel.CarregarDataSet(@"" + path, Excel.conString);
+                MessageBox.Show("main -> " + DtSet.Tables["Tabela0"].Rows.Count.ToString());
                 Excel.EliminarCopia(@"" + path);
 
                 MessageBox.Show("main -> " + DtSet.Tables["Tabela0"].Rows.Count.ToString());
@@ -413,7 +414,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         private void Reset_linhaDict()
         {
             // Re-inicialização do Dicionário a ser populado com o conteúdo de cada linha do DtSet. 
-            linhaDict.Clear();
+            if (_firstPass) { linhaDict.Clear(); }
 
             // Dados importados do Excel
             linhaDict.Add("Predio", null);

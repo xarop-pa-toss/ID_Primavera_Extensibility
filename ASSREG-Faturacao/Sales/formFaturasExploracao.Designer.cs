@@ -39,10 +39,10 @@ namespace ASRLB_ImportacaoFatura.Sales
             // 
             // btnConfirmar
             // 
-            this.btnConfirmar.Location = new System.Drawing.Point(629, 772);
-            this.btnConfirmar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnConfirmar.Location = new System.Drawing.Point(472, 627);
+            this.btnConfirmar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnConfirmar.Name = "btnConfirmar";
-            this.btnConfirmar.Size = new System.Drawing.Size(99, 28);
+            this.btnConfirmar.Size = new System.Drawing.Size(74, 23);
             this.btnConfirmar.TabIndex = 1;
             this.btnConfirmar.Text = "Confirmar";
             this.btnConfirmar.UseVisualStyleBackColor = true;
@@ -52,29 +52,28 @@ namespace ASRLB_ImportacaoFatura.Sales
             // 
             this.listBoxErros.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.listBoxErros.FormattingEnabled = true;
-            this.listBoxErros.ItemHeight = 16;
-            this.listBoxErros.Location = new System.Drawing.Point(23, 455);
-            this.listBoxErros.Margin = new System.Windows.Forms.Padding(4);
+            this.listBoxErros.Location = new System.Drawing.Point(17, 370);
             this.listBoxErros.Name = "listBoxErros";
-            this.listBoxErros.Size = new System.Drawing.Size(705, 308);
+            this.listBoxErros.Size = new System.Drawing.Size(530, 251);
             this.listBoxErros.TabIndex = 2;
             // 
             // listBoxFicheiros
             // 
             this.listBoxFicheiros.FormattingEnabled = true;
             this.listBoxFicheiros.HorizontalScrollbar = true;
-            this.listBoxFicheiros.ItemHeight = 16;
-            this.listBoxFicheiros.Location = new System.Drawing.Point(23, 59);
+            this.listBoxFicheiros.Location = new System.Drawing.Point(17, 48);
+            this.listBoxFicheiros.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.listBoxFicheiros.Name = "listBoxFicheiros";
             this.listBoxFicheiros.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.listBoxFicheiros.Size = new System.Drawing.Size(705, 340);
+            this.listBoxFicheiros.Size = new System.Drawing.Size(530, 277);
             this.listBoxFicheiros.TabIndex = 3;
             // 
             // btnRemover
             // 
-            this.btnRemover.Location = new System.Drawing.Point(641, 405);
+            this.btnRemover.Location = new System.Drawing.Point(481, 329);
+            this.btnRemover.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnRemover.Name = "btnRemover";
-            this.btnRemover.Size = new System.Drawing.Size(87, 31);
+            this.btnRemover.Size = new System.Drawing.Size(65, 25);
             this.btnRemover.TabIndex = 4;
             this.btnRemover.Text = "Remover";
             this.btnRemover.UseVisualStyleBackColor = true;
@@ -82,9 +81,10 @@ namespace ASRLB_ImportacaoFatura.Sales
             // 
             // btnApagarLista
             // 
-            this.btnApagarLista.Location = new System.Drawing.Point(514, 405);
+            this.btnApagarLista.Location = new System.Drawing.Point(386, 329);
+            this.btnApagarLista.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnApagarLista.Name = "btnApagarLista";
-            this.btnApagarLista.Size = new System.Drawing.Size(108, 31);
+            this.btnApagarLista.Size = new System.Drawing.Size(81, 25);
             this.btnApagarLista.TabIndex = 5;
             this.btnApagarLista.Text = "Limpar Lista";
             this.btnApagarLista.UseVisualStyleBackColor = true;
@@ -92,9 +92,10 @@ namespace ASRLB_ImportacaoFatura.Sales
             // 
             // btnEscolherFicheiro
             // 
-            this.btnEscolherFicheiro.Location = new System.Drawing.Point(595, 18);
+            this.btnEscolherFicheiro.Location = new System.Drawing.Point(446, 14);
+            this.btnEscolherFicheiro.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnEscolherFicheiro.Name = "btnEscolherFicheiro";
-            this.btnEscolherFicheiro.Size = new System.Drawing.Size(133, 35);
+            this.btnEscolherFicheiro.Size = new System.Drawing.Size(100, 29);
             this.btnEscolherFicheiro.TabIndex = 6;
             this.btnEscolherFicheiro.Text = "Escolher Ficheiros";
             this.btnEscolherFicheiro.UseVisualStyleBackColor = true;
@@ -102,7 +103,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // 
             // janelaFaturasExploracao
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.Controls.Add(this.btnEscolherFicheiro);
@@ -111,9 +112,9 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.Controls.Add(this.listBoxFicheiros);
             this.Controls.Add(this.listBoxErros);
             this.Controls.Add(this.btnConfirmar);
-            this.Margin = new System.Windows.Forms.Padding(5);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "janelaFaturasExploracao";
-            this.Size = new System.Drawing.Size(756, 811);
+            this.Size = new System.Drawing.Size(567, 659);
             this.Text = "janelaFaturasExploracao";
             this.Load += new System.EventHandler(this.formFaturasExploracao_Load);
             this.ResumeLayout(false);
