@@ -81,32 +81,32 @@ namespace ASRLB_ImportacaoFatura.Sales
             foreach (string path in ficheiros)
             {
                 VndBEDocumentoVenda DocVenda = new VndBEDocumentoVenda();
+                Reset_linhaDict();
 
                 ExcelControl Excel = new ExcelControl(@"" + path);
                 DataSet DtSet = Excel.CarregarDataSet(@"" + path, Excel.conString);
 
-                MessageBox.Show("main -> " + DtSet.Tables["Tabela0"].Rows.Count.ToString());
                 Excel.EliminarCopia(@"" + path);
 
                 MessageBox.Show("main -> " + DtSet.Tables["Tabela0"].Rows.Count.ToString());
 
-                for (int i = 0; i < DtSet.Tables.Count; i++)
-                {
-                    DataTable DtTable = DtSet.Tables["Tabela" + i];
 
-                    foreach (DataRow DtRow in DtTable.Rows)
+                foreach (DataTable DtTable in DtSet.Tables)
+                {
+                    if (!BSO.EmTransaccao()) { BSO.IniciaTransaccao(); }
+                    //DataTable DtTable = DtSet.Tables["Tabela" + i];
+                    for (int i = 0; i < DtTable.Rows.Count; i++)
                     {
-                        if (!BSO.EmTransaccao()) { BSO.IniciaTransaccao(); }
+                        DataRow DtRow = DtTable.Rows[i];
 
                         // benefIgual é True se Benef na nova linha for igual ao da linha anterior (ainda no linhaDict)
                         // Se Benef for diferente, então é necessário emitir a fatura antes de começar uma nova.
-                        bool benefIgual = DtRow.Field<string>("Benef").PadLeft(5, '0').Equals(linhaDict["Benef"]);
+                        bool benefIgual = DtRow.Field<double>("Benef").ToString().PadLeft(5, '0').Equals(linhaDict["Benef"]);
                         // Se contador for o mesmo que o anterior, então é um caso de 1 contador -> multiplos prédios. Neste caso a linha tem de ser completamente ignorada pois os valores são iguais ao da primeira.
                         // Contador é inicializado como "" por isso não vai bater igual na primeira linha.
                         bool contadorIgual = DtRow.Field<string>("Nº Contador").Equals(linhaDict["Contador"]);
                         if (contadorIgual && i > 0) { continue; } // Contador é igual ao da linha anterior em casos de desunião de linhas que têm 'Um contador -> Vários prédios/áreas'. Ignora-se estas linhas pois têm valores duplicados.
 
-                        MessageBox.Show("meio");
                         if (!benefIgual)
                         {
                             //Exclui primeira linha por ainda não existir nada
@@ -129,19 +129,21 @@ namespace ASRLB_ImportacaoFatura.Sales
                         }
 
                         BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
-                        // Catch para a última linha do DataSet
-                        if ((i == DtSet.Tables[0].Rows.Count - 1) && !EmitirFatura(DocVenda)) { ErroAoEmitir(); }
-                    }
-                    
-                }
 
+                        // Catch para a última linha do DataSet
+                        if ((i == DtTable.Rows.Count - 1) && !EmitirFatura(DocVenda)) 
+                        {
+                            if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
+                            ErroAoEmitir();
+                        }
+                    }
+                }
                 MessageBox.Show("final");
                 // Se não ocorrerem erros durante EmitirFatura() que desfaçam transacção, terminará a transacção normalmente.
                 if (BSO.EmTransaccao())
                 {
-                    ResetVariaveis(DtSet);
                     Reset_linhaDict();
-                    BSO.TerminaTransaccao(); 
+                    BSO.TerminaTransaccao();
                 }
             }
         }
@@ -159,12 +161,12 @@ namespace ASRLB_ImportacaoFatura.Sales
             linhaDict["Contador"] = DtRow.Field<string>("Nº Contador");
 
             // Transform do Benef para ser igual às Entidades no Primavera.
-            linhaDict["Benef"] = DtRow.Field<string>("Benef").PadLeft(5, '0');
+            linhaDict["Benef"] = DtRow.Field<double>("Benef").ToString().PadLeft(5, '0');
             linhaDict["Nome"] = DtRow.Field<string>("Nome");
             linhaDict["UltimaLeitura"] = DtRow.Field<double>("Última Leitura").ToString();
-            linhaDict["Data1"] = DtRow.Field<DateTime>("Data 1").ToString("'dd'/'MM'/'yyyy'");
+            linhaDict["Data1"] = DtRow.Field<DateTime>("Data 1").ToString("dd/MM/yyyy");
             linhaDict["Leitura1"] = DtRow.Field<double>("Leitura 1").ToString();
-            linhaDict["Data2"] = DtRow.Field<DateTime>("Data 2").ToString("'dd'/'MM'/'yyyy'");
+            linhaDict["Data2"] = DtRow.Field<DateTime>("Data 2").ToString("dd/MM/yyyy");
             linhaDict["Leitura2"] = DtRow.Field<double>("Leitura 2").ToString();
 
             // Reset aos valores calculados por CalcRegantes;
@@ -172,10 +174,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             linhaDict["Consumo1"] = null;
             linhaDict["Taxa2"] = null;
             linhaDict["Consumo2"] = null;
-            linhaDict["Taxa3"] = null;
-            linhaDict["Consumo3"] = null;
-
-            // Reset aos valores calculados por CalcRegantes;
             linhaDict["Taxa3"] = null;
             linhaDict["Consumo3"] = null;
         }
@@ -220,8 +218,6 @@ namespace ASRLB_ImportacaoFatura.Sales
                 // Calcula TRH que depende da cultura e popula linhaDict["TRH"]. Esse valor é então usado como preço unitário na linha na fatura
                 CalcRegantes_TaxaRecursosHidricos(linhaDict["Cultura"]);
                 double precUnitTRH = Convert.ToDouble(linhaDict["TRH"]);
-
-                PSO.MensagensDialogos.MostraAviso("TRH: "+ linhaDict["TRH"].ToString());
                 
                 double quantidadeTRH = 1;
                 string armazem = ""; string localizacao = "";
@@ -266,17 +262,25 @@ namespace ASRLB_ImportacaoFatura.Sales
                     listBoxErros.Items.Add(String.Format("Contador {0} para Benef {1} processado com sucesso na Fatura {2}.", linhaDict["Contador"], DocVenda.Entidade, DocVenda.NumDoc));
                     return true;
                 }
-                catch { return false; }
-            } else { return false; }
+                catch { if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }  return false; }
+            } else { if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }  return false; }
         }
 
 
         private void CalcRegantes()
         {
             _cultura = linhaDict["Cultura"];
-            _dataFull = linhaDict["Data1"];
-            _leitura1 = Convert.ToInt32(linhaDict["Leitura1"]);
-            _leitura2 = Convert.ToInt32(linhaDict["Leitura2"]);
+            if (linhaDict["Data1"] != null && linhaDict["Leitura1"] != null) 
+            { 
+                _dataFull = linhaDict["Data1"];
+                _leitura1 = Convert.ToInt32(linhaDict["Leitura1"]);
+            }
+            if (linhaDict["Data2"] != null && linhaDict["Leitura1"] != null)
+            {
+                _dataFull = linhaDict["Data2"];
+                _leitura2 = Convert.ToInt32(linhaDict["Leitura2"]);
+            }
+
             _ultimaLeitura = Convert.ToInt32(linhaDict["UltimaLeitura"]);
 
             //int
@@ -350,6 +354,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
             StdBELista listaTaxa = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = '" + _cultura + "'");
             listaTaxa.Inicio();
+            MessageBox.Show(_cultura);
 
             if (_cultura != "CA")
             {
@@ -404,23 +409,18 @@ namespace ASRLB_ImportacaoFatura.Sales
             // *** TRH FINAL ***
             // Adição de TRH_A e TRH_U
             linhaDict["TRH"] = (TRH_U + TRH_A).ToString();
-
-            PSO.MensagensDialogos.MostraAviso("TRH", StdPlatBS100.StdBSTipos.IconId.PRI_Informativo, "TRH_U: " + TRH_U + "\nTRH_A: " + TRH_A);
         }
 
 
-        private void ResetVariaveis(DataSet DtSet)
-        {
-            linhaDict = null; 
-            linhaDict = new Dictionary<string, string>();
-            
-            DtSet.Clear();
-            listBoxErros.Items.Clear();
+        private void ResetVariaveis()
+        {            
             _counterLinha = 1;
         }
 
         private void Reset_linhaDict()
         {
+            linhaDict = new Dictionary<string, string>();
+
             // Dados importados do Excel
             linhaDict.Add("Predio", null);
             linhaDict.Add("Area", null);
@@ -477,7 +477,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             listBoxErros.Items.Add("Por favor verificar os dados na folha de Excel relativos a este contador.");
             listBoxErros.Items.Add("ATENÇÃO: Nenhuma fatura foi emitida. Só serão emitidas faturas quando todas as linhas do ficheiro Excel forem válidas.");
 
-            if (BSO.EmTransaccao()) BSO.DesfazTransaccao();
+            if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
         }
     }
 }

@@ -275,11 +275,11 @@ namespace ASRLB_ImportacaoFatura
                     return interromperComErro("ERRO: " + e);
                 }
             }
-            if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); MessageBox.Show("Faturas submetidas com sucesso!"); }
+            if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); PSO.MensagensDialogos.MostraAviso("Faturas submetidas com sucesso!", StdPlatBS100.StdBSTipos.IconId.PRI_Informativo); }
             return true;
         }
 
-
+        
 
         public bool interromperComErro(string error = null)
         {

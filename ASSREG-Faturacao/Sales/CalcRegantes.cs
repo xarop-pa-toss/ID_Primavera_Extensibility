@@ -116,7 +116,6 @@ namespace ASRLB_ImportacaoFatura.Sales
 
         private void TaxasPenalizadoras()
         {
-            PSO.MensagensDialogos.MostraAviso("ya", StdBSTipos.IconId.PRI_Informativo, _cultura);
             StdBELista listaTaxa = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = '" + _cultura + "'");
             listaTaxa.Inicio();
 
