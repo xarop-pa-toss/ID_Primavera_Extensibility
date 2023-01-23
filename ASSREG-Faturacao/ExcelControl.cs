@@ -10,6 +10,7 @@ namespace ASRLB_ImportacaoFatura
         internal string FicheiroCopiado { get; }
         public DataSet DtSet { get; }
         public string conString { get; set; }
+        public List<string> folhasList { get; set; }
 
 
         public ExcelControl(string origem)
@@ -97,7 +98,7 @@ namespace ASRLB_ImportacaoFatura
 
                     // Get 
                     DataTable dtExcelSchema = Ligacao.GetOleDbSchemaTable(OleDb.OleDbSchemaGuid.Tables, null);
-                    List<string> folhasList = new List<string>(dtExcelSchema.Rows.Count);
+                    folhasList = new List<string>(dtExcelSchema.Rows.Count);
                     foreach (DataRow row in dtExcelSchema.Rows)
                     {
                         string nomeFolha = row["TABLE_NAME"].ToString();
@@ -197,8 +198,8 @@ namespace ASRLB_ImportacaoFatura
                     Ligacao.Close();
                     return DtSet;
                 }
-                catch (IOException e) { PSO.MensagensDialogos.MostraAviso("Não foi possível estabelecer ligação ao ficheiro!",StdPlatBS100.StdBSTipos.IconId.PRI_Critico, e.ToString()); Ligacao.Close(); return DtSet; }
-                catch (Exception e) { PSO.MensagensDialogos.MostraAviso("Erro não especificado.",StdPlatBS100.StdBSTipos.IconId.PRI_Critico, e.ToString()); Ligacao.Close(); return DtSet; }
+                catch (IOException e) { PSO.MensagensDialogos.MostraAviso("Não foi possível estabelecer ligação ao ficheiro!\n\n",StdPlatBS100.StdBSTipos.IconId.PRI_Critico, e.ToString()); Ligacao.Close(); return DtSet; }
+                catch (Exception e) { PSO.MensagensDialogos.MostraAviso("Erro não especificado.\n\n",StdPlatBS100.StdBSTipos.IconId.PRI_Critico, e.ToString()); Ligacao.Close(); return DtSet; }
 
                 return DtSet;
             }
