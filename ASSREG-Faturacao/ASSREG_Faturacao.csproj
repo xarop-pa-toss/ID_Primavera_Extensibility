@@ -117,7 +117,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExcelControl_old .cs" />
     <Compile Include="Sales\CalcRegantes.cs" />
     <Compile Include="ExcelControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
