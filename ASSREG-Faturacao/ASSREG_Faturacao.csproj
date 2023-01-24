@@ -117,7 +117,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sales\CalcRegantes.cs" />
+    <Compile Include="ExcelControl _WF.cs" />
+    <Compile Include="Sales\formFaturasExploracao_WF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Sales\formFaturasExploracao_WF.Designer.cs">
+      <DependentUpon>formFaturasExploracao_WF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Sales\OpenFormCode.cs" />
     <Compile Include="ExcelControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -129,12 +136,6 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="Sales\formFaturasExploracao.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Sales\formFaturasExploracao.Designer.cs">
-      <DependentUpon>formFaturasExploracao.cs</DependentUpon>
     </Compile>
     <Compile Include="Sales\ribbonImportarFaturas.cs" />
     <Compile Include="Settings.cs" />
@@ -151,8 +152,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Sales\formFaturasExploracao.resx">
-      <DependentUpon>formFaturasExploracao.cs</DependentUpon>
+    <EmbeddedResource Include="Sales\formFaturasExploracao_WF.resx">
+      <DependentUpon>formFaturasExploracao_WF.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sales\formImportarFaturas.resx">
       <DependentUpon>formImportarFaturas.cs</DependentUpon>
