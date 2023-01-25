@@ -35,6 +35,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.listBoxFicheiros_WF = new System.Windows.Forms.ListBox();
             this.btnRemover_WF = new System.Windows.Forms.Button();
             this.btnLimparLista_WF = new System.Windows.Forms.Button();
+            this.cBoxTipoFatura = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnEscolherFicheiro_WF
@@ -103,9 +104,21 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.btnLimparLista_WF.UseVisualStyleBackColor = true;
             this.btnLimparLista_WF.Click += new System.EventHandler(this.btnLimparLista_WF_Click);
             // 
+            // cBoxTipoFatura
+            // 
+            this.cBoxTipoFatura.FormattingEnabled = true;
+            this.cBoxTipoFatura.Items.AddRange(new object[] {
+            "AHSLP",
+            "Benaciate"});
+            this.cBoxTipoFatura.Location = new System.Drawing.Point(452, 17);
+            this.cBoxTipoFatura.Name = "cBoxTipoFatura";
+            this.cBoxTipoFatura.Size = new System.Drawing.Size(121, 24);
+            this.cBoxTipoFatura.TabIndex = 7;
+            // 
             // formFaturasExploracao_WF
             // 
             this.ClientSize = new System.Drawing.Size(757, 598);
+            this.Controls.Add(this.cBoxTipoFatura);
             this.Controls.Add(this.btnEscolherFicheiro_WF);
             this.Controls.Add(this.btnLimparLista_WF);
             this.Controls.Add(this.btnConfirmar_WF);
@@ -134,5 +147,6 @@ namespace ASRLB_ImportacaoFatura.Sales
         private System.Windows.Forms.ListBox listBoxFicheiros_WF;
         private System.Windows.Forms.Button btnRemover_WF;
         private System.Windows.Forms.Button btnLimparLista_WF;
+        private System.Windows.Forms.ComboBox cBoxTipoFatura;
     }
 }

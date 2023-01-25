@@ -19,12 +19,12 @@ namespace ASRLB_ImportacaoFatura.Sales
         private StdPlatBS PSO = new StdPlatBS();
 
         //CalcRegantes globals
-        private string _dataFull, _cultura;
+        private string _dataFull, _cultura, _tipoFatura;
         private int _ano, _consumoTotal, _ultimaLeitura, _leitura1, _leitura2;
         private int _escalao1, _escalao2;
         private Dictionary<string, StdBELista> DictTaxa = new Dictionary<string, StdBELista>();
-        private double _taxa1, _taxa2, _taxa3;
-        private double _consumo1, _consumo2, _consumo3;
+        private double _taxa1, _taxa2, _taxa3, _consumo1, _consumo2, _consumo3;
+        private double area;
 
         // **** BUGS ****
         // new V
@@ -73,21 +73,26 @@ namespace ASRLB_ImportacaoFatura.Sales
             //public StdPlatBS PSO = new StdPlatBS();
             BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "IDCLONE", "id", "pelicano");
 
-            StdBELista _listaTaxa_PP = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP';");
-            StdBELista _listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
-            StdBELista _listaTaxa_ANA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'ANA';");
-            StdBELista _listaTaxa_CA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadoraArroz WHERE CDU_Cultura = 'CA';");
+            StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
+            StdBELista listaTaxa_PP = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP';");
+            StdBELista listaTaxa_ANA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'ANA';");
+            StdBELista listaTaxa_CA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadoraArroz WHERE CDU_Cultura = 'CA';");
+            StdBELista listaTaxa_PD_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD_Be';");
+            StdBELista listaTaxa_PP_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP_Be';");
 
             DictTaxa.Clear();
-            DictTaxa.Add("PP", _listaTaxa_PP);
-            DictTaxa.Add("PD", _listaTaxa_PD);
-            DictTaxa.Add("ANA", _listaTaxa_ANA);
-            DictTaxa.Add("CA", _listaTaxa_CA);
+            DictTaxa.Add("PD", listaTaxa_PD);
+            DictTaxa.Add("PP", listaTaxa_PP);
+            DictTaxa.Add("ANA", listaTaxa_ANA);
+            DictTaxa.Add("CA", listaTaxa_CA);
+            DictTaxa.Add("PD_Be", listaTaxa_PD_Benaciate);
+            DictTaxa.Add("PP_Be", listaTaxa_PP_Benaciate);
         }
 
         private void btnConfirmar_WF_Click(object sender, EventArgs e)
         {
             var ficheiros = listBoxFicheiros_WF.Items;
+            string tipoFatura = cBoxTipoFatura.SelectedItem.ToString();
 
             foreach (string path in ficheiros)
             {
@@ -141,8 +146,8 @@ namespace ASRLB_ImportacaoFatura.Sales
 
                             PrepararDict(DtRow); // Preenche dicionário com dados necessários.
                             ProcessarCabecDoc(DocVenda);
-                            CalcRegantes(); // Efectua cálculos de valores e taxas associadas.
-                            ProcessarLinha(DocVenda); // Preenche linhasDoc com descrições e leituras com seus valores calculados.
+                            CalcRegantes(tipoFatura); // Efectua cálculos de valores e taxas associadas.
+                            ProcessarLinha(DocVenda, tipoFatura); // Preenche linhasDoc com descrições e leituras com seus valores calculados.
                         }
                         else if (benefIgual && !contadorIgual && i > 0) // Um benef -> Vários contadores. Vão todos os contadores para a mesma fatura
                         {
@@ -216,7 +221,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             BSO.Vendas.Documentos.PreencheDadosRelacionados(DocVenda, ref vdDadosCondPag);
         }
 
-        private void ProcessarLinha(VndBEDocumentoVenda DocVenda)
+        private void ProcessarLinha(VndBEDocumentoVenda DocVenda, string tipoFatura)
         {
             // Linha 1 - Descrição com NºContador + Consumo Total
             // Linha 2 - Última leitura do ano passado + úlitma leitura feita este ano.
@@ -290,7 +295,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         }
 
 
-        private void CalcRegantes()
+        private void CalcRegantes(string tipoFatura)
         {
             _cultura = linhaDict["Cultura"];
             if (linhaDict["Data1"] != null && linhaDict["Leitura1"] != null)
