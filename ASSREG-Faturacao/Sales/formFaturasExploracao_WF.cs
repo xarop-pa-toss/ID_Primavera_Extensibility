@@ -20,7 +20,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
         //CalcRegantes globals
         private string _dataFull, _cultura, _tipoFatura;
-        private int _ano, _consumoTotal, _ultimaLeitura, _leitura1, _leitura2;
+        private int _ano, _ultimaLeitura, _leitura1, _leitura2, _consumoTotal;
         private int _escalao1, _escalao2;
         private Dictionary<string, StdBELista> DictTaxa = new Dictionary<string, StdBELista>();
         private double _taxa1, _taxa2, _taxa3, _consumo1, _consumo2, _consumo3;
@@ -97,6 +97,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             foreach (string path in ficheiros)
             {
                 Reset_linhaDict();
+                ResetVariaveis();
 
                 listBoxErros_WF.Items.Add("A ler ficheiro Excel: " + path);
                 ExcelControl_WF Excel = new ExcelControl_WF(@"" + path);
@@ -152,8 +153,8 @@ namespace ASRLB_ImportacaoFatura.Sales
                         else if (benefIgual && !contadorIgual && i > 0) // Um benef -> Vários contadores. Vão todos os contadores para a mesma fatura
                         {
                             PrepararDict(DtRow);
-                            CalcRegantes();
-                            ProcessarLinha(DocVenda);
+                            CalcRegantes(tipoFatura);
+                            ProcessarLinha(DocVenda, tipoFatura);
                         }
 
                         BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
@@ -225,7 +226,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
             // Linha 1 - Descrição com NºContador + Consumo Total
             // Linha 2 - Última leitura do ano passado + úlitma leitura feita este ano.
-            string descricao = String.Format("Contador {0}. Consumo total de {1} m³.", linhaDict["Contador"], linhaDict["Consumo"]);
+            string descricao = String.Format("Contador {0}. Consumo total: {1} m³.", linhaDict["Contador"], linhaDict["Consumo"]);
             string descricao2 = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["UltimaLeitura"], linhaDict["LeituraFinal"], linhaDict["DataLeituraFinal"]);
             BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao); _counterLinha++;
             BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao2); _counterLinha++;
@@ -236,10 +237,9 @@ namespace ASRLB_ImportacaoFatura.Sales
             while (true)
             {
                 // Contagens
-                // PSO.MensagensDialogos.MostraAviso(linhaDict["Contador"] + " - " + linhaDict["Consumo1"] + " -> " + linhaDict["Consumo2"] + " -> " + linhaDict["Consumo3"]);
-                if (linhaDict["Consumo1"] != "0") { CriarLinhaConsumo(DocVenda, 1); linhaDict["Consumo1"] = "0"; _counterLinha++; continue; }
-                if (linhaDict["Consumo2"] != "0") { CriarLinhaConsumo(DocVenda, 2); linhaDict["Consumo2"] = "0"; _counterLinha++; continue; }
-                if (linhaDict["Consumo3"] != "0") { CriarLinhaConsumo(DocVenda, 3); linhaDict["Consumo3"] = "0"; _counterLinha++; }
+                if (linhaDict["Consumo1"] != "0") { CriarLinhaConsumo(DocVenda, 1, tipoFatura); linhaDict["Consumo1"] = "0"; _counterLinha++; continue; }
+                if (linhaDict["Consumo2"] != "0") { CriarLinhaConsumo(DocVenda, 2, tipoFatura); linhaDict["Consumo2"] = "0"; _counterLinha++; continue; }
+                if (linhaDict["Consumo3"] != "0") { CriarLinhaConsumo(DocVenda, 3, tipoFatura); linhaDict["Consumo3"] = "0"; _counterLinha++; }
 
                 // Calcula TRH que depende da cultura e popula linhaDict["TRH"]. Esse valor é então usado como preço unitário na linha na fatura
                 CalcRegantes_TaxaRecursosHidricos(linhaDict["Cultura"]);
@@ -259,11 +259,16 @@ namespace ASRLB_ImportacaoFatura.Sales
             }
         }
 
-        private void CriarLinhaConsumo(VndBEDocumentoVenda DocVenda, int escalao)
+        private void CriarLinhaConsumo(VndBEDocumentoVenda DocVenda, int escalao, string tipoFatura)
         {
             double quantidade = Convert.ToDouble(linhaDict["Consumo" + escalao]);
             double precUnit = Convert.ToDouble(linhaDict["Taxa" + escalao]);
             string armazem = ""; string localizacao = "";
+
+            // BENACIATE
+            // Não tem escalões, por isso a linha pode ser escrita explicitamente.
+
+            if ()
 
             BSO.Vendas.Documentos.AdicionaLinha(DocVenda, "TE", ref quantidade, ref armazem, ref localizacao, precUnit);
 
@@ -313,13 +318,13 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             //int
             _ano = Convert.ToDateTime(_dataFull).Year;
-            _consumoTotal = CalcRegantes_ConsumoTotal();
+            _consumoTotal = CalcRegantes_ConsumoTotal(tipoFatura);
             linhaDict["Consumo"] = _consumoTotal.ToString();
 
             //Define _consumo1, _consumo2, _consumo3
-            CalcRegantes_Consumos();
+            CalcRegantes_Consumos(tipoFatura);
             //Define _taxa1, _taxa2, _taxa3 a serem aplicadas a cada consumo. _taxa1 é a mais baixa da tabela se _ano = 2022;
-            CalcRegantes_TaxasPenalizadoras();
+            CalcRegantes_TaxasPenalizadoras(tipoFatura);
 
             linhaDict["Taxa1"] = _taxa1.ToString();
             linhaDict["Consumo1"] = _consumo1.ToString();
@@ -329,7 +334,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             linhaDict["Consumo3"] = _consumo3.ToString();
         }
 
-        private int CalcRegantes_ConsumoTotal()
+        private int CalcRegantes_ConsumoTotal(string tipoFatura)
         {
             if (linhaDict["Leitura1"] == null && linhaDict["Leitura2"] == null)
             {
@@ -355,7 +360,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             }
         }
 
-        private void CalcRegantes_Consumos()
+        private void CalcRegantes_Consumos(string tipoFatura)
         {
             // Separação do consumo total pelos três escalões. Preenche o 1º escalão até ao seu limite antes de ir pro 2º. Será ignorado se for zero.
             // Se houver mais que 7000 de consumo, 5000 ficam no primeiro escalão, 2000 (diferença entre 5000 e 7000) ficam no segundo e o restante no terceiro.
@@ -366,20 +371,61 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             int escalao1e2 = _escalao1 + _escalao2;
             _consumo1 = 0; _consumo2 = 0; _consumo3 = 0;
+            double area = Convert.ToDouble(linhaDict["Area"]);
 
-            if (_consumoTotal >= escalao1e2)
+            // BENACIATE
+            // Só usamos o consumo total. Definimos _consumo1 = _consumoTotal para utilizar a mesma lógica que o outro tipo de faturação sem reescrever nada.
+            if (tipoFatura == "Benaciate")
             {
-                _consumo1 = _escalao1; _consumo2 = _escalao2; _consumo3 = _consumoTotal - escalao1e2;
+                _consumo1 = _consumoTotal;
+                _consumo1 *= area;
+                return;
             }
-            else if (_consumoTotal > _escalao1 && _consumoTotal <= escalao1e2)
+
+            // EXPLICAÇÃO CÁLCULOS
+            // Os valores base dos escalões são m3 por 1 hectare. Por essa razão, são calculados os consumos com base em 1 hectare, e então multiplicados pela área total de cada contador.
+            // Cada hectare "dá direito" ao valor base de um escalão. Ou seja, se um benef tiver 2 hectares, tem direito a 10000 m3 taxados no primeiro escalão em vez de 5000.
+            // e.g. Um consumo total de 11000 m3 em 1 hectare tería os escalões calculados a 5000 -> 2000 -> 4000. Para 3 hectares sería a 15000 -> 6000 -> 12000 (efectivamente o triplo).
+            
+            if (tipoFatura == "AHSLP")
             {
-                _consumo1 = _escalao1; _consumo2 = _consumoTotal - _escalao1; _consumo3 = 0;
+                if (_consumoTotal >= escalao1e2)
+                {
+                    _consumo1 = _escalao1; _consumo2 = _escalao2; _consumo3 = _consumoTotal - escalao1e2;
+                }
+                else if (_consumoTotal > _escalao1 && _consumoTotal <= escalao1e2)
+                {
+                    _consumo1 = _escalao1; _consumo2 = _consumoTotal - _escalao1; _consumo3 = 0;
+                }
+                else { _consumo1 = _consumoTotal; _escalao2 = 0; _consumo3 = 0; }
+
+                _consumo1 *= area;
+                _consumo2 *= area;
+                _consumo3 *= area;
             }
-            else { _consumo1 = _consumoTotal; _escalao2 = 0; _consumo3 = 0; }
         }
 
-        private void CalcRegantes_TaxasPenalizadoras()
+        private void CalcRegantes_TaxasPenalizadoras(string tipoFatura)
         {
+            _taxa1 = 0; _taxa2 = 0; _taxa3 = 0;
+
+            // BENACIATE
+            // Tem valores especificos para as taxas na mesma TDU_TaxasPenalizadoras
+            if (tipoFatura == "Benaciate")
+            {
+                if (_cultura == "PD")
+                {
+                    _taxa1 = DictTaxa["PD_Be"].Valor("CDU_escalaoUm");
+                }
+                else if (_cultura == "PP")
+                {
+                    _taxa1 = DictTaxa["PP_Be"].Valor("CDU_escalaoUm");
+                }
+
+                return;
+            }
+
+            // 
             if (_cultura != "CA")
             {
                 _taxa1 = DictTaxa[_cultura].Valor("CDU_escalaoUm");
@@ -392,6 +438,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 _taxa2 = DictTaxa[_cultura].Valor("CDU_escalaoArrozDois");
                 _taxa3 = DictTaxa[_cultura].Valor("CDU_escalaoArrozTres");
             }
+            return;
 
             if (_ano == 2022)
             {
@@ -417,15 +464,15 @@ namespace ASRLB_ImportacaoFatura.Sales
             // *** Componente U ***
             // _consumoTotal multiplicado pelo valor base TRH do Comp U -> resultado reduzido por 25%
             TRH_U = consumoTotal * baseTRH_U;
-            TRH_U = TRH_U * reducao25;
-            if (cultura == "CA") { TRH_U = TRH_U * reducao90; }
+            TRH_U = TRH_U - (TRH_U * reducao25);
+            if (cultura == "CA") { TRH_U = TRH_U - (TRH_U * reducao90); }
 
             // *** Componente A ***
             // _consumoTotal multiplicado pelo valor base TRH do Comp A - > resultado reduzido por 25% -> resultado agravado em 120%
             TRH_A = consumoTotal * baseTRH_A;
-            TRH_A = TRH_A * reducao25;
+            TRH_A = TRH_A - (TRH_A * reducao25);
             TRH_A = TRH_A * agravamento;
-            if (cultura == "CA") { TRH_A = TRH_A * reducao90; }
+            if (cultura == "CA") { TRH_A = TRH_A - (TRH_A * reducao90); }
 
             // *** TRH FINAL ***
             // Adição de TRH_A e TRH_U
@@ -436,6 +483,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         private void ResetVariaveis()
         {
             _counterLinha = 1;
+            _taxa1 = 0; _taxa2 = 0; _taxa3 = 0;
         }
 
         private void Reset_linhaDict()
