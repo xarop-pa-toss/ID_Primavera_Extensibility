@@ -50,23 +50,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             }
         }
 
-        private void btnRemover_WF_Click(object sender, EventArgs e)
-        {
-            var selection = listBoxFicheiros_WF.SelectedIndices;
-            if (selection.Count > 0)
-            {
-                for (int i = selection.Count; i > 0; i--)
-                {
-                    listBoxFicheiros_WF.Items.RemoveAt(selection[i - 1]);
-                }
-            }
-        }
-
-        private void btnLimparLista_WF_Click(object sender, EventArgs e)
-        {
-            listBoxFicheiros_WF.Items.Clear();
-        }
-
         private void formFaturasExploracao_WF_Load(object sender, EventArgs e)
         {
             // Carrega TDUs das Taxas Penalizadoras no arranque
@@ -88,6 +71,24 @@ namespace ASRLB_ImportacaoFatura.Sales
             DictTaxa.Add("CA", listaTaxa_CA);
             DictTaxa.Add("PD_Be", listaTaxa_PD_Benaciate);
             DictTaxa.Add("PP_Be", listaTaxa_PP_Benaciate);
+        }
+
+
+        private void btnRemover_WF_Click(object sender, EventArgs e)
+        {
+            var selection = listBoxFicheiros_WF.SelectedIndices;
+            if (selection.Count > 0)
+            {
+                for (int i = selection.Count; i > 0; i--)
+                {
+                    listBoxFicheiros_WF.Items.RemoveAt(selection[i - 1]);
+                }
+            }
+        }
+
+        private void btnLimparLista_WF_Click(object sender, EventArgs e)
+        {
+            listBoxFicheiros_WF.Items.Clear();
         }
 
         private void btnConfirmar_WF_Click(object sender, EventArgs e)
@@ -149,6 +150,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                             PrepararDict(DtRow); // Preenche dicionário com dados necessários.
                             ProcessarCabecDoc(DocVenda, tipoFatura);
                             CalcRegantes(tipoFatura); // Efectua cálculos de valores e taxas associadas.
+                            if (_consumoTotal == 0) { break; }
                             ProcessarLinha(DocVenda, tipoFatura); // Preenche linhasDoc com descrições e leituras com seus valores calculados.
                         }
                         else if (benefIgual && !contadorIgual && i > 0) // Um benef -> Vários contadores. Vão todos os contadores para a mesma fatura
@@ -170,6 +172,9 @@ namespace ASRLB_ImportacaoFatura.Sales
                         DocVenda.Dispose();
                     }
                     if (_comErro) { break; }
+                    listBoxErros_WF.Items.Add(" ");
+                    listBoxErros_WF.Items.Add("Folha processada com sucesso. Faturas foram emitidas.");
+                    listBoxErros_WF.Items.Add(" ");
                 }
                 if (_comErro) { break; }
                 else { if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); } }
@@ -211,7 +216,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosTodos;
             int vdDadosCondPag = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosCondPag;
 
-            if (tipoFatura == "Benaciate") { DocVenda.Tipodoc = "FTE"; }
+            if (tipoFatura == "Benaciate") { DocVenda.Tipodoc = "FVB"; }
             else if (tipoFatura == "AHSLP") { DocVenda.Tipodoc = "FTE";  }
 
             DocVenda.Serie = BSO.Base.Series.DaSerieDefeito("V", DocVenda.Tipodoc);
@@ -270,9 +275,17 @@ namespace ASRLB_ImportacaoFatura.Sales
             BSO.Vendas.Documentos.AdicionaLinha(DocVenda, "TE", ref quantidade, ref armazem, ref localizacao, precUnit);
 
             VndBELinhaDocumentoVenda linha = DocVenda.Linhas.GetEdita(_counterLinha);
-            if (tipoFatura != "Benaciate") { linha.Descricao = String.Format("{0}", _escaloes[escalao]); }
-            linha.Quantidade = Convert.ToDouble(linhaDict["Consumo" + escalao]);
+            if (tipoFatura == "Benaciate") 
+            {
+                linha.Quantidade = _consumoTotal;
+            }
+            else
+            {
+                linha.Descricao = String.Format("{0}", _escaloes[escalao]);
+                linha.Quantidade = Convert.ToDouble(linhaDict["Consumo" + escalao]);
+            }
             linha.PrecUnit = Convert.ToDouble(linhaDict["Taxa" + escalao]);
+
         }
 
         private string EmitirFatura(VndBEDocumentoVenda DocVenda)
@@ -481,6 +494,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
             _counterLinha = 1;
             _taxa1 = 0; _taxa2 = 0; _taxa3 = 0;
+            _consumo1 = 0; _consumo2 = 0; _consumo3 = 0;
         }
 
         private void Reset_linhaDict()

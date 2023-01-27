@@ -23,7 +23,7 @@ namespace ASRLB_ImportacaoFatura
 
                 conString = @"Provider=Microsoft.ACE.OLEDB.12.0;"
                             + "Data Source='" + FicheiroCopiado + "'"
-                            + ";Extended Properties=\"Excel 12.0;HDR=NO;\"";
+                            + ";Extended Properties=\"Excel 12.0 Xml;HDR=NO;\"";
 
                 // Trata ficheiro e carrega para DataSet
                 RemoverCelulasUnidas(FicheiroCopiado);
@@ -131,8 +131,7 @@ namespace ASRLB_ImportacaoFatura
 
                         Adapter = new OleDb.OleDbDataAdapter();
                         Adapter.SelectCommand = cmdConteudoLinha;
-                        Adapter.Fill(DtSet, "Tabela" + ind);
-                        
+                        Adapter.Fill(DtSet, "Tabela" + ind);     
                         Adapter.Dispose();
                         cmdConteudoLinha.Dispose();
                         Ligacao.Close();
@@ -154,8 +153,9 @@ namespace ASRLB_ImportacaoFatura
                         DtTable.Columns[13].ColumnName = "Data 2";
                         DtTable.Columns[14].ColumnName = "Leitura 2";
 
+                        // Sort da tabela por benef para conseguir faturar vários contadores de uma vez
                         DtTable.DefaultView.Sort = "Benef";
-
+                        DtTable = DtTable.DefaultView.ToTable();
 
                         // *** Validação das linhas de acordo com critérios ***
                         // DataTable.Delete() não apaga linha no momento mas marca para ser apagada. Só quando se chama DataTable.AcceptChanges() é que todas as linhas marcadas são removidas. ***
