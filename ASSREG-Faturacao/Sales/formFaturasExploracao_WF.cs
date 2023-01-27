@@ -71,7 +71,8 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
             // Carrega TDUs das Taxas Penalizadoras no arranque
             //public StdPlatBS PSO = new StdPlatBS();
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "IDCLONE", "id", "pelicano");
+            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "ASSREG", "id", "*Pelicano*");
+            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "IDCLONE", "id", "pelicano");
 
             StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
             StdBELista listaTaxa_PP = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP';");
@@ -116,10 +117,10 @@ namespace ASRLB_ImportacaoFatura.Sales
                     listBoxErros_WF.Items.Add("FOLHA: " + folhasList[nomeFolhaInd]);
                     nomeFolhaInd++;
 
+                    if (!BSO.EmTransaccao()) { BSO.IniciaTransaccao(); }
+
                     for (int i = 0; i < DtTable.Rows.Count; i++)
                     {
-                        if (!BSO.EmTransaccao()) { BSO.IniciaTransaccao(); }
-
                         _comErro = false;
 
                         DataRow DtRow = DtTable.Rows[i];
@@ -146,7 +147,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                             _counterLinha = 1;
 
                             PrepararDict(DtRow); // Preenche dicionário com dados necessários.
-                            ProcessarCabecDoc(DocVenda);
+                            ProcessarCabecDoc(DocVenda, tipoFatura);
                             CalcRegantes(tipoFatura); // Efectua cálculos de valores e taxas associadas.
                             ProcessarLinha(DocVenda, tipoFatura); // Preenche linhasDoc com descrições e leituras com seus valores calculados.
                         }
@@ -169,9 +170,9 @@ namespace ASRLB_ImportacaoFatura.Sales
                         DocVenda.Dispose();
                     }
                     if (_comErro) { break; }
-                    else { if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); } }
                 }
                 if (_comErro) { break; }
+                else { if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); } }
             }
         }
 
@@ -205,12 +206,14 @@ namespace ASRLB_ImportacaoFatura.Sales
             linhaDict["Consumo3"] = null;
         }
 
-        private void ProcessarCabecDoc(VndBEDocumentoVenda DocVenda)
+        private void ProcessarCabecDoc(VndBEDocumentoVenda DocVenda, string tipoFatura)
         {
             int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosTodos;
             int vdDadosCondPag = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosCondPag;
 
-            DocVenda.Tipodoc = "FTE";
+            if (tipoFatura == "Benaciate") { DocVenda.Tipodoc = "FTE"; }
+            else if (tipoFatura == "AHSLP") { DocVenda.Tipodoc = "FTE";  }
+
             DocVenda.Serie = BSO.Base.Series.DaSerieDefeito("V", DocVenda.Tipodoc);
             DocVenda.Entidade = linhaDict["Benef"];
             DocVenda.TipoEntidade = "C";
@@ -244,7 +247,6 @@ namespace ASRLB_ImportacaoFatura.Sales
                 // Calcula TRH que depende da cultura e popula linhaDict["TRH"]. Esse valor é então usado como preço unitário na linha na fatura
                 CalcRegantes_TaxaRecursosHidricos(linhaDict["Cultura"]);
                 double precUnitTRH = Convert.ToDouble(linhaDict["TRH"]);
-
                 double quantidadeTRH = 1;
                 string armazem = ""; string localizacao = "";
 
@@ -265,15 +267,10 @@ namespace ASRLB_ImportacaoFatura.Sales
             double precUnit = Convert.ToDouble(linhaDict["Taxa" + escalao]);
             string armazem = ""; string localizacao = "";
 
-            // BENACIATE
-            // Não tem escalões, por isso a linha pode ser escrita explicitamente.
-
-            if ()
-
             BSO.Vendas.Documentos.AdicionaLinha(DocVenda, "TE", ref quantidade, ref armazem, ref localizacao, precUnit);
 
             VndBELinhaDocumentoVenda linha = DocVenda.Linhas.GetEdita(_counterLinha);
-            linha.Descricao = String.Format("{0}", _escaloes[escalao]);
+            if (tipoFatura != "Benaciate") { linha.Descricao = String.Format("{0}", _escaloes[escalao]); }
             linha.Quantidade = Convert.ToDouble(linhaDict["Consumo" + escalao]);
             linha.PrecUnit = Convert.ToDouble(linhaDict["Taxa" + escalao]);
         }
@@ -294,7 +291,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                     listBoxErros_WF.SelectedIndex = listBoxErros_WF.Items.Count - 1;
                     return "";
                 }
-                else { return strErro; }
+                else { _comErro = true; return strErro; }
             }
             catch (Exception e) { _comErro = true; return e.ToString(); }
         }

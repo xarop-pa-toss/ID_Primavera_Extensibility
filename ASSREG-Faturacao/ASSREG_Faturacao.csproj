@@ -117,7 +117,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExcelControl _WF.cs" />
+    <Compile Include="ExcelControl_WF.cs" />
     <Compile Include="Sales\formFaturasExploracao_WF.cs">
       <SubType>Form</SubType>
     </Compile>
