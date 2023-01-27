@@ -81,7 +81,7 @@ namespace ASRLB_ImportacaoFatura
             }
             catch
             {
-                throw new ExcelControlException("Não foi possivel terminar a instância de Excel. Por favor termine o Microsoft Excel no Gestor de Tarefas.");
+                throw new ExcelControlException("Não foi possivel terminar a instância de Excel. Por favor termine o Microsoft Excel no Gestor de Tarefas.\n\n");
                 App = null;
             }
             finally { GC.Collect(); }
@@ -128,13 +128,18 @@ namespace ASRLB_ImportacaoFatura
                         //string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + nomeFolha + "A6:R" + linhasTotal + "];";
                         string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + nomeFolha + "A6:R" + linhasTotal + "];";
                         cmdConteudoLinha = new OleDb.OleDbCommand(query, Ligacao);
-
                         Adapter = new OleDb.OleDbDataAdapter();
+
                         Adapter.SelectCommand = cmdConteudoLinha;
-                        Adapter.Fill(DtSet, "Tabela" + ind);     
+                        Adapter.Fill(DtSet, "Tabela" + ind);
                         Adapter.Dispose();
                         cmdConteudoLinha.Dispose();
                         Ligacao.Close();
+
+                        // Sort da tabela por Benef para conseguir faturar vários contadores de uma vez, utilizando uma tabela buffer
+                        //DataTable buffer = new DataTable();
+                        //Adapter.Fill(buffer);
+                        //buffer.DefaultView.Sort = "Benef ASC";
 
                         DataTable DtTable = DtSet.Tables[ind];
                         DtTable.Columns[0].ColumnName = "Prédio";
@@ -153,13 +158,20 @@ namespace ASRLB_ImportacaoFatura
                         DtTable.Columns[13].ColumnName = "Data 2";
                         DtTable.Columns[14].ColumnName = "Leitura 2";
 
-                        // Sort da tabela por benef para conseguir faturar vários contadores de uma vez
-                        DtTable.DefaultView.Sort = "Benef";
-                        DtTable = DtTable.DefaultView.ToTable();
-
                         // *** Validação das linhas de acordo com critérios ***
-                        // DataTable.Delete() não apaga linha no momento mas marca para ser apagada. Só quando se chama DataTable.AcceptChanges() é que todas as linhas marcadas são removidas. ***
+                        // DataTable.Delete() não apaga linha no momento mas marca para ser apagada. Só quando se chama DataTable.AcceptChanges() é que todas as linhas marcadas são removidas
                         DtTable.AcceptChanges(); // Deixa a DataTable num estado estável para poder ser manipulada sem erros.
+
+                        DataTable buffer = new DataTable();
+                        DtSet.Tables[ind].DefaultView.Sort = "Benef ASC";
+                        buffer = DtSet.Tables[ind].DefaultView.ToTable();
+
+                        DtSet.Tables[ind].Rows.Clear();
+                        foreach (DataRow row in buffer.Rows)
+                        {
+                            DtSet.Tables[ind].Rows.Add(row.ItemArray);
+                        }
+                        
                         
                         string processar, predio, benef;
 
