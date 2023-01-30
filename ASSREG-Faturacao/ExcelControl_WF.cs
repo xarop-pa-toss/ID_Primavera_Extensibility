@@ -136,11 +136,6 @@ namespace ASRLB_ImportacaoFatura
                         cmdConteudoLinha.Dispose();
                         Ligacao.Close();
 
-                        // Sort da tabela por Benef para conseguir faturar vários contadores de uma vez, utilizando uma tabela buffer
-                        //DataTable buffer = new DataTable();
-                        //Adapter.Fill(buffer);
-                        //buffer.DefaultView.Sort = "Benef ASC";
-
                         DataTable DtTable = DtSet.Tables[ind];
                         DtTable.Columns[0].ColumnName = "Prédio";
                         DtTable.Columns[1].ColumnName = "Área";
@@ -160,18 +155,7 @@ namespace ASRLB_ImportacaoFatura
 
                         // *** Validação das linhas de acordo com critérios ***
                         // DataTable.Delete() não apaga linha no momento mas marca para ser apagada. Só quando se chama DataTable.AcceptChanges() é que todas as linhas marcadas são removidas
-                        DtTable.AcceptChanges(); // Deixa a DataTable num estado estável para poder ser manipulada sem erros.
-
-                        DataTable buffer = new DataTable();
-                        DtSet.Tables[ind].DefaultView.Sort = "Benef ASC";
-                        buffer = DtSet.Tables[ind].DefaultView.ToTable();
-
-                        DtSet.Tables[ind].Rows.Clear();
-                        foreach (DataRow row in buffer.Rows)
-                        {
-                            DtSet.Tables[ind].Rows.Add(row.ItemArray);
-                        }
-                        
+                        DtTable.AcceptChanges(); // Deixa a DataTable num estado estável para poder ser manipulada sem erros.                        
                         
                         string processar, predio, benef;
 
@@ -198,7 +182,18 @@ namespace ASRLB_ImportacaoFatura
                             benef = DtTable.Rows[lin].Field<double>("Benef").ToString().PadLeft(5, '0');
                             predio = DtTable.Rows[lin].Field<string>("Prédio");
                         }
+                        DtTable.AcceptChanges();
+                        
+                        // Uso de tabela de buffer para dar sort às linhas por Benef. Necessário para faturar vários contadores por fatura mesmo que não estejam logo na linha abaixo.
+                        DataTable buffer = new DataTable();
+                        DtTable.DefaultView.Sort = "Benef ASC";
+                        buffer = DtTable.DefaultView.ToTable();
 
+                        DtTable.Rows.Clear();
+                        foreach (DataRow row in buffer.Rows)
+                        {
+                            DtTable.Rows.Add(row.ItemArray);
+                        }
                         DtTable.AcceptChanges();
 
                         // Nova primeira coluna com numeração das linhas

@@ -13,7 +13,8 @@ namespace ASRLB_ImportacaoFatura.Sales
         public static Dictionary<string, string> linhaDict { get; set; }
         public Dictionary<int, string> _escaloes = new Dictionary<int, string>();
         public Dictionary<int, string> _escaloesArroz = new Dictionary<int, string>();
-        private int _counterLinha = 1;
+        private int _counterLinha = 1; 
+        private int _countContador = 0;
         private bool _comErro = false;
         private ErpBS BSO = new ErpBS();
         private StdPlatBS PSO = new StdPlatBS();
@@ -32,22 +33,6 @@ namespace ASRLB_ImportacaoFatura.Sales
         public formFaturasExploracao_WF()
         {
             InitializeComponent();
-        }
-
-        private void btnEscolherFicheiro_WF_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog form = new OpenFileDialog();
-
-            form.Filter = "Ficheiros Excel (*.xlsx)|*.xlsx|Todos os ficheiros (*.*)|*.*"; ;
-            form.FilterIndex = 2;
-            form.Multiselect = true;
-            form.RestoreDirectory = true;
-
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                string[] ficheiros = form.FileNames;
-                listBoxFicheiros_WF.Items.AddRange(ficheiros);
-            }
         }
 
         private void formFaturasExploracao_WF_Load(object sender, EventArgs e)
@@ -73,6 +58,22 @@ namespace ASRLB_ImportacaoFatura.Sales
             DictTaxa.Add("PP_Be", listaTaxa_PP_Benaciate);
         }
 
+
+        private void btnEscolherFicheiro_WF_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog form = new OpenFileDialog();
+
+            form.Filter = "Ficheiros Excel (*.xlsx)|*.xlsx|Todos os ficheiros (*.*)|*.*"; ;
+            form.FilterIndex = 2;
+            form.Multiselect = true;
+            form.RestoreDirectory = true;
+
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                string[] ficheiros = form.FileNames;
+                listBoxFicheiros_WF.Items.AddRange(ficheiros);
+            }
+        }
 
         private void btnRemover_WF_Click(object sender, EventArgs e)
         {
@@ -111,7 +112,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 int nomeFolhaInd = 0;
 
                 Excel.EliminarCopia(@"" + path);
-
+                
                 foreach (DataTable DtTable in DtSet.Tables)
                 {
                     VndBEDocumentoVenda DocVenda = new VndBEDocumentoVenda();
@@ -140,8 +141,9 @@ namespace ASRLB_ImportacaoFatura.Sales
                             //Exclui primeira linha por ainda não existir nada
                             if (i > 0)
                             {
-                                string emFat = EmitirFatura(DocVenda);
-                                if (emFat != "") { ErroAoEmitir(emFat); break; }
+                                string erroFatura = EmitirFatura(DocVenda);
+                                if (erroFatura != "") { ErroAoEmitir(erroFatura); break; }
+                                _countContador = 0;
                             }
 
                             DocVenda = new VndBEDocumentoVenda();
@@ -155,6 +157,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                         }
                         else if (benefIgual && !contadorIgual && i > 0) // Um benef -> Vários contadores. Vão todos os contadores para a mesma fatura
                         {
+                            _countContador++;
                             PrepararDict(DtRow);
                             CalcRegantes(tipoFatura);
                             ProcessarLinha(DocVenda, tipoFatura);
@@ -165,8 +168,8 @@ namespace ASRLB_ImportacaoFatura.Sales
                         // Catch para a última linha do DataSet
                         if (i == DtTable.Rows.Count - 1)
                         {
-                            string emFat = EmitirFatura(DocVenda);
-                            if (emFat != "") { ErroAoEmitir(emFat); break; }
+                            string erroFat = EmitirFatura(DocVenda);
+                            if (erroFat != "") { ErroAoEmitir(erroFat); break; }
                         }
 
                         DocVenda.Dispose();
@@ -175,6 +178,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                     listBoxErros_WF.Items.Add(" ");
                     listBoxErros_WF.Items.Add("Folha processada com sucesso. Faturas foram emitidas.");
                     listBoxErros_WF.Items.Add(" ");
+                    listBoxErros_WF.SelectedIndex = listBoxErros_WF.Items.Count - 1;
                 }
                 if (_comErro) { break; }
                 else { if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); } }
@@ -300,7 +304,8 @@ namespace ASRLB_ImportacaoFatura.Sales
                 if (DocVenda.TotalDocumento >= 2 && BSO.Vendas.Documentos.ValidaActualizacao(DocVenda, BSO.Vendas.TabVendas.Edita(DocVenda.Tipodoc), ref serie, ref strErro))
                 {
                     BSO.Vendas.Documentos.Actualiza(DocVenda, ref strAvisos, ref strErro);
-                    listBoxErros_WF.Items.Add(String.Format("Contador {0} para Benef {1} processado com sucesso na Fatura {2}.", linhaDict["Contador"], DocVenda.Entidade, DocVenda.NumDoc));
+                    if (strErro != "") { _comErro = true; return strErro; }
+                    listBoxErros_WF.Items.Add(String.Format("Benef {0} - processados {1} contadores com sucesso na Fatura {2}.", DocVenda.Entidade, _countContador + 1, DocVenda.NumDoc));
                     listBoxErros_WF.SelectedIndex = listBoxErros_WF.Items.Count - 1;
                     return "";
                 }
@@ -547,7 +552,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             //PSO.MensagensDialogos.MostraErro("Load Finished");
         }
 
-        private void ErroAoEmitir(string erroSistema)
+        private void ErroAoEmitir(string erroFatura)
         {
             listBoxErros_WF.Items.Add("");
             listBoxErros_WF.Items.Add("*** ERRO ***");
@@ -561,7 +566,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             //{
             //    erro = erro + "\n" + kv.Key + ": " + kv.Value;
             //}
-            erro = erro + "\n\n *** Erro de sistema ***\n" + erroSistema;
+            erro = erro + "\n\n *** Erro de sistema ***\n" + erroFatura;
 
             StdPlatBS PSO = new StdPlatBS();
             PSO.MensagensDialogos.MostraErro("Dados inválidos na fatura ou cliente. Ver detalhes abaixo", StdPlatBS100.StdBSTipos.IconId.PRI_Critico, erro);
