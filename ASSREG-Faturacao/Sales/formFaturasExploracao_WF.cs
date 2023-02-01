@@ -39,8 +39,8 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
             // Carrega TDUs das Taxas Penalizadoras no arranque
             //public StdPlatBS PSO = new StdPlatBS();
-            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "ASSREG", "id", "*Pelicano*");
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "IDCLONE", "id", "pelicano");
+            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "ASSREG", "id", "*Pelicano*");
+            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "IDCLONE", "id", "pelicano");
 
             StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
             StdBELista listaTaxa_PP = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP';");
@@ -102,19 +102,33 @@ namespace ASRLB_ImportacaoFatura.Sales
                 Reset_linhaDict();
                 ResetVariaveis();
 
-                listBoxErros_WF.Items.Add("A ler ficheiro Excel: " + path);
+                listBoxErros_WF.Items.Add("A abrir ficheiro Excel: " + path);
                 ExcelControl_WF Excel = new ExcelControl_WF(@"" + path);
+                listBoxErros_WF.Items.Add("A carregar folhas...");
 
-                listBoxErros_WF.Items.Add("A carregar ficheiro Excel");
-                listBoxErros_WF.Refresh();
-                DataSet DtSet = Excel.CarregarDataSet(@"" + path, Excel.conString);
+                // Array de strings passado por referência para preencher com erros do ficheiro Excel.
+                List<string> errosExcel = new List<string>();
+                DataSet DtSet = Excel.CarregarDataSet(@"" + path, Excel.conString, ref errosExcel);
+                if (errosExcel.Count > 0)
+                {
+                    PSO.MensagensDialogos.MostraErro("Erros nas linhas do Excel. Ver contadores com erro na caixa e corrigir ficheiro.");
+
+                    foreach (string erro in errosExcel)
+                    {
+                        listBoxErros_WF.Items.Add(erro);
+                    }
+                    break;
+                }
+
+
                 List<string> folhasList = Excel.folhasList;
                 int nomeFolhaInd = 0;
 
-                Excel.EliminarCopia(@"" + path);
+     //           Excel.EliminarCopia(@"" + path);
                 
-                foreach (DataTable DtTable in DtSet.Tables)
-                {
+                //foreach (DataTable DtTable in DtSet.Tables)
+                //{
+                    DataTable DtTable = DtSet.Tables["Tabela"];
                     VndBEDocumentoVenda DocVenda = new VndBEDocumentoVenda();
                     listBoxErros_WF.Items.Add("FOLHA: " + folhasList[nomeFolhaInd]);
                     nomeFolhaInd++;
@@ -124,7 +138,6 @@ namespace ASRLB_ImportacaoFatura.Sales
                     for (int i = 0; i < DtTable.Rows.Count; i++)
                     {
                         _comErro = false;
-
                         DataRow DtRow = DtTable.Rows[i];
 
                         // benefIgual é True se Benef na nova linha for igual ao da linha anterior (ainda no linhaDict)
@@ -152,7 +165,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                             PrepararDict(DtRow); // Preenche dicionário com dados necessários.
                             ProcessarCabecDoc(DocVenda, tipoFatura);
                             CalcRegantes(tipoFatura); // Efectua cálculos de valores e taxas associadas.
-                            if (_consumoTotal == 0) { break; }
+                            if (_consumoTotal == 0) { continue; }
                             ProcessarLinha(DocVenda, tipoFatura); // Preenche linhasDoc com descrições e leituras com seus valores calculados.
                         }
                         else if (benefIgual && !contadorIgual && i > 0) // Um benef -> Vários contadores. Vão todos os contadores para a mesma fatura
@@ -179,40 +192,50 @@ namespace ASRLB_ImportacaoFatura.Sales
                     listBoxErros_WF.Items.Add("Folha processada com sucesso. Faturas foram emitidas.");
                     listBoxErros_WF.Items.Add(" ");
                     listBoxErros_WF.SelectedIndex = listBoxErros_WF.Items.Count - 1;
-                }
-                if (_comErro) { break; }
-                else { if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); } }
+                    if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); }
             }
+                //if (_comErro) { break; }
+                //if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); } 
+            //}
         }
 
 
         private void PrepararDict(DataRow DtRow)
         {
-            // Dados Excel
-            // TRH e Taxa Penalizadora vêm como 'S' ou 'N'. Se 'S', substituir pelo valor. Se 'N', cancelar.
-            linhaDict["Predio"] = DtRow.Field<string>("Prédio");
-            linhaDict["Area"] = DtRow.Field<double>("Área").ToString();
-            linhaDict["Cultura"] = DtRow.Field<string>("Cultura");
-            linhaDict["TRH"] = DtRow.Field<string>("TRH").ToString();
-            linhaDict["TaxaPenalizadora"] = DtRow.Field<string>("Tx Penalizadora");
-            linhaDict["Contador"] = DtRow.Field<string>("Nº Contador");
+            try
+            {
+                // Dados Excel
+                // TRH e Taxa Penalizadora vêm como 'S' ou 'N'. Se 'S', substituir pelo valor. Se 'N', cancelar.
+                linhaDict["Contador"] = DtRow.Field<string>("Nº Contador");
+                linhaDict["Predio"] = DtRow.Field<string>("Prédio");
+                linhaDict["Area"] = DtRow.Field<double?>("Área").ToString();
+                linhaDict["Cultura"] = DtRow.Field<string>("Cultura");
+                linhaDict["TRH"] = DtRow.Field<string>("TRH").ToString();
+                linhaDict["TaxaPenalizadora"] = DtRow.Field<string>("Tx Penalizadora");
 
-            // Transform do Benef para ser igual às Entidades no Primavera.
-            linhaDict["Benef"] = DtRow.Field<double?>("Benef").ToString().PadLeft(5, '0');
-            linhaDict["Nome"] = DtRow.Field<string>("Nome");
-            linhaDict["UltimaLeitura"] = DtRow.Field<double>("Última Leitura").ToString();
-            linhaDict["Data1"] = DtRow.Field<DateTime>("Data 1").ToString("dd/MM/yyyy");
-            linhaDict["Leitura1"] = DtRow.Field<double>("Leitura 1").ToString();
-            linhaDict["Data2"] = DtRow.Field<DateTime>("Data 2").ToString("dd/MM/yyyy");
-            linhaDict["Leitura2"] = DtRow.Field<double>("Leitura 2").ToString();
+                // Transform do Benef para ser igual às Entidades no Primavera.
+                linhaDict["Benef"] = DtRow.Field<double?>("Benef").ToString().PadLeft(5, '0');
+                linhaDict["Nome"] = DtRow.Field<string>("Nome");
+                linhaDict["UltimaLeitura"] = DtRow.Field<double>("Última Leitura").ToString();
+                linhaDict["Data1"] = DtRow.Field<DateTime>("Data 1").ToString("dd/MM/yyyy");
+                linhaDict["Leitura1"] = DtRow.Field<double>("Leitura 1").ToString();
+                linhaDict["Data2"] = DtRow.Field<DateTime>("Data 2").ToString("dd/MM/yyyy");
+                linhaDict["Leitura2"] = DtRow.Field<double>("Leitura 2").ToString();
 
-            // Reset aos valores calculados por CalcRegantes;
-            linhaDict["Taxa1"] = null;
-            linhaDict["Consumo1"] = null;
-            linhaDict["Taxa2"] = null;
-            linhaDict["Consumo2"] = null;
-            linhaDict["Taxa3"] = null;
-            linhaDict["Consumo3"] = null;
+                // Reset aos valores calculados por CalcRegantes;
+                linhaDict["Taxa1"] = null;
+                linhaDict["Consumo1"] = null;
+                linhaDict["Taxa2"] = null;
+                linhaDict["Consumo2"] = null;
+                linhaDict["Taxa3"] = null;
+                linhaDict["Consumo3"] = null;
+            }
+            catch(Exception e) 
+            { 
+                if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
+                listBoxErros_WF.Items.Add("Existem pelo menos uma linha com valores nulos. Por favor corrija o ficheiro Excel.");
+                PSO.MensagensDialogos.MostraErro("Contador " + linhaDict["Contador"] + ". Por favor corrija o ficheiro Excel.", StdBSTipos.IconId.PRI_Critico, e.ToString());
+            }
         }
 
         private void ProcessarCabecDoc(VndBEDocumentoVenda DocVenda, string tipoFatura)
@@ -230,7 +253,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             DocVenda.DataDoc = DateTime.Now;
             DocVenda.HoraDefinida = false;
-            DocVenda.CondPag = "01";
+            DocVenda.CondPag = "1";
             BSO.Vendas.Documentos.PreencheDadosRelacionados(DocVenda, ref vdDadosCondPag);
         }
 
@@ -289,7 +312,6 @@ namespace ASRLB_ImportacaoFatura.Sales
                 linha.Quantidade = Convert.ToDouble(linhaDict["Consumo" + escalao]);
             }
             linha.PrecUnit = Convert.ToDouble(linhaDict["Taxa" + escalao]);
-
         }
 
         private string EmitirFatura(VndBEDocumentoVenda DocVenda)
@@ -554,6 +576,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
         private void ErroAoEmitir(string erroFatura)
         {
+            if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
             listBoxErros_WF.Items.Add("");
             listBoxErros_WF.Items.Add("*** ERRO ***");
             listBoxErros_WF.Items.Add(String.Format("Contador {0} para Benef {1} - {2} não foi processado correctamente.", linhaDict["Contador"], linhaDict["Benef"], linhaDict["Nome"]));
@@ -566,13 +589,11 @@ namespace ASRLB_ImportacaoFatura.Sales
             //{
             //    erro = erro + "\n" + kv.Key + ": " + kv.Value;
             //}
-            erro = erro + "\n\n *** Erro de sistema ***\n" + erroFatura;
+            erro = erro + "*** Erro de sistema no Contador " + linhaDict["Contador"] + "***\n" + erroFatura;
 
             StdPlatBS PSO = new StdPlatBS();
-            PSO.MensagensDialogos.MostraErro("Dados inválidos na fatura ou cliente. Ver detalhes abaixo", StdPlatBS100.StdBSTipos.IconId.PRI_Critico, erro);
+            PSO.MensagensDialogos.MostraErro("Dados inválidos na fatura ou cliente. Ver detalhes abaixo", StdBSTipos.IconId.PRI_Critico, erro);
             _comErro = true;
-
-            if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
         }
     }
 }

@@ -88,15 +88,14 @@ namespace ASRLB_ImportacaoFatura
         }
 
         // Abre ligação e preenche DataSet com query ao ficheiro Excel. Fecha ligação no final.
-        public DataSet CarregarDataSet(string origem, string conString)
+        public DataSet CarregarDataSet(string origem, string conString, ref List<string> errosExcel)
         {
             using (OleDb.OleDbConnection Ligacao = new OleDb.OleDbConnection(conString))
             {
                 try
                 {
                     Ligacao.Open();
-
-                    // Get 
+                    // Get schema for sheet names
                     DataTable dtExcelSchema = Ligacao.GetOleDbSchemaTable(OleDb.OleDbSchemaGuid.Tables, null);
                     folhasList = new List<string>(dtExcelSchema.Rows.Count);
                     foreach (DataRow row in dtExcelSchema.Rows)
@@ -105,7 +104,6 @@ namespace ASRLB_ImportacaoFatura
                         if (nomeFolha.EndsWith("$") || nomeFolha.EndsWith("$'")) // Exclui hidden sheets
                             folhasList.Add(row["TABLE_NAME"].ToString());
                     }
-                    
                     Ligacao.Close();
 
                     DataSet DtSet = new DataSet();
@@ -114,19 +112,16 @@ namespace ASRLB_ImportacaoFatura
                     OleDb.OleDbDataAdapter Adapter;
                     int ind = 0;
 
+                    Ligacao.Open();
                     foreach (string nomeFolha in folhasList)
                     {
-                        Ligacao.Open();
-
                         // Get total linhas usadas
-                        cmdTotalLinhas = new OleDb.OleDbCommand ("SELECT Count(*) FROM [" + nomeFolha + "];", Ligacao);
+                        cmdTotalLinhas = new OleDb.OleDbCommand("SELECT Count(*) FROM [" + nomeFolha + "];", Ligacao);
                         int linhasTotal = (int)cmdTotalLinhas.ExecuteScalar() - 5;
                         cmdTotalLinhas.Dispose();
-                        
 
                         // Get linhas da folha. Preenche adapter
-                        //string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + nomeFolha + "A6:R" + linhasTotal + "];";
-                        string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + nomeFolha + "A6:R" + linhasTotal + "];";
+                        string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + nomeFolha + "A6:R];";
                         cmdConteudoLinha = new OleDb.OleDbCommand(query, Ligacao);
                         Adapter = new OleDb.OleDbDataAdapter();
 
@@ -134,81 +129,95 @@ namespace ASRLB_ImportacaoFatura
                         Adapter.Fill(DtSet, "Tabela" + ind);
                         Adapter.Dispose();
                         cmdConteudoLinha.Dispose();
-                        Ligacao.Close();
-
-                        DataTable DtTable = DtSet.Tables[ind];
-                        DtTable.Columns[0].ColumnName = "Prédio";
-                        DtTable.Columns[1].ColumnName = "Área";
-                        DtTable.Columns[2].ColumnName = "Cultura";
-                        DtTable.Columns[3].ColumnName = "Processar";
-                        DtTable.Columns[4].ColumnName = "Contador Ligado";
-                        DtTable.Columns[5].ColumnName = "TRH";
-                        DtTable.Columns[6].ColumnName = "Tx Penalizadora";
-                        DtTable.Columns[7].ColumnName = "Nº Contador";
-                        DtTable.Columns[8].ColumnName = "Benef";
-                        DtTable.Columns[9].ColumnName = "Nome";
-                        DtTable.Columns[10].ColumnName = "Última Leitura";
-                        DtTable.Columns[11].ColumnName = "Data 1";
-                        DtTable.Columns[12].ColumnName = "Leitura 1";
-                        DtTable.Columns[13].ColumnName = "Data 2";
-                        DtTable.Columns[14].ColumnName = "Leitura 2";
-
-                        // *** Validação das linhas de acordo com critérios ***
-                        // DataTable.Delete() não apaga linha no momento mas marca para ser apagada. Só quando se chama DataTable.AcceptChanges() é que todas as linhas marcadas são removidas
-                        DtTable.AcceptChanges(); // Deixa a DataTable num estado estável para poder ser manipulada sem erros.                        
-                        
-                        string processar, predio, benef;
-
-                        for (int lin = 0; lin < DtTable.Rows.Count; lin++)
-                        {
-                            // Se contador for nulo, apaga linha e ignora.
-                            if (DtTable.Rows[lin].Field<string>("Nº Contador") == null)
-                            {
-                                DtTable.Rows[lin].Delete();
-                                continue;
-                            }
-
-                            // Se não tiver leituras, apaga linha e ignora
-                            if (DtTable.Rows[lin].Field<DateTime?>("Data 1").ToString() == null && DtTable.Rows[lin].Field<DateTime?>("Data 2").ToString() == null)
-                            {
-                                DtTable.Rows[lin].Delete();
-                                continue;
-                            }
-
-                            processar = DtTable.Rows[lin].Field<string>("Processar");
-                            if (processar == "N" || processar == null || processar == "") { DtTable.Rows[lin].Delete(); continue; }
-                            else if (processar != "S") { throw new Exception("Valor da coluna 'Processar' ( " + processar + " ) na linha " + (lin - 5).ToString() + " da folha " + nomeFolha + " não é valido.\n\n DtTable.Rows.Count: " + DtTable.Rows.Count+"\nLinhasTotal : " + (linhasTotal) + "\nlin: " + lin); return DtSet; }
-
-                            benef = DtTable.Rows[lin].Field<double>("Benef").ToString().PadLeft(5, '0');
-                            predio = DtTable.Rows[lin].Field<string>("Prédio");
-                        }
-                        DtTable.AcceptChanges();
-                        
-                        // Uso de tabela de buffer para dar sort às linhas por Benef. Necessário para faturar vários contadores por fatura mesmo que não estejam logo na linha abaixo.
-                        DataTable buffer = new DataTable();
-                        DtTable.DefaultView.Sort = "Benef ASC";
-                        buffer = DtTable.DefaultView.ToTable();
-
-                        DtTable.Rows.Clear();
-                        foreach (DataRow row in buffer.Rows)
-                        {
-                            DtTable.Rows.Add(row.ItemArray);
-                        }
-                        DtTable.AcceptChanges();
-
-                        // Nova primeira coluna com numeração das linhas
-                        DtTable.Columns.Add("#", typeof(int)).SetOrdinal(0);
-                        for (int i = 0; i < DtTable.Rows.Count; i++) { DtTable.Rows[i][0] = i + 1; }
-
+                        //System.Windows.Forms.MessageBox.Show("Tabela" + ind + " rows: " + DtSet.Tables["Tabela" + ind].Rows.Count + "\n linhastotal: "+ linhasTotal);
                         ind++;
                     }
                     Ligacao.Close();
-                    return DtSet;
-                }
-                catch (IOException e) { PSO.MensagensDialogos.MostraAviso("Não foi possível estabelecer ligação ao ficheiro!\n\n",StdPlatBS100.StdBSTipos.IconId.PRI_Critico, e.ToString()); Ligacao.Close(); return DtSet; }
-                catch (Exception e) { PSO.MensagensDialogos.MostraAviso("Erro não especificado.\n\n",StdPlatBS100.StdBSTipos.IconId.PRI_Critico, e.ToString()); Ligacao.Close(); return DtSet; }
 
-                return DtSet;
+                    // Copia estrutura mas não os dados
+                    DataTable DtTableBuffer = DtSet.Tables["Tabela0"].Clone();
+                    DtTableBuffer.TableName = "Tabela";
+                    DtTableBuffer.Columns[0].ColumnName = "Prédio";
+                    DtTableBuffer.Columns[1].ColumnName = "Área";
+                    DtTableBuffer.Columns[2].ColumnName = "Cultura";
+                    DtTableBuffer.Columns[3].ColumnName = "Processar";
+                    DtTableBuffer.Columns[4].ColumnName = "Contador Ligado";
+                    DtTableBuffer.Columns[5].ColumnName = "TRH";
+                    DtTableBuffer.Columns[6].ColumnName = "Tx Penalizadora";
+                    DtTableBuffer.Columns[7].ColumnName = "Nº Contador";
+                    DtTableBuffer.Columns[8].ColumnName = "Benef";
+                    DtTableBuffer.Columns[9].ColumnName = "Nome";
+                    DtTableBuffer.Columns[10].ColumnName = "Última Leitura";
+                    DtTableBuffer.Columns[11].ColumnName = "Data 1";
+                    DtTableBuffer.Columns[12].ColumnName = "Leitura 1";
+                    DtTableBuffer.Columns[13].ColumnName = "Data 2";
+                    DtTableBuffer.Columns[14].ColumnName = "Leitura 2";
+
+                    // Copia os conteudos de cada tabela no DtSet para a tabela buffer
+                    for (int t = 0; t < DtSet.Tables.Count; t++)
+                    {
+                        foreach (DataRow row in DtSet.Tables[t].Rows)
+                        {
+                            DtTableBuffer.Rows.Add(row.ItemArray);
+                        }
+                    }
+
+                    DataSet DtSetFinal = new DataSet();
+                    DtSetFinal.Tables.Add(DtTableBuffer);
+                    DtSetFinal.AcceptChanges();
+                    System.Windows.Forms.MessageBox.Show("DtSetFinal tables: " + DtSetFinal.Tables.Count + "\nDtSetFinal Rows: " + DtSetFinal.Tables[0].Rows.Count + "\nDtSet tables: " + DtSet.Tables.Count);
+
+
+                    // *** Validação das linhas de acordo com critérios ***
+                    // DataTable.Delete() não apaga linha no momento mas marca para ser apagada. Só quando se chama DataTable.AcceptChanges() é que todas as linhas marcadas são removidas
+                    DataTable DtTable = DtSetFinal.Tables[0];
+                    string processar, predio, benef;
+
+                    for (int lin = 0; lin < DtTable.Rows.Count; lin++)
+                    {
+                        // VERIFICAÇÕES DE VALIDAÇÃO DE CADA LINHA
+                        processar = DtTable.Rows[lin].Field<string>("Processar");
+                        if (processar == "N" || processar == null || processar == "") { DtTable.Rows[lin].Delete(); continue; }
+                        else if (processar != "S") { throw new Exception("Valor da coluna 'Processar' ( " + processar + " ) na linha " + (lin + 5).ToString() + " não é valido.\n\n "); return DtSet; }
+
+                        if (DtTable.Rows[lin].Field<string>("Nº Contador") == null
+                            || (DtTable.Rows[lin].Field<DateTime?>("Data 1").ToString() == null)
+                            || (DtTable.Rows[lin].Field<double?>("Benef").ToString() == null)
+                            || (DtTable.Rows[lin].Field<double?>("Área") <= 0))
+                        {
+                            errosExcel.Add(DtTable.Rows[lin].Field<string>("Nº Contador"));
+                            DtTable.Rows[lin].Delete();
+                            continue;
+                        }
+
+                        benef = DtTable.Rows[lin].Field<double>("Benef").ToString().PadLeft(5, '0');
+                        predio = DtTable.Rows[lin].Field<string>("Prédio");
+                    }
+                    DtTable.AcceptChanges();
+                        
+                    // Uso de tabela de buffer para dar sort às linhas por Benef. Necessário para faturar vários contadores por fatura mesmo que não estejam logo na linha abaixo.
+                    DataTable sortBuffer = new DataTable();
+                    DtTable.DefaultView.Sort = "Benef ASC";
+                    sortBuffer = DtTable.DefaultView.ToTable();
+
+                    DtTable.Rows.Clear();
+                    foreach (DataRow row in sortBuffer.Rows)
+                    {
+                        DtTable.Rows.Add(row.ItemArray);
+                    }
+                    DtTable.AcceptChanges();
+
+                    // Nova primeira coluna com numeração das linhas
+                    //DtTable.Columns.Add("#", typeof(int)).SetOrdinal(0);
+                    //for (int i = 0; i < DtTable.Rows.Count; i++) { DtTable.Rows[i][0] = i + 1; }
+
+                    Ligacao.Close();
+                    return DtSetFinal;
+                }
+                catch (IOException e) { System.Windows.Forms.MessageBox.Show("Não foi possível estabelecer ligação ao ficheiro!\n\n"); Ligacao.Close(); return DtSet; }
+                catch (Exception e) { System.Windows.Forms.MessageBox.Show("Erro no processamento das linhas. \n\n" + e.ToString()); Ligacao.Close(); return DtSet; }
+
+            return DtSet;
             }
         }
         public void EliminarCopia(string origem)
