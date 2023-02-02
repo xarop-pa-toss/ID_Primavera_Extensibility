@@ -94,6 +94,9 @@ namespace ASRLB_ImportacaoFatura.Sales
 
         private void btnConfirmar_WF_Click(object sender, EventArgs e)
         {
+
+            // Check se tipo de ficheiro (checkbox) é válido
+            if (cBoxTipoFatura.SelectedIndex == 0) { PSO.MensagensDialogos.MostraAviso("É necessário escolher um tipo de faturação.");}
             var ficheiros = listBoxFicheiros_WF.Items;
             string tipoFatura = cBoxTipoFatura.SelectedItem.ToString();
 
@@ -111,12 +114,12 @@ namespace ASRLB_ImportacaoFatura.Sales
                 DataSet DtSet = Excel.CarregarDataSet(@"" + path, Excel.conString, ref errosExcel);
                 if (errosExcel.Count > 0)
                 {
-                    PSO.MensagensDialogos.MostraErro("Erros nas linhas do Excel. Ver contadores com erro na caixa e corrigir ficheiro.");
-
                     foreach (string erro in errosExcel)
                     {
                         listBoxErros_WF.Items.Add(erro);
-                    }
+                    }                    
+
+                    PSO.MensagensDialogos.MostraErro("Erros nas linhas do Excel. Ver contadores com erro na caixa e corrigir ficheiro. #" + errosExcel.Count);
                     break;
                 }
 

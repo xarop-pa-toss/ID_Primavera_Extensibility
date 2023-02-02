@@ -121,7 +121,7 @@ namespace ASRLB_ImportacaoFatura
                         cmdTotalLinhas.Dispose();
 
                         // Get linhas da folha. Preenche adapter
-                        string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + nomeFolha + "A6:R];";
+                        string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + nomeFolha + "A6:R" + (linhasTotal + 5) + "];";
                         cmdConteudoLinha = new OleDb.OleDbCommand(query, Ligacao);
                         Adapter = new OleDb.OleDbDataAdapter();
 
@@ -175,17 +175,27 @@ namespace ASRLB_ImportacaoFatura
 
                     for (int lin = 0; lin < DtTable.Rows.Count; lin++)
                     {
-                        // VERIFICAÇÕES DE VALIDAÇÃO DE CADA LINHA
+                        // VALIDAÇÃO DE CADA LINHA
                         processar = DtTable.Rows[lin].Field<string>("Processar");
-                        if (processar == "N" || processar == null || processar == "") { DtTable.Rows[lin].Delete(); continue; }
-                        else if (processar != "S") { throw new Exception("Valor da coluna 'Processar' ( " + processar + " ) na linha " + (lin + 5).ToString() + " não é valido.\n\n "); return DtSet; }
+                        if (processar == "N" || processar == null || processar == "") 
+                        { 
+                            DtTable.Rows[lin].Delete();
+                            continue; 
+                        }
+                        else if (processar != "S") 
+                        { 
+                            errosExcel.Add("Valor da coluna 'Processar' ( " + processar + " ) no contador " + DtTable.Rows[lin].Field<string>("Nº Contador") + " não é valido.");
+                            continue; 
+                        }
 
                         if (DtTable.Rows[lin].Field<string>("Nº Contador") == null
-                            || (DtTable.Rows[lin].Field<DateTime?>("Data 1").ToString() == null)
-                            || (DtTable.Rows[lin].Field<double?>("Benef").ToString() == null)
+                            || (DtTable.Rows[lin].Field<double?>("Última Leitura") == null)
+                            || (DtTable.Rows[lin].Field<DateTime?>("Data 1") == null)
+                            || (DtTable.Rows[lin].Field<double?>("Leitura 1") == null)
+                            || (DtTable.Rows[lin].Field<double?>("Benef") == null)
                             || (DtTable.Rows[lin].Field<double?>("Área") <= 0))
                         {
-                            errosExcel.Add(DtTable.Rows[lin].Field<string>("Nº Contador"));
+                            errosExcel.Add("Verificar contador -> " + DtTable.Rows[lin].Field<string>("Nº Contador") + "  do Benef " + DtTable.Rows[lin].Field<double?>("Benef").ToString());
                             DtTable.Rows[lin].Delete();
                             continue;
                         }
@@ -206,10 +216,6 @@ namespace ASRLB_ImportacaoFatura
                         DtTable.Rows.Add(row.ItemArray);
                     }
                     DtTable.AcceptChanges();
-
-                    // Nova primeira coluna com numeração das linhas
-                    //DtTable.Columns.Add("#", typeof(int)).SetOrdinal(0);
-                    //for (int i = 0; i < DtTable.Rows.Count; i++) { DtTable.Rows[i][0] = i + 1; }
 
                     Ligacao.Close();
                     return DtSetFinal;
