@@ -114,7 +114,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 DataSet DtSet = Excel.CarregarDataSet(@"" + path, Excel.conString, ref errosExcelList);
                 
                 // Se houver linhas com dados inválidos no Excel, errosExcel é preenchido com cada um.
-                if (errosExcelList.Count > 0) { errosExcel(errosExcelList, path); break; }
+                if (errosExcelList.Count > 0) { ErrosExcel(errosExcelList, path); break; }
 
 
                 List<string> folhasList = Excel.folhasList;
