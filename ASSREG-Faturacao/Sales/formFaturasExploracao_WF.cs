@@ -2,6 +2,7 @@
 using StdBE100;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Data;
 using System.Windows.Forms;
 using VndBE100;
@@ -109,18 +110,11 @@ namespace ASRLB_ImportacaoFatura.Sales
                 listBoxErros_WF.Items.Add("A carregar folhas...");
 
                 // Array de strings passado por referência para preencher com erros do ficheiro Excel.
-                List<string> errosExcel = new List<string>();
-                DataSet DtSet = Excel.CarregarDataSet(@"" + path, Excel.conString, ref errosExcel);
-                if (errosExcel.Count > 0)
-                {
-                    foreach (string erro in errosExcel)
-                    {
-                        listBoxErros_WF.Items.Add(erro);
-                    }                    
-
-                    PSO.MensagensDialogos.MostraErro("Erros nas linhas do Excel. Ver contadores com erro na caixa e corrigir ficheiro. #" + errosExcel.Count);
-                    break; // termina execução (desta folha) para utilizador poder corrigir os erros encontrados
-                }
+                List<string> errosExcelList = new List<string>();
+                DataSet DtSet = Excel.CarregarDataSet(@"" + path, Excel.conString, ref errosExcelList);
+                
+                // Se houver linhas com dados inválidos no Excel, errosExcel é preenchido com cada um.
+                if (errosExcelList.Count > 0) { errosExcel(errosExcelList, path); break; }
 
 
                 List<string> folhasList = Excel.folhasList;
@@ -139,7 +133,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 {
                     _comErro = false;
                     DataRow DtRow = DtTable.Rows[i];
-
+                    
                     // benefIgual é True se Benef na nova linha for igual ao da linha anterior (ainda no linhaDict)
                     // Se Benef for diferente, então é necessário emitir a fatura antes de começar uma nova.
                     bool benefIgual = DtRow.Field<double>("Benef").ToString().PadLeft(5, '0').Equals(linhaDict["Benef"]);
@@ -189,16 +183,44 @@ namespace ASRLB_ImportacaoFatura.Sales
                 }
                 if (_comErro) { break; }
                 listBoxErros_WF.Items.Add(" ");
+                listBoxErros_WF.Items.Add("*** A escrever as faturas na base de dados Primavera. Por favor aguarde... ***");
+                if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); }
+
+                listBoxErros_WF.Items.Add(" ");
                 listBoxErros_WF.Items.Add("Folha processada com sucesso. Faturas foram emitidas.");
                 listBoxErros_WF.Items.Add(" ");
                 listBoxErros_WF.SelectedIndex = listBoxErros_WF.Items.Count - 1;
-                if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); }
             }
                 //if (_comErro) { break; }
                 //if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); } 
             //}
         }
 
+        private void ErrosExcel(List<string> errosExcelList, string path)
+        {
+            string folder = Path.GetDirectoryName(path);
+            string errosPath = folder + "\\errosExcel";
+            string errosPathBuf = errosPath;
+
+            // Escreve erros para um ficheiro TXT na mesma pasta do Excel
+            int fileCounter = 0;
+            while (File.Exists(errosPath))
+            {
+                fileCounter++;
+                errosPath = errosPathBuf + fileCounter + ".txt";
+            }
+
+            File.WriteAllLines(errosPath, errosExcelList);
+
+            listBoxErros_WF.Items.Add(" ");
+            listBoxErros_WF.Items.Add("*** ERRO ***");
+            foreach (string erro in errosExcelList)
+            {
+                listBoxErros_WF.Items.Add(erro);
+            }
+
+            PSO.MensagensDialogos.MostraErro("Erros nas linhas do Excel. Ver contadores com erro e corrigir ficheiro. #" + errosExcelList.Count);
+        }
 
         private void PrepararDict(DataRow DtRow)
         {
@@ -583,6 +605,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             listBoxErros_WF.Items.Add("");
             listBoxErros_WF.Items.Add("Por favor verificar os dados na folha de Excel relativos a este contador.");
             listBoxErros_WF.Items.Add("ATENÇÃO: Nenhuma fatura foi emitida. Só serão emitidas faturas quando todas as linhas do ficheiro Excel forem válidas.");
+            listBoxErros_WF.SelectedIndex = listBoxErros_WF.Items.Count - 1;
 
             string erro = "";
             //foreach (var kv in linhaDict)
