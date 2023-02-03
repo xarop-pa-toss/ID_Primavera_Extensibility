@@ -49,10 +49,10 @@ namespace Primavera.CustomRibbon
                         }
                         break;
                     case cIDBUTTON2:
-                        using (var result = BSO.Extensibility.CreateCustomFormInstance(typeof(ASRLB_ImportacaoFatura.Sales.janelaFaturasExploracao)))
+                        using (var result = BSO.Extensibility.CreateCustomFormInstance(typeof(ASRLB_ImportacaoFatura.Sales.formFaturasExploracao_WF)))
                         {
-                            new ASRLB_ImportacaoFatura.Sales.janelaFaturasExploracao();
-                            (result.Result as ASRLB_ImportacaoFatura.Sales.janelaFaturasExploracao).ShowDialog();
+                            new ASRLB_ImportacaoFatura.Sales.formFaturasExploracao_WF();
+                            (result.Result as ASRLB_ImportacaoFatura.Sales.formFaturasExploracao_WF).ShowDialog();
                         }
                         break;
                 }
