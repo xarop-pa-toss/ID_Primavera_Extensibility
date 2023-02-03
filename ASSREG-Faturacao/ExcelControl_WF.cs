@@ -165,7 +165,7 @@ namespace ASRLB_ImportacaoFatura
                     DataSet DtSetFinal = new DataSet();
                     DtSetFinal.Tables.Add(DtTableBuffer);
                     DtSetFinal.AcceptChanges();
-                    System.Windows.Forms.MessageBox.Show("DtSetFinal tables: " + DtSetFinal.Tables.Count + "\nDtSetFinal Rows: " + DtSetFinal.Tables[0].Rows.Count + "\nDtSet tables: " + DtSet.Tables.Count);
+                    //System.Windows.Forms.MessageBox.Show("DtSetFinal tables: " + DtSetFinal.Tables.Count + "\nDtSetFinal Rows: " + DtSetFinal.Tables[0].Rows.Count + "\nDtSet tables: " + DtSet.Tables.Count);
 
 
                     // *** Validação das linhas de acordo com critérios ***
@@ -189,19 +189,18 @@ namespace ASRLB_ImportacaoFatura
                         }
 
                         if (DtTable.Rows[lin].Field<string>("Nº Contador") == null
-                            || (DtTable.Rows[lin].Field<double?>("Última Leitura") == null)
-                            || (DtTable.Rows[lin].Field<DateTime?>("Data 1") == null)
-                            || (DtTable.Rows[lin].Field<double?>("Leitura 1") == null)
-                            || (DtTable.Rows[lin].Field<double?>("Benef") == null)
-                            || (DtTable.Rows[lin].Field<double?>("Área") <= 0))
+                            || DtTable.Rows[lin].Field<double?>("Última Leitura") == null
+                            || DtTable.Rows[lin].Field<DateTime?>("Data 1") == null
+                            || DtTable.Rows[lin].Field<double?>("Leitura 1") == null
+                            || !ValidacaoConsumos(DtTable, lin)
+                            || DtTable.Rows[lin].Field<double?>("Benef") == null
+                            || DtTable.Rows[lin].Field<double?>("Área") <= 0)
                         {
                             errosExcel.Add("Verificar contador -> " + DtTable.Rows[lin].Field<string>("Nº Contador") + "  do Benef " + DtTable.Rows[lin].Field<double?>("Benef").ToString());
                             DtTable.Rows[lin].Delete();
                             continue;
                         }
-
-                        benef = DtTable.Rows[lin].Field<double>("Benef").ToString().PadLeft(5, '0');
-                        predio = DtTable.Rows[lin].Field<string>("Prédio");
+                        benef = DtTable.Rows[lin].Field<double?>("Benef").ToString().PadLeft(5, '0');
                     }
                     DtTable.AcceptChanges();
                         
@@ -226,6 +225,24 @@ namespace ASRLB_ImportacaoFatura
             return DtSet;
             }
         }
+
+        public bool ValidacaoConsumos(DataTable DtTable, int lin)
+        {
+            double? leitura1, leitura2, ultimaLeitura;
+
+            leitura1 = DtTable.Rows[lin].Field<double?>("Leitura 1");
+            leitura2 = DtTable.Rows[lin].Field<double?>("Leitura 2");
+            ultimaLeitura = DtTable.Rows[lin].Field<double?>("Última Leitura");
+            
+            if (ultimaLeitura == null || leitura1 == null) { return false; }
+            if (leitura2 == null) {
+                if (leitura1 - ultimaLeitura < 0) { return false; }
+            } else {
+                if (leitura2 - ultimaLeitura < 0) { return false; }
+            }
+            return true;
+        }
+
         public void EliminarCopia(string origem)
         {
             string copiaPath = Path.GetDirectoryName(origem) + "\\\\copia.xlsx";

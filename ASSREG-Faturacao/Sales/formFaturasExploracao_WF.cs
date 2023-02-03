@@ -96,7 +96,6 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
 
             // Check se tipo de ficheiro (checkbox) é válido
-            if (cBoxTipoFatura.SelectedIndex == 0) { PSO.MensagensDialogos.MostraAviso("É necessário escolher um tipo de faturação.");}
             var ficheiros = listBoxFicheiros_WF.Items;
             string tipoFatura = cBoxTipoFatura.SelectedItem.ToString();
 
@@ -120,7 +119,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                     }                    
 
                     PSO.MensagensDialogos.MostraErro("Erros nas linhas do Excel. Ver contadores com erro na caixa e corrigir ficheiro. #" + errosExcel.Count);
-                    break;
+                    break; // termina execução (desta folha) para utilizador poder corrigir os erros encontrados
                 }
 
 
@@ -129,73 +128,71 @@ namespace ASRLB_ImportacaoFatura.Sales
 
      //           Excel.EliminarCopia(@"" + path);
                 
-                //foreach (DataTable DtTable in DtSet.Tables)
-                //{
-                    DataTable DtTable = DtSet.Tables["Tabela"];
-                    VndBEDocumentoVenda DocVenda = new VndBEDocumentoVenda();
-                    listBoxErros_WF.Items.Add("FOLHA: " + folhasList[nomeFolhaInd]);
-                    nomeFolhaInd++;
+                DataTable DtTable = DtSet.Tables["Tabela"];
+                VndBEDocumentoVenda DocVenda = new VndBEDocumentoVenda();
+                listBoxErros_WF.Items.Add("FOLHA: " + folhasList[nomeFolhaInd]);
+                nomeFolhaInd++;
 
-                    if (!BSO.EmTransaccao()) { BSO.IniciaTransaccao(); }
+                if (!BSO.EmTransaccao()) { BSO.IniciaTransaccao(); }
 
-                    for (int i = 0; i < DtTable.Rows.Count; i++)
+                for (int i = 0; i < DtTable.Rows.Count; i++)
+                {
+                    _comErro = false;
+                    DataRow DtRow = DtTable.Rows[i];
+
+                    // benefIgual é True se Benef na nova linha for igual ao da linha anterior (ainda no linhaDict)
+                    // Se Benef for diferente, então é necessário emitir a fatura antes de começar uma nova.
+                    bool benefIgual = DtRow.Field<double>("Benef").ToString().PadLeft(5, '0').Equals(linhaDict["Benef"]);
+                    // Se contador for o mesmo que o anterior, então é um caso de 1 contador -> multiplos prédios. Neste caso a linha tem de ser completamente ignorada pois os valores são iguais ao da primeira.
+                    // Contador é inicializado como "" por isso não vai bater igual na primeira linha.
+                    bool contadorIgual = DtRow.Field<string>("Nº Contador").Equals(linhaDict["Contador"]);
+
+                    if (contadorIgual && benefIgual && i > 0) { continue; } // Contador é igual ao da linha anterior em casos de desunião de linhas que têm 'Um contador -> Vários prédios/áreas'. Ignora-se estas linhas pois têm valores duplicados.
+
+                    if (!benefIgual)
                     {
-                        _comErro = false;
-                        DataRow DtRow = DtTable.Rows[i];
-
-                        // benefIgual é True se Benef na nova linha for igual ao da linha anterior (ainda no linhaDict)
-                        // Se Benef for diferente, então é necessário emitir a fatura antes de começar uma nova.
-                        bool benefIgual = DtRow.Field<double>("Benef").ToString().PadLeft(5, '0').Equals(linhaDict["Benef"]);
-                        // Se contador for o mesmo que o anterior, então é um caso de 1 contador -> multiplos prédios. Neste caso a linha tem de ser completamente ignorada pois os valores são iguais ao da primeira.
-                        // Contador é inicializado como "" por isso não vai bater igual na primeira linha.
-                        bool contadorIgual = DtRow.Field<string>("Nº Contador").Equals(linhaDict["Contador"]);
-
-                        if (contadorIgual && benefIgual && i > 0) { continue; } // Contador é igual ao da linha anterior em casos de desunião de linhas que têm 'Um contador -> Vários prédios/áreas'. Ignora-se estas linhas pois têm valores duplicados.
-
-                        if (!benefIgual)
+                        //Exclui primeira linha por ainda não existir nada
+                        if (i > 0)
                         {
-                            //Exclui primeira linha por ainda não existir nada
-                            if (i > 0)
-                            {
-                                string erroFatura = EmitirFatura(DocVenda);
-                                if (erroFatura != "") { ErroAoEmitir(erroFatura); break; }
-                                _countContador = 0;
-                            }
-
-                            DocVenda = new VndBEDocumentoVenda();
-                            _counterLinha = 1;
-
-                            PrepararDict(DtRow); // Preenche dicionário com dados necessários.
-                            ProcessarCabecDoc(DocVenda, tipoFatura);
-                            CalcRegantes(tipoFatura); // Efectua cálculos de valores e taxas associadas.
-                            if (_consumoTotal == 0) { continue; }
-                            ProcessarLinha(DocVenda, tipoFatura); // Preenche linhasDoc com descrições e leituras com seus valores calculados.
-                        }
-                        else if (benefIgual && !contadorIgual && i > 0) // Um benef -> Vários contadores. Vão todos os contadores para a mesma fatura
-                        {
-                            _countContador++;
-                            PrepararDict(DtRow);
-                            CalcRegantes(tipoFatura);
-                            ProcessarLinha(DocVenda, tipoFatura);
+                            string erroFatura = EmitirFatura(DocVenda);
+                            if (erroFatura != "") { ErroAoEmitir(erroFatura); break; }
+                            _countContador = 0;
                         }
 
-                        BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
+                        DocVenda = new VndBEDocumentoVenda();
+                        _counterLinha = 1;
 
-                        // Catch para a última linha do DataSet
-                        if (i == DtTable.Rows.Count - 1)
-                        {
-                            string erroFat = EmitirFatura(DocVenda);
-                            if (erroFat != "") { ErroAoEmitir(erroFat); break; }
-                        }
-
-                        DocVenda.Dispose();
+                        PrepararDict(DtRow); // Preenche dicionário com dados necessários.
+                        ProcessarCabecDoc(DocVenda, tipoFatura);
+                        CalcRegantes(tipoFatura); // Efectua cálculos de valores e taxas associadas.
+                        if (_consumoTotal == 0) { continue; }
+                        ProcessarLinha(DocVenda, tipoFatura); // Preenche linhasDoc com descrições e leituras com seus valores calculados.
                     }
-                    if (_comErro) { break; }
-                    listBoxErros_WF.Items.Add(" ");
-                    listBoxErros_WF.Items.Add("Folha processada com sucesso. Faturas foram emitidas.");
-                    listBoxErros_WF.Items.Add(" ");
-                    listBoxErros_WF.SelectedIndex = listBoxErros_WF.Items.Count - 1;
-                    if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); }
+                    else if (benefIgual && !contadorIgual && i > 0) // Um benef -> Vários contadores. Vão todos os contadores para a mesma fatura
+                    {
+                        _countContador++;
+                        PrepararDict(DtRow);
+                        CalcRegantes(tipoFatura);
+                        ProcessarLinha(DocVenda, tipoFatura);
+                    }
+
+                    BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
+
+                    // Catch para a última linha do DataSet
+                    if (i == DtTable.Rows.Count - 1)
+                    {
+                        string erroFat = EmitirFatura(DocVenda);
+                        if (erroFat != "") { ErroAoEmitir(erroFat); break; }
+                    }
+
+                    DocVenda.Dispose();
+                }
+                if (_comErro) { break; }
+                listBoxErros_WF.Items.Add(" ");
+                listBoxErros_WF.Items.Add("Folha processada com sucesso. Faturas foram emitidas.");
+                listBoxErros_WF.Items.Add(" ");
+                listBoxErros_WF.SelectedIndex = listBoxErros_WF.Items.Count - 1;
+                if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); }
             }
                 //if (_comErro) { break; }
                 //if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); } 
@@ -236,8 +233,8 @@ namespace ASRLB_ImportacaoFatura.Sales
             catch(Exception e) 
             { 
                 if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
-                listBoxErros_WF.Items.Add("Existem pelo menos uma linha com valores nulos. Por favor corrija o ficheiro Excel.");
-                PSO.MensagensDialogos.MostraErro("Contador " + linhaDict["Contador"] + ". Por favor corrija o ficheiro Excel.", StdBSTipos.IconId.PRI_Critico, e.ToString());
+                listBoxErros_WF.Items.Add("Contador " + linhaDict["Contador"] + ". Linha possivelmente contém valores nulos. Por favor corrija o ficheiro Excel.");
+                PSO.MensagensDialogos.MostraErro("Contador " + linhaDict["Contador"] + ". Linha possivelmente contém valores nulos. Por favor corrija o ficheiro Excel.", StdBSTipos.IconId.PRI_Exclama, e.ToString());
             }
         }
 
@@ -330,7 +327,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 {
                     BSO.Vendas.Documentos.Actualiza(DocVenda, ref strAvisos, ref strErro);
                     if (strErro != "") { _comErro = true; return strErro; }
-                    listBoxErros_WF.Items.Add(String.Format("Benef {0} - processados {1} contadores com sucesso na Fatura {2}.", DocVenda.Entidade, _countContador + 1, DocVenda.NumDoc));
+                    listBoxErros_WF.Items.Add(String.Format("Benef {0} - {1} contador(es) na Fatura {2}.", DocVenda.Entidade, _countContador + 1, DocVenda.NumDoc));
                     listBoxErros_WF.SelectedIndex = listBoxErros_WF.Items.Count - 1;
                     return "";
                 }

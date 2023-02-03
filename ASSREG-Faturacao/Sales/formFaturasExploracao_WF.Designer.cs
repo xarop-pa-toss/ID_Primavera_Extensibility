@@ -63,23 +63,21 @@ namespace ASRLB_ImportacaoFatura.Sales
             // listBoxErros_WF
             // 
             this.listBoxErros_WF.FormattingEnabled = true;
-            this.listBoxErros_WF.ItemHeight = 16;
             this.listBoxErros_WF.Location = new System.Drawing.Point(27, 243);
             this.listBoxErros_WF.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxErros_WF.Name = "listBoxErros_WF";
-            this.listBoxErros_WF.Size = new System.Drawing.Size(705, 308);
+            this.listBoxErros_WF.Size = new System.Drawing.Size(705, 303);
             this.listBoxErros_WF.TabIndex = 2;
             // 
             // listBoxFicheiros_WF
             // 
             this.listBoxFicheiros_WF.FormattingEnabled = true;
             this.listBoxFicheiros_WF.HorizontalScrollbar = true;
-            this.listBoxFicheiros_WF.ItemHeight = 16;
             this.listBoxFicheiros_WF.Location = new System.Drawing.Point(27, 53);
             this.listBoxFicheiros_WF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBoxFicheiros_WF.Name = "listBoxFicheiros_WF";
             this.listBoxFicheiros_WF.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.listBoxFicheiros_WF.Size = new System.Drawing.Size(705, 132);
+            this.listBoxFicheiros_WF.Size = new System.Drawing.Size(705, 121);
             this.listBoxFicheiros_WF.TabIndex = 3;
             // 
             // btnRemover_WF
@@ -106,13 +104,15 @@ namespace ASRLB_ImportacaoFatura.Sales
             // 
             // cBoxTipoFatura
             // 
+            this.cBoxTipoFatura.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.cBoxTipoFatura.FormattingEnabled = true;
             this.cBoxTipoFatura.Items.AddRange(new object[] {
+            "",
             "AHSLP",
             "Benaciate"});
             this.cBoxTipoFatura.Location = new System.Drawing.Point(452, 17);
             this.cBoxTipoFatura.Name = "cBoxTipoFatura";
-            this.cBoxTipoFatura.Size = new System.Drawing.Size(121, 24);
+            this.cBoxTipoFatura.Size = new System.Drawing.Size(121, 21);
             this.cBoxTipoFatura.TabIndex = 7;
             // 
             // formFaturasExploracao_WF
