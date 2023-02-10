@@ -6,7 +6,7 @@ using System.IO;
 using System.Data;
 using System.Windows.Forms;
 using VndBE100;
-using ErpBS100; using StdPlatBS100;
+using ErpBS100; using StdPlatBS100; 
 namespace ASRLB_ImportacaoFatura.Sales
 {
     public partial class formFaturasExploracao_WF : Form
@@ -29,7 +29,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         private double area;
 
         // **** BUGS ****
-        // new V
+        // 
 
         public formFaturasExploracao_WF()
         {
@@ -38,25 +38,29 @@ namespace ASRLB_ImportacaoFatura.Sales
 
         private void formFaturasExploracao_WF_Load(object sender, EventArgs e)
         {
-            // Carrega TDUs das Taxas Penalizadoras no arranque
-            //public StdPlatBS PSO = new StdPlatBS();
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "ASSREG", "id", "*Pelicano*");
-            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "IDCLONE", "id", "pelicano");
+            // Pede empresa. Se resultado inválido ou empresa não existir (Primavera causa exception), pede de novo
+            // Não implementado pois não funciona correctamente. Por vezes Primavera não aceita o nome da empresa.
+            /*bool retry = true;
+            while(retry)
+            {
+                string empresa = Microsoft.VisualBasic.Interaction.InputBox("Introduza o código da empresa a faturar.", "Escolher empresa");
 
-            StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
-            StdBELista listaTaxa_PP = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP';");
-            StdBELista listaTaxa_ANA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'ANA';");
-            StdBELista listaTaxa_CA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadoraArroz WHERE CDU_Cultura = 'CA';");
-            StdBELista listaTaxa_PD_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD_Be';");
-            StdBELista listaTaxa_PP_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP_Be';");
-
-            DictTaxa.Clear();
-            DictTaxa.Add("PD", listaTaxa_PD);
-            DictTaxa.Add("PP", listaTaxa_PP);
-            DictTaxa.Add("ANA", listaTaxa_ANA);
-            DictTaxa.Add("CA", listaTaxa_CA);
-            DictTaxa.Add("PD_Be", listaTaxa_PD_Benaciate);
-            DictTaxa.Add("PP_Be", listaTaxa_PP_Benaciate);
+                if (empresa != "")
+                {
+                    try
+                    {
+                        BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, empresa, "id", "*Pelicano*");
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Empresa inserida não existe.");
+                        retry = true;
+                        continue;
+                    }
+                    retry = false;
+                }
+                else { retry = false; this.Close(); }
+            } */
         }
 
 
@@ -95,6 +99,28 @@ namespace ASRLB_ImportacaoFatura.Sales
 
         private void btnConfirmar_WF_Click(object sender, EventArgs e)
         {
+            if (cBoxEmpresa.SelectedItem.ToString() == ""  || cBoxTipoFatura.SelectedItem.ToString() == "")
+            {
+                MessageBox.Show("Não foi escolhida empresa ou tipo de fatura a emitir.");
+                return;
+            }
+            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "pelicano");
+
+            // Carrega TDUs das Taxas Penalizadoras no arranque
+            StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
+            StdBELista listaTaxa_PP = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP';");
+            StdBELista listaTaxa_ANA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'ANA';");
+            StdBELista listaTaxa_CA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadoraArroz WHERE CDU_Cultura = 'CA';");
+            StdBELista listaTaxa_PD_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD_Be';");
+            StdBELista listaTaxa_PP_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP_Be';");
+
+            DictTaxa.Clear();
+            DictTaxa.Add("PD", listaTaxa_PD);
+            DictTaxa.Add("PP", listaTaxa_PP);
+            DictTaxa.Add("ANA", listaTaxa_ANA);
+            DictTaxa.Add("CA", listaTaxa_CA);
+            DictTaxa.Add("PD_Be", listaTaxa_PD_Benaciate);
+            DictTaxa.Add("PP_Be", listaTaxa_PP_Benaciate);
 
             // Check se tipo de ficheiro (checkbox) é válido
             var ficheiros = listBoxFicheiros_WF.Items;
@@ -104,6 +130,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             {
                 Reset_linhaDict();
                 ResetVariaveis();
+
 
                 listBoxErros_WF.Items.Add("A abrir ficheiro Excel: " + path);
                 ExcelControl_WF Excel = new ExcelControl_WF(@"" + path);
@@ -124,6 +151,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 
                 DataTable DtTable = DtSet.Tables["Tabela"];
                 VndBEDocumentoVenda DocVenda = new VndBEDocumentoVenda();
+
                 listBoxErros_WF.Items.Add("FOLHA: " + folhasList[nomeFolhaInd]);
                 nomeFolhaInd++;
 
