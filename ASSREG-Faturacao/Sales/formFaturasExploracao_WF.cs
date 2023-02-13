@@ -63,7 +63,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             } */
         }
 
-
         private void btnEscolherFicheiro_WF_Click(object sender, EventArgs e)
         {
             OpenFileDialog form = new OpenFileDialog();
