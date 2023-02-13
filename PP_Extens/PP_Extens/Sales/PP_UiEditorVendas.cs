@@ -3,6 +3,10 @@ using System; using System.Collections.Generic; using System.Linq; using System.
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using BasBE100; using StdBE100; using VndBE100;
 
+
+/// <summary>
+/// Ficheiro completo. NÃO TESTADO
+/// </summary>
 namespace PP_Extens.Sales
 {
     public class PP_UiEditorVendas : EditorVendas
@@ -13,7 +17,7 @@ namespace PP_Extens.Sales
 
             if (KeyCode == Convert.ToInt32(ConsoleKey.F3))
             {
-                PreVisualizarSemGravar();
+                PreVisualizarSemGravarNovo();
             }
         }
 
@@ -322,18 +326,17 @@ namespace PP_Extens.Sales
                 }
             }//
             
-            PSO.MensagensDialogos.MostraPerguntaSimples
             if (s.Trim() != "") {  }
 
         }
 
-        internal void PreVisualizarSemGravar()
+        internal void PreVisualizarSemGravarNovo()
         {
             long nLinhas = DocumentoVenda.Linhas.NumItens, i;
             string tempGUID;
 
             // Valida num de linhas no Doc
-            if (nLinhas == 0) { System.Windows.Forms.MessageBox.Show("Não há nenhum documento válido no Editor de Vendas!"); return; }
+            if (nLinhas == 0) { System.Windows.Forms.MessageBox.Show("Não há nenhum documento válido no Editor de Vendas!\n Certifique-se que o Editor de Vendas contém um documento com a Entidade preenchida e com pelo menos uma linha!"); return; }
 
             // Preenchimento das tabelas de utilizador usadas para a PreVisualização. Mostra a PreVisualização e depois apaga os conteudos das tabelas.
             StdBEExecSql sql = new StdBEExecSql();
@@ -370,9 +373,10 @@ namespace PP_Extens.Sales
             sql.AddCampo("TotalRetencaoGarantia", dv.TotalRetencaoGarantia);
             sql.AddCampo("DescPag", dv.DescFinanceiro);
             sql.AddCampo("DescEntidade", dv.DescEntidade);
+            
             sql.AddQuery();
             PSO.ExecSql.Executa(sql);
-
+            sql.Dispose();
 
             sql2.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
             sql2.Tabela = "PSI_TempLinhasDoc";
@@ -410,8 +414,10 @@ namespace PP_Extens.Sales
                 sql2.AddCampo("CDU_VendaEmCaixa", ldv.CamposUtil["CDU_VendaEmCaixa"]);
                 sql2.AddCampo("CDU_KilosPorCaixa", ldv.CamposUtil["CDU_KilosPorCaixa"]);
                 sql2.AddCampo("CDU_LoteAux", ldv.CamposUtil["CDU_LoteAux"]);
+                
                 sql2.AddQuery();
                 PSO.ExecSql.Executa(sql2);
+                sql2.Dispose();
             }
             PSO.Mapas.Inicializar("ERP");
             PSO.Mapas.SetParametro("ID", tempGUID);

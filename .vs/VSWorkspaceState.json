@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\PP_Extens",
+    "\\PP_Extens\\PP_Extens"
   ],
-  "SelectedNode": "\\ASSREG_Faturacao.sln",
+  "SelectedNode": "\\PP_Extens\\PP_Extens\\PP_Extens.sln",
   "PreviewInSolutionExplorer": false
 }
