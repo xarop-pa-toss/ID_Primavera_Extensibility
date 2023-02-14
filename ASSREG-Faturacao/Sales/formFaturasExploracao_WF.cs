@@ -103,7 +103,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 MessageBox.Show("Não foi escolhida empresa ou tipo de fatura a emitir.");
                 return;
             }
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "pelicano");
+            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "*Pelicano*");
 
             // Carrega TDUs das Taxas Penalizadoras no arranque
             StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
@@ -287,6 +287,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             }
         }
 
+
         private void ProcessarCabecDoc(VndBEDocumentoVenda DocVenda, string tipoFatura)
         {
             int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosTodos;
@@ -404,7 +405,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             //int
             _ano = Convert.ToDateTime(_dataFull).Year;
-            _consumoTotal = CalcRegantes_ConsumoTotal(tipoFatura);
+            _consumoTotal = CalcRegantes_ConsumoTotal();
             linhaDict["Consumo"] = _consumoTotal.ToString();
 
             //Define _consumo1, _consumo2, _consumo3
@@ -420,7 +421,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             linhaDict["Consumo3"] = _consumo3.ToString();
         }
 
-        private int CalcRegantes_ConsumoTotal(string tipoFatura)
+        private int CalcRegantes_ConsumoTotal()
         {
             if (linhaDict["Leitura1"] == null && linhaDict["Leitura2"] == null)
             {
@@ -538,13 +539,12 @@ namespace ASRLB_ImportacaoFatura.Sales
             double baseTRH_A = 0.0035;
             double reducao25 = 0.25;
             double agravamento = 1.2;
-            double reducao10 = 0.1;
             double reducao90 = 0.9;
 
             double TRH_U, TRH_A;
             double consumoTotal = Convert.ToDouble(_consumoTotal);
 
-            //Calculos da TRH.
+            // Calculos da TRH.
             // São calculados valores do ComponenteU e do Componente A em separado, com _consumoTotal como base. A TRH é a adição de ambos os valores finais.
 
             // *** Componente U ***
