@@ -156,6 +156,9 @@ namespace ASRLB_ImportacaoFatura.Sales
 
                 if (!BSO.EmTransaccao()) { BSO.IniciaTransaccao(); }
 
+                double area = 0;
+                bool areaMulti = false;
+
                 for (int i = 0; i < DtTable.Rows.Count; i++)
                 {
                     _comErro = false;
@@ -168,13 +171,32 @@ namespace ASRLB_ImportacaoFatura.Sales
                     // Contador é inicializado como "" por isso não vai bater igual na primeira linha.
                     bool contadorIgual = DtRow.Field<string>("Nº Contador").Equals(linhaDict["Contador"]);
 
-                    if (contadorIgual && benefIgual && i > 0) { continue; } // Contador é igual ao da linha anterior em casos de desunião de linhas que têm 'Um contador -> Vários prédios/áreas'. Ignora-se estas linhas pois têm valores duplicados.
+                    /// TESTE AREA
+                    /// APAGAR
+
+                    /// APAGAR
+                    /// TESTE AREA
+
+                    // Contador é igual ao da linha anterior em casos de desunião de linhas que têm 'Um contador -> Vários prédios/áreas'. Área de cada linha diferente a contabilizar.
+
+                    if (contadorIgual && benefIgual && i > 0)
+                    {
+                        area = Convert.ToDouble(linhaDict["Area"]) + DtRow.Field<double>("Área");
+                        areaMulti = true;
+
+                        if (DtRow.Field<double>("Benef").Equals(606) || DtRow.Field<double>("Benef").Equals(645))
+                        {
+                            MessageBox.Show("Benef field: " + DtRow.Field<double>("Benef") + "\nContador field: " + DtRow.Field<string>("Nº Contador") + "\n\nÁREA: " + area + "\nÁrea Linha: " + DtRow.Field<double>("Área") + "\nÁrea Dict: " + linhaDict["Area"]);
+                        }
+                        continue;
+                    }
 
                     if (!benefIgual)
                     {
                         //Exclui primeira linha por ainda não existir nada
                         if (i > 0)
-                        {
+                        { 
+                            BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
                             string erroFatura = EmitirFatura(DocVenda);
                             if (erroFatura != "") { ErroAoEmitir(erroFatura); break; }
                             _countContador = 0;
@@ -193,19 +215,23 @@ namespace ASRLB_ImportacaoFatura.Sales
                     {
                         _countContador++;
                         PrepararDict(DtRow);
+                        if (areaMulti) { linhaDict["Area"] = area.ToString(); areaMulti = false; }
+
                         CalcRegantes(tipoFatura);
                         ProcessarLinha(DocVenda, tipoFatura);
                     }
 
-                    BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
+                    // BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
 
                     // Catch para a última linha do DataSet
                     if (i == DtTable.Rows.Count - 1)
                     {
+                        BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
                         string erroFat = EmitirFatura(DocVenda);
                         if (erroFat != "") { ErroAoEmitir(erroFat); break; }
                     }
 
+                    area = 0;
                     DocVenda.Dispose();
                 }
                 if (_comErro) { break; }
@@ -257,7 +283,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 // TRH e Taxa Penalizadora vêm como 'S' ou 'N'. Se 'S', substituir pelo valor. Se 'N', cancelar.
                 linhaDict["Contador"] = DtRow.Field<string>("Nº Contador");
                 linhaDict["Predio"] = DtRow.Field<string>("Prédio");
-                linhaDict["Area"] = DtRow.Field<double?>("Área").ToString();
+                linhaDict["Area"] = DtRow.Field<double>("Área").ToString();
                 linhaDict["Cultura"] = DtRow.Field<string>("Cultura");
                 linhaDict["TRH"] = DtRow.Field<string>("TRH").ToString();
                 linhaDict["TaxaPenalizadora"] = DtRow.Field<string>("Tx Penalizadora");
@@ -311,7 +337,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
             // Linha 1 - Descrição com NºContador + Consumo Total
             // Linha 2 - Última leitura do ano passado + úlitma leitura feita este ano.
-            string descricao = String.Format("Contador {0}. Consumo total: {1} m³.", linhaDict["Contador"], linhaDict["Consumo"]);
+            string descricao = String.Format("Contador {0}. Consumo total: {1} m³. Área: {2}", linhaDict["Contador"], linhaDict["Consumo"], linhaDict["Area"]);
             string descricao2 = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["UltimaLeitura"], linhaDict["LeituraFinal"], linhaDict["DataLeituraFinal"]);
             BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao); _counterLinha++;
             BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao2); _counterLinha++;
