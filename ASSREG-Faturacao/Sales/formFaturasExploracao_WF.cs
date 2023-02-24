@@ -357,9 +357,21 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
             // Linha 1 - Descrição com NºContador + Consumo Total
             // Linha 2 - Última leitura do ano passado + úlitma leitura feita este ano.
+            // Se a fatura for 2022, será usada uma segunda linha de descrição para diferenciar entre a primeira leitura (calculada com taxa minima) e o restante.
+            string descricao2022, descricao2;
             string descricao = String.Format("Contador {0}. Consumo total: {1} m³. Área: {2}", linhaDict["Contador"], linhaDict["Consumo"], linhaDict["Area"]);
-            string descricao2 = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["UltimaLeitura"], linhaDict["LeituraFinal"], linhaDict["DataLeituraFinal"]);
             BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao); _counterLinha++;
+
+            if (_ano == 2022)
+            {
+                descricao2022 = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["UltimaLeitura"], linhaDict["Leitura1"], linhaDict["Data1"]);
+                BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao2022); _counterLinha++;
+                descricao2 = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["Leitura1"], linhaDict["LeituraFinal"], linhaDict["DataLeituraFinal"]);
+            }
+            else
+            {
+                descricao2 = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["UltimaLeitura"], linhaDict["LeituraFinal"], linhaDict["DataLeituraFinal"]);
+            }
             BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao2); _counterLinha++;
 
             // Linhas 3 até 8 - Leituras + TRH
@@ -368,7 +380,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             while (true)
             {
                 // Contagens
-                if (linhaDict["Consumo2022"] != "0" && tipoFatura != "Benaciate") { CriarLinhaConsumo(DocVenda, 2022, tipoFatura); linhaDict["Consumo2022"] = "0"; _counterLinha++;  continue; }
+                if (linhaDict["Consumo2022"] != "0") { CriarLinhaConsumo(DocVenda, 2022, tipoFatura); linhaDict["Consumo2022"] = "0"; _counterLinha++;  continue; }
                 if (linhaDict["Consumo1"] != "0") { CriarLinhaConsumo(DocVenda, 1, tipoFatura); linhaDict["Consumo1"] = "0"; _counterLinha++; continue; }
                 if (linhaDict["Consumo2"] != "0") { CriarLinhaConsumo(DocVenda, 2, tipoFatura); linhaDict["Consumo2"] = "0"; _counterLinha++; continue; }
                 if (linhaDict["Consumo3"] != "0") { CriarLinhaConsumo(DocVenda, 3, tipoFatura); linhaDict["Consumo3"] = "0"; _counterLinha++; }
@@ -405,7 +417,9 @@ namespace ASRLB_ImportacaoFatura.Sales
             }
             else
             {
-                linha.Descricao = String.Format("{0}", _escaloes[escalao]);
+                if (escalao != 2022){
+                    linha.Descricao = String.Format("{0}", _escaloes[escalao]);
+                }
                 linha.Quantidade = Convert.ToDouble(linhaDict["Consumo" + escalao]);
             }
             linha.PrecUnit = Convert.ToDouble(linhaDict["Taxa" + escalao]);
@@ -452,6 +466,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             //int
             _ano = Convert.ToDateTime(_dataFull).Year;
+            if (_ano == 2022) MessageBox.Show("true");
 
             // Se o ano for 2022, o consumo entre a 1ª leitura e a última do ano passado (Leitura1 - LeituraFinal) é taxado com o valor mínimo (Cultura PD até 5000) -> _consumo2022
             // O resto do cosnumo (Leitura2 - Leitura1) "começa do zero" e é usado para os restantes cálculos normalmente. -> _consumo1, _consumo2, _consumo3
@@ -554,6 +569,8 @@ namespace ASRLB_ImportacaoFatura.Sales
                 _consumo1 *= area;
                 _consumo2 *= area;
                 _consumo3 *= area;
+                _consumo2022 *= area; linhaDict["Taxa1"] = null;
+                linhaDict["Consumo1"] = null;
             }
         }
 
