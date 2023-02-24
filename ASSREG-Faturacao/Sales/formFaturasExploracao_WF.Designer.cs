@@ -142,7 +142,8 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.cBoxEmpresa.FormattingEnabled = true;
             this.cBoxEmpresa.Items.AddRange(new object[] {
             "0012004",
-            "IDCLONE"});
+            "IDCLONE",
+            "ASSREG"});
             this.cBoxEmpresa.Location = new System.Drawing.Point(277, 17);
             this.cBoxEmpresa.Name = "cBoxEmpresa";
             this.cBoxEmpresa.Size = new System.Drawing.Size(101, 24);

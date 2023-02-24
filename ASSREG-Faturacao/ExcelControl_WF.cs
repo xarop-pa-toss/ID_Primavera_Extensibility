@@ -171,7 +171,7 @@ namespace ASRLB_ImportacaoFatura
                     // *** Validação das linhas de acordo com critérios ***
                     // DataTable.Delete() não apaga linha no momento mas marca para ser apagada. Só quando se chama DataTable.AcceptChanges() é que todas as linhas marcadas são removidas
                     DataTable DtTable = DtSetFinal.Tables[0];
-                    string processar, predio, benef;
+                    string processar, benef;
 
                     for (int lin = 0; lin < DtTable.Rows.Count; lin++)
                     {
