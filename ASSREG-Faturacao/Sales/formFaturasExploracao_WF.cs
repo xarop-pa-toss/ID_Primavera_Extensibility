@@ -366,6 +366,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             while (true)
             {
                 // Contagens
+                if (linhaDict["Consumo2022Especial"] != "0" && tipoFatura != "Benaciate") { CriarLinhaConsumo(DocVenda, 1, tipoFatura); linhaDict["Consumo2022Especial"] = "0"; continue; }
                 if (linhaDict["Consumo1"] != "0") { CriarLinhaConsumo(DocVenda, 1, tipoFatura); linhaDict["Consumo1"] = "0"; _counterLinha++; continue; }
                 if (linhaDict["Consumo2"] != "0") { CriarLinhaConsumo(DocVenda, 2, tipoFatura); linhaDict["Consumo2"] = "0"; _counterLinha++; continue; }
                 if (linhaDict["Consumo3"] != "0") { CriarLinhaConsumo(DocVenda, 3, tipoFatura); linhaDict["Consumo3"] = "0"; _counterLinha++; }
@@ -452,7 +453,9 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             // Se o ano for 2022, o consumo entre a 1ª leitura e a última do ano passado (Leitura1 - LeituraFinal) é taxado com o valor mínimo (Cultura PD até 5000) -> _consumo2022Especial
             // O resto do cosnumo (Leitura2 - Leitura1) "começa do zero" e é usado para os restantes cálculos normalmente. -> _consumo1, _consumo2, _consumo3
-            _consumoTotal = CalcRegantes_ConsumoTotal();
+            // _consumo2022Especial é definido dentro de CalcRegantes_ConsumoTotal pois é lá que tem mais influência
+            _consumo2022Especial = 0;
+            _consumoTotal = CalcRegantes_ConsumoTotal(tipoFatura);
             linhaDict["Consumo"] = _consumoTotal.ToString();
 
             //Define _consumo1, _consumo2, _consumo3
@@ -463,14 +466,13 @@ namespace ASRLB_ImportacaoFatura.Sales
             linhaDict["Taxa1"] = _taxa1.ToString();
             linhaDict["Taxa2"] = _taxa2.ToString();
             linhaDict["Taxa3"] = _taxa3.ToString();
-
             linhaDict["Consumo1"] = _consumo1.ToString();
             linhaDict["Consumo2"] = _consumo2.ToString();
             linhaDict["Consumo3"] = _consumo3.ToString();
-
+            linhaDict["Consumo2022Especial"] = _consumo2022Especial.ToString();
         }
 
-        private int CalcRegantes_ConsumoTotal()
+        private int CalcRegantes_ConsumoTotal(string tipoFatura)
         {
             if (linhaDict["Leitura1"] == null && linhaDict["Leitura2"] == null)
             {
@@ -485,14 +487,25 @@ namespace ASRLB_ImportacaoFatura.Sales
                 linhaDict["DataLeituraFinal"] = linhaDict["Data1"];
                 linhaDict["LeituraFinal"] = linhaDict["Leitura1"];
                 linhaDict["TotalLeituras"] = "1";
-                return _leitura1 - _ultimaLeitura;
+                if (_ano == 2022 && tipoFatura != "Benaciate")
+                {
+                    _consumo2022Especial = _leitura1 - _ultimaLeitura;
+                    return 0;
+                }
+                else { return _leitura1 - _ultimaLeitura; }
+                
             }
             else
             {
                 linhaDict["DataLeituraFinal"] = linhaDict["Data2"];
                 linhaDict["LeituraFinal"] = linhaDict["Leitura2"];
                 linhaDict["TotalLeituras"] = "2";
-                return _leitura2 - _ultimaLeitura;
+                if (_ano == 2022 && tipoFatura != "Benaciate")
+                {
+                    _consumo2022Especial = _leitura1 - _ultimaLeitura;
+                    return _leitura2 - _leitura1;
+                }
+                else { return _leitura2 - _ultimaLeitura; }
             }
         }
 
@@ -593,6 +606,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             double TRH_U, TRH_A;
             double consumoTotal = Convert.ToDouble(_consumoTotal);
+            if (linhaDict["Consumo2022Especial"] != null) { consumoTotal += _consumo2022Especial; }
 
             // Calculos da TRH.
             // São calculados valores do ComponenteU e do Componente A em separado, com _consumoTotal como base. A TRH é a adição de ambos os valores finais.
@@ -698,5 +712,3 @@ namespace ASRLB_ImportacaoFatura.Sales
         }
     }
 }
-
-
