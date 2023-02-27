@@ -466,7 +466,6 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             //int
             _ano = Convert.ToDateTime(_dataFull).Year;
-            if (_ano == 2022) MessageBox.Show("true");
 
             // Se o ano for 2022, o consumo entre a 1ª leitura e a última do ano passado (Leitura1 - LeituraFinal) é taxado com o valor mínimo (Cultura PD até 5000) -> _consumo2022
             // O resto do cosnumo (Leitura2 - Leitura1) "começa do zero" e é usado para os restantes cálculos normalmente. -> _consumo1, _consumo2, _consumo3
