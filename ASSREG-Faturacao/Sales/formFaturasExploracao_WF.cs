@@ -96,6 +96,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             listBoxFicheiros_WF.Items.Clear();
         }
 
+        // LINHA COM LOGIN
         private void btnConfirmar_WF_Click(object sender, EventArgs e)
         {
             if (cBoxEmpresa.SelectedItem.ToString() == ""  || cBoxTipoFatura.SelectedItem.ToString() == "")
@@ -419,13 +420,11 @@ namespace ASRLB_ImportacaoFatura.Sales
             {
                 linha.Quantidade = _consumoTotal;
             }
-            else
+            else if (escalao != 2022)
             {
-                if (escalao != 2022){
-                    linha.Descricao = String.Format("{0}", _escaloes[escalao]);
-                }
-                linha.Quantidade = Convert.ToDouble(linhaDict["Consumo" + escalao]);
+                linha.Descricao = String.Format("{0}", _escaloes[escalao]);
             }
+            linha.Quantidade = Convert.ToDouble(linhaDict["Consumo" + escalao]);
             linha.PrecUnit = Convert.ToDouble(linhaDict["Taxa" + escalao]);
         }
 
@@ -590,6 +589,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         private void CalcRegantes_TaxasPenalizadoras(string tipoFatura)
         {
             _taxa1 = 0; _taxa2 = 0; _taxa3 = 0;
+            _taxa2022 = DictTaxa["PD"].Valor("CDU_escalaoUm");
 
             // BENACIATE
             // Tem valores especificos para as taxas na mesma TDU_TaxasPenalizadoras
@@ -619,7 +619,6 @@ namespace ASRLB_ImportacaoFatura.Sales
                 _taxa2 = DictTaxa[_cultura].Valor("CDU_escalaoArrozDois");
                 _taxa3 = DictTaxa[_cultura].Valor("CDU_escalaoArrozTres");
             }
-            _taxa2022 = DictTaxa["PD"].Valor("CDU_escalaoUm");
             return;            
         }
 
