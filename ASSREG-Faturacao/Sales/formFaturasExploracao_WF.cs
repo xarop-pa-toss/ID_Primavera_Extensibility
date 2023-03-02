@@ -105,9 +105,9 @@ namespace ASRLB_ImportacaoFatura.Sales
                 return;
             }
             // *** LOCAL ***
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "*Pelicano*");
+            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "*Pelicano*");
             // *** ASS REG SERVIDOR ***
-            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "pelicano");
+            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "pelicano");
 
 
             // Carrega TDUs das Taxas Penalizadoras no arranque

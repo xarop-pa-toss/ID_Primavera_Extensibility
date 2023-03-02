@@ -171,18 +171,21 @@ namespace ASRLB_ImportacaoFatura
                     // *** Validação das linhas de acordo com critérios ***
                     // DataTable.Delete() não apaga linha no momento mas marca para ser apagada. Só quando se chama DataTable.AcceptChanges() é que todas as linhas marcadas são removidas
                     DataTable DtTable = DtSetFinal.Tables[0];
-                    string processar, benef;
+                    string processar, benef, TRH, taxaPen;
 
                     for (int lin = 0; lin < DtTable.Rows.Count; lin++)
                     {
                         // VALIDAÇÃO DE CADA LINHA
                         processar = DtTable.Rows[lin].Field<string>("Processar");
-                        if (processar == "N" || processar == null || processar == "") 
+                        TRH = DtTable.Rows[lin].Field<string>("TRH");
+                        taxaPen = DtTable.Rows[lin].Field<string>("Taxa Penalizadora");
+                        
+                        if (processar == "N" || TRH == "N" || taxaPen == "N" || processar == null || processar == "")
                         { 
                             DtTable.Rows[lin].Delete();
                             continue; 
                         }
-                        else if (processar != "S") 
+                        else if (processar != "S" || TRH == "S" || taxaPen == "S")
                         { 
                             errosExcel.Add("Valor da coluna 'Processar' ( " + processar + " ) no contador " + DtTable.Rows[lin].Field<string>("Nº Contador") + " não é valido.");
                             continue; 
