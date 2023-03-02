@@ -104,7 +104,9 @@ namespace ASRLB_ImportacaoFatura.Sales
                 MessageBox.Show("Não foi escolhida empresa ou tipo de fatura a emitir.");
                 return;
             }
+            // *** LOCAL ***
             BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "*Pelicano*");
+            // *** ASS REG SERVIDOR ***
             //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "pelicano");
 
 
@@ -589,7 +591,6 @@ namespace ASRLB_ImportacaoFatura.Sales
         private void CalcRegantes_TaxasPenalizadoras(string tipoFatura)
         {
             _taxa1 = 0; _taxa2 = 0; _taxa3 = 0;
-            _taxa2022 = DictTaxa["PD"].Valor("CDU_escalaoUm");
 
             // BENACIATE
             // Tem valores especificos para as taxas na mesma TDU_TaxasPenalizadoras
@@ -612,12 +613,14 @@ namespace ASRLB_ImportacaoFatura.Sales
                 _taxa1 = DictTaxa[_cultura].Valor("CDU_escalaoUm");
                 _taxa2 = DictTaxa[_cultura].Valor("CDU_escalaoDois");
                 _taxa3 = DictTaxa[_cultura].Valor("CDU_escalaoTres");
+                _taxa2022 = DictTaxa[_cultura].Valor("CDU_escalaoUm");
             }
             else
             {
                 _taxa1 = DictTaxa[_cultura].Valor("CDU_escalaoArrozUm");
                 _taxa2 = DictTaxa[_cultura].Valor("CDU_escalaoArrozDois");
                 _taxa3 = DictTaxa[_cultura].Valor("CDU_escalaoArrozTres");
+                _taxa2022 = DictTaxa[_cultura].Valor("CDU_escalaoArrozUm");
             }
             return;            
         }
