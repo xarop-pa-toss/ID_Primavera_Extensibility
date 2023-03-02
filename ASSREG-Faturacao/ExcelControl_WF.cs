@@ -178,16 +178,16 @@ namespace ASRLB_ImportacaoFatura
                         // VALIDAÇÃO DE CADA LINHA
                         processar = DtTable.Rows[lin].Field<string>("Processar");
                         TRH = DtTable.Rows[lin].Field<string>("TRH");
-                        taxaPen = DtTable.Rows[lin].Field<string>("Taxa Penalizadora");
+                        taxaPen = DtTable.Rows[lin].Field<string>("Tx Penalizadora");
                         
                         if (processar == "N" || TRH == "N" || taxaPen == "N" || processar == null || processar == "")
                         { 
                             DtTable.Rows[lin].Delete();
                             continue; 
                         }
-                        else if (processar != "S" || TRH == "S" || taxaPen == "S")
+                        else if (processar != "S" || TRH != "S" || taxaPen != "S")
                         { 
-                            errosExcel.Add("Valor da coluna 'Processar' ( " + processar + " ) no contador " + DtTable.Rows[lin].Field<string>("Nº Contador") + " não é valido.");
+                            errosExcel.Add("Valor numa coluna 'Processar', 'TRH', ou 'Taxa Penalizadora' no contador " + DtTable.Rows[lin].Field<string>("Nº Contador") + " não é valido.");
                             continue; 
                         }
 

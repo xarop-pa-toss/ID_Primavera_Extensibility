@@ -135,7 +135,6 @@ namespace ASRLB_ImportacaoFatura.Sales
                 Reset_linhaDict();
                 ResetVariaveis();
 
-
                 listBoxErros_WF.Items.Add("A abrir ficheiro Excel: " + path);
                 ExcelControl_WF Excel = new ExcelControl_WF(@"" + path);
                 listBoxErros_WF.Items.Add("A carregar folhas...");
@@ -146,7 +145,6 @@ namespace ASRLB_ImportacaoFatura.Sales
                 
                 // Se houver linhas com dados inválidos no Excel, errosExcel é preenchido com cada um.
                 if (errosExcelList.Count > 0) { ErrosExcel(errosExcelList, path); break; }
-
 
                 List<string> folhasList = Excel.folhasList;
                 int nomeFolhaInd = 0;
@@ -173,14 +171,8 @@ namespace ASRLB_ImportacaoFatura.Sales
                     // Contador é inicializado como "" por isso não vai bater igual na primeira linha.
                     bool contadorIgual = DtRow.Field<string>("Nº Contador").Equals(linhaDict["Contador"]);
 
-                    /// TESTE AREA
-                    /// APAGAR
-
-                    /// APAGAR
-                    /// TESTE AREA
 
                     // Contador é igual ao da linha anterior em casos de desunião de linhas que têm 'Um contador -> Vários prédios/áreas'. Área de cada linha diferente a contabilizar.
-
                     //if (contadorIgual && benefIgual && i > 0) { continue; }
 
                     if (!benefIgual)
@@ -202,7 +194,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
                         ProcessarCabecDoc(DocVenda, tipoFatura);
                         CalcRegantes(tipoFatura); // Efectua cálculos de valores e taxas associadas.
-                        if (_consumoTotal == 0) { continue; }
+                        if (_consumoTotal == 0 && _consumo2022 == 0) { continue; }
                         ProcessarLinha(DocVenda, tipoFatura); // Preenche linhasDoc com descrições e leituras com seus valores calculados.
                     }
                     else if (benefIgual && !contadorIgual && i > 0) // Um benef -> Vários contadores. Vão todos os contadores para a mesma fatura

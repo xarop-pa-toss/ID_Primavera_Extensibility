@@ -65,24 +65,26 @@ namespace ASRLB_ImportacaoFatura.Sales
             // 
             // listBoxErros_WF
             // 
+            this.listBoxErros_WF.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxErros_WF.FormattingEnabled = true;
-            this.listBoxErros_WF.ItemHeight = 16;
+            this.listBoxErros_WF.ItemHeight = 20;
             this.listBoxErros_WF.Location = new System.Drawing.Point(27, 243);
             this.listBoxErros_WF.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxErros_WF.Name = "listBoxErros_WF";
-            this.listBoxErros_WF.Size = new System.Drawing.Size(705, 292);
+            this.listBoxErros_WF.Size = new System.Drawing.Size(705, 284);
             this.listBoxErros_WF.TabIndex = 2;
             // 
             // listBoxFicheiros_WF
             // 
+            this.listBoxFicheiros_WF.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxFicheiros_WF.FormattingEnabled = true;
             this.listBoxFicheiros_WF.HorizontalScrollbar = true;
-            this.listBoxFicheiros_WF.ItemHeight = 16;
+            this.listBoxFicheiros_WF.ItemHeight = 20;
             this.listBoxFicheiros_WF.Location = new System.Drawing.Point(27, 53);
             this.listBoxFicheiros_WF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBoxFicheiros_WF.Name = "listBoxFicheiros_WF";
             this.listBoxFicheiros_WF.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.listBoxFicheiros_WF.Size = new System.Drawing.Size(705, 116);
+            this.listBoxFicheiros_WF.Size = new System.Drawing.Size(705, 104);
             this.listBoxFicheiros_WF.TabIndex = 3;
             // 
             // btnRemover_WF
