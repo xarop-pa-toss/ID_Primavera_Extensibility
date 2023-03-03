@@ -105,9 +105,9 @@ namespace ASRLB_ImportacaoFatura.Sales
                 return;
             }
             // *** LOCAL ***
-            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "*Pelicano*");
+            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "*Pelicano*");
             // *** ASS REG SERVIDOR ***
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "pelicano");
+            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "pelicano");
 
 
             // Carrega TDUs das Taxas Penalizadoras no arranque
@@ -390,10 +390,13 @@ namespace ASRLB_ImportacaoFatura.Sales
                 double quantidadeTRH = 1;
                 string armazem = ""; string localizacao = "";
 
-                BSO.Vendas.Documentos.AdicionaLinha(DocVenda, "TRH", ref quantidadeTRH, ref armazem, ref localizacao, precUnitTRH);
-                VndBELinhaDocumentoVenda linhaTRH = DocVenda.Linhas.GetEdita(_counterLinha);
-                linhaTRH.Descricao = "Taxa de Recursos Hídricos";
-                _counterLinha++;
+                if (linhaDict["TRH"].Equals("S"))
+                {
+                    BSO.Vendas.Documentos.AdicionaLinha(DocVenda, "TRH", ref quantidadeTRH, ref armazem, ref localizacao, precUnitTRH);
+                    VndBELinhaDocumentoVenda linhaTRH = DocVenda.Linhas.GetEdita(_counterLinha);
+                    linhaTRH.Descricao = "Taxa de Recursos Hídricos";
+                    _counterLinha++;
+                }
 
                 // Linha em branco para separar do próximo contador
                 BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: " "); _counterLinha++;
