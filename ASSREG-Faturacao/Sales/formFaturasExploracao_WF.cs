@@ -299,6 +299,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 linhaDict["Area"] = DtRow.Field<double>("Área").ToString();
                 linhaDict["Cultura"] = DtRow.Field<string>("Cultura");
                 linhaDict["TRH"] = DtRow.Field<string>("TRH").ToString();
+                linhaDict["TRHValor"] = null;
                 linhaDict["TaxaPenalizadora"] = DtRow.Field<string>("Tx Penalizadora");
 
                 // Transform do Benef para ser igual às Entidades no Primavera.
@@ -384,13 +385,13 @@ namespace ASRLB_ImportacaoFatura.Sales
                 if (linhaDict["Consumo2"] != "0") { CriarLinhaConsumo(DocVenda, 2, tipoFatura); linhaDict["Consumo2"] = "0"; _counterLinha++; continue; }
                 if (linhaDict["Consumo3"] != "0") { CriarLinhaConsumo(DocVenda, 3, tipoFatura); linhaDict["Consumo3"] = "0"; _counterLinha++; }
 
-                // Calcula TRH que depende da cultura e popula linhaDict["TRH"]. Esse valor é então usado como preço unitário na linha na fatura
+                // Calcula TRH que depende da cultura e popula linhaDict["TRHValor"]. Esse valor é então usado como preço unitário na linha na fatura
                 CalcRegantes_TaxaRecursosHidricos(linhaDict["Cultura"]);
-                double precUnitTRH = Convert.ToDouble(linhaDict["TRH"]);
+                double precUnitTRH = Convert.ToDouble(linhaDict["TRHValor"]);
                 double quantidadeTRH = 1;
                 string armazem = ""; string localizacao = "";
 
-                if (linhaDict["TRH"].Equals("S"))
+                if (linhaDict["TRH"] == "S")
                 {
                     BSO.Vendas.Documentos.AdicionaLinha(DocVenda, "TRH", ref quantidadeTRH, ref armazem, ref localizacao, precUnitTRH);
                     VndBELinhaDocumentoVenda linhaTRH = DocVenda.Linhas.GetEdita(_counterLinha);
@@ -650,7 +651,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             // *** TRH FINAL ***
             // Adição de TRH_A e TRH_U
-            linhaDict["TRH"] = (TRH_U + TRH_A).ToString();
+            linhaDict["TRHValor"] = (TRH_U + TRH_A).ToString();
         }
 
 

@@ -180,14 +180,16 @@ namespace ASRLB_ImportacaoFatura
                         TRH = DtTable.Rows[lin].Field<string>("TRH");
                         taxaPen = DtTable.Rows[lin].Field<string>("Tx Penalizadora");
                         
-                        if (processar == "N" || TRH == "N" || taxaPen == "N" || processar == null || processar == "")
+                        List<string> valoresValidos = new List<string> { "S", "N" };
+
+                        if (processar == "N")
                         { 
                             DtTable.Rows[lin].Delete();
                             continue; 
                         }
-                        else if (processar != "S" || TRH != "S" || taxaPen != "S")
+                        else if (!valoresValidos.Contains(processar) || !valoresValidos.Contains(TRH) || !valoresValidos.Contains(taxaPen))
                         { 
-                            errosExcel.Add("Valor numa coluna 'Processar', 'TRH', ou 'Taxa Penalizadora' no contador " + DtTable.Rows[lin].Field<string>("Nº Contador") + " não é valido.");
+                            errosExcel.Add("Valor numa das colunas 'Processar', 'TRH', ou 'Taxa Penalizadora' no contador " + DtTable.Rows[lin].Field<string>("Nº Contador") + " não é valido.");
                             continue; 
                         }
 
