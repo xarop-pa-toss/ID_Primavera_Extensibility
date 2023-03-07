@@ -6,7 +6,10 @@ using System.IO;
 using System.Data;
 using System.Windows.Forms;
 using VndBE100;
-using ErpBS100; using StdPlatBS100; 
+using ErpBS100; using StdPlatBS100;
+
+
+
 namespace ASRLB_ImportacaoFatura.Sales
 {
     public partial class formFaturasExploracao_WF : Form
@@ -105,9 +108,9 @@ namespace ASRLB_ImportacaoFatura.Sales
                 return;
             }
             // *** LOCAL ***
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "*Pelicano*");
+            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "*Pelicano*");
             // *** ASS REG SERVIDOR ***
-            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "pelicano");
+            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "pelicano");
 
 
             // Carrega TDUs das Taxas Penalizadoras no arranque
@@ -345,7 +348,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             DocVenda.DataDoc = DateTime.Now;
             DocVenda.HoraDefinida = false;
-            DocVenda.CondPag = "1";
+            DocVenda.CondPag = "4";
             BSO.Vendas.Documentos.PreencheDadosRelacionados(DocVenda, ref vdDadosCondPag);
         }
 

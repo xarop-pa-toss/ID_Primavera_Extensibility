@@ -17,12 +17,12 @@ namespace ASRLB_ImportacaoFatura.Sales
             PSO.UI.AdicionaFormMDI(form);
         }
 
-        //public void Abrir_janelaImportarFatura()
-        //{
-        //    janelaImportarFatura form1 = new janelaImportarFatura();
-        //    form1.Show();
-        //    PSO.UI.AdicionaFormMDI(form1);
-        //}
+        public void Abrir_janelaImportarFatura_WF()
+        {
+            formImportarFaturas_WF form1 = new formImportarFaturas_WF();
+            form1.Show();
+            PSO.UI.AdicionaFormMDI(form1);
+        }
 
     }
 }

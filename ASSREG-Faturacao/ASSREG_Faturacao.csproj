@@ -125,6 +125,12 @@
     <Compile Include="Sales\formFaturasExploracao_WF.Designer.cs">
       <DependentUpon>formFaturasExploracao_WF.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sales\formImportarFaturas_WF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Sales\formImportarFaturas_WF.Designer.cs">
+      <DependentUpon>formImportarFaturas_WF.cs</DependentUpon>
+    </Compile>
     <Compile Include="Sales\OpenFormCode.cs" />
     <Compile Include="ExcelControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -158,6 +164,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Sales\formImportarFaturas.resx">
       <DependentUpon>formImportarFaturas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sales\formImportarFaturas_WF.resx">
+      <DependentUpon>formImportarFaturas_WF.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
