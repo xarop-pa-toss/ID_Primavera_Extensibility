@@ -1,14 +1,5 @@
-﻿using BasBE100;
-using StdBE100;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Data;
-using System.Windows.Forms;
-using VndBE100;
-using ErpBS100; using StdPlatBS100;
-
-
+﻿using BasBE100; using StdBE100; using VndBE100; using ErpBS100; using StdPlatBS100;
+using System; using System.Collections.Generic; using System.IO; using System.Data; using System.Windows.Forms;
 
 namespace ASRLB_ImportacaoFatura.Sales
 {
@@ -37,33 +28,6 @@ namespace ASRLB_ImportacaoFatura.Sales
         public formFaturasExploracao_WF()
         {
             InitializeComponent();
-        }
-
-        private void formFaturasExploracao_WF_Load(object sender, EventArgs e)
-        {
-            // Pede empresa. Se resultado inválido ou empresa não existir (Primavera causa exception), pede de novo
-            // Não implementado pois não funciona correctamente. Por vezes Primavera não aceita o nome da empresa.
-            /*bool retry = true;
-            while(retry)
-            {
-                string empresa = Microsoft.VisualBasic.Interaction.InputBox("Introduza o código da empresa a faturar.", "Escolher empresa");
-
-                if (empresa != "")
-                {
-                    try
-                    {
-                        BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, empresa, "id", "*Pelicano*");
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Empresa inserida não existe.");
-                        retry = true;
-                        continue;
-                    }
-                    retry = false;
-                }
-                else { retry = false; this.Close(); }
-            } */
         }
 
         private void btnEscolherFicheiro_WF_Click(object sender, EventArgs e)
@@ -111,7 +75,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "*Pelicano*");
             // *** ASS REG SERVIDOR ***
             BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "pelicano");
-
 
             // Carrega TDUs das Taxas Penalizadoras no arranque
             StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BasBE100;
 using StdBE100;
-using VndBE100;
 using ErpBS100;
 using StdPlatBS100;
 using System.IO;
@@ -34,9 +33,9 @@ namespace ASRLB_ImportacaoFatura.Sales
         internal void btnIniciar_Click(object sender, EventArgs e)
         {
             /* ** INTERRUPÇÃO DE EXECUÇÃO POR FAIL STATES **
-                        Os métodos validarFicheiro() e processarDados() são chamados através de if's que determinam o seu resultado (valor do return). Se return true, continua; se return false, então há um outro return void ao método pai (btnIniciar_Click()) que interrompe a sua execução.
-                        O return false acontece quando o método interrompeComErro() é chamado.
-                        O método validarPath() retorna string e não bool, por isso a sua validação é feita através do resultado do path do ficheiro, igualmente tratado pelo interrompeComErro() */
+            Os métodos validarFicheiro() e processarDados() são chamados através de if's que determinam o seu resultado (valor do return). Se return true, continua; se return false, então há um outro return void ao método pai (btnIniciar_Click()) que interrompe a sua execução.
+            O return false acontece quando o método interrompeComErro() é chamado.
+            O método validarPath() retorna string e não bool, por isso a sua validação é feita através do resultado do path do ficheiro, igualmente tratado pelo interrompeComErro() */
 
             //Lê conteudo da txtBox e valida se ficheiro existe.Copia o ficheiro para o mesmo directório e retorna o path da cópia.
             listBox.Items.Clear();
@@ -44,9 +43,24 @@ namespace ASRLB_ImportacaoFatura.Sales
             if (ficheiro == "") return;
 
             // Cria listas em memória fáceis de iterar para evitar chamar métodos Primavera. Acedidos por referência (morada na memória em vez do valor da variável).
+
+            int teste = BSO.Licenca.CodPostal1.Length;
+            MessageBox.Show(teste.ToString());
+
             List<string> listaArtigos = new List<string>();
             List<string> listaClientes = new List<string>();
             List<string> listaCondPag = new List<string>();
+
+            StdBELista proxyArtigos = BSO.Base.Artigos.LstArtigos();
+            listaArtigos.Add(proxyArtigos.Valor(0));
+            for (int i = 1; proxyArtigos.NumLinhas() >= i; i++)
+            {
+                listaArtigos.Add(proxyArtigos.Valor(0));
+                proxyArtigos.Seguinte();
+            }
+            proxyArtigos.Termina();
+            MessageBox.Show("numero artigos: "+ listaArtigos.Count().ToString());
+
             criarListasPri(ref listaArtigos, ref listaClientes, ref listaCondPag);
 
             // Valida dados no ficheiro comparando com os das listas criadas em criarListasPri();
@@ -308,7 +322,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             Close();
         }
 
-        private void janelaImportarFatura_Load(object sender, EventArgs e)
+        private void formImportarFaturas_WF_Load(object sender, EventArgs e)
         {
 
         }

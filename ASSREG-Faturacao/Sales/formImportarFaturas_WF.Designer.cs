@@ -63,7 +63,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(233, 47);
+            this.label4.Location = new System.Drawing.Point(235, 45);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(37, 17);
@@ -89,7 +89,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(387, 47);
+            this.label3.Location = new System.Drawing.Point(389, 45);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 17);
@@ -100,7 +100,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(29, 47);
+            this.label2.Location = new System.Drawing.Point(31, 45);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(42, 17);
@@ -142,6 +142,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.btnEscolherFicheiro.Text = "Escolher Ficheiro";
             this.btnEscolherFicheiro.UseVisualStyleBackColor = true;
             this.btnEscolherFicheiro.UseWaitCursor = true;
+            this.btnEscolherFicheiro.Click += new System.EventHandler(this.btnEscolherFicheiro_Click);
             // 
             // txtFicheiroPath
             // 
@@ -156,7 +157,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 14);
+            this.label1.Location = new System.Drawing.Point(13, 12);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(62, 17);
@@ -191,6 +192,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.UseWaitCursor = true;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
             // btnIniciar
             // 
@@ -205,6 +207,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.btnIniciar.Text = "Iniciar";
             this.btnIniciar.UseVisualStyleBackColor = true;
             this.btnIniciar.UseWaitCursor = true;
+            this.btnIniciar.Click += new System.EventHandler(this.btnIniciar_Click);
             // 
             // formImportarFaturas_WF
             // 
@@ -225,7 +228,8 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnIniciar);
             this.Name = "formImportarFaturas_WF";
-            this.Text = "formImportarFaturas_WF";
+            this.Text = "Importação de Faturas";
+            this.Load += new System.EventHandler(this.formImportarFaturas_WF_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

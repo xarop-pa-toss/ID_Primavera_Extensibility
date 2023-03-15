@@ -1,9 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\PP_Extens",
-    "\\PP_Extens\\PP_Extens"
+    "\\ASSREG-Faturacao",
+    "\\ASSREG-Faturacao\\Sales"
   ],
-  "SelectedNode": "\\PP_Extens\\PP_Extens\\PP_Extens.sln",
+  "SelectedNode": "\\ASSREG-Faturacao\\Sales\\formFaturasExploracao_WF.cs",
   "PreviewInSolutionExplorer": false
 }

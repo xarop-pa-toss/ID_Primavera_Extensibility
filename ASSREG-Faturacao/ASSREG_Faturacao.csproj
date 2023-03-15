@@ -147,12 +147,6 @@
     <Compile Include="Sales\ribbonImportarFaturas.cs" />
     <Compile Include="Settings.cs" />
     <Content Include="Sales\vba_LerParaArray.vb" />
-    <Compile Include="Sales\formImportarFaturas.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Sales\formImportarFaturas.Designer.cs">
-      <DependentUpon>formImportarFaturas.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -161,9 +155,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Sales\formFaturasExploracao_WF.resx">
       <DependentUpon>formFaturasExploracao_WF.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Sales\formImportarFaturas.resx">
-      <DependentUpon>formImportarFaturas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sales\formImportarFaturas_WF.resx">
       <DependentUpon>formImportarFaturas_WF.cs</DependentUpon>

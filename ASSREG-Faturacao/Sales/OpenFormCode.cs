@@ -10,19 +10,18 @@ namespace ASRLB_ImportacaoFatura.Sales
 {
     public class OpenFormCode : CustomCode
     {
-        public void Abrir_janelaFaturasExploracao_WF()
+        public void Abrir_formFaturasExploracao_WF()
         {
             formFaturasExploracao_WF form = new formFaturasExploracao_WF();
             form.ShowDialog();
             PSO.UI.AdicionaFormMDI(form);
         }
 
-        public void Abrir_janelaImportarFatura_WF()
+        public void Abrir_formImportarFatura_WF()
         {
             formImportarFaturas_WF form1 = new formImportarFaturas_WF();
-            form1.Show();
+            form1.ShowDialog();
             PSO.UI.AdicionaFormMDI(form1);
         }
-
     }
 }
