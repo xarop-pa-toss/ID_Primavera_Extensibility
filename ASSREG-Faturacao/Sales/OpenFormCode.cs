@@ -17,9 +17,9 @@ namespace ASRLB_ImportacaoFatura.Sales
             PSO.UI.AdicionaFormMDI(form);
         }
 
-        public void Abrir_formImportarFatura_WF()
+        public void Abrir_formImportarTxt_WF()
         {
-            formImportarFaturas_WF form1 = new formImportarFaturas_WF();
+            formImportarTxt_WF form1 = new formImportarTxt_WF();
             form1.ShowDialog();
             PSO.UI.AdicionaFormMDI(form1);
         }

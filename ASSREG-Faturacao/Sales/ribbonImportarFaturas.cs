@@ -42,10 +42,10 @@ namespace Primavera.CustomRibbon
                 switch (Id)
                 {
                     case cIDBUTTON1:
-                        using (var result = BSO.Extensibility.CreateCustomFormInstance(typeof(ASRLB_ImportacaoFatura.Sales.formImportarFaturas_WF)))
+                        using (var result = BSO.Extensibility.CreateCustomFormInstance(typeof(ASRLB_ImportacaoFatura.Sales.formImportarTxt_WF)))
                         {
-                            new ASRLB_ImportacaoFatura.Sales.formImportarFaturas_WF();
-                            (result.Result as ASRLB_ImportacaoFatura.Sales.formImportarFaturas_WF).ShowDialog();
+                            new ASRLB_ImportacaoFatura.Sales.formImportarTxt_WF();
+                            (result.Result as ASRLB_ImportacaoFatura.Sales.formImportarTxt_WF).ShowDialog();
                         }
                         break;
                     case cIDBUTTON2:

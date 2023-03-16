@@ -15,12 +15,12 @@ using System.IO;
 
 namespace ASRLB_ImportacaoFatura.Sales
 {
-    public partial class formImportarFaturas_WF : Form
+    public partial class formImportarTxt_WF : Form
     {
         private ErpBS BSO = new ErpBS();
         private StdPlatBS PSO = new StdPlatBS();
 
-        public formImportarFaturas_WF()
+        public formImportarTxt_WF()
         {
             InitializeComponent();
             datePicker.Value = DateTime.Today;
@@ -30,7 +30,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         int countFaturas = 0;
 
         //OK
-        internal void btnIniciar_Click(object sender, EventArgs e)
+        private void btnIniciar_Click_1(object sender, EventArgs e)
         {
             /* ** INTERRUPÇÃO DE EXECUÇÃO POR FAIL STATES **
             Os métodos validarFicheiro() e processarDados() são chamados através de if's que determinam o seu resultado (valor do return). Se return true, continua; se return false, então há um outro return void ao método pai (btnIniciar_Click()) que interrompe a sua execução.
@@ -42,24 +42,17 @@ namespace ASRLB_ImportacaoFatura.Sales
             ficheiro = validarPath();
             if (ficheiro == "") return;
 
+            // *** ABRIR EMPRESA ***
+            // *** LOCAL ***
+            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "ASSREG", "id", "*Pelicano*");
+            // *** ASS REG SERVIDOR ***
+            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "pelicano");
+            
+
             // Cria listas em memória fáceis de iterar para evitar chamar métodos Primavera. Acedidos por referência (morada na memória em vez do valor da variável).
-
-            int teste = BSO.Licenca.CodPostal1.Length;
-            MessageBox.Show(teste.ToString());
-
             List<string> listaArtigos = new List<string>();
             List<string> listaClientes = new List<string>();
             List<string> listaCondPag = new List<string>();
-
-            StdBELista proxyArtigos = BSO.Base.Artigos.LstArtigos();
-            listaArtigos.Add(proxyArtigos.Valor(0));
-            for (int i = 1; proxyArtigos.NumLinhas() >= i; i++)
-            {
-                listaArtigos.Add(proxyArtigos.Valor(0));
-                proxyArtigos.Seguinte();
-            }
-            proxyArtigos.Termina();
-            MessageBox.Show("numero artigos: "+ listaArtigos.Count().ToString());
 
             criarListasPri(ref listaArtigos, ref listaClientes, ref listaCondPag);
 
@@ -77,7 +70,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
 
         //OK
-        internal string validarPath()
+        private string validarPath()
         {
             string path;
             if (txtFicheiroPath.Text == "import.txt no servidor")
@@ -103,7 +96,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
 
         //OK
-        internal void criarListasPri(ref List<string> listaArtigos, ref List<string> listaClientes, ref List<string> listaCondPag)
+        private void criarListasPri(ref List<string> listaArtigos, ref List<string> listaClientes, ref List<string> listaCondPag)
         {
             StdBELista proxyArtigos = BSO.Base.Artigos.LstArtigos();
             listaArtigos.Add(proxyArtigos.Valor(0));
@@ -135,7 +128,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
 
         //OK
-        internal bool validarFicheiro(string[] linhasFicheiro, ref List<string> listaArtigos, ref List<string> listaClientes, ref List<string> listaCondPag, List<string> valoresIva, int linhasFicheiroTotal)
+        private bool validarFicheiro(string[] linhasFicheiro, ref List<string> listaArtigos, ref List<string> listaClientes, ref List<string> listaCondPag, List<string> valoresIva, int linhasFicheiroTotal)
         {
             // Valida os valores (separados por ',') com os presentes nas listas criadas
             for (int i = 0; i < linhasFicheiroTotal; i++)
@@ -147,7 +140,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 if (linha.Count() == 2)
                 {
                     // TEST PRINT
-                    listBox.Items.Add(String.Format("validarFicheiro -> Linha 0: {0}; Linha 1: {1}", linha[0], linha[1]));
+                    listBox.Items.Add(String.Format("Validação -> Linha 0: {0}; Linha 1: {1}", linha[0], linha[1]));
                     // END TEST PRINT
                     if (!listaClientes.Contains(linha[0]) || !listaCondPag.Contains(linha[1]))
                     {
@@ -158,10 +151,10 @@ namespace ASRLB_ImportacaoFatura.Sales
                 else if (linha.Count() == 6)
                 {
                     // TEST PRINT
-                    listBox.Items.Add(String.Format("validarFicheiro -> Linha 0: {0}; Linha 1: {1}; Linha 2: {2}; Linha 3: {3}; Linha 4: {4}; Linha 5: {5};", linha[0], linha[1], linha[2], linha[3], linha[4], linha[5]));
+                    listBox.Items.Add(String.Format("Validação -> Linha 0: {0}; Linha 1: {1}; Linha 2: {2}; Linha 3: {3}; Linha 4: {4}; Linha 5: {5};", linha[0], linha[1], linha[2], linha[3], linha[4], linha[5]));
                     // END TEST PRINT
                     countFaturas += 1;
-                    if (!listaArtigos.Contains(linha[0]))
+                    if (!listaArtigos.Contains(linha[0].Replace(".","")))
                     {
                         return interromperComErro(String.Format("Código de Artigo {0} inválido na linha {1}.", linha[0], (i + 1).ToString()));
                     }
@@ -180,7 +173,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
 
         //OK
-        internal bool processarDados(string[] linhasFicheiro, int linhasFicheiroTotal)
+        private bool processarDados(string[] linhasFicheiro, int linhasFicheiroTotal)
         {
             bool temLinha = false;
             int faturaActual = 0;
@@ -301,7 +294,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             return false;
         }
 
-        private void btnEscolherFicheiro_Click(object sender, EventArgs e)
+        private void btnEscolherFicheiro_Click_1(object sender, EventArgs e)
         {
             OpenFileDialog form = new OpenFileDialog();
 
@@ -317,14 +310,9 @@ namespace ASRLB_ImportacaoFatura.Sales
             }
         }
 
-        private void btnCancelar_Click(object sender, EventArgs e)
+        private void btnCancelar_Click_1(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void formImportarFaturas_WF_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
