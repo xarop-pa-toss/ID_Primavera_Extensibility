@@ -1,12 +1,6 @@
-﻿using BasBE100;
-using StdBE100;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Data;
-using System.Windows.Forms;
-using VndBE100;
-using ErpBS100; using StdPlatBS100; 
+﻿using BasBE100; using StdBE100; using VndBE100; using ErpBS100; using StdPlatBS100;
+using System; using System.Collections.Generic; using System.IO; using System.Data; using System.Windows.Forms;
+
 namespace ASRLB_ImportacaoFatura.Sales
 {
     public partial class formFaturasExploracao_WF : Form
@@ -23,7 +17,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         //CalcRegantes globals
         private string _dataFull, _cultura;
         private int _ano, _ultimaLeitura, _leitura1, _leitura2, _consumoTotal;
-        private int _escalao1, _escalao2;
+        private double _escalao1, _escalao2;
         private Dictionary<string, StdBELista> DictTaxa = new Dictionary<string, StdBELista>();
         private double _taxa1, _taxa2, _taxa3, _taxa2022, _consumo1, _consumo2, _consumo3, _consumo2022;
         private double area;
@@ -34,33 +28,6 @@ namespace ASRLB_ImportacaoFatura.Sales
         public formFaturasExploracao_WF()
         {
             InitializeComponent();
-        }
-
-        private void formFaturasExploracao_WF_Load(object sender, EventArgs e)
-        {
-            // Pede empresa. Se resultado inválido ou empresa não existir (Primavera causa exception), pede de novo
-            // Não implementado pois não funciona correctamente. Por vezes Primavera não aceita o nome da empresa.
-            /*bool retry = true;
-            while(retry)
-            {
-                string empresa = Microsoft.VisualBasic.Interaction.InputBox("Introduza o código da empresa a faturar.", "Escolher empresa");
-
-                if (empresa != "")
-                {
-                    try
-                    {
-                        BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, empresa, "id", "*Pelicano*");
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Empresa inserida não existe.");
-                        retry = true;
-                        continue;
-                    }
-                    retry = false;
-                }
-                else { retry = false; this.Close(); }
-            } */
         }
 
         private void btnEscolherFicheiro_WF_Click(object sender, EventArgs e)
@@ -96,6 +63,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             listBoxFicheiros_WF.Items.Clear();
         }
 
+        // LINHA COM LOGIN
         private void btnConfirmar_WF_Click(object sender, EventArgs e)
         {
             if (cBoxEmpresa.SelectedItem.ToString() == ""  || cBoxTipoFatura.SelectedItem.ToString() == "")
@@ -103,9 +71,10 @@ namespace ASRLB_ImportacaoFatura.Sales
                 MessageBox.Show("Não foi escolhida empresa ou tipo de fatura a emitir.");
                 return;
             }
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "*Pelicano*");
-            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "pelicano");
-
+            // *** LOCAL ***
+            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "*Pelicano*");
+            // *** ASS REG SERVIDOR ***
+            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "pelicano");
 
             // Carrega TDUs das Taxas Penalizadoras no arranque
             StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
@@ -132,7 +101,6 @@ namespace ASRLB_ImportacaoFatura.Sales
                 Reset_linhaDict();
                 ResetVariaveis();
 
-
                 listBoxErros_WF.Items.Add("A abrir ficheiro Excel: " + path);
                 ExcelControl_WF Excel = new ExcelControl_WF(@"" + path);
                 listBoxErros_WF.Items.Add("A carregar folhas...");
@@ -143,7 +111,6 @@ namespace ASRLB_ImportacaoFatura.Sales
                 
                 // Se houver linhas com dados inválidos no Excel, errosExcel é preenchido com cada um.
                 if (errosExcelList.Count > 0) { ErrosExcel(errosExcelList, path); break; }
-
 
                 List<string> folhasList = Excel.folhasList;
                 int nomeFolhaInd = 0;
@@ -170,14 +137,8 @@ namespace ASRLB_ImportacaoFatura.Sales
                     // Contador é inicializado como "" por isso não vai bater igual na primeira linha.
                     bool contadorIgual = DtRow.Field<string>("Nº Contador").Equals(linhaDict["Contador"]);
 
-                    /// TESTE AREA
-                    /// APAGAR
-
-                    /// APAGAR
-                    /// TESTE AREA
 
                     // Contador é igual ao da linha anterior em casos de desunião de linhas que têm 'Um contador -> Vários prédios/áreas'. Área de cada linha diferente a contabilizar.
-
                     //if (contadorIgual && benefIgual && i > 0) { continue; }
 
                     if (!benefIgual)
@@ -199,7 +160,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
                         ProcessarCabecDoc(DocVenda, tipoFatura);
                         CalcRegantes(tipoFatura); // Efectua cálculos de valores e taxas associadas.
-                        if (_consumoTotal == 0) { continue; }
+                        if (_consumoTotal == 0 && _consumo2022 == 0) { continue; }
                         ProcessarLinha(DocVenda, tipoFatura); // Preenche linhasDoc com descrições e leituras com seus valores calculados.
                     }
                     else if (benefIgual && !contadorIgual && i > 0) // Um benef -> Vários contadores. Vão todos os contadores para a mesma fatura
@@ -293,6 +254,11 @@ namespace ASRLB_ImportacaoFatura.Sales
             PSO.MensagensDialogos.MostraErro("Erros nas linhas do Excel. Ver contadores com erro e corrigir ficheiro. #" + errosExcelList.Count);
         }
 
+        private void formFaturasExploracao_WF_Load(object sender, EventArgs e)
+        {
+
+        }
+
         private void PrepararDict(DataRow DtRow)
         {
             try
@@ -304,6 +270,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 linhaDict["Area"] = DtRow.Field<double>("Área").ToString();
                 linhaDict["Cultura"] = DtRow.Field<string>("Cultura");
                 linhaDict["TRH"] = DtRow.Field<string>("TRH").ToString();
+                linhaDict["TRHValor"] = null;
                 linhaDict["TaxaPenalizadora"] = DtRow.Field<string>("Tx Penalizadora");
 
                 // Transform do Benef para ser igual às Entidades no Primavera.
@@ -349,7 +316,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             DocVenda.DataDoc = DateTime.Now;
             DocVenda.HoraDefinida = false;
-            DocVenda.CondPag = "1";
+            DocVenda.CondPag = "4";
             BSO.Vendas.Documentos.PreencheDadosRelacionados(DocVenda, ref vdDadosCondPag);
         }
 
@@ -358,43 +325,50 @@ namespace ASRLB_ImportacaoFatura.Sales
             // Linha 1 - Descrição com NºContador + Consumo Total
             // Linha 2 - Última leitura do ano passado + úlitma leitura feita este ano.
             // Se a fatura for 2022, será usada uma segunda linha de descrição para diferenciar entre a primeira leitura (calculada com taxa minima) e o restante.
-            string descricao2022, descricao2;
-            string descricao = String.Format("Contador {0}. Consumo total: {1} m³. Área: {2}", linhaDict["Contador"], linhaDict["Consumo"], linhaDict["Area"]);
+            double consumoTotal = Convert.ToDouble(linhaDict["LeituraFinal"]) - Convert.ToDouble(linhaDict["UltimaLeitura"]);
+            string descricao = String.Format("Contador {0}. Consumo total: {1} m³. Área: {2}", linhaDict["Contador"], consumoTotal.ToString(), linhaDict["Area"]); ;
             BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao); _counterLinha++;
 
-            if (_ano == 2022)
+            // Contagem inicial de 2022 (regra especial)
+            if (linhaDict["Consumo2022"] != "0")
             {
-                descricao2022 = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["UltimaLeitura"], linhaDict["Leitura1"], linhaDict["Data1"]);
-                BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao2022); _counterLinha++;
-                descricao2 = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["Leitura1"], linhaDict["LeituraFinal"], linhaDict["DataLeituraFinal"]);
+                descricao = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["UltimaLeitura"], linhaDict["Leitura1"], linhaDict["Data1"]);
+                BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao); _counterLinha++;
+                CriarLinhaConsumo(DocVenda, 2022, tipoFatura); 
+                
+                linhaDict["Consumo2022"] = "0";
+                _counterLinha++;
+                descricao = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["Leitura1"], linhaDict["LeituraFinal"], linhaDict["DataLeituraFinal"]);
             }
             else
             {
-                descricao2 = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["UltimaLeitura"], linhaDict["LeituraFinal"], linhaDict["DataLeituraFinal"]);
+                descricao = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["UltimaLeitura"], linhaDict["LeituraFinal"], linhaDict["DataLeituraFinal"]);
             }
-            BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao2); _counterLinha++;
+            BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao); _counterLinha++;
 
-            // Linhas 3 até 8 - Leituras + TRH
+            // Linhas 3/4 até 8 - Leituras + TRH
             // _counterLinha começa na linha 3. Variável global para dar track às linhas na fatura independentemente do nº de contadores
             // CUIDADO - implementação de while(true) depende de uso eficaz e deliberado de breaks e continues para evitar loop infinito.
             while (true)
             {
-                // Contagens
-                if (linhaDict["Consumo2022"] != "0") { CriarLinhaConsumo(DocVenda, 2022, tipoFatura); linhaDict["Consumo2022"] = "0"; _counterLinha++;  continue; }
+                // Contagens normais
                 if (linhaDict["Consumo1"] != "0") { CriarLinhaConsumo(DocVenda, 1, tipoFatura); linhaDict["Consumo1"] = "0"; _counterLinha++; continue; }
                 if (linhaDict["Consumo2"] != "0") { CriarLinhaConsumo(DocVenda, 2, tipoFatura); linhaDict["Consumo2"] = "0"; _counterLinha++; continue; }
                 if (linhaDict["Consumo3"] != "0") { CriarLinhaConsumo(DocVenda, 3, tipoFatura); linhaDict["Consumo3"] = "0"; _counterLinha++; }
 
-                // Calcula TRH que depende da cultura e popula linhaDict["TRH"]. Esse valor é então usado como preço unitário na linha na fatura
+                // Calcula TRH que depende da cultura e popula linhaDict["TRHValor"]. Esse valor é então usado como preço unitário na linha na fatura
                 CalcRegantes_TaxaRecursosHidricos(linhaDict["Cultura"]);
-                double precUnitTRH = Convert.ToDouble(linhaDict["TRH"]);
+                double precUnitTRH = Convert.ToDouble(linhaDict["TRHValor"]);
                 double quantidadeTRH = 1;
                 string armazem = ""; string localizacao = "";
 
-                BSO.Vendas.Documentos.AdicionaLinha(DocVenda, "TRH", ref quantidadeTRH, ref armazem, ref localizacao, precUnitTRH);
-                VndBELinhaDocumentoVenda linhaTRH = DocVenda.Linhas.GetEdita(_counterLinha);
-                linhaTRH.Descricao = "Taxa de Recursos Hídricos";
-                _counterLinha++;
+                if (linhaDict["TRH"] == "S")
+                {
+                    BSO.Vendas.Documentos.AdicionaLinha(DocVenda, "TRH", ref quantidadeTRH, ref armazem, ref localizacao, precUnitTRH);
+                    VndBELinhaDocumentoVenda linhaTRH = DocVenda.Linhas.GetEdita(_counterLinha);
+                    linhaTRH.Descricao = "Taxa de Recursos Hídricos";
+                    _counterLinha++;
+                }
 
                 // Linha em branco para separar do próximo contador
                 BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: " "); _counterLinha++;
@@ -415,13 +389,11 @@ namespace ASRLB_ImportacaoFatura.Sales
             {
                 linha.Quantidade = _consumoTotal;
             }
-            else
+            else if (escalao != 2022)
             {
-                if (escalao != 2022){
-                    linha.Descricao = String.Format("{0}", _escaloes[escalao]);
-                }
-                linha.Quantidade = Convert.ToDouble(linhaDict["Consumo" + escalao]);
+                linha.Descricao = String.Format("{0}", _escaloes[escalao]);
             }
+            linha.Quantidade = Convert.ToDouble(linhaDict["Consumo" + escalao]);
             linha.PrecUnit = Convert.ToDouble(linhaDict["Taxa" + escalao]);
         }
 
@@ -528,23 +500,32 @@ namespace ASRLB_ImportacaoFatura.Sales
 
         private void CalcRegantes_Consumos(string tipoFatura)
         {
+
             // Separação do consumo total pelos três escalões. Preenche o 1º escalão até ao seu limite antes de ir pro 2º. Será ignorado se for zero.
             // Se houver mais que 7000 de consumo, 5000 ficam no primeiro escalão, 2000 (diferença entre 5000 e 7000) ficam no segundo e o restante no terceiro.
-            if (_cultura != "CA")
-            { _escalao1 = 5000; _escalao2 = 2000; }
-            else
-            { _escalao1 = 12000; _escalao2 = 2000; }
-
-            int escalao1e2 = _escalao1 + _escalao2;
-            _consumo1 = 0; _consumo2 = 0; _consumo3 = 0;
+            // *** VALORES BASE PARA UM HECTARE -> 5000 e 7000. VALOR BASE DEVE SER MULTIPLICADO PELA ÁREA ***
             double area = Convert.ToDouble(linhaDict["Area"]);
+
+            if (_cultura != "CA")
+            { _escalao1 = 5000 * area; _escalao2 = 2000 * area; }
+            else
+            { _escalao1 = 12000 * area; _escalao2 = 2000 * area; }
+
+            //if (_cultura != "CA")
+            //{ _escalao1 = 5000; _escalao2 = 2000; }
+            //else
+            //{ _escalao1 = 12000; _escalao2 = 2000; }
+
+            double escalao1e2 = _escalao1 + _escalao2;
+            _consumo1 = 0; _consumo2 = 0; _consumo3 = 0;
+            
 
             // BENACIATE
             // Só usamos o consumo total. Definimos _consumo1 = _consumoTotal para utilizar a mesma lógica que o outro tipo de faturação sem reescrever nada.
             if (tipoFatura == "Benaciate")
             {
                 _consumo1 = _consumoTotal;
-                _consumo1 *= area;
+                //_consumo1 *= area;
                 return;
             }
 
@@ -565,10 +546,11 @@ namespace ASRLB_ImportacaoFatura.Sales
                 }
                 else { _consumo1 = _consumoTotal; _escalao2 = 0; _consumo3 = 0; }
 
-                _consumo1 *= area;
-                _consumo2 *= area;
-                _consumo3 *= area;
-                _consumo2022 *= area; linhaDict["Taxa1"] = null;
+                //_consumo1 *= area;
+                //_consumo2 *= area;
+                //_consumo3 *= area;
+                //_consumo2022 *= area;
+                linhaDict["Taxa1"] = null;
                 linhaDict["Consumo1"] = null;
             }
         }
@@ -592,26 +574,22 @@ namespace ASRLB_ImportacaoFatura.Sales
                 return;
             }
 
-            // 
+            // Valores das taxas a serem aplicadas como Preço Unitário na factura (serão multiplicadas pelo consumo).
             if (_cultura != "CA")
             {
                 _taxa1 = DictTaxa[_cultura].Valor("CDU_escalaoUm");
                 _taxa2 = DictTaxa[_cultura].Valor("CDU_escalaoDois");
                 _taxa3 = DictTaxa[_cultura].Valor("CDU_escalaoTres");
+                _taxa2022 = DictTaxa[_cultura].Valor("CDU_escalaoUm");
             }
             else
             {
                 _taxa1 = DictTaxa[_cultura].Valor("CDU_escalaoArrozUm");
                 _taxa2 = DictTaxa[_cultura].Valor("CDU_escalaoArrozDois");
                 _taxa3 = DictTaxa[_cultura].Valor("CDU_escalaoArrozTres");
+                _taxa2022 = DictTaxa[_cultura].Valor("CDU_escalaoArrozUm");
             }
-            return;
-
-            if (_ano == 2022)
-            {
-                _taxa2022 = DictTaxa["PD"].Valor("CDU_escalaoUm");
-            }
-            
+            return;            
         }
 
         private void CalcRegantes_TaxaRecursosHidricos(string cultura)
@@ -624,7 +602,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             double TRH_U, TRH_A;
             double consumoTotal = Convert.ToDouble(_consumoTotal);
-            if (linhaDict["Consumo2022"] != "0") { consumoTotal += _consumo2022; }
+            if (_consumo2022 != 0) { consumoTotal += _consumo2022; }
 
             // Calculos da TRH.
             // São calculados valores do ComponenteU e do Componente A em separado, com _consumoTotal como base. A TRH é a adição de ambos os valores finais.
@@ -644,7 +622,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             // *** TRH FINAL ***
             // Adição de TRH_A e TRH_U
-            linhaDict["TRH"] = (TRH_U + TRH_A).ToString();
+            linhaDict["TRHValor"] = (TRH_U + TRH_A).ToString();
         }
 
 
@@ -694,9 +672,9 @@ namespace ASRLB_ImportacaoFatura.Sales
             linhaDict.Add("Consumo3", null);
             linhaDict.Add("Consumo2022", null);
 
-            // Dicts com as descrições para cada escalão.
-            _escaloes[1] = "Até 5000 m³"; _escaloes[2] = "Entre 5000 e 7000 m³"; _escaloes[3] = "Mais que 7000 m³"; _escaloes[2022] = "" ;
-            _escaloesArroz[1] = "Até 12000 m³"; _escaloesArroz[2] = "Entre 12000 e 14000 m³"; _escaloesArroz[3] = "Mais que 14000 m³";
+            // Descrições para cada escalão.
+            _escaloes[1] = "Até 5000 m³/ha"; _escaloes[2] = "Entre 5000 e 7000 m³/ha"; _escaloes[3] = "Mais que 7000 m³/ha"; _escaloes[2022] = "" ;
+            _escaloesArroz[1] = "Até 12000 m³/ha"; _escaloesArroz[2] = "Entre 12000 e 14000 m³/ha"; _escaloesArroz[3] = "Mais que 14000 m³/ha";
 
             //DtGridExploracao.AutoGenerateColumns = true;
             //DtGridExploracao.AutoSize = true;
