@@ -140,7 +140,8 @@ namespace ASRLB_ImportacaoFatura.Sales
                 if (linha.Count() == 2)
                 {
                     // TEST PRINT
-                    listBox.Items.Add(String.Format("Validação -> Linha 0: {0}; Linha 1: {1}", linha[0], linha[1]));
+                    UpdateListbox(String.Format("Validação -> Linha 0: {0}; Linha 1: {1}", linha[0], linha[1])); 
+                    Application.DoEvents();
                     // END TEST PRINT
                     if (!listaClientes.Contains(linha[0]) || !listaCondPag.Contains(linha[1]))
                     {
@@ -151,7 +152,8 @@ namespace ASRLB_ImportacaoFatura.Sales
                 else if (linha.Count() == 6)
                 {
                     // TEST PRINT
-                    listBox.Items.Add(String.Format("Validação -> Linha 0: {0}; Linha 1: {1}; Linha 2: {2}; Linha 3: {3}; Linha 4: {4}; Linha 5: {5};", linha[0], linha[1], linha[2], linha[3], linha[4], linha[5]));
+                    UpdateListbox(String.Format("Validação -> Linha 0: {0}; Linha 1: {1}; Linha 2: {2}; Linha 3: {3}; Linha 4: {4}; Linha 5: {5};", linha[0], linha[1], linha[2], linha[3], linha[4], linha[5]));
+                    Application.DoEvents();
                     // END TEST PRINT
                     countFaturas += 1;
                     if (!listaArtigos.Contains(linha[0].Replace(".","")))
@@ -186,14 +188,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             // Import dos valores do IVA da BD
             StdBELista BELista = new StdBELista();
             BELista = BSO.Consulta("SELECT Iva FROM IVA");
-            // Inicialização da barra de progresso
-            ProgressBar barraProg = new ProgressBar();
-            barraProg.Visible = true;
-            barraProg.Minimum = 0;
-            barraProg.Maximum = countFaturas;
-            barraProg.Value = 0;
-            barraProg.Step = 1;
-
 
             BSO.IniciaTransaccao();
 
@@ -201,7 +195,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             {
                 try
                 {
-                    barraProg.PerformStep();
                     linha = linhasFicheiro[i].Split(',');
                     for (int u = 0; u < linha.Count(); u++) { linha[u] = linha[u].Replace(",", ""); linha[u] = linha[u].Replace(".", ","); linha[u] = linha[u].Trim(); }
 
@@ -219,12 +212,14 @@ namespace ASRLB_ImportacaoFatura.Sales
                             if (BSO.Vendas.Documentos.ValidaActualizacao(docVenda, BSO.Vendas.TabVendas.Edita(docVenda.Tipodoc), ref serie, ref strErro))
                             {
                                 BSO.Vendas.Documentos.Actualiza(docVenda, ref strAvisos);
-                                listBox.Items.Add(String.Format("Fatura {0} para cliente {1} processada com sucesso.", docVenda.NumDoc, docVenda.Entidade));
+                                UpdateListbox(String.Format("Fatura {0} para cliente {1} processada com sucesso.", docVenda.NumDoc, docVenda.Entidade));
+                                Application.DoEvents();
                                 if (i == linhasFicheiroTotal - 1) { return false; }
                             }
                             else
                             {
-                                listBox.Items.Add(String.Format("Ocorreram erros ao gerar a Fatura {0}. ERRO: {1} \n A INFORMAÇÃO NÃO FOI PROCESSADA!", docVenda.NumDoc, strErro));
+                                UpdateListbox(String.Format("Ocorreram erros ao gerar a Fatura {0}. ERRO: {1} \n A INFORMAÇÃO NÃO FOI PROCESSADA!", docVenda.NumDoc, strErro));
+                                Application.DoEvents();
                                 if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
                                 return interromperComErro(strErro);
                             }
@@ -283,12 +278,33 @@ namespace ASRLB_ImportacaoFatura.Sales
         }
 
 
+        private void UpdateListbox(string texto)
+        {
+            if (listBox.InvokeRequired)
+            {
+                listBox.Invoke(new Action<string>(UpdateListbox), texto);
+                return;
+            }
+
+
+
+
+
+
+
+
+
+
+            listBox.Items.Add(texto);
+            listBox.SelectedIndex = listBox.Items.Count - 1;
+        }
 
         public bool interromperComErro(string error = null)
         {
             if (error is null)
             { error = "Erro inesperado não definido."; }
-            listBox.Items.Add(error); PSO.Dialogos.MostraErro(error);
+            UpdateListbox(error); PSO.Dialogos.MostraErro(error);
+            Application.DoEvents();
             File.Delete(ficheiro);
 
             return false;

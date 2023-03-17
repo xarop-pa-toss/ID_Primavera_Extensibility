@@ -66,7 +66,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         // LINHA COM LOGIN
         private void btnConfirmar_WF_Click(object sender, EventArgs e)
         {
-            if (cBoxEmpresa.SelectedItem.ToString() == ""  || cBoxTipoFatura.SelectedItem.ToString() == "")
+            if (cBoxEmpresa.SelectedItem.ToString() == ""  || cBoxPenalizacao.SelectedItem.ToString() == "")
             {
                 MessageBox.Show("Não foi escolhida empresa ou tipo de fatura a emitir.");
                 return;
@@ -94,7 +94,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             // Check se tipo de ficheiro (checkbox) é válido
             var ficheiros = listBoxFicheiros_WF.Items;
-            string tipoFatura = cBoxTipoFatura.SelectedItem.ToString();
+            string comPenalizacao = cBoxPenalizacao.SelectedItem.ToString();
 
             foreach (string path in ficheiros)
             {
@@ -158,10 +158,10 @@ namespace ASRLB_ImportacaoFatura.Sales
                         PrepararDict(DtRow); // Preenche dicionário com dados necessários.
                         i += MesmoContadorBenef(DtTable, i);
 
-                        ProcessarCabecDoc(DocVenda, tipoFatura);
-                        CalcRegantes(tipoFatura); // Efectua cálculos de valores e taxas associadas.
+                        ProcessarCabecDoc(DocVenda, comPenalizacao);
+                        CalcRegantes(comPenalizacao); // Efectua cálculos de valores e taxas associadas.
                         if (_consumoTotal == 0 && _consumo2022 == 0) { continue; }
-                        ProcessarLinha(DocVenda, tipoFatura); // Preenche linhasDoc com descrições e leituras com seus valores calculados.
+                        ProcessarLinha(DocVenda, comPenalizacao); // Preenche linhasDoc com descrições e leituras com seus valores calculados.
                     }
                     else if (benefIgual && !contadorIgual && i > 0) // Um benef -> Vários contadores. Vão todos os contadores para a mesma fatura
                     {
@@ -169,8 +169,8 @@ namespace ASRLB_ImportacaoFatura.Sales
                         PrepararDict(DtRow);
                         i += MesmoContadorBenef(DtTable, i);
                         
-                        CalcRegantes(tipoFatura);
-                        ProcessarLinha(DocVenda, tipoFatura);
+                        CalcRegantes(comPenalizacao);
+                        ProcessarLinha(DocVenda, comPenalizacao);
                     }
 
                     // BSO.Vendas.Documentos.CalculaValoresTotais(DocVenda);
@@ -254,16 +254,11 @@ namespace ASRLB_ImportacaoFatura.Sales
             PSO.MensagensDialogos.MostraErro("Erros nas linhas do Excel. Ver contadores com erro e corrigir ficheiro. #" + errosExcelList.Count);
         }
 
-        private void formFaturasExploracao_WF_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void PrepararDict(DataRow DtRow)
         {
             try
             {
-                // Dados Excel
+                // Dados Excel  
                 // TRH e Taxa Penalizadora vêm como 'S' ou 'N'. Se 'S', substituir pelo valor. Se 'N', cancelar.
                 linhaDict["Contador"] = DtRow.Field<string>("Nº Contador");
                 linhaDict["Predio"] = DtRow.Field<string>("Prédio");
@@ -301,13 +296,13 @@ namespace ASRLB_ImportacaoFatura.Sales
         }
 
 
-        private void ProcessarCabecDoc(VndBEDocumentoVenda DocVenda, string tipoFatura)
+        private void ProcessarCabecDoc(VndBEDocumentoVenda DocVenda, string comPenalizacao)
         {
             int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosTodos;
             int vdDadosCondPag = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosCondPag;
 
-            if (tipoFatura == "Benaciate") { DocVenda.Tipodoc = "FVB"; }
-            else if (tipoFatura == "AHSLP") { DocVenda.Tipodoc = "FTE";  }
+            if (comPenalizacao == "Sim") { DocVenda.Tipodoc = "FVB"; }
+            else if (comPenalizacao == "Não") { DocVenda.Tipodoc = "FTE";  }
 
             DocVenda.Serie = BSO.Base.Series.DaSerieDefeito("V", DocVenda.Tipodoc);
             DocVenda.Entidade = linhaDict["Benef"];
@@ -320,7 +315,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             BSO.Vendas.Documentos.PreencheDadosRelacionados(DocVenda, ref vdDadosCondPag);
         }
 
-        private void ProcessarLinha(VndBEDocumentoVenda DocVenda, string tipoFatura)
+        private void ProcessarLinha(VndBEDocumentoVenda DocVenda, string comPenalizacao)
         {
             // Linha 1 - Descrição com NºContador + Consumo Total
             // Linha 2 - Última leitura do ano passado + úlitma leitura feita este ano.
@@ -334,7 +329,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             {
                 descricao = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["UltimaLeitura"], linhaDict["Leitura1"], linhaDict["Data1"]);
                 BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao); _counterLinha++;
-                CriarLinhaConsumo(DocVenda, 2022, tipoFatura); 
+                CriarLinhaConsumo(DocVenda, 2022, comPenalizacao); 
                 
                 linhaDict["Consumo2022"] = "0";
                 _counterLinha++;
@@ -352,9 +347,9 @@ namespace ASRLB_ImportacaoFatura.Sales
             while (true)
             {
                 // Contagens normais
-                if (linhaDict["Consumo1"] != "0") { CriarLinhaConsumo(DocVenda, 1, tipoFatura); linhaDict["Consumo1"] = "0"; _counterLinha++; continue; }
-                if (linhaDict["Consumo2"] != "0") { CriarLinhaConsumo(DocVenda, 2, tipoFatura); linhaDict["Consumo2"] = "0"; _counterLinha++; continue; }
-                if (linhaDict["Consumo3"] != "0") { CriarLinhaConsumo(DocVenda, 3, tipoFatura); linhaDict["Consumo3"] = "0"; _counterLinha++; }
+                if (linhaDict["Consumo1"] != "0") { CriarLinhaConsumo(DocVenda, 1, comPenalizacao); linhaDict["Consumo1"] = "0"; _counterLinha++; continue; }
+                if (linhaDict["Consumo2"] != "0") { CriarLinhaConsumo(DocVenda, 2, comPenalizacao); linhaDict["Consumo2"] = "0"; _counterLinha++; continue; }
+                if (linhaDict["Consumo3"] != "0") { CriarLinhaConsumo(DocVenda, 3, comPenalizacao); linhaDict["Consumo3"] = "0"; _counterLinha++; }
 
                 // Calcula TRH que depende da cultura e popula linhaDict["TRHValor"]. Esse valor é então usado como preço unitário na linha na fatura
                 CalcRegantes_TaxaRecursosHidricos(linhaDict["Cultura"]);
@@ -376,7 +371,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             }
         }
 
-        private void CriarLinhaConsumo(VndBEDocumentoVenda DocVenda, int escalao, string tipoFatura)
+        private void CriarLinhaConsumo(VndBEDocumentoVenda DocVenda, int escalao, string comPenalizacao)
         {
             double quantidade = Convert.ToDouble(linhaDict["Consumo" + escalao]);
             double precUnit = Convert.ToDouble(linhaDict["Taxa" + escalao]);
@@ -385,7 +380,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             BSO.Vendas.Documentos.AdicionaLinha(DocVenda, "TE", ref quantidade, ref armazem, ref localizacao, precUnit);
 
             VndBELinhaDocumentoVenda linha = DocVenda.Linhas.GetEdita(_counterLinha);
-            if (tipoFatura == "Benaciate") 
+            if (comPenalizacao == "Sim") 
             {
                 linha.Quantidade = _consumoTotal;
             }
@@ -420,7 +415,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         }
 
 
-        private void CalcRegantes(string tipoFatura)
+        private void CalcRegantes(string comPenalizacao)
         {
             _cultura = linhaDict["Cultura"];
             if (linhaDict["Data1"] != null && linhaDict["Leitura1"] != null)
@@ -443,13 +438,13 @@ namespace ASRLB_ImportacaoFatura.Sales
             // O resto do cosnumo (Leitura2 - Leitura1) "começa do zero" e é usado para os restantes cálculos normalmente. -> _consumo1, _consumo2, _consumo3
             // _consumo2022Especial é definido dentro de CalcRegantes_ConsumoTotal pois é lá que tem mais influência
             _consumo2022 = 0;
-            _consumoTotal = CalcRegantes_ConsumoTotal(tipoFatura);
+            _consumoTotal = CalcRegantes_ConsumoTotal(comPenalizacao);
             linhaDict["Consumo"] = _consumoTotal.ToString();
 
             //Define _consumo1, _consumo2, _consumo3
-            CalcRegantes_Consumos(tipoFatura);
+            CalcRegantes_Consumos(comPenalizacao);
             //Define _taxa1, _taxa2, _taxa3 a serem aplicadas a cada consumo. _taxa1 é a mais baixa da tabela se _ano = 2022;
-            CalcRegantes_TaxasPenalizadoras(tipoFatura);
+            CalcRegantes_TaxasPenalizadoras(comPenalizacao);
 
             linhaDict["Taxa1"] = _taxa1.ToString();
             linhaDict["Taxa2"] = _taxa2.ToString();
@@ -461,7 +456,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             linhaDict["Consumo2022"] = _consumo2022.ToString();
         }
 
-        private int CalcRegantes_ConsumoTotal(string tipoFatura)
+        private int CalcRegantes_ConsumoTotal(string comPenalizacao)
         {
             if (linhaDict["Leitura1"] == null && linhaDict["Leitura2"] == null)
             {
@@ -476,7 +471,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 linhaDict["DataLeituraFinal"] = linhaDict["Data1"];
                 linhaDict["LeituraFinal"] = linhaDict["Leitura1"];
                 linhaDict["TotalLeituras"] = "1";
-                if (_ano == 2022 && tipoFatura != "Benaciate")
+                if (_ano == 2022 && comPenalizacao.Equals("Não"))
                 {
                     _consumo2022 = _leitura1 - _ultimaLeitura;
                     return 0;
@@ -489,7 +484,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 linhaDict["DataLeituraFinal"] = linhaDict["Data2"];
                 linhaDict["LeituraFinal"] = linhaDict["Leitura2"];
                 linhaDict["TotalLeituras"] = "2";
-                if (_ano == 2022 && tipoFatura != "Benaciate")
+                if (_ano == 2022 && comPenalizacao.Equals("Não"))
                 {
                     _consumo2022 = _leitura1 - _ultimaLeitura;
                     return _leitura2 - _leitura1;
@@ -498,7 +493,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             }
         }
 
-        private void CalcRegantes_Consumos(string tipoFatura)
+        private void CalcRegantes_Consumos(string comPenalizacao)
         {
 
             // Separação do consumo total pelos três escalões. Preenche o 1º escalão até ao seu limite antes de ir pro 2º. Será ignorado se for zero.
@@ -522,7 +517,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             // BENACIATE
             // Só usamos o consumo total. Definimos _consumo1 = _consumoTotal para utilizar a mesma lógica que o outro tipo de faturação sem reescrever nada.
-            if (tipoFatura == "Benaciate")
+            if (comPenalizacao.Equals("Sim"))
             {
                 _consumo1 = _consumoTotal;
                 //_consumo1 *= area;
@@ -534,7 +529,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // Cada hectare "dá direito" ao valor base de um escalão. Ou seja, se um benef tiver 2 hectares, tem direito a 10000 m3 taxados no primeiro escalão em vez de 5000.
             // e.g. Um consumo total de 11000 m3 em 1 hectare tería os escalões calculados a 5000 -> 2000 -> 4000. Para 3 hectares sería a 15000 -> 6000 -> 12000 (efectivamente o triplo).
             
-            if (tipoFatura == "AHSLP")
+            if (comPenalizacao.Equals("Não"))
             {
                 if (_consumoTotal >= escalao1e2)
                 {
@@ -546,22 +541,18 @@ namespace ASRLB_ImportacaoFatura.Sales
                 }
                 else { _consumo1 = _consumoTotal; _escalao2 = 0; _consumo3 = 0; }
 
-                //_consumo1 *= area;
-                //_consumo2 *= area;
-                //_consumo3 *= area;
-                //_consumo2022 *= area;
                 linhaDict["Taxa1"] = null;
                 linhaDict["Consumo1"] = null;
             }
         }
 
-        private void CalcRegantes_TaxasPenalizadoras(string tipoFatura)
+        private void CalcRegantes_TaxasPenalizadoras(string comPenalizacao)
         {
             _taxa1 = 0; _taxa2 = 0; _taxa3 = 0;
 
             // BENACIATE
             // Tem valores especificos para as taxas na mesma TDU_TaxasPenalizadoras
-            if (tipoFatura == "Benaciate")
+            if (comPenalizacao.Equals("Sim")
             {
                 if (_cultura == "PD")
                 {

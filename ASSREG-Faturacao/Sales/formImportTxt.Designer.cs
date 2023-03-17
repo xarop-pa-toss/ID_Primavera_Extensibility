@@ -212,7 +212,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnIniciar);
             this.Name = "formImportarTxt_WF";
-            this.Text = "formImportTxt";
+            this.Text = "Faturas RegSilv";
             this.ResumeLayout(false);
             this.PerformLayout();
 
