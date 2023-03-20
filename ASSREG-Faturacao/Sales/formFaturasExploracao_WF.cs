@@ -377,7 +377,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // O resto do cosnumo (Leitura2 - Leitura1) "começa do zero" e é usado para os restantes cálculos normalmente. -> _consumo1, _consumo2, _consumo3
             // _consumo2022Especial é definido dentro de CalcRegantes_ConsumoTotal pois é lá que tem mais influência
             _consumo2022 = 0;
-            _consumoTotal = CalcRegantes_ConsumoTotal(comPenalizacao);
+            _consumoTotal = CalcRegantes_ConsumoTotal();
             linhaDict["Consumo"] = _consumoTotal.ToString();
 
             //Define _consumo1, _consumo2, _consumo3
@@ -393,7 +393,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             linhaDict["Consumo3"] = _consumo3.ToString();
         }
 
-        private int CalcRegantes_ConsumoTotal(string comPenalizacao)
+        private int CalcRegantes_ConsumoTotal()
         {
             if (linhaDict["Leitura1"] == null && linhaDict["Leitura2"] == null)
             {
@@ -408,31 +408,19 @@ namespace ASRLB_ImportacaoFatura.Sales
                 linhaDict["DataLeituraFinal"] = linhaDict["Data1"];
                 linhaDict["LeituraFinal"] = linhaDict["Leitura1"];
                 linhaDict["TotalLeituras"] = "1";
-                if (_ano == 2022 && comPenalizacao.Equals("Não"))
-                {
-                    _consumo2022 = _leitura1 - _ultimaLeitura;
-                    return 0;
-                }
-                else { return _leitura1 - _ultimaLeitura; }
-
+                return _leitura1 - _ultimaLeitura;
             }
             else
             {
                 linhaDict["DataLeituraFinal"] = linhaDict["Data2"];
                 linhaDict["LeituraFinal"] = linhaDict["Leitura2"];
                 linhaDict["TotalLeituras"] = "2";
-                if (_ano == 2022 && comPenalizacao.Equals("Não"))
-                {
-                    _consumo2022 = _leitura1 - _ultimaLeitura;
-                    return _leitura2 - _leitura1;
-                }
-                else { return _leitura2 - _ultimaLeitura; }
+                return _leitura2 - _ultimaLeitura;
             }
         }
 
         private void CalcRegantes_Consumos(string comPenalizacao)
         {
-
             // Separação do consumo total pelos três escalões. Preenche o 1º escalão até ao seu limite antes de ir pro 2º. Será ignorado se for zero.
             // Se houver mais que 7000 de consumo, 5000 ficam no primeiro escalão, 2000 (diferença entre 5000 e 7000) ficam no segundo e o restante no terceiro.
             // *** VALORES BASE PARA UM HECTARE -> 5000 e 7000. VALOR BASE DEVE SER MULTIPLICADO PELA ÁREA ***
@@ -452,12 +440,11 @@ namespace ASRLB_ImportacaoFatura.Sales
             _consumo1 = 0; _consumo2 = 0; _consumo3 = 0;
 
 
-            // BENACIATE
+            // SEM PENALIZAÇÃO
             // Só usamos o consumo total. Definimos _consumo1 = _consumoTotal para utilizar a mesma lógica que o outro tipo de faturação sem reescrever nada.
-            if (comPenalizacao.Equals("Sim"))
+            if (comPenalizacao.Equals("Não"))
             {
                 _consumo1 = _consumoTotal;
-                //_consumo1 *= area;
                 return;
             }
 
@@ -466,7 +453,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // Cada hectare "dá direito" ao valor base de um escalão. Ou seja, se um benef tiver 2 hectares, tem direito a 10000 m3 taxados no primeiro escalão em vez de 5000.
             // e.g. Um consumo total de 11000 m3 em 1 hectare tería os escalões calculados a 5000 -> 2000 -> 4000. Para 3 hectares sería a 15000 -> 6000 -> 12000 (efectivamente o triplo).
 
-            if (comPenalizacao.Equals("Não"))
+            if (comPenalizacao.Equals("Sim"))
             {
                 if (_consumoTotal >= escalao1e2)
                 {
@@ -500,6 +487,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 _taxa1 = DictTaxa[_cultura].Valor("CDU_escalaoUm");
                 _taxa2 = DictTaxa[_cultura].Valor("CDU_escalaoDois");
                 _taxa3 = DictTaxa[_cultura].Valor("CDU_escalaoTres");
+                return;
                 //_taxa2022 = DictTaxa[_cultura].Valor("CDU_escalaoUm");
             }
         }
