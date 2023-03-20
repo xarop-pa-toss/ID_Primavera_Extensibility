@@ -285,6 +285,16 @@ namespace ASRLB_ImportacaoFatura.Sales
                 listBox.Invoke(new Action<string>(UpdateListbox), texto);
                 return;
             }
+
+
+
+
+
+
+
+
+
+
             listBox.Items.Add(texto);
             listBox.SelectedIndex = listBox.Items.Count - 1;
         }
