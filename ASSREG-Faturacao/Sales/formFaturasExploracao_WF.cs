@@ -89,16 +89,16 @@ namespace ASRLB_ImportacaoFatura.Sales
             StdBELista listaTaxa_PP = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP';");
             StdBELista listaTaxa_ANA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'ANA';");
             StdBELista listaTaxa_CA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadoraArroz WHERE CDU_Cultura = 'CA';");
-            StdBELista listaTaxa_PD_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD_Be';");
-            StdBELista listaTaxa_PP_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP_Be';");
+            //StdBELista listaTaxa_PD_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD_Be';");
+            //StdBELista listaTaxa_PP_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP_Be';");
 
             DictTaxa.Clear();
             DictTaxa.Add("PD", listaTaxa_PD);
             DictTaxa.Add("PP", listaTaxa_PP);
             DictTaxa.Add("ANA", listaTaxa_ANA);
             DictTaxa.Add("CA", listaTaxa_CA);
-            DictTaxa.Add("PD_Be", listaTaxa_PD_Benaciate);
-            DictTaxa.Add("PP_Be", listaTaxa_PP_Benaciate);
+            //DictTaxa.Add("PD_Be", listaTaxa_PD_Benaciate);
+            //DictTaxa.Add("PP_Be", listaTaxa_PP_Benaciate);
 
             // Check se tipo de ficheiro (checkbox) é válido
             var ficheiros = listBoxFicheiros_WF.Items;
@@ -119,12 +119,15 @@ namespace ASRLB_ImportacaoFatura.Sales
                 DataSet DtSet = Excel.CarregarDataSet(@"" + path, Excel.conString, ref errosExcelList);
 
                 // Se houver linhas com dados inválidos no Excel, errosExcel é preenchido com cada um.
-                if (errosExcelList.Count > 0) { ErrosExcel(errosExcelList, path); break; }
+                if (errosExcelList.Count > 0) {
+                    ErrosExcel(errosExcelList, path);
+                    break;
+                }
 
                 List<string> folhasList = Excel.folhasList;
                 int nomeFolhaInd = 0;
 
-                //           Excel.EliminarCopia(@"" + path);
+                //Excel.EliminarCopia(@"" + path);
 
                 DataTable DtTable = DtSet.Tables["Tabela"];
                 VndBEDocumentoVenda DocVenda = new VndBEDocumentoVenda();
@@ -148,8 +151,6 @@ namespace ASRLB_ImportacaoFatura.Sales
 
 
                     // Contador é igual ao da linha anterior em casos de desunião de linhas que têm 'Um contador -> Vários prédios/áreas'. Área de cada linha diferente a contabilizar.
-                    //if (contadorIgual && benefIgual && i > 0) { continue; }
-
                     if (!benefIgual)
                     {
                         //Exclui primeira linha por ainda não existir nada
@@ -204,13 +205,10 @@ namespace ASRLB_ImportacaoFatura.Sales
                 listBoxErros_WF.Items.Add(" ");
                 listBoxErros_WF.SelectedIndex = listBoxErros_WF.Items.Count - 1;
             }
-            //if (_comErro) { break; }
-            //if (BSO.EmTransaccao()) { BSO.TerminaTransaccao(); } 
-            //}
         }
 
 
-        // MAIN FUNCIONALIDADE
+        // MAIN FUNC
         private void PrepararDict(DataRow DtRow)
         {
             try
@@ -241,14 +239,13 @@ namespace ASRLB_ImportacaoFatura.Sales
                 linhaDict["Consumo2"] = null;
                 linhaDict["Taxa3"] = null;
                 linhaDict["Consumo3"] = null;
-                linhaDict["Taxa2022"] = null;
-                linhaDict["Consumo2022"] = null;
             }
             catch (Exception e)
             {
                 if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
-                listBoxErros_WF.Items.Add("Contador " + linhaDict["Contador"] + ". Linha possivelmente contém valores nulos. Por favor corrija o ficheiro Excel.");
-                PSO.MensagensDialogos.MostraErro("Contador " + linhaDict["Contador"] + ". Linha possivelmente contém valores nulos. Por favor corrija o ficheiro Excel.", StdBSTipos.IconId.PRI_Exclama, e.ToString());
+                string erro = "Contador " + linhaDict["Contador"] + ".\nLinha possivelmente contém valores nulos. Por favor corrija o ficheiro Excel. \n\n" + e;
+                listBoxErros_WF.Items.Add(erro);
+                PSO.MensagensDialogos.MostraErro(erro);
             }
         }
 
@@ -275,26 +272,11 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
             // Linha 1 - Descrição com NºContador + Consumo Total
             // Linha 2 - Última leitura do ano passado + úlitma leitura feita este ano.
-            // Se a fatura for 2022, será usada uma segunda linha de descrição para diferenciar entre a primeira leitura (calculada com taxa minima) e o restante.
             double consumoTotal = Convert.ToDouble(linhaDict["LeituraFinal"]) - Convert.ToDouble(linhaDict["UltimaLeitura"]);
             string descricao = String.Format("Contador {0}. Consumo total: {1} m³. Área: {2}", linhaDict["Contador"], consumoTotal.ToString(), linhaDict["Area"]); ;
             BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao); _counterLinha++;
 
-            // Contagem inicial de 2022 (regra especial)
-            if (linhaDict["Consumo2022"] != "0")
-            {
-                descricao = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["UltimaLeitura"], linhaDict["Leitura1"], linhaDict["Data1"]);
-                BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao); _counterLinha++;
-                CriarLinhaConsumo(DocVenda, 2022, comPenalizacao);
-
-                linhaDict["Consumo2022"] = "0";
-                _counterLinha++;
-                descricao = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["Leitura1"], linhaDict["LeituraFinal"], linhaDict["DataLeituraFinal"]);
-            }
-            else
-            {
-                descricao = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["UltimaLeitura"], linhaDict["LeituraFinal"], linhaDict["DataLeituraFinal"]);
-            }
+            descricao = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["UltimaLeitura"], linhaDict["LeituraFinal"], linhaDict["DataLeituraFinal"]);
             BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao); _counterLinha++;
 
             // Linhas 3/4 até 8 - Leituras + TRH
