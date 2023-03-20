@@ -279,7 +279,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             descricao = String.Format("Leitura inicial: {0} m³. Leitura final: {1} m³ ({2}).", linhaDict["UltimaLeitura"], linhaDict["LeituraFinal"], linhaDict["DataLeituraFinal"]);
             BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: descricao); _counterLinha++;
 
-            // Linhas 3/4 até 8 - Leituras + TRH
+            // Linhas 3 até 8 - Leituras + TRH
             // _counterLinha começa na linha 3. Variável global para dar track às linhas na fatura independentemente do nº de contadores
             // CUIDADO - implementação de while(true) depende de uso eficaz e deliberado de breaks e continues para evitar loop infinito.
             while (true)
@@ -324,7 +324,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             }
             else if (comPenalizacao == "Não")
             {
-                linha.Descricao = String.Format("{0}", _escaloes[escalao]);
+                linha.Descricao = _escaloes[escalao];
             }
             linha.Quantidade = Convert.ToDouble(linhaDict["Consumo" + escalao]);
             linha.PrecUnit = Convert.ToDouble(linhaDict["Taxa" + escalao]);
@@ -388,11 +388,9 @@ namespace ASRLB_ImportacaoFatura.Sales
             linhaDict["Taxa1"] = _taxa1.ToString();
             linhaDict["Taxa2"] = _taxa2.ToString();
             linhaDict["Taxa3"] = _taxa3.ToString();
-            linhaDict["Taxa2022"] = _taxa2022.ToString();
             linhaDict["Consumo1"] = _consumo1.ToString();
             linhaDict["Consumo2"] = _consumo2.ToString();
             linhaDict["Consumo3"] = _consumo3.ToString();
-            linhaDict["Consumo2022"] = _consumo2022.ToString();
         }
 
         private int CalcRegantes_ConsumoTotal(string comPenalizacao)
