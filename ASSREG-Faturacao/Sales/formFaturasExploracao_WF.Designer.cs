@@ -39,11 +39,13 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.cBoxEmpresa = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cBoxTipoFatura = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnEscolherFicheiro_WF
             // 
-            this.btnEscolherFicheiro_WF.Location = new System.Drawing.Point(599, 10);
+            this.btnEscolherFicheiro_WF.Location = new System.Drawing.Point(622, 12);
             this.btnEscolherFicheiro_WF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEscolherFicheiro_WF.Name = "btnEscolherFicheiro_WF";
             this.btnEscolherFicheiro_WF.Size = new System.Drawing.Size(133, 36);
@@ -54,10 +56,10 @@ namespace ASRLB_ImportacaoFatura.Sales
             // 
             // btnConfirmar_WF
             // 
-            this.btnConfirmar_WF.Location = new System.Drawing.Point(633, 536);
+            this.btnConfirmar_WF.Location = new System.Drawing.Point(655, 540);
             this.btnConfirmar_WF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnConfirmar_WF.Name = "btnConfirmar_WF";
-            this.btnConfirmar_WF.Size = new System.Drawing.Size(99, 28);
+            this.btnConfirmar_WF.Size = new System.Drawing.Size(99, 31);
             this.btnConfirmar_WF.TabIndex = 1;
             this.btnConfirmar_WF.Text = "Iniciar";
             this.btnConfirmar_WF.UseVisualStyleBackColor = true;
@@ -68,10 +70,10 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.listBoxErros_WF.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxErros_WF.FormattingEnabled = true;
             this.listBoxErros_WF.ItemHeight = 20;
-            this.listBoxErros_WF.Location = new System.Drawing.Point(27, 223);
+            this.listBoxErros_WF.Location = new System.Drawing.Point(13, 226);
             this.listBoxErros_WF.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxErros_WF.Name = "listBoxErros_WF";
-            this.listBoxErros_WF.Size = new System.Drawing.Size(705, 304);
+            this.listBoxErros_WF.Size = new System.Drawing.Size(741, 304);
             this.listBoxErros_WF.TabIndex = 2;
             // 
             // listBoxFicheiros_WF
@@ -80,16 +82,16 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.listBoxFicheiros_WF.FormattingEnabled = true;
             this.listBoxFicheiros_WF.HorizontalScrollbar = true;
             this.listBoxFicheiros_WF.ItemHeight = 20;
-            this.listBoxFicheiros_WF.Location = new System.Drawing.Point(27, 53);
+            this.listBoxFicheiros_WF.Location = new System.Drawing.Point(13, 56);
             this.listBoxFicheiros_WF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBoxFicheiros_WF.Name = "listBoxFicheiros_WF";
             this.listBoxFicheiros_WF.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.listBoxFicheiros_WF.Size = new System.Drawing.Size(705, 104);
+            this.listBoxFicheiros_WF.Size = new System.Drawing.Size(741, 104);
             this.listBoxFicheiros_WF.TabIndex = 3;
             // 
             // btnRemover_WF
             // 
-            this.btnRemover_WF.Location = new System.Drawing.Point(645, 164);
+            this.btnRemover_WF.Location = new System.Drawing.Point(667, 167);
             this.btnRemover_WF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnRemover_WF.Name = "btnRemover_WF";
             this.btnRemover_WF.Size = new System.Drawing.Size(87, 31);
@@ -100,7 +102,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // 
             // btnLimparLista_WF
             // 
-            this.btnLimparLista_WF.Location = new System.Drawing.Point(519, 164);
+            this.btnLimparLista_WF.Location = new System.Drawing.Point(543, 167);
             this.btnLimparLista_WF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnLimparLista_WF.Name = "btnLimparLista_WF";
             this.btnLimparLista_WF.Size = new System.Drawing.Size(108, 31);
@@ -111,12 +113,11 @@ namespace ASRLB_ImportacaoFatura.Sales
             // 
             // cBoxPenalizacao
             // 
-            this.cBoxPenalizacao.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.cBoxPenalizacao.FormattingEnabled = true;
             this.cBoxPenalizacao.Items.AddRange(new object[] {
             "Sim",
             "Não"});
-            this.cBoxPenalizacao.Location = new System.Drawing.Point(504, 14);
+            this.cBoxPenalizacao.Location = new System.Drawing.Point(533, 17);
             this.cBoxPenalizacao.Name = "cBoxPenalizacao";
             this.cBoxPenalizacao.Size = new System.Drawing.Size(69, 24);
             this.cBoxPenalizacao.TabIndex = 7;
@@ -124,7 +125,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(217, 17);
+            this.label1.Location = new System.Drawing.Point(63, 20);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(68, 17);
             this.label1.TabIndex = 8;
@@ -133,7 +134,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(409, 17);
+            this.label2.Location = new System.Drawing.Point(438, 20);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(89, 17);
             this.label2.TabIndex = 9;
@@ -146,14 +147,36 @@ namespace ASRLB_ImportacaoFatura.Sales
             "0012004",
             "IDCLONE",
             "ASSREG"});
-            this.cBoxEmpresa.Location = new System.Drawing.Point(291, 14);
+            this.cBoxEmpresa.Location = new System.Drawing.Point(137, 17);
             this.cBoxEmpresa.Name = "cBoxEmpresa";
             this.cBoxEmpresa.Size = new System.Drawing.Size(101, 24);
             this.cBoxEmpresa.TabIndex = 10;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(249, 20);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(85, 17);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Tipo Fatura:";
+            // 
+            // cBoxTipoFatura
+            // 
+            this.cBoxTipoFatura.FormattingEnabled = true;
+            this.cBoxTipoFatura.Items.AddRange(new object[] {
+            "FTE",
+            "FTEVB"});
+            this.cBoxTipoFatura.Location = new System.Drawing.Point(339, 17);
+            this.cBoxTipoFatura.Name = "cBoxTipoFatura";
+            this.cBoxTipoFatura.Size = new System.Drawing.Size(87, 24);
+            this.cBoxTipoFatura.TabIndex = 12;
+            // 
             // formFaturasExploracao_WF
             // 
-            this.ClientSize = new System.Drawing.Size(757, 576);
+            this.ClientSize = new System.Drawing.Size(767, 582);
+            this.Controls.Add(this.cBoxTipoFatura);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.cBoxEmpresa);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -190,5 +213,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cBoxEmpresa;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cBoxTipoFatura;
     }
 }

@@ -55,7 +55,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.cBoxDoc.Size = new System.Drawing.Size(97, 24);
             this.cBoxDoc.TabIndex = 41;
             this.cBoxDoc.Text = "FTEVB";
-            this.cBoxDoc.UseWaitCursor = true;
             // 
             // label4
             // 
@@ -66,7 +65,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.label4.Size = new System.Drawing.Size(37, 17);
             this.label4.TabIndex = 40;
             this.label4.Text = "Doc:";
-            this.label4.UseWaitCursor = true;
             // 
             // cBoxArtigo
             // 
@@ -81,7 +79,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.cBoxArtigo.Size = new System.Drawing.Size(103, 24);
             this.cBoxArtigo.TabIndex = 39;
             this.cBoxArtigo.Text = "Não alterar";
-            this.cBoxArtigo.UseWaitCursor = true;
             // 
             // label3
             // 
@@ -92,7 +89,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.label3.Size = new System.Drawing.Size(49, 17);
             this.label3.TabIndex = 38;
             this.label3.Text = "Artigo:";
-            this.label3.UseWaitCursor = true;
             // 
             // label2
             // 
@@ -103,7 +99,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.label2.Size = new System.Drawing.Size(42, 17);
             this.label2.TabIndex = 37;
             this.label2.Text = "Data:";
-            this.label2.UseWaitCursor = true;
             // 
             // datePicker
             // 
@@ -114,7 +109,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.datePicker.Name = "datePicker";
             this.datePicker.Size = new System.Drawing.Size(131, 22);
             this.datePicker.TabIndex = 36;
-            this.datePicker.UseWaitCursor = true;
             this.datePicker.Value = new System.DateTime(2022, 6, 28, 10, 7, 59, 0);
             // 
             // btnEscolherFicheiro
@@ -126,7 +120,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.btnEscolherFicheiro.TabIndex = 34;
             this.btnEscolherFicheiro.Text = "Escolher Ficheiro";
             this.btnEscolherFicheiro.UseVisualStyleBackColor = true;
-            this.btnEscolherFicheiro.UseWaitCursor = true;
             this.btnEscolherFicheiro.Click += new System.EventHandler(this.btnEscolherFicheiro_Click_1);
             // 
             // txtFicheiroPath
@@ -137,7 +130,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.txtFicheiroPath.Size = new System.Drawing.Size(461, 22);
             this.txtFicheiroPath.TabIndex = 33;
             this.txtFicheiroPath.Text = "import.txt no servidor";
-            this.txtFicheiroPath.UseWaitCursor = true;
             // 
             // label1
             // 
@@ -148,7 +140,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.label1.Size = new System.Drawing.Size(62, 17);
             this.label1.TabIndex = 32;
             this.label1.Text = "Ficheiro:";
-            this.label1.UseWaitCursor = true;
             // 
             // listBox
             // 
@@ -162,7 +153,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.listBox.Name = "listBox";
             this.listBox.Size = new System.Drawing.Size(667, 340);
             this.listBox.TabIndex = 31;
-            this.listBox.UseWaitCursor = true;
             // 
             // btnCancelar
             // 
@@ -176,7 +166,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.btnCancelar.TabIndex = 30;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
-            this.btnCancelar.UseWaitCursor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click_1);
             // 
             // btnIniciar
@@ -191,7 +180,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.btnIniciar.TabIndex = 29;
             this.btnIniciar.Text = "Iniciar";
             this.btnIniciar.UseVisualStyleBackColor = true;
-            this.btnIniciar.UseWaitCursor = true;
             this.btnIniciar.Click += new System.EventHandler(this.btnIniciar_Click_1);
             // 
             // formImportarTxt_WF
