@@ -76,7 +76,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
             if (cBoxEmpresa.SelectedItem.ToString() == "" || cBoxPenalizacao.SelectedItem.ToString() == "")
             {
-                MessageBox.Show("Não foi escolhida empresa ou tipo de fatura a emitir.");
+                MessageBox.Show("Não foi escolhida empresa ou tipo de penalização a aplicar.");
                 return;
             }
             // *** LOCAL ***
@@ -88,7 +88,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
             StdBELista listaTaxa_PP = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP';");
             StdBELista listaTaxa_ANA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'ANA';");
-            StdBELista listaTaxa_CA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadoraArroz WHERE CDU_Cultura = 'CA';");
+            StdBELista listaTaxa_CA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'CA';");
             //StdBELista listaTaxa_PD_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD_Be';");
             //StdBELista listaTaxa_PP_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP_Be';");
 
@@ -339,6 +339,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // Faturas com valor de 1,99€ ou menor não são emitidas
             try
             {
+                MessageBox.Show("Contador: " + linhaDict["Contador"] + " Data: " + DocVenda.DataDoc );
                 if (DocVenda.TotalDocumento >= 2 && BSO.Vendas.Documentos.ValidaActualizacao(DocVenda, BSO.Vendas.TabVendas.Edita(DocVenda.Tipodoc), ref serie, ref strErro))
                 {
                     BSO.Vendas.Documentos.Actualiza(DocVenda, ref strAvisos, ref strErro);
@@ -536,7 +537,6 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             do
             {
-                //MessageBox.Show("area inicial: "+ linhaDict["Area"]+"i = "+i);
                 bool subContadorIgual = DtTable.Rows[i + 1].Field<string>("Nº Contador").Equals(linhaDict["Contador"]);
                 bool subBenefIgual = DtTable.Rows[i + 1].Field<double>("Benef").ToString().PadLeft(5, '0').Equals(linhaDict["Benef"]);
 
@@ -550,7 +550,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             } while (i < DtTable.Rows.Count - 1);
 
             linhaDict["Area"] = area.ToString();
-            //MessageBox.Show("area final: " + area+ "i = " + i +". counter = "+ counter);
             return counter;
         }
 
@@ -630,7 +629,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             //}
             erro = erro + "*** Erro de sistema no Contador " + linhaDict["Contador"] + "***\n" + erroFatura;
 
-            StdPlatBS PSO = new StdPlatBS();
             PSO.MensagensDialogos.MostraErro("Dados inválidos na fatura ou cliente. Ver detalhes abaixo", StdBSTipos.IconId.PRI_Critico, erro);
             _comErro = true;
         }
