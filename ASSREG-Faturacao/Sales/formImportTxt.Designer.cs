@@ -1,5 +1,4 @@
-﻿
-namespace ASRLB_ImportacaoFatura.Sales
+﻿namespace ASRLB_ImportacaoFatura.Sales
 {
     partial class formImportarTxt_WF
     {
@@ -45,80 +44,87 @@ namespace ASRLB_ImportacaoFatura.Sales
             // 
             // cBoxDoc
             // 
+            this.cBoxDoc.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.cBoxDoc.FormattingEnabled = true;
             this.cBoxDoc.Items.AddRange(new object[] {
-            "FTEVB",
-            "FTE"});
+            "FA"});
             this.cBoxDoc.Location = new System.Drawing.Point(287, 47);
             this.cBoxDoc.Margin = new System.Windows.Forms.Padding(4);
             this.cBoxDoc.Name = "cBoxDoc";
-            this.cBoxDoc.Size = new System.Drawing.Size(97, 24);
+            this.cBoxDoc.Size = new System.Drawing.Size(84, 24);
             this.cBoxDoc.TabIndex = 41;
-            this.cBoxDoc.Text = "FTEVB";
-            this.cBoxDoc.UseWaitCursor = true;
+            this.cBoxDoc.Text = "FA";
+            this.cBoxDoc.SelectedIndexChanged += new System.EventHandler(this.cBoxDoc_SelectedIndexChanged);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(245, 50);
+            this.label4.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.label4.Location = new System.Drawing.Point(242, 50);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(37, 17);
             this.label4.TabIndex = 40;
             this.label4.Text = "Doc:";
-            this.label4.UseWaitCursor = true;
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // cBoxArtigo
             // 
+            this.cBoxArtigo.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.cBoxArtigo.FormattingEnabled = true;
             this.cBoxArtigo.Items.AddRange(new object[] {
             "Não alterar",
             "TE",
             "TC"});
-            this.cBoxArtigo.Location = new System.Drawing.Point(451, 47);
+            this.cBoxArtigo.Location = new System.Drawing.Point(450, 47);
             this.cBoxArtigo.Margin = new System.Windows.Forms.Padding(4);
             this.cBoxArtigo.Name = "cBoxArtigo";
             this.cBoxArtigo.Size = new System.Drawing.Size(103, 24);
             this.cBoxArtigo.TabIndex = 39;
             this.cBoxArtigo.Text = "Não alterar";
-            this.cBoxArtigo.UseWaitCursor = true;
+            this.cBoxArtigo.SelectedIndexChanged += new System.EventHandler(this.cBoxArtigo_SelectedIndexChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(399, 50);
+            this.label3.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.label3.Location = new System.Drawing.Point(394, 50);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 17);
             this.label3.TabIndex = 38;
             this.label3.Text = "Artigo:";
-            this.label3.UseWaitCursor = true;
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(41, 50);
+            this.label2.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.label2.Location = new System.Drawing.Point(42, 50);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(42, 17);
             this.label2.TabIndex = 37;
             this.label2.Text = "Data:";
-            this.label2.UseWaitCursor = true;
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // datePicker
             // 
+            this.datePicker.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.datePicker.CustomFormat = "dd/MM/yyyy";
+            this.datePicker.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right;
             this.datePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.datePicker.Location = new System.Drawing.Point(92, 47);
             this.datePicker.Margin = new System.Windows.Forms.Padding(4);
             this.datePicker.Name = "datePicker";
-            this.datePicker.Size = new System.Drawing.Size(131, 22);
+            this.datePicker.Size = new System.Drawing.Size(127, 22);
             this.datePicker.TabIndex = 36;
-            this.datePicker.UseWaitCursor = true;
             this.datePicker.Value = new System.DateTime(2022, 6, 28, 10, 7, 59, 0);
+            this.datePicker.ValueChanged += new System.EventHandler(this.datePicker_ValueChanged);
             // 
             // btnEscolherFicheiro
             // 
+            this.btnEscolherFicheiro.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.btnEscolherFicheiro.Location = new System.Drawing.Point(563, 14);
             this.btnEscolherFicheiro.Margin = new System.Windows.Forms.Padding(4);
             this.btnEscolherFicheiro.Name = "btnEscolherFicheiro";
@@ -126,35 +132,37 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.btnEscolherFicheiro.TabIndex = 34;
             this.btnEscolherFicheiro.Text = "Escolher Ficheiro";
             this.btnEscolherFicheiro.UseVisualStyleBackColor = true;
-            this.btnEscolherFicheiro.UseWaitCursor = true;
             this.btnEscolherFicheiro.Click += new System.EventHandler(this.btnEscolherFicheiro_Click_1);
             // 
             // txtFicheiroPath
             // 
+            this.txtFicheiroPath.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.txtFicheiroPath.Location = new System.Drawing.Point(92, 15);
             this.txtFicheiroPath.Margin = new System.Windows.Forms.Padding(4);
             this.txtFicheiroPath.Name = "txtFicheiroPath";
             this.txtFicheiroPath.Size = new System.Drawing.Size(461, 22);
             this.txtFicheiroPath.TabIndex = 33;
             this.txtFicheiroPath.Text = "import.txt no servidor";
-            this.txtFicheiroPath.UseWaitCursor = true;
+            this.txtFicheiroPath.TextChanged += new System.EventHandler(this.txtFicheiroPath_TextChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.label1.Location = new System.Drawing.Point(23, 17);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(62, 17);
             this.label1.TabIndex = 32;
             this.label1.Text = "Ficheiro:";
-            this.label1.UseWaitCursor = true;
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // listBox
             // 
             this.listBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBox.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.listBox.FormattingEnabled = true;
             this.listBox.ItemHeight = 16;
             this.listBox.Location = new System.Drawing.Point(25, 84);
@@ -162,13 +170,14 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.listBox.Name = "listBox";
             this.listBox.Size = new System.Drawing.Size(667, 340);
             this.listBox.TabIndex = 31;
-            this.listBox.UseWaitCursor = true;
+            this.listBox.SelectedIndexChanged += new System.EventHandler(this.listBox_SelectedIndexChanged);
             // 
             // btnCancelar
             // 
             this.btnCancelar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancelar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnCancelar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnCancelar.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.btnCancelar.Location = new System.Drawing.Point(592, 434);
             this.btnCancelar.Margin = new System.Windows.Forms.Padding(4);
             this.btnCancelar.Name = "btnCancelar";
@@ -176,7 +185,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.btnCancelar.TabIndex = 30;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
-            this.btnCancelar.UseWaitCursor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click_1);
             // 
             // btnIniciar
@@ -184,6 +192,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.btnIniciar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnIniciar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnIniciar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnIniciar.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.btnIniciar.Location = new System.Drawing.Point(482, 434);
             this.btnIniciar.Margin = new System.Windows.Forms.Padding(4);
             this.btnIniciar.Name = "btnIniciar";
@@ -191,7 +200,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.btnIniciar.TabIndex = 29;
             this.btnIniciar.Text = "Iniciar";
             this.btnIniciar.UseVisualStyleBackColor = true;
-            this.btnIniciar.UseWaitCursor = true;
             this.btnIniciar.Click += new System.EventHandler(this.btnIniciar_Click_1);
             // 
             // formImportarTxt_WF
@@ -212,7 +220,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnIniciar);
             this.Name = "formImportarTxt_WF";
-            this.Text = "formImportTxt";
+            this.Text = "Faturas RegSilv";
             this.ResumeLayout(false);
             this.PerformLayout();
 

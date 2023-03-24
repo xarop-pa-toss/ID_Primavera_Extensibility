@@ -254,10 +254,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             PSO.MensagensDialogos.MostraErro("Erros nas linhas do Excel. Ver contadores com erro e corrigir ficheiro. #" + errosExcelList.Count);
         }
 
-        private void formFaturasExploracao_WF_Load(object sender, EventArgs e)
-        {
-
-        }
 
         private void PrepararDict(DataRow DtRow)
         {
