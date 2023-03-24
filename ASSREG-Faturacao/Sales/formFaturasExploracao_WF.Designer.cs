@@ -150,6 +150,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.cBoxEmpresa.Name = "cBoxEmpresa";
             this.cBoxEmpresa.Size = new System.Drawing.Size(101, 24);
             this.cBoxEmpresa.TabIndex = 10;
+
             // 
             // formFaturasExploracao_WF
             // 
@@ -167,7 +168,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.MaximumSize = new System.Drawing.Size(785, 850);
             this.Name = "formFaturasExploracao_WF";
             this.Text = "Facturação de Exploração";
-            this.Load += new System.EventHandler(this.formFaturasExploracao_WF_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
