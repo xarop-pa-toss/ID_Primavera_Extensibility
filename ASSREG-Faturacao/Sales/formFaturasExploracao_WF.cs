@@ -71,10 +71,9 @@ namespace ASRLB_ImportacaoFatura.Sales
                 MessageBox.Show("Não foi escolhida empresa ou tipo de fatura a emitir.");
                 return;
             }
-            // *** LOCAL ***
-            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "*Pelicano*");
+            // *** ABRIR EMPRESA ***
             // *** ASS REG SERVIDOR ***
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "id", "pelicano");
+            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "faturacao", "*Pelicano*");
 
             // Carrega TDUs das Taxas Penalizadoras no arranque
             StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
@@ -115,7 +114,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 List<string> folhasList = Excel.folhasList;
                 int nomeFolhaInd = 0;
 
-     //           Excel.EliminarCopia(@"" + path);
+                Excel.EliminarCopia(@"" + path);
                 
                 DataTable DtTable = DtSet.Tables["Tabela"];
                 VndBEDocumentoVenda DocVenda = new VndBEDocumentoVenda();
@@ -253,7 +252,6 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             PSO.MensagensDialogos.MostraErro("Erros nas linhas do Excel. Ver contadores com erro e corrigir ficheiro. #" + errosExcelList.Count);
         }
-
 
         private void PrepararDict(DataRow DtRow)
         {
