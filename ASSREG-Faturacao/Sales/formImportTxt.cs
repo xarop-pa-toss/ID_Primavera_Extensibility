@@ -130,8 +130,8 @@ namespace ASRLB_ImportacaoFatura.Sales
                 // Se for Cabeçalho
                 if (linha.Count() == 2)
                 {
-                    // TEST PRINT
-                    UpdateListbox(String.Format("Validação -> Linha 0: {0}; Linha 1: {1}", linha[0], linha[1]));
+
+                    UpdateListbox(String.Format("Validação -> Linha 0: {0}; Linha 1: {1}", linha[0], linha[1])); 
                     Application.DoEvents();
                     // END TEST PRINT
                     if (!listaClientes.Contains(linha[0]) || !listaCondPag.Contains(linha[1]))
@@ -172,8 +172,10 @@ namespace ASRLB_ImportacaoFatura.Sales
             int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosTodos;
             int vdDadosCondPag = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosCondPag;
 
+            VndBE100.VndBEDocumentoVenda docVenda = new VndBE100.VndBEDocumentoVenda();
             // Import dos valores do IVA da BD
-            StdBELista BELista = BSO.Consulta("SELECT Iva FROM IVA");
+            StdBELista BELista = new StdBELista();
+            BELista = BSO.Consulta("SELECT Iva FROM IVA");
 
             if (!BSO.EmTransaccao()) { BSO.IniciaTransaccao(); }
 
@@ -276,7 +278,6 @@ namespace ASRLB_ImportacaoFatura.Sales
                 listBox.Invoke(new Action<string>(UpdateListbox), texto);
                 return;
             }
-
             listBox.Items.Add(texto);
             listBox.SelectedIndex = listBox.Items.Count - 1;
         }

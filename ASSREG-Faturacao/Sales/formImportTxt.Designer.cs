@@ -47,6 +47,7 @@
             this.cBoxDoc.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.cBoxDoc.FormattingEnabled = true;
             this.cBoxDoc.Items.AddRange(new object[] {
+
             "FA",
             "FVB"});
             this.cBoxDoc.Location = new System.Drawing.Point(215, 38);
@@ -58,8 +59,10 @@
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(236, 50);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.label4.Location = new System.Drawing.Point(182, 41);
+
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(32, 15);
             this.label4.TabIndex = 40;
@@ -73,7 +76,9 @@
             "Não alterar",
             "TE",
             "TC"});
-            this.cBoxArtigo.Location = new System.Drawing.Point(338, 38);
+
+            this.cBoxArtigo.Location = new System.Drawing.Point(450, 47);
+            this.cBoxArtigo.Margin = new System.Windows.Forms.Padding(4);
             this.cBoxArtigo.Name = "cBoxArtigo";
             this.cBoxArtigo.Size = new System.Drawing.Size(78, 21);
             this.cBoxArtigo.TabIndex = 39;
@@ -82,8 +87,10 @@
             // label3
             // 
             this.label3.AutoSize = true;
+
+            this.label3.Location = new System.Drawing.Point(394, 50);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.label3.Location = new System.Drawing.Point(296, 41);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 15);
             this.label3.TabIndex = 38;
@@ -92,8 +99,9 @@
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(42, 50);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.label2.Location = new System.Drawing.Point(32, 41);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(36, 15);
             this.label2.TabIndex = 37;
@@ -107,7 +115,8 @@
             this.datePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.datePicker.Location = new System.Drawing.Point(69, 38);
             this.datePicker.Name = "datePicker";
-            this.datePicker.Size = new System.Drawing.Size(96, 20);
+            this.datePicker.Size = new System.Drawing.Size(117, 22);
+
             this.datePicker.TabIndex = 36;
             this.datePicker.Value = new System.DateTime(2022, 6, 28, 10, 7, 59, 0);
             // 
