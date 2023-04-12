@@ -1,3 +1,4 @@
-# Excel files with customer sensitive information
+# Excel files with customer sensitive information and SQL queries
 *.xls
 *.xlsx
+*.sql

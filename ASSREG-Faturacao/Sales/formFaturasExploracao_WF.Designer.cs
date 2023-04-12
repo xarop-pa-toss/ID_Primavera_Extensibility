@@ -151,6 +151,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.cBoxEmpresa.Name = "cBoxEmpresa";
             this.cBoxEmpresa.Size = new System.Drawing.Size(101, 24);
             this.cBoxEmpresa.TabIndex = 10;
+
             // 
             // label3
             // 
