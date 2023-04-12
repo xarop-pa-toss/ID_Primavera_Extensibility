@@ -1,0 +1,6 @@
+C:\Users\VM\source\repos\FRUP_AvisoVencimento\bin\Debug\FRUP_AvisoVencimento.dll
+C:\Users\VM\source\repos\FRUP_AvisoVencimento\bin\Debug\FRUP_AvisoVencimento.pdb
+C:\Users\VM\source\repos\FRUP_AvisoVencimento\obj\Debug\FRUP_AvisoVencimento.csproj.AssemblyReference.cache
+C:\Users\VM\source\repos\FRUP_AvisoVencimento\obj\Debug\FRUP_AvisoVencimento.csproj.CoreCompileInputs.cache
+C:\Users\VM\source\repos\FRUP_AvisoVencimento\obj\Debug\FRUP_AvisoVencimento.dll
+C:\Users\VM\source\repos\FRUP_AvisoVencimento\obj\Debug\FRUP_AvisoVencimento.pdb
