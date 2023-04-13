@@ -172,7 +172,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosTodos;
             int vdDadosCondPag = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosCondPag;
 
-            VndBE100.VndBEDocumentoVenda docVenda = new VndBE100.VndBEDocumentoVenda();
             // Import dos valores do IVA da BD
             StdBELista BELista = new StdBELista();
             BELista = BSO.Consulta("SELECT Iva FROM IVA");
@@ -312,6 +311,11 @@ namespace ASRLB_ImportacaoFatura.Sales
         private void btnCancelar_Click_1(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void formImportarTxt_WF_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
