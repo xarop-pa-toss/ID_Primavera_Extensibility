@@ -34,10 +34,11 @@ namespace FRU_AlterarTerceiros
             this.label3 = new System.Windows.Forms.Label();
             this.cboxTipoDoc = new System.Windows.Forms.ComboBox();
             this.cboxSerie = new System.Windows.Forms.ComboBox();
-            this.tboxNumDoc = new System.Windows.Forms.TextBox();
             this.btnAlterarTerceiro = new System.Windows.Forms.Button();
             this.f4Terceiros = new PRISDK100.F4();
             this.f4TipoDoc = new PRISDK100.F4();
+            this.numericNumDoc = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.numericNumDoc)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -88,14 +89,6 @@ namespace FRU_AlterarTerceiros
             this.cboxSerie.Size = new System.Drawing.Size(71, 24);
             this.cboxSerie.TabIndex = 7;
             // 
-            // tboxNumDoc
-            // 
-            this.tboxNumDoc.Location = new System.Drawing.Point(120, 86);
-            this.tboxNumDoc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tboxNumDoc.Name = "tboxNumDoc";
-            this.tboxNumDoc.Size = new System.Drawing.Size(100, 22);
-            this.tboxNumDoc.TabIndex = 8;
-            // 
             // btnAlterarTerceiro
             // 
             this.btnAlterarTerceiro.Location = new System.Drawing.Point(605, 391);
@@ -105,6 +98,7 @@ namespace FRU_AlterarTerceiros
             this.btnAlterarTerceiro.TabIndex = 9;
             this.btnAlterarTerceiro.Text = "Alterar Terceiro";
             this.btnAlterarTerceiro.UseVisualStyleBackColor = true;
+            this.btnAlterarTerceiro.Click += new System.EventHandler(this.btnAlterarTerceiro_Click);
             // 
             // f4Terceiros
             // 
@@ -190,14 +184,28 @@ namespace FRU_AlterarTerceiros
             this.f4TipoDoc.WidthLink = 1300;
             this.f4TipoDoc.TextChange += new PRISDK100.F4.TextChangeHandler(this.f4TipoDoc_TextChange);
             // 
+            // numericNumDoc
+            // 
+            this.numericNumDoc.Location = new System.Drawing.Point(120, 84);
+            this.numericNumDoc.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.numericNumDoc.Name = "numericNumDoc";
+            this.numericNumDoc.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.numericNumDoc.Size = new System.Drawing.Size(79, 22);
+            this.numericNumDoc.TabIndex = 14;
+            this.numericNumDoc.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // FromAlterarTerceiros
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.numericNumDoc);
             this.Controls.Add(this.f4TipoDoc);
             this.Controls.Add(this.f4Terceiros);
             this.Controls.Add(this.btnAlterarTerceiro);
-            this.Controls.Add(this.tboxNumDoc);
             this.Controls.Add(this.cboxSerie);
             this.Controls.Add(this.cboxTipoDoc);
             this.Controls.Add(this.label3);
@@ -208,6 +216,7 @@ namespace FRU_AlterarTerceiros
             this.Size = new System.Drawing.Size(753, 442);
             this.Text = "Alteração Terceiros";
             this.Load += new System.EventHandler(this.FormAlterarTerceiros_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.numericNumDoc)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -220,9 +229,9 @@ namespace FRU_AlterarTerceiros
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cboxTipoDoc;
         private System.Windows.Forms.ComboBox cboxSerie;
-        private System.Windows.Forms.TextBox tboxNumDoc;
         private System.Windows.Forms.Button btnAlterarTerceiro;
         private PRISDK100.F4 f4Terceiros;
         private PRISDK100.F4 f4TipoDoc;
+        private System.Windows.Forms.NumericUpDown numericNumDoc;
     }
 }

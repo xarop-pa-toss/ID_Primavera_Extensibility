@@ -15,7 +15,8 @@ namespace FRU_AlterarTerceiros
     {
         //Variavél global que contem o contexto e que deverá ser passada para os controlos.
         private clsSDKContexto _sdkContexto;
-        private string _tipoDoc;
+        private string _tipoDoc, _serie;
+        private long _numDoc;
 
         public FromAlterarTerceiros()
         {
@@ -33,16 +34,7 @@ namespace FRU_AlterarTerceiros
             cboxTipoDoc.Items.Clear();
             cboxTipoDoc.Items.AddRange(FillComboBox(query).ToArray());
 
-            // Fill Terceiro combobox
-            //var tipoTerceiro = BSO.Base.TiposTerceiro
-            //cboxTipoDoc.Items.Clear();
-            //cboxTipoDoc.Items.AddRange(FillComboBox(query).ToArray());
 
-            //É necessário criar código no Primavera V10 que está Frupor para a empresa ADEGA para fazer o seguinte, poder alterar o tipo de terceiro nos documentos de venda. Para tal é necessário o utilizador introduzir os seguintes campos:
-            //-Tipo de documento
-            //-Série do documento
-            //- Nº de documento
-            //Depois poder colocar o tipo de terceiro em tabela.
         }
         //Função que inicializa o contexto SDK.
         private void InicializaSDKContexto()
@@ -56,17 +48,6 @@ namespace FRU_AlterarTerceiros
                 PSO.InicializaPlataforma(_sdkContexto);
             }
         }
-
-        //private void cboxTipoDoc_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    // Agarra TipoDoc separando a primeira e segunda parte do texto na combobox de Tipo Doc
-        //    string inp = cboxTipoDoc.Text;
-        //    string tipoDoc = inp.Substring(0, inp.IndexOf(" "));
-            
-        //    string query = "SELECT DISTINCT Serie FROM SeriesVenda WHERE TipoDoc = '" + tipoDoc + "' ORDER BY Serie DESC;";
-        //    cboxSerie.Items.Clear();
-        //    cboxSerie.Items.AddRange(FillComboBox(query).ToArray());
-        //}
 
         // Retorna null se query vazia.
         private List<string> FillComboBox(string query)
@@ -93,10 +74,76 @@ namespace FRU_AlterarTerceiros
 
         private void f4TipoDoc_TextChange(object Sender, F4.TextChangeEventArgs e)
         {
-            string query = "SELECT DISTINCT Serie FROM SeriesVendas WHERE TipoDoc = '" + f4TipoDoc.Text + "' ORDER BY Serie DESC;";
-            System.Windows.Forms.MessageBox.Show(query);
-            cboxSerie.Items.Clear();
-            cboxSerie.Items.AddRange(FillComboBox(query).ToArray());
+            if (f4TipoDoc.Text != "")
+            {
+                string query = "SELECT DISTINCT Serie FROM SeriesVendas WHERE TipoDoc = '" + f4TipoDoc.Text + "' ORDER BY Serie DESC;";
+                cboxSerie.Items.Clear();
+                cboxSerie.Items.AddRange(FillComboBox(query).ToArray());
+                cboxSerie.SelectedIndex = 0;
+            }
+        }
+
+        private void btnAlterarTerceiro_Click(object sender, EventArgs e)
+        {
+            // Check controlos
+            Dictionary<string, string> valoresControlos = GetControlos();
+            
+            if (!CheckControlos(valoresControlos))
+            {
+                string strErros;
+
+                StdBE100.StdBEExecSql sql = new StdBE100.StdBEExecSql();
+                sql.tpQuery = StdBE100.StdBETipos.EnumTpQuery.tpUPDATE;
+                sql.Tabela = "CabecDoc";                                                                                                                // UPDATE CabecDoc
+                sql.AddCampo("TipoTerceiro", valoresControlos["Terceiro"]);                                                                             // SET TipoTerceiro = ...
+                sql.AddCampo("Tipodoc", valoresControlos["TipoDoc"], true, StdBE100.StdBETipos.EnumTipoCampoSimplificado.tsTexto);                      // WHERE TipoDoc = ...
+                sql.AddCampo("Serie", valoresControlos["Serie"], true, StdBE100.StdBETipos.EnumTipoCampoSimplificado.tsTexto);                          // AND ...
+                sql.AddCampo("NumDoc", Convert.ToInt32(valoresControlos["NumDoc"]), true, StdBE100.StdBETipos.EnumTipoCampoSimplificado.tsInteiro);     // AND ...
+                
+                sql.AddQuery();
+                PSO.ExecSql.Executa(sql);
+                sql.Dispose();
+            }
+
+            //É necessário criar código no Primavera V10 que está Frupor para a empresa ADEGA para fazer o seguinte, poder alterar o tipo de terceiro nos documentos de venda. Para tal é necessário o utilizador introduzir os seguintes campos:
+            //-Tipo de documento
+            //-Série do documento
+            //- Nº de documento
+            //Depois poder colocar o tipo de terceiro em tabela.
+
+            // update cabecdoc
+            // set tipoterceiro =´005´
+            //where tipodoc =´fr´ and serie =´t0123´ and entidade =´mn9998´
+        }
+
+        private Dictionary<string, string> GetControlos()
+        {
+            Dictionary<string, string> valoresControlos = new Dictionary<string, string>();
+
+            valoresControlos.Add("TipoDoc", f4TipoDoc.Text);
+            valoresControlos.Add("Terceiro",f4Terceiros.Text);
+            valoresControlos.Add("Serie", cboxSerie.Text);
+            valoresControlos.Add("NumDoc", numericNumDoc.Text);
+
+            System.Windows.Forms.MessageBox.Show("TipoDoc: " + valoresControlos["TipoDoc"]);
+            System.Windows.Forms.MessageBox.Show("Terceiro: " + valoresControlos["Terceiro"]);
+            System.Windows.Forms.MessageBox.Show("Serie: " + valoresControlos["Serie"]);
+            System.Windows.Forms.MessageBox.Show("NumDoc: " + valoresControlos["NumDoc"]);
+
+
+            return valoresControlos;
+        }
+
+        private bool CheckControlos(Dictionary<string, string> valoresControlos)
+        {
+            if (valoresControlos.Values.Any(value => value == null))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }
