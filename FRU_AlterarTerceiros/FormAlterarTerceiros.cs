@@ -11,12 +11,13 @@ using PRISDK100;
 namespace FRU_AlterarTerceiros
 {
 
-    public partial class FormAlterarTerceiros : CustomForm
+    public partial class FromAlterarTerceiros : CustomForm
     {
         //Variavél global que contem o contexto e que deverá ser passada para os controlos.
-        private clsSDKContexto sdkContexto;        
+        private clsSDKContexto _sdkContexto;
+        private string _tipoDoc;
 
-        public FormAlterarTerceiros()
+        public FromAlterarTerceiros()
         {
             InitializeComponent();
         }
@@ -24,6 +25,8 @@ namespace FRU_AlterarTerceiros
         private void FormAlterarTerceiros_Load(object sender, EventArgs e)
         {
             InicializaSDKContexto();
+            f4Terceiros.Inicializa(_sdkContexto);
+            f4TipoDoc.Inicializa(_sdkContexto);
 
             // Fill TipoDoc combobox
             string query = "SELECT Documento + ' - ' + Descricao AS Doc FROM DocumentosVenda WHERE Inactivo = 0 ORDER BY Documento DESC;";
@@ -44,13 +47,13 @@ namespace FRU_AlterarTerceiros
         //Função que inicializa o contexto SDK.
         private void InicializaSDKContexto()
         {
-            if (sdkContexto == null)
+            if (_sdkContexto == null)
             {
-                sdkContexto = new clsSDKContexto();
+                _sdkContexto = new clsSDKContexto();
                 //Inicializaçao do contexto SDK a partir do objeto BSO e respetivo módulo.
-                sdkContexto.Inicializa(BSO, "ERP");
+                _sdkContexto.Inicializa(BSO, "ERP");
                 //Inicialização da plataforma no contexto e verificação de assinatura digital.
-                PSO.InicializaPlataforma(sdkContexto);
+                PSO.InicializaPlataforma(_sdkContexto);
             }
         }
 
@@ -90,11 +93,8 @@ namespace FRU_AlterarTerceiros
 
         private void f4TipoDoc_TextChange(object Sender, F4.TextChangeEventArgs e)
         {
-            // Agarra TipoDoc separando a primeira e segunda parte do texto na combobox de Tipo Doc
-            string inp = cboxTipoDoc.Text;
-            string tipoDoc = inp.Substring(0, inp.IndexOf(" "));
-
-            string query = "SELECT DISTINCT Serie FROM SeriesVenda WHERE TipoDoc = '" + tipoDoc + "' ORDER BY Serie DESC;";
+            string query = "SELECT DISTINCT Serie FROM SeriesVendas WHERE TipoDoc = '" + f4TipoDoc.Text + "' ORDER BY Serie DESC;";
+            System.Windows.Forms.MessageBox.Show(query);
             cboxSerie.Items.Clear();
             cboxSerie.Items.AddRange(FillComboBox(query).ToArray());
         }

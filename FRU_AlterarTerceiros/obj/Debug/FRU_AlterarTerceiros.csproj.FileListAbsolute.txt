@@ -16,9 +16,9 @@ C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\bin\Deb
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\bin\Debug\fr\FuncoesComuns100.resources.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\bin\Debug\pt-cl\FuncoesComuns100.resources.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.csproj.AssemblyReference.cache
-C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.FormAlterarTerceiros.resources
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.csproj.GenerateResource.cache
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.csproj.CoreCompileInputs.cache
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.csproj.CopyComplete
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.pdb
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.FromAlterarTerceiros.resources

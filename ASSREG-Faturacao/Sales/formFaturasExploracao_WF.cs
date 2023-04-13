@@ -322,6 +322,11 @@ namespace ASRLB_ImportacaoFatura.Sales
             BSO.Vendas.Documentos.PreencheDadosRelacionados(DocVenda, ref vdDadosCondPag);
         }
 
+        private void formFaturasExploracao_WF_Load(object sender, EventArgs e)
+        {
+
+        }
+
         private void ProcessarLinha(VndBEDocumentoVenda DocVenda, string comPenalizacao)
         {
             // Linha 1 - Descrição com NºContador + Consumo Total

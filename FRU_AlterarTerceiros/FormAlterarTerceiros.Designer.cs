@@ -1,7 +1,7 @@
 ﻿
 namespace FRU_AlterarTerceiros
 {
-    partial class FormAlterarTerceiros
+    partial class FromAlterarTerceiros
     {
         /// <summary>
         /// Required designer variable.
@@ -63,7 +63,7 @@ namespace FRU_AlterarTerceiros
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(349, 41);
+            this.label3.Location = new System.Drawing.Point(255, 41);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(45, 17);
@@ -76,13 +76,13 @@ namespace FRU_AlterarTerceiros
             this.cboxTipoDoc.Location = new System.Drawing.Point(120, 38);
             this.cboxTipoDoc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cboxTipoDoc.Name = "cboxTipoDoc";
-            this.cboxTipoDoc.Size = new System.Drawing.Size(204, 24);
+            this.cboxTipoDoc.Size = new System.Drawing.Size(100, 24);
             this.cboxTipoDoc.TabIndex = 6;
             // 
             // cboxSerie
             // 
             this.cboxSerie.FormattingEnabled = true;
-            this.cboxSerie.Location = new System.Drawing.Point(401, 38);
+            this.cboxSerie.Location = new System.Drawing.Point(298, 38);
             this.cboxSerie.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cboxSerie.Name = "cboxSerie";
             this.cboxSerie.Size = new System.Drawing.Size(71, 24);
@@ -123,7 +123,7 @@ namespace FRU_AlterarTerceiros
             this.f4Terceiros.F4Modal = false;
             this.f4Terceiros.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.f4Terceiros.IDCategoria = "TipoTerceiros";
-            this.f4Terceiros.Location = new System.Drawing.Point(226, 135);
+            this.f4Terceiros.Location = new System.Drawing.Point(226, 174);
             this.f4Terceiros.Margin = new System.Windows.Forms.Padding(4);
             this.f4Terceiros.MaxLengthDescricao = 0;
             this.f4Terceiros.MaxLengthF4 = 50;
@@ -141,12 +141,12 @@ namespace FRU_AlterarTerceiros
             this.f4Terceiros.ResourcePersonalizada = false;
             this.f4Terceiros.Restricao = "";
             this.f4Terceiros.SelectionFormula = "";
-            this.f4Terceiros.Size = new System.Drawing.Size(397, 32);
+            this.f4Terceiros.Size = new System.Drawing.Size(351, 43);
             this.f4Terceiros.TabIndex = 12;
             this.f4Terceiros.TextoDescricao = "";
             this.f4Terceiros.WidthEspacamento = 60;
-            this.f4Terceiros.WidthF4 = 1590;
-            this.f4Terceiros.WidthLink = 1575;
+            this.f4Terceiros.WidthF4 = 1100;
+            this.f4Terceiros.WidthLink = 1350;
             // 
             // f4TipoDoc
             // 
@@ -165,7 +165,7 @@ namespace FRU_AlterarTerceiros
             this.f4TipoDoc.F4Modal = false;
             this.f4TipoDoc.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.f4TipoDoc.IDCategoria = "DocumentosVenda";
-            this.f4TipoDoc.Location = new System.Drawing.Point(226, 95);
+            this.f4TipoDoc.Location = new System.Drawing.Point(226, 129);
             this.f4TipoDoc.MaxLengthDescricao = 0;
             this.f4TipoDoc.MaxLengthF4 = 50;
             this.f4TipoDoc.MinimumSize = new System.Drawing.Size(37, 21);
@@ -182,15 +182,15 @@ namespace FRU_AlterarTerceiros
             this.f4TipoDoc.ResourcePersonalizada = false;
             this.f4TipoDoc.Restricao = "";
             this.f4TipoDoc.SelectionFormula = "";
-            this.f4TipoDoc.Size = new System.Drawing.Size(397, 23);
+            this.f4TipoDoc.Size = new System.Drawing.Size(351, 38);
             this.f4TipoDoc.TabIndex = 13;
             this.f4TipoDoc.TextoDescricao = "";
             this.f4TipoDoc.WidthEspacamento = 60;
-            this.f4TipoDoc.WidthF4 = 1590;
-            this.f4TipoDoc.WidthLink = 1575;
+            this.f4TipoDoc.WidthF4 = 1100;
+            this.f4TipoDoc.WidthLink = 1300;
             this.f4TipoDoc.TextChange += new PRISDK100.F4.TextChangeHandler(this.f4TipoDoc_TextChange);
             // 
-            // FormAlterarTerceiros
+            // FromAlterarTerceiros
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -204,9 +204,9 @@ namespace FRU_AlterarTerceiros
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(5);
-            this.Name = "FormAlterarTerceiros";
+            this.Name = "FromAlterarTerceiros";
             this.Size = new System.Drawing.Size(753, 442);
-            this.Text = "PriCustomForm1";
+            this.Text = "Alteração Terceiros";
             this.Load += new System.EventHandler(this.FormAlterarTerceiros_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

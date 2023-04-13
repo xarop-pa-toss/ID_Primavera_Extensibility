@@ -119,7 +119,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             "Não"});
             this.cBoxPenalizacao.Location = new System.Drawing.Point(533, 17);
             this.cBoxPenalizacao.Name = "cBoxPenalizacao";
-            this.cBoxPenalizacao.Size = new System.Drawing.Size(69, 24);
+            this.cBoxPenalizacao.Size = new System.Drawing.Size(69, 21);
             this.cBoxPenalizacao.TabIndex = 7;
             // 
             // label1
@@ -127,7 +127,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(63, 20);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 17);
+            this.label1.Size = new System.Drawing.Size(60, 15);
             this.label1.TabIndex = 8;
             this.label1.Text = "Empresa:";
             // 
@@ -136,7 +136,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(438, 20);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 17);
+            this.label2.Size = new System.Drawing.Size(78, 15);
             this.label2.TabIndex = 9;
             this.label2.Text = "Penalização:";
             // 
@@ -149,16 +149,15 @@ namespace ASRLB_ImportacaoFatura.Sales
             "ASSREG"});
             this.cBoxEmpresa.Location = new System.Drawing.Point(137, 17);
             this.cBoxEmpresa.Name = "cBoxEmpresa";
-            this.cBoxEmpresa.Size = new System.Drawing.Size(101, 24);
+            this.cBoxEmpresa.Size = new System.Drawing.Size(101, 21);
             this.cBoxEmpresa.TabIndex = 10;
-
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(249, 20);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(85, 17);
+            this.label3.Size = new System.Drawing.Size(72, 15);
             this.label3.TabIndex = 11;
             this.label3.Text = "Tipo Fatura:";
             // 
@@ -170,7 +169,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             "FTEVB"});
             this.cBoxTipoFatura.Location = new System.Drawing.Point(339, 17);
             this.cBoxTipoFatura.Name = "cBoxTipoFatura";
-            this.cBoxTipoFatura.Size = new System.Drawing.Size(87, 24);
+            this.cBoxTipoFatura.Size = new System.Drawing.Size(87, 21);
             this.cBoxTipoFatura.TabIndex = 12;
             // 
             // formFaturasExploracao_WF
@@ -191,6 +190,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.MaximumSize = new System.Drawing.Size(785, 850);
             this.Name = "formFaturasExploracao_WF";
             this.Text = "Facturação de Exploração";
+            this.Load += new System.EventHandler(this.formFaturasExploracao_WF_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
