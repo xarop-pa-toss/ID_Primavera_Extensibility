@@ -11,14 +11,14 @@ using PRISDK100;
 namespace FRU_AlterarTerceiros
 {
 
-    public partial class FromAlterarTerceiros : CustomForm
+    public partial class FormAlterarTerceiros : CustomForm
     {
         //Variavél global que contem o contexto e que deverá ser passada para os controlos.
         private clsSDKContexto _sdkContexto;
         private string _tipoDoc, _serie;
         private long _numDoc;
 
-        public FromAlterarTerceiros()
+        public FormAlterarTerceiros()
         {
             InitializeComponent();
         }
@@ -87,22 +87,22 @@ namespace FRU_AlterarTerceiros
         {
             // Check controlos
             Dictionary<string, string> valoresControlos = GetControlos();
-            
-            if (!CheckControlos(valoresControlos))
+
+            if (CheckControlos(valoresControlos))
             {
                 string strErros;
+                using (StdBE100.StdBEExecSql sql = new StdBE100.StdBEExecSql())
+                {
+                    sql.tpQuery = StdBE100.StdBETipos.EnumTpQuery.tpUPDATE;
+                    sql.Tabela = "CabecDoc";                                                                                                                // UPDATE CabecDoc
+                    sql.AddCampo("TipoTerceiro", valoresControlos["Terceiro"]);                                                                             // SET TipoTerceiro = ...
+                    sql.AddCampo("Tipodoc", valoresControlos["TipoDoc"], true, StdBE100.StdBETipos.EnumTipoCampoSimplificado.tsTexto);                      // WHERE TipoDoc = ...
+                    sql.AddCampo("Serie", valoresControlos["Serie"], true, StdBE100.StdBETipos.EnumTipoCampoSimplificado.tsTexto);                          // AND ...
+                    sql.AddCampo("NumDoc", Convert.ToInt32(valoresControlos["NumDoc"]), true, StdBE100.StdBETipos.EnumTipoCampoSimplificado.tsInteiro);     // AND ...
 
-                StdBE100.StdBEExecSql sql = new StdBE100.StdBEExecSql();
-                sql.tpQuery = StdBE100.StdBETipos.EnumTpQuery.tpUPDATE;
-                sql.Tabela = "CabecDoc";                                                                                                                // UPDATE CabecDoc
-                sql.AddCampo("TipoTerceiro", valoresControlos["Terceiro"]);                                                                             // SET TipoTerceiro = ...
-                sql.AddCampo("Tipodoc", valoresControlos["TipoDoc"], true, StdBE100.StdBETipos.EnumTipoCampoSimplificado.tsTexto);                      // WHERE TipoDoc = ...
-                sql.AddCampo("Serie", valoresControlos["Serie"], true, StdBE100.StdBETipos.EnumTipoCampoSimplificado.tsTexto);                          // AND ...
-                sql.AddCampo("NumDoc", Convert.ToInt32(valoresControlos["NumDoc"]), true, StdBE100.StdBETipos.EnumTipoCampoSimplificado.tsInteiro);     // AND ...
-                
-                sql.AddQuery();
-                PSO.ExecSql.Executa(sql);
-                sql.Dispose();
+                    sql.AddQuery();
+                    PSO.ExecSql.Executa(sql);
+                }
             }
 
             //É necessário criar código no Primavera V10 que está Frupor para a empresa ADEGA para fazer o seguinte, poder alterar o tipo de terceiro nos documentos de venda. Para tal é necessário o utilizador introduzir os seguintes campos:
@@ -125,25 +125,16 @@ namespace FRU_AlterarTerceiros
             valoresControlos.Add("Serie", cboxSerie.Text);
             valoresControlos.Add("NumDoc", numericNumDoc.Text);
 
-            System.Windows.Forms.MessageBox.Show("TipoDoc: " + valoresControlos["TipoDoc"]);
-            System.Windows.Forms.MessageBox.Show("Terceiro: " + valoresControlos["Terceiro"]);
-            System.Windows.Forms.MessageBox.Show("Serie: " + valoresControlos["Serie"]);
-            System.Windows.Forms.MessageBox.Show("NumDoc: " + valoresControlos["NumDoc"]);
-
-
             return valoresControlos;
         }
 
         private bool CheckControlos(Dictionary<string, string> valoresControlos)
         {
-            if (valoresControlos.Values.Any(value => value == null))
-            {
+            if (valoresControlos.Values.Any(value => value == null)) { 
+                System.Windows.Forms.MessageBox.Show("Dados insuficientes. Verifique se existem campos vazios.");
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
     }
 }

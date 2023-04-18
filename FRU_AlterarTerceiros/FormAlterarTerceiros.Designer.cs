@@ -1,7 +1,7 @@
 ﻿
 namespace FRU_AlterarTerceiros
 {
-    partial class FromAlterarTerceiros
+    partial class FormAlterarTerceiros
     {
         /// <summary>
         /// Required designer variable.

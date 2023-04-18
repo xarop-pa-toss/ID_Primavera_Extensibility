@@ -5,7 +5,6 @@ using StdBE100; using StdPlatBS100;
 namespace PP_Extens
 {
     public class PP_Geral : CustomCode
-
     {
         public static string GetGUID()
         {
