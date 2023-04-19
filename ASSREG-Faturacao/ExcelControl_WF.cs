@@ -224,7 +224,7 @@ namespace ASRLB_ImportacaoFatura
                     Ligacao.Close();
                     return DtSetFinal;
                 }
-                catch (IOException e) { System.Windows.Forms.MessageBox.Show("Não foi possível estabelecer ligação ao ficheiro!\n\n"); Ligacao.Close(); return DtSet; }
+                catch (IOException) { System.Windows.Forms.MessageBox.Show("Não foi possível estabelecer ligação ao ficheiro!\n\n"); Ligacao.Close(); return DtSet; }
                 catch (Exception e) { System.Windows.Forms.MessageBox.Show("Erro no processamento das linhas. \n\n" + e.ToString()); Ligacao.Close(); return DtSet; }
 
             return DtSet;

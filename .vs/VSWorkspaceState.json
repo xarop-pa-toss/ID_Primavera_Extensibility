@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\ASSREG-Faturacao",
+    "\\ASSREG-Faturacao\\Sales"
   ],
-  "SelectedNode": "\\PP_Extens.sln",
+  "SelectedNode": "\\ASSREG-Faturacao\\Sales\\formImportarFaturas - Cópia.cs",
   "PreviewInSolutionExplorer": false
 }

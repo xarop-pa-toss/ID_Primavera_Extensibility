@@ -82,9 +82,9 @@ namespace ASRLB_ImportacaoFatura.Sales
                 return copiaPath;
             }
             catch (FileNotFoundException e)
-            { PSO.Dialogos.MostraErro("O ficheiro não existe no caminho específicado"); interromperComErro(e.ToString()); return ""; }
+            { PSO.MensagensDialogos.MostraErro("O ficheiro não existe no caminho específicado"); interromperComErro(e.ToString()); return ""; }
             catch (Exception e)
-            { PSO.Dialogos.MostraErro("ERRO: " + e); interromperComErro(e.ToString()); return ""; }
+            { PSO.MensagensDialogos.MostraErro("ERRO: " + e); interromperComErro(e.ToString()); return ""; }
         }
 
         //OK
@@ -285,7 +285,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
             if (error is null)
             { error = "Erro inesperado não definido."; }
-            UpdateListbox(error); PSO.Dialogos.MostraErro(error);
+            UpdateListbox(error); PSO.MensagensDialogos.MostraErro(error);
             Application.DoEvents();
             File.Delete(ficheiro);
 
@@ -296,7 +296,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
             OpenFileDialog form = new OpenFileDialog();
 
-            form.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*"; ;
+            form.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
             form.FilterIndex = 2;
             form.Multiselect = false;
             form.RestoreDirectory = true;
