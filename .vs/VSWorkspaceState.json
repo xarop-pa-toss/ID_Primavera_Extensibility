@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\FRU_AvisoVencimento"
+    "\\ASSREG-Faturacao",
+    "\\ASSREG-Faturacao\\Sales"
   ],
-  "SelectedNode": "\\FRU_AvisoVencimento\\FRU_AvisoVencimento.sln",
+  "SelectedNode": "\\ASSREG-Faturacao\\ASSREG_Faturacao.sln",
   "PreviewInSolutionExplorer": false
 }

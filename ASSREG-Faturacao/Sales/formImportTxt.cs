@@ -40,7 +40,8 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             // *** ABRIR EMPRESA ***
             // *** ASS REG SERVIDOR ***
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "IDCLONE", "faturacao", "*Pelicano*");
+            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "IDCLONE", "faturacao", "*Pelicano*");
+            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "ASSREG", "id", "*Pelicano*");
 
 
             // Cria listas em memória fáceis de iterar para evitar chamar métodos Primavera. Acedidos por referência (morada na memória em vez do valor da variável).
@@ -82,9 +83,9 @@ namespace ASRLB_ImportacaoFatura.Sales
                 return copiaPath;
             }
             catch (FileNotFoundException e)
-            { PSO.Dialogos.MostraErro("O ficheiro não existe no caminho específicado"); interromperComErro(e.ToString()); return ""; }
+            { PSO.MensagensDialogos.MostraErro("O ficheiro não existe no caminho específicado"); interromperComErro(e.ToString()); return ""; }
             catch (Exception e)
-            { PSO.Dialogos.MostraErro("ERRO: " + e); interromperComErro(e.ToString()); return ""; }
+            { PSO.MensagensDialogos.MostraErro("ERRO: " + e); interromperComErro(e.ToString()); return ""; }
         }
 
         //OK
@@ -172,7 +173,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosTodos;
             int vdDadosCondPag = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosCondPag;
 
-            VndBE100.VndBEDocumentoVenda docVenda = new VndBE100.VndBEDocumentoVenda();
             // Import dos valores do IVA da BD
             StdBELista BELista = new StdBELista();
             BELista = BSO.Consulta("SELECT Iva FROM IVA");
@@ -286,7 +286,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
             if (error is null)
             { error = "Erro inesperado não definido."; }
-            UpdateListbox(error); PSO.Dialogos.MostraErro(error);
+            UpdateListbox(error); PSO.MensagensDialogos.MostraErro(error);
             Application.DoEvents();
             File.Delete(ficheiro);
 
@@ -297,7 +297,7 @@ namespace ASRLB_ImportacaoFatura.Sales
         {
             OpenFileDialog form = new OpenFileDialog();
 
-            form.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*"; ;
+            form.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
             form.FilterIndex = 2;
             form.Multiselect = false;
             form.RestoreDirectory = true;
@@ -312,6 +312,11 @@ namespace ASRLB_ImportacaoFatura.Sales
         private void btnCancelar_Click_1(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void formImportarTxt_WF_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

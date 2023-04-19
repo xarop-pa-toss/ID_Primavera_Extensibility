@@ -209,60 +209,6 @@ namespace ASRLB_ImportacaoFatura.Sales
         }
 
         // MAIN FUNC
-
-        private int MesmoContadorBenef(DataTable DtTable, int i)
-        {
-            if (i == DtTable.Rows.Count - 1) { return 0; }
-
-            double area = Convert.ToDouble(linhaDict["Area"]);
-            int counter = 0;
-
-            do
-            {
-                //MessageBox.Show("area inicial: "+ linhaDict["Area"]+"i = "+i);
-                bool subContadorIgual = DtTable.Rows[i + 1].Field<string>("Nº Contador").Equals(linhaDict["Contador"]);
-                bool subBenefIgual = DtTable.Rows[i + 1].Field<double>("Benef").ToString().PadLeft(5, '0').Equals(linhaDict["Benef"]);
-
-                if (subContadorIgual && subBenefIgual && i > 0)
-                {
-                    area += DtTable.Rows[i + 1].Field<double>("Área");
-                    i++;
-                    counter++;
-                }
-                else { break; }
-            } while (i < DtTable.Rows.Count - 1);
-
-            linhaDict["Area"] = area.ToString();
-            //MessageBox.Show("area final: " + area+ "i = " + i +". counter = "+ counter);
-            return counter;
-        }
-
-        private void ErrosExcel(List<string> errosExcelList, string path)
-        {
-            string folder = Path.GetDirectoryName(path);
-            string errosPath = folder + "\\errosExcel";
-            string errosPathBuf = errosPath;
-
-            // Escreve erros para um ficheiro TXT na mesma pasta do Excel
-            int fileCounter = 0;
-            while (File.Exists(errosPath))
-            {
-                fileCounter++;
-                errosPath = errosPathBuf + fileCounter + ".txt";
-            }
-
-            File.WriteAllLines(errosPath, errosExcelList);
-
-            listBoxErros_WF.Items.Add(" ");
-            listBoxErros_WF.Items.Add("*** ERRO ***");
-            foreach (string erro in errosExcelList)
-            {
-                listBoxErros_WF.Items.Add(erro);
-            }
-
-            PSO.MensagensDialogos.MostraErro("Erros nas linhas do Excel. Ver contadores com erro e corrigir ficheiro. #" + errosExcelList.Count);
-        }
-
         private void PrepararDict(DataRow DtRow)
         {
             try
@@ -320,6 +266,11 @@ namespace ASRLB_ImportacaoFatura.Sales
             DocVenda.HoraDefinida = false;
             DocVenda.CondPag = "4";
             BSO.Vendas.Documentos.PreencheDadosRelacionados(DocVenda, ref vdDadosCondPag);
+        }
+
+        private void formFaturasExploracao_WF_Load(object sender, EventArgs e)
+        {
+
         }
 
         private void ProcessarLinha(VndBEDocumentoVenda DocVenda, string comPenalizacao)
@@ -393,7 +344,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             // Faturas com valor de 1,99€ ou menor não são emitidas
             try
             {
-                MessageBox.Show("Contador: " + linhaDict["Contador"] + " Data: " + DocVenda.DataDoc );
                 if (DocVenda.TotalDocumento >= 2 && BSO.Vendas.Documentos.ValidaActualizacao(DocVenda, BSO.Vendas.TabVendas.Edita(DocVenda.Tipodoc), ref serie, ref strErro))
                 {
                     BSO.Vendas.Documentos.Actualiza(DocVenda, ref strAvisos, ref strErro);
@@ -591,6 +541,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             do
             {
+                //MessageBox.Show("area inicial: "+ linhaDict["Area"]+"i = "+i);
                 bool subContadorIgual = DtTable.Rows[i + 1].Field<string>("Nº Contador").Equals(linhaDict["Contador"]);
                 bool subBenefIgual = DtTable.Rows[i + 1].Field<double>("Benef").ToString().PadLeft(5, '0').Equals(linhaDict["Benef"]);
 
@@ -604,6 +555,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             } while (i < DtTable.Rows.Count - 1);
 
             linhaDict["Area"] = area.ToString();
+            //MessageBox.Show("area final: " + area+ "i = " + i +". counter = "+ counter);
             return counter;
         }
 
