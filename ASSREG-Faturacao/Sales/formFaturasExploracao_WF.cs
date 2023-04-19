@@ -344,7 +344,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             // Faturas com valor de 1,99€ ou menor não são emitidas
             try
             {
-                MessageBox.Show("Contador: " + linhaDict["Contador"] + " Data: " + DocVenda.DataDoc );
                 if (DocVenda.TotalDocumento >= 2 && BSO.Vendas.Documentos.ValidaActualizacao(DocVenda, BSO.Vendas.TabVendas.Edita(DocVenda.Tipodoc), ref serie, ref strErro))
                 {
                     BSO.Vendas.Documentos.Actualiza(DocVenda, ref strAvisos, ref strErro);
