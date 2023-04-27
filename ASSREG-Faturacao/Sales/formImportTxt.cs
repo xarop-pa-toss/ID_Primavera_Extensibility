@@ -18,7 +18,6 @@ namespace ASRLB_ImportacaoFatura.Sales
     {
         private ErpBS BSO = new ErpBS();
         private StdPlatBS PSO = new StdPlatBS();
-        public string codEmpresa = "";
 
         public formImportarTxt_WF()
         {
@@ -45,12 +44,8 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             // *** ABRIR EMPRESA ***
             // *** ASS REG SERVIDOR ***
-            // Altera a string codEmpresa para ter o codEmp da empresa actual para usar na autenticação abaixo
-            GetEmpresa getEmpresa = new GetEmpresa(this);
-            MessageBox.Show(codEmpresa);
-            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "IDCLONE", "faturacao", "*Pelicano*");
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "ASSREG", "id", "*Pelicano*");
-
+            //BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, GetEmpresa.codEmpresa, "faturacao", "*Pelicano*");
+            
             // Cria listas em memória fáceis de iterar para evitar chamar métodos Primavera. Acedidos por referência (morada na memória em vez do valor da variável).
             List<string> listaArtigos = new List<string>();
             List<string> listaClientes = new List<string>();
