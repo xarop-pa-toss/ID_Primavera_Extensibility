@@ -22,6 +22,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             formImportarTxt_WF form1 = new formImportarTxt_WF();
             form1.ShowDialog();
             PSO.UI.AdicionaFormMDI(form1);
+            
         }
     }
 }
