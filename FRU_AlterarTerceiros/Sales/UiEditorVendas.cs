@@ -6,12 +6,3 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-
-namespace FRU_AlterarTerceiros.Sales
-{
-    public class UiEditorVendas : EditorVendas
-    {
-
-    }
-}

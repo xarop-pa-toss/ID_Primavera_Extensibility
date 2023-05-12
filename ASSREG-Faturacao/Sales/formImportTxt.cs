@@ -35,8 +35,8 @@ namespace ASRLB_ImportacaoFatura.Sales
             /* ** INTERRUPÇÃO DE EXECUÇÃO POR FAIL STATES **
             Os métodos validarFicheiro() e processarDados() são chamados através de if's que determinam o seu resultado (valor do return). Se return true, continua; se return false, então há um outro return void ao método pai (btnIniciar_Click()) que interrompe a sua execução.
             O return false acontece quando o método interrompeComErro() é chamado.
-            O método validarPath() retorna string e não bool, por isso a sua validação é feita através do resultado do path do ficheiro, igualmente tratado pelo interrompeComErro() */
-            
+            O método validarPath() retorna string e não bool, por isso a sua validação é feita através do resultado do path do ficheiro, igualmente tratado pelo interrompeComErro() */            
+
             //Lê conteudo da txtBox e valida se ficheiro existe.Copia o ficheiro para o mesmo directório e retorna o path da cópia.
             listBox.Items.Clear();
             ficheiro = validarPath();
