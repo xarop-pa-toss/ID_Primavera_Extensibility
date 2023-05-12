@@ -28,13 +28,6 @@ namespace FRU_AlterarTerceiros
             InicializaSDKContexto();
             f4Terceiros.Inicializa(_sdkContexto);
             f4TipoDoc.Inicializa(_sdkContexto);
-
-            // Fill TipoDoc combobox
-            string query = "SELECT Documento + ' - ' + Descricao AS Doc FROM DocumentosVenda WHERE Inactivo = 0 ORDER BY Documento DESC;";
-            cboxTipoDoc.Items.Clear();
-            cboxTipoDoc.Items.AddRange(FillComboBox(query).ToArray());
-
-
         }
         //Função que inicializa o contexto SDK.
         private void InicializaSDKContexto()
