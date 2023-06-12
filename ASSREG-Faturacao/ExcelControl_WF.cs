@@ -250,8 +250,8 @@ namespace ASRLB_ImportacaoFatura
 
         public void EliminarCopia(string origem)
         {
-            string copiaPath = Path.GetDirectoryName(origem) + "\\\\copia.xlsx";
-            if (File.Exists(copiaPath)) { File.Delete(copiaPath); }
+            string copia = Path.GetDirectoryName(origem) + "\\\\copia.xlsx";
+            if (File.Exists(copia)) { File.Delete(copia); }
         }
 
         [Serializable]

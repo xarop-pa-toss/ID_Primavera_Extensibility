@@ -30,8 +30,6 @@
         {
             this.cBoxDoc = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.cBoxArtigo = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.datePicker = new System.Windows.Forms.DateTimePicker();
             this.btnEscolherFicheiro = new System.Windows.Forms.Button();
@@ -40,6 +38,8 @@
             this.listBox = new System.Windows.Forms.ListBox();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnIniciar = new System.Windows.Forms.Button();
+            this.cBoxArtigo = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // cBoxDoc
@@ -49,10 +49,9 @@
             this.cBoxDoc.Items.AddRange(new object[] {
             "FA",
             "FVB"});
-            this.cBoxDoc.Location = new System.Drawing.Point(315, 47);
-            this.cBoxDoc.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cBoxDoc.Location = new System.Drawing.Point(236, 38);
             this.cBoxDoc.Name = "cBoxDoc";
-            this.cBoxDoc.Size = new System.Drawing.Size(84, 24);
+            this.cBoxDoc.Size = new System.Drawing.Size(64, 21);
             this.cBoxDoc.TabIndex = 41;
             this.cBoxDoc.Text = "FA";
             // 
@@ -60,47 +59,21 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.label4.Location = new System.Drawing.Point(269, 50);
-            this.label4.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label4.Location = new System.Drawing.Point(202, 41);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(37, 17);
+            this.label4.Size = new System.Drawing.Size(30, 13);
             this.label4.TabIndex = 40;
             this.label4.Text = "Doc:";
-            // 
-            // cBoxArtigo
-            // 
-            this.cBoxArtigo.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.cBoxArtigo.FormattingEnabled = true;
-            this.cBoxArtigo.Items.AddRange(new object[] {
-            "Não alterar",
-            "TE",
-            "TC"});
-            this.cBoxArtigo.Location = new System.Drawing.Point(462, 47);
-            this.cBoxArtigo.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.cBoxArtigo.Name = "cBoxArtigo";
-            this.cBoxArtigo.Size = new System.Drawing.Size(103, 24);
-            this.cBoxArtigo.TabIndex = 39;
-            this.cBoxArtigo.Text = "Não alterar";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.label3.Location = new System.Drawing.Point(408, 50);
-            this.label3.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(49, 17);
-            this.label3.TabIndex = 38;
-            this.label3.Text = "Artigo:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.label2.Location = new System.Drawing.Point(41, 47);
-            this.label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label2.Location = new System.Drawing.Point(31, 38);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(42, 17);
+            this.label2.Size = new System.Drawing.Size(33, 13);
             this.label2.TabIndex = 37;
             this.label2.Text = "Data:";
             // 
@@ -110,20 +83,18 @@
             this.datePicker.CustomFormat = "dd/MM/yyyy";
             this.datePicker.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right;
             this.datePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.datePicker.Location = new System.Drawing.Point(92, 47);
-            this.datePicker.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.datePicker.Location = new System.Drawing.Point(69, 38);
             this.datePicker.Name = "datePicker";
-            this.datePicker.Size = new System.Drawing.Size(155, 22);
+            this.datePicker.Size = new System.Drawing.Size(117, 20);
             this.datePicker.TabIndex = 36;
             this.datePicker.Value = new System.DateTime(2022, 6, 28, 10, 7, 59, 0);
             // 
             // btnEscolherFicheiro
             // 
             this.btnEscolherFicheiro.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.btnEscolherFicheiro.Location = new System.Drawing.Point(583, 14);
-            this.btnEscolherFicheiro.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnEscolherFicheiro.Location = new System.Drawing.Point(437, 11);
             this.btnEscolherFicheiro.Name = "btnEscolherFicheiro";
-            this.btnEscolherFicheiro.Size = new System.Drawing.Size(109, 57);
+            this.btnEscolherFicheiro.Size = new System.Drawing.Size(82, 46);
             this.btnEscolherFicheiro.TabIndex = 34;
             this.btnEscolherFicheiro.Text = "Escolher Ficheiro";
             this.btnEscolherFicheiro.UseVisualStyleBackColor = true;
@@ -132,10 +103,9 @@
             // txtFicheiroPath
             // 
             this.txtFicheiroPath.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.txtFicheiroPath.Location = new System.Drawing.Point(92, 15);
-            this.txtFicheiroPath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtFicheiroPath.Location = new System.Drawing.Point(69, 12);
             this.txtFicheiroPath.Name = "txtFicheiroPath";
-            this.txtFicheiroPath.Size = new System.Drawing.Size(473, 22);
+            this.txtFicheiroPath.Size = new System.Drawing.Size(356, 20);
             this.txtFicheiroPath.TabIndex = 33;
             this.txtFicheiroPath.Text = "import.txt no servidor";
             // 
@@ -143,10 +113,9 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.label1.Location = new System.Drawing.Point(22, 15);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(16, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(62, 17);
+            this.label1.Size = new System.Drawing.Size(47, 13);
             this.label1.TabIndex = 32;
             this.label1.Text = "Ficheiro:";
             // 
@@ -157,11 +126,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.listBox.FormattingEnabled = true;
-            this.listBox.ItemHeight = 16;
-            this.listBox.Location = new System.Drawing.Point(25, 84);
-            this.listBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listBox.Location = new System.Drawing.Point(19, 68);
             this.listBox.Name = "listBox";
-            this.listBox.Size = new System.Drawing.Size(667, 340);
+            this.listBox.Size = new System.Drawing.Size(501, 277);
             this.listBox.TabIndex = 31;
             // 
             // btnCancelar
@@ -170,10 +137,9 @@
             this.btnCancelar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnCancelar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnCancelar.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.btnCancelar.Location = new System.Drawing.Point(592, 434);
-            this.btnCancelar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCancelar.Location = new System.Drawing.Point(444, 353);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(100, 28);
+            this.btnCancelar.Size = new System.Drawing.Size(75, 23);
             this.btnCancelar.TabIndex = 30;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
@@ -185,20 +151,47 @@
             this.btnIniciar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnIniciar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnIniciar.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.btnIniciar.Location = new System.Drawing.Point(483, 434);
-            this.btnIniciar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnIniciar.Location = new System.Drawing.Point(362, 353);
             this.btnIniciar.Name = "btnIniciar";
-            this.btnIniciar.Size = new System.Drawing.Size(100, 28);
+            this.btnIniciar.Size = new System.Drawing.Size(75, 23);
             this.btnIniciar.TabIndex = 29;
             this.btnIniciar.Text = "Iniciar";
             this.btnIniciar.UseVisualStyleBackColor = true;
             this.btnIniciar.Click += new System.EventHandler(this.btnIniciar_Click_1);
             // 
+            // cBoxArtigo
+            // 
+            this.cBoxArtigo.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.cBoxArtigo.FormattingEnabled = true;
+            this.cBoxArtigo.Items.AddRange(new object[] {
+            "Não alterar",
+            "TE",
+            "TC"});
+            this.cBoxArtigo.Location = new System.Drawing.Point(346, 38);
+            this.cBoxArtigo.Margin = new System.Windows.Forms.Padding(4);
+            this.cBoxArtigo.Name = "cBoxArtigo";
+            this.cBoxArtigo.Size = new System.Drawing.Size(78, 21);
+            this.cBoxArtigo.TabIndex = 39;
+            this.cBoxArtigo.Text = "Não alterar";
+            this.cBoxArtigo.Visible = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.label3.Location = new System.Drawing.Point(306, 41);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(37, 13);
+            this.label3.TabIndex = 38;
+            this.label3.Text = "Artigo:";
+            this.label3.Visible = false;
+            // 
             // formImportarTxt_WF
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(711, 473);
+            this.ClientSize = new System.Drawing.Size(533, 384);
             this.Controls.Add(this.cBoxDoc);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cBoxArtigo);
@@ -211,7 +204,7 @@
             this.Controls.Add(this.listBox);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnIniciar);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "formImportarTxt_WF";
             this.Text = "Faturas RegSilv";
             this.ResumeLayout(false);
@@ -223,8 +216,6 @@
 
         private System.Windows.Forms.ComboBox cBoxDoc;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox cBoxArtigo;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DateTimePicker datePicker;
         private System.Windows.Forms.Button btnEscolherFicheiro;
@@ -233,5 +224,7 @@
         private System.Windows.Forms.ListBox listBox;
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Button btnIniciar;
+        private System.Windows.Forms.ComboBox cBoxArtigo;
+        private System.Windows.Forms.Label label3;
     }
 }
