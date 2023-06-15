@@ -5,7 +5,7 @@ using BasBE100; using StdBE100; using VndBE100;
 
 
 /// <summary>
-/// Ficheiro completo. NÃO TESTADO
+/// Conversão de PORTIPESCA/Forms/EditorVendas
 /// </summary>
 namespace PP_Extens.Sales
 {

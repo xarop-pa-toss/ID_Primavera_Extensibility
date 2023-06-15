@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormReimpressao 
-   Caption         =   "Reimpress„o de Documentos de Venda"
+   Caption         =   "Reimpress√£o de Documentos de Venda"
    ClientHeight    =   6780
    ClientLeft      =   45
    ClientTop       =   390
@@ -37,7 +37,7 @@ Private Sub UserForm_Initialize()
     If SDKContexto Is Nothing Then
         Set SDKContexto = New clsSDKContexto
     
-        ' Inicializar SDKContexto com objecto BSO e mÛdulo correspondente
+        ' Inicializar SDKContexto com objecto BSO e m√≥dulo correspondente
         SDKContexto.Inicializa BSO, "ERP"
         PSO.InicializaPlataforma SDKContexto
         
@@ -45,13 +45,13 @@ Private Sub UserForm_Initialize()
         PriGrelhaDocs.Inicializa SDKContexto
     End If
      
-    '--- InicializaÁ„o de controlos ---
+    '--- Inicializa√ß√£o de controlos ---
     InicializaPriGrelha
     
     ' ListBox com tipos de documentos
     InicializaListBoxTipoDoc
     
-    ' Datas de documento -> dia 1 e ˙ltimo dia do mÍs corrente
+    ' Datas de documento -> dia 1 e √∫ltimo dia do m√™s corrente
     DTPickerDataDocInicial.Value = Format(DateSerial(Year(Date), Month(Date), 1), "dd/MM/yyyy")
     DTPickerDataDocFinal.Value = Format(DateAdd("d", -1, DateSerial(Year(Date), Month(Date) + 1, 1)), "dd/MM/yyyy")
     
@@ -59,7 +59,7 @@ Private Sub UserForm_Initialize()
     TxtBoxNumDocInicial.Value = 0
     TxtBoxNumDocFinal.Value = 999999
     
-    ' Mapas de impress„o
+    ' Mapas de impress√£o
     InicializaCBoxMapa
     
 End Sub
@@ -138,17 +138,17 @@ Private Sub InicializaPriGrelha()
         PriGrelhaDocs.PermiteActiveBar = False
         PriGrelhaDocs.PermiteContextoVazia = False
     
-        ' Colunas da tabela de reimpress„o
-    ' Cf - CheckBox - define se vai imprimir ou n„o
-    ' Data - Date - data de emiss„o do documento
+        ' Colunas da tabela de reimpress√£o
+    ' Cf - CheckBox - define se vai imprimir ou n√£o
+    ' Data - Date - data de emiss√£o do documento
     ' Doc (DrillDown) - Str - TipoDoc
-    ' SÈrie - Str
+    ' S√©rie - Str
     ' Numero (DrillDown) - Long/Int
     ' Tipo Entidade - Str
     ' Entidade (DrillDown) - Str
     ' Moeda - Str/Moeda
     ' Total - Double/Float - Valor total do Doc
-    ' Imp - Simbolo - se j· foi impresso ou n„o
+    ' Imp - Simbolo - se j√° foi impresso ou n√£o
     
     'Private Enum ColType
     'SS_CELL_TYPE_DATE = 0
@@ -185,11 +185,11 @@ Private Sub ActualizaPriGrelha()
     NumInicial = TxtBoxNumDocInicial.Value
     NumFinal = TxtBoxNumDocFinal.Value
     
-    ' Se item seleccionado na listbox -> adiciona a TipoDoc (string) com uma vÌrgula. A usar na cl·usula IN da query SQL abaixo
+    ' Se item seleccionado na listbox -> adiciona a TipoDoc (string) com uma v√≠rgula. A usar na cl√°usula IN da query SQL abaixo
     Dim i As Integer
     For i = 0 To ListBoxTipoDoc.ListCount - 1
         If ListBoxTipoDoc.Selected(i) Then
-            ' Para separar o acrÛnimo da descriÁ„o, usamos a funÁ„o Split para pÙr ambos num array
+            ' Para separar o acr√≥nimo da descri√ß√£o, usamos a fun√ß√£o Split para p√¥r ambos num array
             Dim partes As Variant
             partes = Split(ListBoxTipoDoc.List(i), " - ")
             TipoDoc = TipoDoc & "'" & partes(0) & "',"
@@ -199,16 +199,16 @@ Private Sub ActualizaPriGrelha()
     If TipoDoc = "" Then
         Exit Sub
     Else
-        TipoDoc = Left(TipoDoc, Len(TipoDoc) - 1) 'Remove vÌrgula que fica ‡ direita da ˙ltima entrada na string
+        TipoDoc = Left(TipoDoc, Len(TipoDoc) - 1) 'Remove v√≠rgula que fica √† direita da √∫ltima entrada na string
     End If
     
     ' *** SQL QUERY ***
-    ' Utilizar um dicion·rio para criar o comando SQL j· que n„o existe um StringBuilder em VBA
+    ' Utilizar um dicion√°rio para criar o comando SQL j√° que n√£o existe um StringBuilder em VBA
     Dim sqlDict As Object
     Set sqlDict = CreateObject("Scripting.Dictionary")
     
     ' Criar cada parte da query
-    ' A coluna Cf recebe NULL pq a Prigrelha estava a dar problemas se a query n„o tivesse exactamente a mesma quantidade de colunas que a grelha em si
+    ' A coluna Cf recebe NULL pq a Prigrelha estava a dar problemas se a query n√£o tivesse exactamente a mesma quantidade de colunas que a grelha em si
     sqlDict.Add "select", "SELECT NULL AS Cf, Convert(varchar, Data, 103) AS Data, TipoDoc, Serie, NumDoc, TipoEntidade, Entidade, Moeda, TotalDocumento"
     sqlDict.Add "from", "FROM CabecDoc WHERE"
     sqlDict.Add "whereData", "Data BETWEEN CONVERT(datetime, '" & DataInicial & "', 103) AND CONVERT(datetime, '" & DataFinal & "', 103)"
@@ -256,7 +256,7 @@ Private Sub BtnImprimir_Click()
         mapa = rcSet("Mapa")
         Set rcSet = Nothing
     
-    ' Corre loop enquanto linhas da PriGrelha n„o forem vazias
+    ' Corre loop enquanto linhas da PriGrelha n√£o forem vazias
     Do While True
         i = i + 1
           
@@ -267,7 +267,7 @@ Private Sub BtnImprimir_Click()
         PriGrelhaDocs.Grelha.GetText 1, i, chkboxValor
         
         If CBoxMapa.Text = "" Then
-            MsgBox ("N„o foi seleccionado um mapa.")
+            MsgBox ("N√£o foi seleccionado um mapa.")
             Exit Sub
         End If
         
@@ -304,7 +304,7 @@ NextIteration:
     Loop
     
     If Not falhasImpressao = "" Then
-        MsgBox ("Documento(s) " & gTipoDoc & " " & gSerie & "/" & gNumDoc & " n„o foram imprimidos.")
+        MsgBox ("Documento(s) " & gTipoDoc & " " & gSerie & "/" & gNumDoc & " n√£o foram imprimidos.")
     End If
     
     

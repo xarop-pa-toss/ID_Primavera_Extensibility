@@ -74,16 +74,15 @@ namespace ASRLB_ImportacaoFatura.Sales
 
         private void btnConfirmar_WF_Click(object sender, EventArgs e)
         {
-            if (cBoxEmpresa.SelectedItem.ToString() == "" || cBoxPenalizacao.SelectedItem.ToString() == "")
-            {
-                MessageBox.Show("Não foi escolhida empresa ou tipo de penalização a aplicar.");
-                return;
-            }
+            //if (cBoxEmpresa.SelectedItem.ToString() == "" || cBoxPenalizacao.SelectedItem.ToString() == "")
+            //{
+            //    MessageBox.Show("Não foi escolhida empresa ou tipo de penalização a aplicar.");
+            //    return;
+            //}
 
             // *** ABRIR EMPRESA ***
             // *** ASS REG SERVIDOR ***
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, cBoxEmpresa.SelectedItem.ToString(), "faturacao", "*Pelicano*");
-
+            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, GetEmpresa.codEmpresa, "faturacao", "*Pelicano*");
 
             // Carrega TDUs das Taxas Penalizadoras no arranque
             StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
@@ -266,11 +265,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             DocVenda.HoraDefinida = false;
             DocVenda.CondPag = "4";
             BSO.Vendas.Documentos.PreencheDadosRelacionados(DocVenda, ref vdDadosCondPag);
-        }
-
-        private void formFaturasExploracao_WF_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void ProcessarLinha(VndBEDocumentoVenda DocVenda, string comPenalizacao)

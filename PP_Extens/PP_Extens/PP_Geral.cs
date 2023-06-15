@@ -2,6 +2,7 @@
 using System; using System.Collections.Generic; using System.Linq; using System.Text; using System.Threading.Tasks; using System.Runtime.InteropServices;
 using StdBE100; using StdPlatBS100;
 
+// Conversão de PORTIPESCA/Modules/Geral
 namespace PP_Extens
 {
     public class PP_Geral : CustomCode
@@ -99,27 +100,4 @@ namespace PP_Extens
         }
     }
 }
-
-
-/*
-    Do
-
-        s = InputBox("Data Inicial:", "Introduzir Data", s)
-
-
-        If IsDate(s) Then
-
-            Inicio_Mes_Anterior = Format(CDate(s), "mm\/dd\/yyyy")
-
-
-            Exit Function
-
-
-        Else
-
-            MsgBox "Data inválida!", vbExclamation + vbOKOnly
-
-        End If
-
-    Loop */
 

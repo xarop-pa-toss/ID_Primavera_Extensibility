@@ -42,8 +42,14 @@
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\ErpBS100.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="GprBE100, Version=10.0.0.0, Culture=neutral, PublicKeyToken=11cd844aca152173, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="ICctBS100">
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\ICctBS100.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="IGprBS100, Version=10.0.0.0, Culture=neutral, PublicKeyToken=11cd844aca152173, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
     <Reference Include="IVndBS100">
@@ -64,6 +70,9 @@
     </Reference>
     <Reference Include="Primavera.Extensibility.PayablesReceivables">
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.PayablesReceivables.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Primavera.Extensibility.Production, Version=10.0.0.0, Culture=neutral, PublicKeyToken=11cd844aca152173, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
     <Reference Include="Primavera.Extensibility.Sales">

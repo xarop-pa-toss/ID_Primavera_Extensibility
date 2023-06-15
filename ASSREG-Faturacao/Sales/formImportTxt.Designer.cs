@@ -30,8 +30,6 @@
         {
             this.cBoxDoc = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.cBoxArtigo = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.datePicker = new System.Windows.Forms.DateTimePicker();
             this.btnEscolherFicheiro = new System.Windows.Forms.Button();
@@ -40,6 +38,8 @@
             this.listBox = new System.Windows.Forms.ListBox();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnIniciar = new System.Windows.Forms.Button();
+            this.cBoxArtigo = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // cBoxDoc
@@ -47,59 +47,34 @@
             this.cBoxDoc.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.cBoxDoc.FormattingEnabled = true;
             this.cBoxDoc.Items.AddRange(new object[] {
+            "FTE",
             "FA",
             "FVB"});
-            this.cBoxDoc.Location = new System.Drawing.Point(215, 38);
+            this.cBoxDoc.Location = new System.Drawing.Point(225, 37);
             this.cBoxDoc.Name = "cBoxDoc";
             this.cBoxDoc.Size = new System.Drawing.Size(64, 21);
             this.cBoxDoc.TabIndex = 41;
-            this.cBoxDoc.Text = "FA";
+            this.cBoxDoc.Text = "FTE";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.label4.Location = new System.Drawing.Point(236, 50);
+            this.label4.Location = new System.Drawing.Point(188, 41);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(32, 15);
+            this.label4.Size = new System.Drawing.Size(30, 13);
             this.label4.TabIndex = 40;
             this.label4.Text = "Doc:";
-            // 
-            // cBoxArtigo
-            // 
-            this.cBoxArtigo.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.cBoxArtigo.FormattingEnabled = true;
-            this.cBoxArtigo.Items.AddRange(new object[] {
-            "Não alterar",
-            "TE",
-            "TC"});
-            this.cBoxArtigo.Location = new System.Drawing.Point(450, 47);
-            this.cBoxArtigo.Margin = new System.Windows.Forms.Padding(4);
-            this.cBoxArtigo.Name = "cBoxArtigo";
-            this.cBoxArtigo.Size = new System.Drawing.Size(78, 21);
-            this.cBoxArtigo.TabIndex = 39;
-            this.cBoxArtigo.Text = "Não alterar";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.label3.Location = new System.Drawing.Point(394, 50);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 15);
-            this.label3.TabIndex = 38;
-            this.label3.Text = "Artigo:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.label2.Location = new System.Drawing.Point(42, 50);
+            this.label2.Location = new System.Drawing.Point(31, 38);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(36, 15);
+            this.label2.Size = new System.Drawing.Size(33, 13);
             this.label2.TabIndex = 37;
             this.label2.Text = "Data:";
             // 
@@ -111,16 +86,16 @@
             this.datePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.datePicker.Location = new System.Drawing.Point(69, 38);
             this.datePicker.Name = "datePicker";
-            this.datePicker.Size = new System.Drawing.Size(117, 20);
+            this.datePicker.Size = new System.Drawing.Size(102, 20);
             this.datePicker.TabIndex = 36;
             this.datePicker.Value = new System.DateTime(2022, 6, 28, 10, 7, 59, 0);
             // 
             // btnEscolherFicheiro
             // 
             this.btnEscolherFicheiro.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.btnEscolherFicheiro.Location = new System.Drawing.Point(422, 11);
+            this.btnEscolherFicheiro.Location = new System.Drawing.Point(437, 11);
             this.btnEscolherFicheiro.Name = "btnEscolherFicheiro";
-            this.btnEscolherFicheiro.Size = new System.Drawing.Size(97, 46);
+            this.btnEscolherFicheiro.Size = new System.Drawing.Size(82, 48);
             this.btnEscolherFicheiro.TabIndex = 34;
             this.btnEscolherFicheiro.Text = "Escolher Ficheiro";
             this.btnEscolherFicheiro.UseVisualStyleBackColor = true;
@@ -131,7 +106,7 @@
             this.txtFicheiroPath.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.txtFicheiroPath.Location = new System.Drawing.Point(69, 12);
             this.txtFicheiroPath.Name = "txtFicheiroPath";
-            this.txtFicheiroPath.Size = new System.Drawing.Size(347, 20);
+            this.txtFicheiroPath.Size = new System.Drawing.Size(356, 20);
             this.txtFicheiroPath.TabIndex = 33;
             this.txtFicheiroPath.Text = "import.txt no servidor";
             // 
@@ -139,9 +114,9 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.label1.Location = new System.Drawing.Point(17, 14);
+            this.label1.Location = new System.Drawing.Point(16, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(54, 15);
+            this.label1.Size = new System.Drawing.Size(47, 13);
             this.label1.TabIndex = 32;
             this.label1.Text = "Ficheiro:";
             // 
@@ -185,6 +160,35 @@
             this.btnIniciar.UseVisualStyleBackColor = true;
             this.btnIniciar.Click += new System.EventHandler(this.btnIniciar_Click_1);
             // 
+            // cBoxArtigo
+            // 
+            this.cBoxArtigo.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.cBoxArtigo.FormattingEnabled = true;
+            this.cBoxArtigo.Items.AddRange(new object[] {
+            "Não alterar",
+            "TE",
+            "TC",
+            "TRH"});
+            this.cBoxArtigo.Location = new System.Drawing.Point(346, 38);
+            this.cBoxArtigo.Margin = new System.Windows.Forms.Padding(4);
+            this.cBoxArtigo.Name = "cBoxArtigo";
+            this.cBoxArtigo.Size = new System.Drawing.Size(78, 21);
+            this.cBoxArtigo.TabIndex = 39;
+            this.cBoxArtigo.Text = "Não alterar";
+            this.cBoxArtigo.Visible = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.label3.Location = new System.Drawing.Point(306, 41);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(37, 13);
+            this.label3.TabIndex = 38;
+            this.label3.Text = "Artigo:";
+            this.label3.Visible = false;
+            // 
             // formImportarTxt_WF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -205,7 +209,6 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "formImportarTxt_WF";
             this.Text = "Faturas RegSilv";
-            this.Load += new System.EventHandler(this.formImportarTxt_WF_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -215,8 +218,6 @@
 
         private System.Windows.Forms.ComboBox cBoxDoc;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox cBoxArtigo;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DateTimePicker datePicker;
         private System.Windows.Forms.Button btnEscolherFicheiro;
@@ -225,5 +226,7 @@
         private System.Windows.Forms.ListBox listBox;
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Button btnIniciar;
+        private System.Windows.Forms.ComboBox cBoxArtigo;
+        private System.Windows.Forms.Label label3;
     }
 }
