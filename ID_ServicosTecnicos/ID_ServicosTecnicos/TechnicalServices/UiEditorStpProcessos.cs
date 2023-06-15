@@ -8,14 +8,18 @@ namespace ID_ServicosTecnicos.TechnicalServices
 {
     public class UiEditorStpProcessos : EditorStpProcessos
     {
-        public override void TeclaPressionada(int KeyCode, int Shift, ExtensibilityEventArgs e)
+        public override void ClienteIdentificado(string Cliente, ExtensibilityEventArgs e)
         {
-            base.TeclaPressionada(KeyCode, Shift, e);
+            string clienteID = this.Processo.Cliente;
+            var CDU = BSO.Base.Clientes.Consulta(clienteID).CamposUtil["CDU_CTRSUSPENSO"].Valor;
 
-            if (KeyCode == Convert.ToInt32(ConsoleKey.F3))
+            if (CDU.Equals(true))
             {
-                Processo.TipoDoc = "PRC";
+                PSO.Dialogos.MostraMensagem(StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimplesOk, "Este cliente tem as assistências suspensas!", StdPlatBS100.StdBSTipos.IconId.PRI_Exclama);
             }
+
+            base.ClienteIdentificado(Cliente, e);
         }
     }
 }
+
