@@ -8,17 +8,14 @@ namespace ID_ServicosTecnicos.TechnicalServices
 {
     public class UiEditorStpPedidos : EditorStpPedidos
     {
-        private bool _avisado = false;
-
         public override void AntesDeEditarLinha(StpBELinhaPedido linha, ref bool Cancel, ExtensibilityEventArgs e)
         {
             string clienteID = this.Pedido.Cliente;
             var CDU = BSO.Base.Clientes.Consulta(clienteID).CamposUtil["CDU_CTRSUSPENSO"].Valor;
 
-            if (CDU.Equals(true) && !_avisado)
+            if (CDU.Equals(true))
             {
                 PSO.Dialogos.MostraMensagem(StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimplesOk,"Este cliente tem as assistências suspensas!",StdPlatBS100.StdBSTipos.IconId.PRI_Exclama);
-                _avisado = true;
             }
 
             base.AntesDeEditarLinha(linha, ref Cancel, e);
