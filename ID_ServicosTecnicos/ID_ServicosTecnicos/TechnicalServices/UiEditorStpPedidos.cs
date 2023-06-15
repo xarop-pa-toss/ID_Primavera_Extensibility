@@ -8,16 +8,20 @@ namespace ID_ServicosTecnicos.TechnicalServices
 {
     public class UiEditorStpPedidos : EditorStpPedidos
     {
-        public override void TeclaPressionada(int KeyCode, int Shift, ExtensibilityEventArgs e)
+        private bool _avisado = false;
+
+        public override void AntesDeEditarLinha(StpBELinhaPedido linha, ref bool Cancel, ExtensibilityEventArgs e)
         {
-            base.TeclaPressionada(KeyCode, Shift, e);
+            string clienteID = this.Pedido.Cliente;
+            var CDU = BSO.Base.Clientes.Consulta(clienteID).CamposUtil["CDU_CTRSUSPENSO"].Valor;
 
-            if (KeyCode == Convert.ToInt32(ConsoleKey.F3))
+            if (CDU.Equals(true) && !_avisado)
             {
-                Pedido.TipoDoc = "PA";
+                PSO.Dialogos.MostraMensagem(StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimplesOk,"Este cliente tem as assistências suspensas!",StdPlatBS100.StdBSTipos.IconId.PRI_Exclama);
+                _avisado = true;
             }
-        }
 
-        public override 
+            base.AntesDeEditarLinha(linha, ref Cancel, e);
+        }
     }
 }
