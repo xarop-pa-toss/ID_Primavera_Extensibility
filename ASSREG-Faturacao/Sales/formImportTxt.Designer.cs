@@ -47,19 +47,20 @@
             this.cBoxDoc.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.cBoxDoc.FormattingEnabled = true;
             this.cBoxDoc.Items.AddRange(new object[] {
+            "FTE",
             "FA",
             "FVB"});
-            this.cBoxDoc.Location = new System.Drawing.Point(236, 38);
+            this.cBoxDoc.Location = new System.Drawing.Point(225, 37);
             this.cBoxDoc.Name = "cBoxDoc";
             this.cBoxDoc.Size = new System.Drawing.Size(64, 21);
             this.cBoxDoc.TabIndex = 41;
-            this.cBoxDoc.Text = "FA";
+            this.cBoxDoc.Text = "FTE";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.label4.Location = new System.Drawing.Point(202, 41);
+            this.label4.Location = new System.Drawing.Point(188, 41);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(30, 13);
@@ -85,7 +86,7 @@
             this.datePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.datePicker.Location = new System.Drawing.Point(69, 38);
             this.datePicker.Name = "datePicker";
-            this.datePicker.Size = new System.Drawing.Size(117, 20);
+            this.datePicker.Size = new System.Drawing.Size(102, 20);
             this.datePicker.TabIndex = 36;
             this.datePicker.Value = new System.DateTime(2022, 6, 28, 10, 7, 59, 0);
             // 
@@ -94,7 +95,7 @@
             this.btnEscolherFicheiro.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.btnEscolherFicheiro.Location = new System.Drawing.Point(437, 11);
             this.btnEscolherFicheiro.Name = "btnEscolherFicheiro";
-            this.btnEscolherFicheiro.Size = new System.Drawing.Size(82, 46);
+            this.btnEscolherFicheiro.Size = new System.Drawing.Size(82, 48);
             this.btnEscolherFicheiro.TabIndex = 34;
             this.btnEscolherFicheiro.Text = "Escolher Ficheiro";
             this.btnEscolherFicheiro.UseVisualStyleBackColor = true;
@@ -166,7 +167,8 @@
             this.cBoxArtigo.Items.AddRange(new object[] {
             "Não alterar",
             "TE",
-            "TC"});
+            "TC",
+            "TRH"});
             this.cBoxArtigo.Location = new System.Drawing.Point(346, 38);
             this.cBoxArtigo.Margin = new System.Windows.Forms.Padding(4);
             this.cBoxArtigo.Name = "cBoxArtigo";
