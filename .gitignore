@@ -1,4 +1,5 @@
-# Excel files with customer sensitive information and SQL queries
 *.xls
 *.xlsx
 *.sql
+formImportTxt.cs
+formFaturasExploracao_WF.cs
