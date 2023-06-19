@@ -34,6 +34,12 @@
     <Reference Include="BasBE100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\BasBE100.dll</HintPath>
     </Reference>
+    <Reference Include="CblBE100">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\CblBE100.dll</HintPath>
+    </Reference>
+    <Reference Include="CmpBS100">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\CmpBS100.dll</HintPath>
+    </Reference>
     <Reference Include="ConstantesPrimavera100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\ConstantesPrimavera100.dll</HintPath>
     </Reference>
@@ -42,6 +48,17 @@
     </Reference>
     <Reference Include="IBasBS100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\IBasBS100.dll</HintPath>
+    </Reference>
+    <Reference Include="ICmpBS100">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\ICmpBS100.dll</HintPath>
+    </Reference>
+    <Reference Include="IintBS100">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\IintBS100.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="IntBE100">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\IntBE100.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="IVndBS100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\IVndBS100.dll</HintPath>
@@ -61,6 +78,10 @@
     </Reference>
     <Reference Include="Primavera.Extensibility.Integration">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Integration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Primavera.Extensibility.Internal">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Internal.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Primavera.Extensibility.Sales">
@@ -96,6 +117,7 @@
   <ItemGroup>
     <Compile Include="MSS_Gerais.cs" />
     <Compile Include="PP_Geral.cs" />
+    <Compile Include="PP_UtilCBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sales\PP_UiEditorVendas.cs" />
   </ItemGroup>
@@ -109,6 +131,9 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TextFile1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
