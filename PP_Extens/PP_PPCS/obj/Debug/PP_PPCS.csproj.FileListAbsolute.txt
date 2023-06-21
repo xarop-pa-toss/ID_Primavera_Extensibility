@@ -1,0 +1,2 @@
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\obj\Debug\PP_PPCS.csproj.AssemblyReference.cache
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\obj\Debug\PP_PPCS.csproj.CoreCompileInputs.cache

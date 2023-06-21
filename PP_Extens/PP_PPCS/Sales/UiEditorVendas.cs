@@ -68,7 +68,7 @@ namespace PP_PPCS.Sales
             if (!pedeFornecedor.Vazia())
                 pedeFornecedor.Inicio();
 
-            if (!pedeFornecedor.Valor("CDU_PedeFornecedor")) {
+            if (pedeFornecedor.Valor("CDU_PedeFornecedor")) {
                 PSO.MensagensDialogos.MostraDialogoInput(ref s3, "Proveniencia", "Fornecedor:", strValorDefeito: DocVenda.Linhas.GetEdita(LinhaActual).CamposUtil["CDU_Fornecedor"].Valor.ToString());
 
                 DocVenda.Linhas.GetEdita(NumLinha).CamposUtil["CDU_Fornecedor"].Valor = s3.Trim().ToUpper();
@@ -82,13 +82,35 @@ namespace PP_PPCS.Sales
         public override void ClienteIdentificado(string Cliente, ref bool Cancel, ExtensibilityEventArgs e)
         {
             var DocVenda = this.DocumentoVenda;
-            string nr_doc, s, matricula;
+            string nrDoc = "", vendedor = "", matricula = "";
 
             StdBELista serie = BSO.Consulta(String.Format("SELECT CDU_PedeVendedor, CDU_PedeDocumento, CDU_PedeMatricula FROM SeriesVendas WHERE TipoDoc = '{0}' AND '{1}';", DocVenda.Tipodoc, DocVenda.Serie));
 
             // Data de descarga igual à data de carga
             if (DocVenda.DataHoraDescarga == null) {
+                DocVenda.DataHoraDescarga = DocVenda.DataHoraCarga;
+            }
 
+            if (!serie.Vazia()) {
+
+                // Código do vendedor
+                if (serie.Valor("CDU_PedeVendedor")) {
+
+                    PSO.MensagensDialogos.MostraDialogoInput(ref vendedor, "Vendedor", "Código do Vendedor:", strValorDefeito: "0");
+                    StdBELista vend = BSO.Consulta(String.Format("SELECT Vendedor FROM Vendedores WHERE Vendedor = '{0}';"));
+
+                    if (!vend.Vazia()) {
+                        PSO.MensagensDialogos.MostraAviso("Vendedor inexistente!", StdBSTipos.IconId.PRI_Exclama);
+                    } else {
+                        DocVenda.Responsavel = vendedor;
+                    }
+                }
+                
+                // Número do documento manual a lançar
+                if (serie.Valor("CDU_PedeDocumento")) {
+                    PSO.MensagensDialogos.MostraDialogoInput(ref nrDoc, "Vendedor", "Código do Vendedor:", strValorDefeito: "0");
+                    DocVenda.CamposUtil["CDU_NroManual"].Valor = nrDoc.Trim().Substring(0, 10);
+                }
             }
 
             base.ClienteIdentificado(Cliente, ref Cancel, e);

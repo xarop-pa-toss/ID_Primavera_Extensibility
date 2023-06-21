@@ -24,3 +24,9 @@ C:\Users\Ricardo Santos\source\repos\ID_PrimaveraV10_Code\PP_Extens\PP_Extens\bi
 C:\Users\Ricardo Santos\source\repos\ID_PrimaveraV10_Code\PP_Extens\PP_Extens\bin\Debug\ErpBS100.dll
 C:\Users\Ricardo Santos\source\repos\ID_PrimaveraV10_Code\PP_Extens\PP_Extens\obj\Debug\Interop.MSScriptControl.dll
 C:\Users\Ricardo Santos\source\repos\ID_PrimaveraV10_Code\PP_Extens\PP_Extens\obj\Debug\PP_Extens.csproj.ResolveComReference.cache
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\obj\Debug\PP_Extens.csproj.AssemblyReference.cache
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\obj\Debug\Interop.MSScriptControl.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\obj\Debug\PP_Extens.csproj.ResolveComReference.cache
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\obj\Debug\PP_Extens.csproj.CoreCompileInputs.cache
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\obj\Debug\PP_Extens.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\obj\Debug\PP_Extens.pdb
