@@ -14,14 +14,14 @@ namespace ASRLB_ImportacaoFatura.Sales
     public partial class formImportarTxt_WF : Form
     {
         private ErpBS BSO = new ErpBS();
-        private StdPlatBS PSO = new StdPlatBS();
+        private StdPlatBS PSO = new StdPlatBS(); 
 
         public formImportarTxt_WF()
         {
             InitializeComponent();
             datePicker.Value = DateTime.Today;
         }
-
+        
         string[] linha;
         string ficheiro = null;
         string copia = null;
