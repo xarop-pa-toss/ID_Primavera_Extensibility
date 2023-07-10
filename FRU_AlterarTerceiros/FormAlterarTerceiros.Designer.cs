@@ -31,19 +31,19 @@ namespace FRU_AlterarTerceiros
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.cboxSerie = new System.Windows.Forms.ComboBox();
+            this.cbox_Serie = new System.Windows.Forms.ComboBox();
             this.btnAlterarTerceiro = new System.Windows.Forms.Button();
             this.f4TipoTerceiro = new PRISDK100.F4();
             this.f4TipoDoc = new PRISDK100.F4();
-            this.numNumDocInicio = new System.Windows.Forms.NumericUpDown();
-            this.numNumDocFim = new System.Windows.Forms.NumericUpDown();
-            this.dateDataDocInicio = new System.Windows.Forms.DateTimePicker();
-            this.dateDataDocFim = new System.Windows.Forms.DateTimePicker();
+            this.num_NumDocInicio = new System.Windows.Forms.NumericUpDown();
+            this.num_NumDocFim = new System.Windows.Forms.NumericUpDown();
+            this.date_DataDocInicio = new System.Windows.Forms.DateTimePicker();
+            this.date_DataDocFim = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.btnActualizarPriGrelha = new System.Windows.Forms.Button();
             this.priGrelhaDocs = new PRISDK100.PriGrelha();
-            ((System.ComponentModel.ISupportInitialize)(this.numNumDocInicio)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numNumDocFim)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_NumDocInicio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_NumDocFim)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.priGrelhaDocs)).BeginInit();
             this.SuspendLayout();
             // 
@@ -69,14 +69,14 @@ namespace FRU_AlterarTerceiros
             this.label3.TabIndex = 2;
             this.label3.Text = "Série:";
             // 
-            // cboxSerie
+            // cbox_Serie
             // 
-            this.cboxSerie.FormattingEnabled = true;
-            this.cboxSerie.Location = new System.Drawing.Point(399, 36);
-            this.cboxSerie.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.cboxSerie.Name = "cboxSerie";
-            this.cboxSerie.Size = new System.Drawing.Size(71, 24);
-            this.cboxSerie.TabIndex = 7;
+            this.cbox_Serie.FormattingEnabled = true;
+            this.cbox_Serie.Location = new System.Drawing.Point(399, 36);
+            this.cbox_Serie.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.cbox_Serie.Name = "cbox_Serie";
+            this.cbox_Serie.Size = new System.Drawing.Size(71, 24);
+            this.cbox_Serie.TabIndex = 7;
             // 
             // btnAlterarTerceiro
             // 
@@ -174,69 +174,69 @@ namespace FRU_AlterarTerceiros
             this.f4TipoDoc.WidthLink = 1300;
             this.f4TipoDoc.TextChange += new PRISDK100.F4.TextChangeHandler(this.f4TipoDoc_TextChange);
             // 
-            // numNumDocInicio
+            // num_NumDocInicio
             // 
-            this.numNumDocInicio.Location = new System.Drawing.Point(97, 135);
-            this.numNumDocInicio.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.numNumDocInicio.Maximum = new decimal(new int[] {
+            this.num_NumDocInicio.Location = new System.Drawing.Point(97, 135);
+            this.num_NumDocInicio.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.num_NumDocInicio.Maximum = new decimal(new int[] {
             99999,
             0,
             0,
             0});
-            this.numNumDocInicio.Minimum = new decimal(new int[] {
+            this.num_NumDocInicio.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numNumDocInicio.Name = "numNumDocInicio";
-            this.numNumDocInicio.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.numNumDocInicio.Size = new System.Drawing.Size(79, 22);
-            this.numNumDocInicio.TabIndex = 14;
-            this.numNumDocInicio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.numNumDocInicio.Value = new decimal(new int[] {
+            this.num_NumDocInicio.Name = "num_NumDocInicio";
+            this.num_NumDocInicio.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.num_NumDocInicio.Size = new System.Drawing.Size(79, 22);
+            this.num_NumDocInicio.TabIndex = 14;
+            this.num_NumDocInicio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.num_NumDocInicio.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
             // 
-            // numNumDocFim
+            // num_NumDocFim
             // 
-            this.numNumDocFim.Location = new System.Drawing.Point(201, 135);
-            this.numNumDocFim.Maximum = new decimal(new int[] {
+            this.num_NumDocFim.Location = new System.Drawing.Point(201, 135);
+            this.num_NumDocFim.Maximum = new decimal(new int[] {
             99999,
             0,
             0,
             0});
-            this.numNumDocFim.Minimum = new decimal(new int[] {
+            this.num_NumDocFim.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numNumDocFim.Name = "numNumDocFim";
-            this.numNumDocFim.Size = new System.Drawing.Size(79, 22);
-            this.numNumDocFim.TabIndex = 17;
-            this.numNumDocFim.Value = new decimal(new int[] {
+            this.num_NumDocFim.Name = "num_NumDocFim";
+            this.num_NumDocFim.Size = new System.Drawing.Size(79, 22);
+            this.num_NumDocFim.TabIndex = 17;
+            this.num_NumDocFim.Value = new decimal(new int[] {
             99999,
             0,
             0,
             0});
             // 
-            // dateDataDocInicio
+            // date_DataDocInicio
             // 
-            this.dateDataDocInicio.CustomFormat = "DD/MM/YYYY";
-            this.dateDataDocInicio.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateDataDocInicio.Location = new System.Drawing.Point(97, 91);
-            this.dateDataDocInicio.Name = "dateDataDocInicio";
-            this.dateDataDocInicio.Size = new System.Drawing.Size(115, 22);
-            this.dateDataDocInicio.TabIndex = 18;
+            this.date_DataDocInicio.CustomFormat = "DD/MM/YYYY";
+            this.date_DataDocInicio.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.date_DataDocInicio.Location = new System.Drawing.Point(97, 91);
+            this.date_DataDocInicio.Name = "date_DataDocInicio";
+            this.date_DataDocInicio.Size = new System.Drawing.Size(115, 22);
+            this.date_DataDocInicio.TabIndex = 18;
             // 
-            // dateDataDocFim
+            // date_DataDocFim
             // 
-            this.dateDataDocFim.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateDataDocFim.Location = new System.Drawing.Point(240, 90);
-            this.dateDataDocFim.Name = "dateDataDocFim";
-            this.dateDataDocFim.Size = new System.Drawing.Size(117, 22);
-            this.dateDataDocFim.TabIndex = 19;
+            this.date_DataDocFim.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.date_DataDocFim.Location = new System.Drawing.Point(240, 90);
+            this.date_DataDocFim.Name = "date_DataDocFim";
+            this.date_DataDocFim.Size = new System.Drawing.Size(117, 22);
+            this.date_DataDocFim.TabIndex = 19;
             // 
             // label2
             // 
@@ -308,14 +308,14 @@ namespace FRU_AlterarTerceiros
             this.Controls.Add(this.priGrelhaDocs);
             this.Controls.Add(this.btnActualizarPriGrelha);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.dateDataDocFim);
-            this.Controls.Add(this.dateDataDocInicio);
-            this.Controls.Add(this.numNumDocFim);
-            this.Controls.Add(this.numNumDocInicio);
+            this.Controls.Add(this.date_DataDocFim);
+            this.Controls.Add(this.date_DataDocInicio);
+            this.Controls.Add(this.num_NumDocFim);
+            this.Controls.Add(this.num_NumDocInicio);
             this.Controls.Add(this.f4TipoDoc);
             this.Controls.Add(this.f4TipoTerceiro);
             this.Controls.Add(this.btnAlterarTerceiro);
-            this.Controls.Add(this.cboxSerie);
+            this.Controls.Add(this.cbox_Serie);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(5);
@@ -323,8 +323,8 @@ namespace FRU_AlterarTerceiros
             this.Size = new System.Drawing.Size(1001, 502);
             this.Text = "Alteração Terceiros";
             this.Load += new System.EventHandler(this.FormAlterarTerceiros_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.numNumDocInicio)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numNumDocFim)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_NumDocInicio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_NumDocFim)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.priGrelhaDocs)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -335,14 +335,14 @@ namespace FRU_AlterarTerceiros
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox cboxSerie;
+        private System.Windows.Forms.ComboBox cbox_Serie;
         private System.Windows.Forms.Button btnAlterarTerceiro;
         private PRISDK100.F4 f4TipoTerceiro;
         private PRISDK100.F4 f4TipoDoc;
-        private System.Windows.Forms.NumericUpDown numNumDocInicio;
-        private System.Windows.Forms.NumericUpDown numNumDocFim;
-        private System.Windows.Forms.DateTimePicker dateDataDocInicio;
-        private System.Windows.Forms.DateTimePicker dateDataDocFim;
+        private System.Windows.Forms.NumericUpDown num_NumDocInicio;
+        private System.Windows.Forms.NumericUpDown num_NumDocFim;
+        private System.Windows.Forms.DateTimePicker date_DataDocInicio;
+        private System.Windows.Forms.DateTimePicker date_DataDocFim;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnActualizarPriGrelha;
         private PRISDK100.PriGrelha priGrelhaDocs;

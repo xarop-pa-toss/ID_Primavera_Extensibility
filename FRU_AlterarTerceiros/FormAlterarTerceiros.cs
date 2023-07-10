@@ -16,7 +16,7 @@ namespace FRU_AlterarTerceiros
     public partial class FormAlterarTerceiros : CustomForm
     {
         //Variavél global que contem o contexto e que deverá ser passada para os controlos.
-        private clsSDKContexto _sdkContexto;
+        public clsSDKContexto _sdkContexto;
         private string _tipoDoc, _serie;
         private long _numDoc;
 
@@ -31,6 +31,10 @@ namespace FRU_AlterarTerceiros
             InicializaSDKContexto();
             f4TipoTerceiro.Inicializa(_sdkContexto);
             f4TipoDoc.Inicializa(_sdkContexto);
+
+            date_DataDocInicio.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            date_DataDocFim.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1);
+            f4TipoDoc.Text = "FR";
         }
         
         private void priGrelhaDocs_Load(object sender, EventArgs e)
@@ -73,11 +77,6 @@ namespace FRU_AlterarTerceiros
             //' Doc (DrillDown) - Str - TipoDoc
             //' Série - Str
             //' Numero (DrillDown) - Long/Int
-            //' Tipo Entidade - Str
-            //' Entidade (DrillDown) - Str
-            //' Moeda - Str/Moeda
-            //' Total - Double/Float - Valor total do Doc
-            //' Imp - Simbolo - se já foi impresso ou não
 
             //'Private Enum ColType
             //'SS_CELL_TYPE_DATE = 0
@@ -106,11 +105,13 @@ namespace FRU_AlterarTerceiros
         // BOTÕES
         private void btnAlterarTerceiro_Click(object sender, EventArgs e)
         {
-            // Check controlos
+            // Check linhas da priGrelha
+            var grelha = priGrelhaDocs.Grelha;
+
+            for (int i = 1; i <= priGrelhaDocs.) 
             Dictionary<string, string> valoresControlos = GetControlos();
 
             if (CheckControlos(valoresControlos)) {
-                string strErros;
                 using (StdBE100.StdBEExecSql sql = new StdBE100.StdBEExecSql()) {
                     sql.tpQuery = StdBE100.StdBETipos.EnumTpQuery.tpUPDATE;
                     sql.Tabela = "CabecDoc";                                                                                                                // UPDATE CabecDoc
@@ -121,6 +122,7 @@ namespace FRU_AlterarTerceiros
 
                     sql.AddQuery();
                     PSO.ExecSql.Executa(sql);
+                    sql.Dispose();
                 }
             }
 
@@ -137,16 +139,48 @@ namespace FRU_AlterarTerceiros
 
         private void btnActualizarPriGrelha_Click(object sender, EventArgs e)
         {
+            // Valores dos controlos
+            int
+                numDocInicio = (int)num_NumDocInicio.Value,
+                numDocFim = (int)num_NumDocFim.Value;
+            string
+                dataInicio = date_DataDocInicio.Value.ToString(),
+                dataFim = date_DataDocFim.Value.ToString(),
+                tipoDoc = f4TipoDoc.Text;
 
+            if (tipoDoc.Equals(null)) {
+                PSO.Dialogos.MostraAviso("Tipo de Documento está vazio.", StdBSTipos.IconId.PRI_Exclama);
+                return;
+            }
+
+            // QUERY SQL
+            Dictionary<string, string> sqlDict = new Dictionary<string, string>();
+
+            // Criar cada parte da query
+            // A coluna Cf recebe NULL pq a Prigrelha estava a dar problemas se a query não tivesse exactamente a mesma quantidade de colunas que a grelha em si
+            sqlDict.Add("select", "SELECT NULL AS Cf, Convert(varchar, Data, 103) AS Data, TipoDoc, Serie, NumDoc, TipoEntidade, Entidade, Moeda, TotalDocumento");
+            sqlDict.Add("from", "FROM CabecDoc WHERE");
+            sqlDict.Add("whereData", "Data BETWEEN CONVERT(datetime, '" + dataInicio + "', 103) AND CONVERT(datetime, '" + dataFim + "', 103)");
+            sqlDict.Add("whereTipoDoc", "AND TipoDoc IN (" + tipoDoc + ")");
+            sqlDict.Add("whereNumDoc", "AND (NumDoc >= " + numDocInicio + " AND NumDoc <= " + numDocFim + ")");
+            sqlDict.Add("order", "ORDER BY TipoDoc, NumDoc DESC;");
+
+            string sqlCommand = String.Join(" ", sqlDict);
+
+
+            // PriGrelha Databind e execute da query
+            var rcSet = _sdkContexto.BSO.Consulta(sqlCommand);
+            priGrelhaDocs.LimpaGrelha();
+            priGrelhaDocs.DataBind(rcSet);
         }
 
         private void f4TipoDoc_TextChange(object Sender, F4.TextChangeEventArgs e)
         {
             if (f4TipoDoc.Text != "") {
                 string query = "SELECT DISTINCT Serie FROM SeriesVendas WHERE TipoDoc = '" + f4TipoDoc.Text + "' ORDER BY Serie DESC;";
-                cboxSerie.Items.Clear();
-                cboxSerie.Items.AddRange(FillComboBox(query).ToArray());
-                cboxSerie.SelectedIndex = 0;
+                cbox_Serie.Items.Clear();
+                cbox_Serie.Items.AddRange(FillComboBox(query).ToArray());
+                cbox_Serie.SelectedIndex = 0;
             }
         }
 
@@ -180,8 +214,8 @@ namespace FRU_AlterarTerceiros
 
             valoresControlos.Add("TipoDoc", f4TipoDoc.Text);
             valoresControlos.Add("Terceiro",f4TipoTerceiro.Text);
-            valoresControlos.Add("Serie", cboxSerie.Text);
-            valoresControlos.Add("NumDoc", numNumDocInicio.Text);
+            valoresControlos.Add("Serie", cbox_Serie.Text);
+            valoresControlos.Add("NumDoc", num_NumDocInicio.Text);
 
             return valoresControlos;
         }
