@@ -105,16 +105,33 @@ namespace PP_PPCS.Sales
                         DocVenda.Responsavel = vendedor;
                     }
                 }
-                
+
                 // Número do documento manual a lançar
                 if (serie.Valor("CDU_PedeDocumento")) {
                     PSO.MensagensDialogos.MostraDialogoInput(ref nrDoc, "Vendedor", "Código do Vendedor:", strValorDefeito: "0");
                     DocVenda.CamposUtil["CDU_NroManual"].Valor = nrDoc.Trim().Substring(0, 10);
                 }
+
+                //Matricula
+                if (serie.Valor("CDU_PedeMatricula")) {
+
+                    if (DocVenda.TipoEntidade == "C") {
+                        BasBE100.BasBECliente cli = BSO.Base.Clientes.Edita(Cliente);
+
+                        if ((cli.CamposUtil["CDU_MatriculaHabitual"].Valor.ToString().Length > 0) && (DocVenda.Matricula == "")) {
+                            DocVenda.Matricula = cli.CamposUtil["CDU_MatriculaHabitual"].Valor.ToString();
+                        }
+
+                        PSO.Dialogos.MostraDialogoInput(ref matricula, "Matricula", "Matricula da Viatura", strValorDefeito: DocVenda.Matricula);
+                        DocVenda.Matricula = matricula;
+
+                        cli.Dispose();
+                    }
+                }
             }
 
+            serie.Dispose();
             base.ClienteIdentificado(Cliente, ref Cancel, e);
         }
     }
 }
-

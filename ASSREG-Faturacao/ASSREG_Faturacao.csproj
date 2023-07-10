@@ -39,6 +39,9 @@
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\BasBE100.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CctBE100, Version=10.0.0.0, Culture=neutral, PublicKeyToken=11cd844aca152173, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="ConstantesPrimavera100">
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\ConstantesPrimavera100.dll</HintPath>
     </Reference>
@@ -52,6 +55,9 @@
     </Reference>
     <Reference Include="IBasBS100">
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\IBasBS100.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ICctBS100, Version=10.0.0.0, Culture=neutral, PublicKeyToken=11cd844aca152173, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
     <Reference Include="IintBS100, Version=10.0.0.0, Culture=neutral, PublicKeyToken=11cd844aca152173, processorArchitecture=MSIL">
@@ -102,6 +108,9 @@
     <Reference Include="Primavera.Extensibility.Internal, Version=10.0.0.0, Culture=neutral, PublicKeyToken=11cd844aca152173, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
+    <Reference Include="Primavera.Extensibility.PayablesReceivables, Version=10.0.0.0, Culture=neutral, PublicKeyToken=11cd844aca152173, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Primavera.Extensibility.Platform">
       <HintPath>..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Platform.dll</HintPath>
       <Private>False</Private>
@@ -140,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExcelControl_WF.cs" />
+    <Compile Include="pendentes.cs" />
     <Compile Include="Sales\GetEmpresa.cs" />
     <Compile Include="Sales\formFaturasExploracao_WF.cs">
       <SubType>Form</SubType>
