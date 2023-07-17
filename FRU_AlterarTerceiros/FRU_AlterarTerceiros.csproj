@@ -107,6 +107,12 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UpgradeHelpers.FpSpread">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\UpgradeHelpers.FpSpread.dll</HintPath>
+    </Reference>
+    <Reference Include="UpgradeHelpers.Utils">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\UpgradeHelpers.Utils.dll</HintPath>
+    </Reference>
     <Reference Include="VndBE100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\VndBE100.dll</HintPath>
       <Private>False</Private>

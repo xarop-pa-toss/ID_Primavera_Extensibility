@@ -108,17 +108,19 @@ namespace FRU_AlterarTerceiros
             // Check linhas da priGrelha
             var grelha = priGrelhaDocs.Grelha;
 
-            for (int i = 1; i <= priGrelhaDocs.) 
+            for (int i = 1; i <= priGrelhaDocs.Grelha.DataRowCnt, i++) {
+
+            }
             Dictionary<string, string> valoresControlos = GetControlos();
 
             if (CheckControlos(valoresControlos)) {
-                using (StdBE100.StdBEExecSql sql = new StdBE100.StdBEExecSql()) {
-                    sql.tpQuery = StdBE100.StdBETipos.EnumTpQuery.tpUPDATE;
+                using (StdBE100.StdBEExecSql sql = new StdBEExecSql()) {
+                    sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
                     sql.Tabela = "CabecDoc";                                                                                                                // UPDATE CabecDoc
                     sql.AddCampo("TipoTerceiro", valoresControlos["Terceiro"]);                                                                             // SET TipoTerceiro = ...
-                    sql.AddCampo("Tipodoc", valoresControlos["TipoDoc"], true, StdBE100.StdBETipos.EnumTipoCampoSimplificado.tsTexto);                      // WHERE TipoDoc = ...
-                    sql.AddCampo("Serie", valoresControlos["Serie"], true, StdBE100.StdBETipos.EnumTipoCampoSimplificado.tsTexto);                          // AND ...
-                    sql.AddCampo("NumDoc", Convert.ToInt32(valoresControlos["NumDoc"]), true, StdBE100.StdBETipos.EnumTipoCampoSimplificado.tsInteiro);     // AND ...
+                    sql.AddCampo("Tipodoc", valoresControlos["TipoDoc"], true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);                      // WHERE TipoDoc = ...
+                    sql.AddCampo("Serie", valoresControlos["Serie"], true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);                          // AND ...
+                    sql.AddCampo("NumDoc", Convert.ToInt32(valoresControlos["NumDoc"]), true, StdBETipos.EnumTipoCampoSimplificado.tsInteiro);     // AND ...
 
                     sql.AddQuery();
                     PSO.ExecSql.Executa(sql);
@@ -127,14 +129,14 @@ namespace FRU_AlterarTerceiros
             }
 
             //É necessário criar código no Primavera V10 que está Frupor para a empresa ADEGA para fazer o seguinte, poder alterar o tipo de terceiro nos documentos de venda. Para tal é necessário o utilizador introduzir os seguintes campos:
-            //-Tipo de documento
-            //-Série do documento
+            //- Tipo de documento
+            //- Série do documento
             //- Nº de documento
             //Depois poder colocar o tipo de terceiro em tabela.
 
             // update cabecdoc
-            // set tipoterceiro =´005´
-            //where tipodoc =´fr´ and serie =´t0123´ and entidade =´mn9998´
+            // set tipoterceiro = ´005´
+            // where tipodoc = ´fr´ and serie =´t0123´ and entidade =´mn9998´
         }
 
         private void btnActualizarPriGrelha_Click(object sender, EventArgs e)
@@ -149,7 +151,7 @@ namespace FRU_AlterarTerceiros
                 tipoDoc = f4TipoDoc.Text;
 
             if (tipoDoc.Equals(null)) {
-                PSO.Dialogos.MostraAviso("Tipo de Documento está vazio.", StdBSTipos.IconId.PRI_Exclama);
+                PSO.MensagensDialogos.MostraAviso("Tipo de Documento está vazio.", StdBSTipos.IconId.PRI_Exclama);
                 return;
             }
 
@@ -166,7 +168,6 @@ namespace FRU_AlterarTerceiros
             sqlDict.Add("order", "ORDER BY TipoDoc, NumDoc DESC;");
 
             string sqlCommand = String.Join(" ", sqlDict);
-
 
             // PriGrelha Databind e execute da query
             var rcSet = _sdkContexto.BSO.Consulta(sqlCommand);
