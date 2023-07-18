@@ -71,7 +71,7 @@ namespace FRU_AlterarTerceiros
             // 
             this.cbox_Serie.FormattingEnabled = true;
             this.cbox_Serie.Location = new System.Drawing.Point(337, 29);
-            this.cbox_Serie.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbox_Serie.Margin = new System.Windows.Forms.Padding(2);
             this.cbox_Serie.Name = "cbox_Serie";
             this.cbox_Serie.Size = new System.Drawing.Size(54, 21);
             this.cbox_Serie.TabIndex = 7;
@@ -79,7 +79,7 @@ namespace FRU_AlterarTerceiros
             // btnAlterarTerceiro
             // 
             this.btnAlterarTerceiro.Location = new System.Drawing.Point(254, 364);
-            this.btnAlterarTerceiro.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAlterarTerceiro.Margin = new System.Windows.Forms.Padding(2);
             this.btnAlterarTerceiro.Name = "btnAlterarTerceiro";
             this.btnAlterarTerceiro.Size = new System.Drawing.Size(98, 28);
             this.btnAlterarTerceiro.TabIndex = 9;
@@ -146,7 +146,7 @@ namespace FRU_AlterarTerceiros
             this.f4TipoDoc.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.f4TipoDoc.IDCategoria = "DocumentosVenda";
             this.f4TipoDoc.Location = new System.Drawing.Point(15, 29);
-            this.f4TipoDoc.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.f4TipoDoc.Margin = new System.Windows.Forms.Padding(2);
             this.f4TipoDoc.MaxLengthDescricao = 0;
             this.f4TipoDoc.MaxLengthF4 = 50;
             this.f4TipoDoc.MinimumSize = new System.Drawing.Size(28, 17);
@@ -174,7 +174,7 @@ namespace FRU_AlterarTerceiros
             // num_NumDocInicio
             // 
             this.num_NumDocInicio.Location = new System.Drawing.Point(73, 110);
-            this.num_NumDocInicio.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.num_NumDocInicio.Margin = new System.Windows.Forms.Padding(2);
             this.num_NumDocInicio.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -199,7 +199,7 @@ namespace FRU_AlterarTerceiros
             // num_NumDocFim
             // 
             this.num_NumDocFim.Location = new System.Drawing.Point(151, 110);
-            this.num_NumDocFim.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.num_NumDocFim.Margin = new System.Windows.Forms.Padding(2);
             this.num_NumDocFim.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -224,7 +224,7 @@ namespace FRU_AlterarTerceiros
             this.date_DataDocInicio.CustomFormat = "DD/MM/YYYY";
             this.date_DataDocInicio.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.date_DataDocInicio.Location = new System.Drawing.Point(73, 74);
-            this.date_DataDocInicio.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.date_DataDocInicio.Margin = new System.Windows.Forms.Padding(2);
             this.date_DataDocInicio.Name = "date_DataDocInicio";
             this.date_DataDocInicio.Size = new System.Drawing.Size(87, 20);
             this.date_DataDocInicio.TabIndex = 18;
@@ -233,7 +233,7 @@ namespace FRU_AlterarTerceiros
             // 
             this.date_DataDocFim.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.date_DataDocFim.Location = new System.Drawing.Point(180, 74);
-            this.date_DataDocFim.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.date_DataDocFim.Margin = new System.Windows.Forms.Padding(2);
             this.date_DataDocFim.Name = "date_DataDocFim";
             this.date_DataDocFim.Size = new System.Drawing.Size(89, 20);
             this.date_DataDocFim.TabIndex = 19;
@@ -252,7 +252,7 @@ namespace FRU_AlterarTerceiros
             // btnActualizarPriGrelha
             // 
             this.btnActualizarPriGrelha.Location = new System.Drawing.Point(396, 364);
-            this.btnActualizarPriGrelha.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnActualizarPriGrelha.Margin = new System.Windows.Forms.Padding(2);
             this.btnActualizarPriGrelha.Name = "btnActualizarPriGrelha";
             this.btnActualizarPriGrelha.Size = new System.Drawing.Size(98, 28);
             this.btnActualizarPriGrelha.TabIndex = 21;
@@ -272,7 +272,7 @@ namespace FRU_AlterarTerceiros
             this.priGrelhaDocs.ColsFrozen = -1;
             this.priGrelhaDocs.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.priGrelhaDocs.Location = new System.Drawing.Point(14, 180);
-            this.priGrelhaDocs.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.priGrelhaDocs.Margin = new System.Windows.Forms.Padding(2);
             this.priGrelhaDocs.Name = "priGrelhaDocs";
             this.priGrelhaDocs.NumeroMaxRegistosSemPag = 150000;
             this.priGrelhaDocs.NumeroRegistos = 0;
@@ -320,7 +320,7 @@ namespace FRU_AlterarTerceiros
             this.Controls.Add(this.cbox_Serie);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormAlterarTerceiros";
             this.Size = new System.Drawing.Size(751, 408);
             this.Text = "Alteração Terceiros";

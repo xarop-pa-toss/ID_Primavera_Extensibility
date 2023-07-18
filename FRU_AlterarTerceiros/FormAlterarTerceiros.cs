@@ -12,35 +12,6 @@ using StdBE100; using StdPlatBS100;
 
 namespace FRU_AlterarTerceiros
 {
-
-    // INICIALIZA SDK
-    internal class SdkPrimavera
-    {
-        private static readonly SdkPrimavera contexto = new SdkPrimavera();
-        private static PRISDK100.clsSDKContexto contextosdk;
-
-        public static PRISDK100.clsSDKContexto ContextoSDK
-        {
-            get {
-                return contextosdk;
-            }
-        }
-
-        private SdkPrimavera()
-        {
-        }
-
-        public static SdkPrimavera InicializaContexto(dynamic BSO, dynamic PSO)
-        {
-            contextosdk = new PRISDK100.clsSDKContexto();
-            contextosdk.Inicializa(BSO, "ERP");
-            PSO.InicializaPlataforma(contextosdk);
-
-            return contexto;
-        }
-    }
-
-
     // MAIN
     public partial class FormAlterarTerceiros : CustomForm
     {
@@ -69,9 +40,9 @@ namespace FRU_AlterarTerceiros
 
             SdkPrimavera.InicializaContexto(BSO, PSO);
 
-            f4TipoTerceiro.Inicializa(_sdkContexto);
-            f4TipoDoc.Inicializa(_sdkContexto);
-            priGrelhaDocs.Inicializa(_sdkContexto);
+            f4TipoTerceiro.Inicializa(SdkPrimavera.ContextoSDK);
+            f4TipoDoc.Inicializa(SdkPrimavera.ContextoSDK);
+            priGrelhaDocs.Inicializa(SdkPrimavera.ContextoSDK);
 
             date_DataDocInicio.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             date_DataDocFim.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1);
@@ -182,7 +153,7 @@ namespace FRU_AlterarTerceiros
                 tipoDoc = f4TipoDoc.Text;
 
             if (tipoDoc.Equals(null)) {
-                _plat.MensagensDialogos.MostraAviso("Tipo de Documento está vazio.", StdBSTipos.IconId.PRI_Exclama);
+                _plat.MensagensDialogos.MostraAviso("Por favor especifique um Tipo de Documento.", StdBSTipos.IconId.PRI_Exclama);
                 return;
             }
 
@@ -191,9 +162,9 @@ namespace FRU_AlterarTerceiros
 
             // Criar cada parte da query
             // A coluna Cf recebe NULL pq a Prigrelha estava a dar problemas se a query não tivesse exactamente a mesma quantidade de colunas que a grelha em si
-            sqlDict.Add("select", "SELECT NULL AS Cf, Convert(varchar, Data, 103) AS Data, TipoDoc, Serie, NumDoc, TipoEntidade, Entidade, Moeda, TotalDocumento");
-            sqlDict.Add("from", "FROM CabecDoc WHERE");
-            sqlDict.Add("whereData", "Data BETWEEN CONVERT(datetime, '" + dataInicio + "', 103) AND CONVERT(datetime, '" + dataFim + "', 103)");
+            sqlDict.Add("select", "SELECT NULL AS Cf, Data, TipoDoc, Serie, NumDoc, TotalDocumento");
+            sqlDict.Add("from", "FROM CabecDoc");
+            sqlDict.Add("whereData", "WHERE Data BETWEEN CONVERT(datetime,'" + dataInicio + "',103) AND CONVERT(datetime,'" + dataFim + "',103)");
             sqlDict.Add("whereTipoDoc", "AND TipoDoc IN (" + tipoDoc + ")");
             sqlDict.Add("whereNumDoc", "AND (NumDoc >= " + numDocInicio + " AND NumDoc <= " + numDocFim + ")");
             sqlDict.Add("order", "ORDER BY TipoDoc, NumDoc DESC;");
@@ -201,9 +172,12 @@ namespace FRU_AlterarTerceiros
             string sqlCommand = String.Join(" ", sqlDict);
 
             // PriGrelha Databind e execute da query
-            var rcSet = _sdkContexto.BSO.Consulta(sqlCommand);
+            StdBELista rcSet = BSO.Consulta(sqlCommand);
             priGrelhaDocs.LimpaGrelha();
-            priGrelhaDocs.DataBind(rcSet);
+
+            if (!rcSet.Vazia()) {
+                priGrelhaDocs.DataBind(rcSet);
+            }
         }
 
         private void f4TipoDoc_TextChange(object Sender, F4.TextChangeEventArgs e)
@@ -259,6 +233,34 @@ namespace FRU_AlterarTerceiros
                 return false;
             }
             return true;
+        }
+    }
+
+    // INICIALIZA SDK
+    internal class SdkPrimavera
+    {
+        private static readonly SdkPrimavera contexto = new SdkPrimavera();
+        private static PRISDK100.clsSDKContexto contextosdk;
+
+        public static PRISDK100.clsSDKContexto ContextoSDK
+        {
+            get
+            {
+                return contextosdk;
+            }
+        }
+
+        private SdkPrimavera()
+        {
+        }
+
+        public static SdkPrimavera InicializaContexto(dynamic BSO, dynamic PSO)
+        {
+            contextosdk = new PRISDK100.clsSDKContexto();
+            contextosdk.Inicializa(BSO, "ERP");
+            PSO.InicializaPlataforma(contextosdk);
+
+            return contexto;
         }
     }
 }
