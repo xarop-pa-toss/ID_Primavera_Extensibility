@@ -164,14 +164,15 @@ namespace FRU_AlterarTerceiros
             // A coluna Cf recebe NULL pq a Prigrelha estava a dar problemas se a query não tivesse exactamente a mesma quantidade de colunas que a grelha em si
             sqlDict.Add("select", "SELECT NULL AS Cf, Data, TipoDoc, Serie, NumDoc, TotalDocumento");
             sqlDict.Add("from", "FROM CabecDoc");
-            sqlDict.Add("whereData", "WHERE Data BETWEEN CONVERT(datetime,'" + dataInicio + "',103) AND CONVERT(datetime,'" + dataFim + "',103)");
-            sqlDict.Add("whereTipoDoc", "AND TipoDoc IN (" + tipoDoc + ")");
+            sqlDict.Add("whereData", "WHERE Data BETWEEN CONVERT(datetime, '" + dataInicio + "', 103) AND CONVERT(datetime, '" + dataFim + "', 103)");
+            sqlDict.Add("whereTipoDoc", "AND TipoDoc = '" + tipoDoc + "'");
             sqlDict.Add("whereNumDoc", "AND (NumDoc >= " + numDocInicio + " AND NumDoc <= " + numDocFim + ")");
             sqlDict.Add("order", "ORDER BY TipoDoc, NumDoc DESC;");
 
-            string sqlCommand = String.Join(" ", sqlDict);
+            string sqlCommand = String.Join(" ", sqlDict.Values);
 
             // PriGrelha Databind e execute da query
+            PSO.MensagensDialogos.MostraAviso("SQL", StdBSTipos.IconId.PRI_Informativo, sqlCommand);
             StdBELista rcSet = BSO.Consulta(sqlCommand);
             priGrelhaDocs.LimpaGrelha();
 
