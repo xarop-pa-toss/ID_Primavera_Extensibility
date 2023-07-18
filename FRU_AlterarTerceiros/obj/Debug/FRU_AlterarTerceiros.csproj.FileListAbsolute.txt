@@ -21,4 +21,7 @@ C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Deb
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.csproj.CopyComplete
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.pdb
-C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.FormAlterarTerceiros.resources
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\bin\Debug\ConstantesPrimavera100.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\bin\Debug\UpgradeHelpers.FpSpread.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\bin\Debug\UpgradeHelpers.Utils.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.SdkPrimavera.resources

@@ -302,7 +302,6 @@ namespace FRU_AlterarTerceiros
             this.priGrelhaDocs.TituloMapa = "";
             this.priGrelhaDocs.TypeNameLinha = "";
             this.priGrelhaDocs.TypeNameLinhas = "";
-            this.priGrelhaDocs.Load += new System.EventHandler(this.priGrelhaDocs_Load);
             // 
             // FormAlterarTerceiros
             // 

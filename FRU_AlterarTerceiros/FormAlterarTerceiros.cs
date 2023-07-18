@@ -6,60 +6,82 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PRISDK100;
-using StdBE100; using BasBE100; using StdPlatBS100; using ConstantesPrimavera100;
+using PRISDK100; 
+using StdBE100; using StdPlatBS100;
 
 
 namespace FRU_AlterarTerceiros
 {
 
+    // INICIALIZA SDK
+    internal class SdkPrimavera
+    {
+        private static readonly SdkPrimavera contexto = new SdkPrimavera();
+        private static PRISDK100.clsSDKContexto contextosdk;
+
+        public static PRISDK100.clsSDKContexto ContextoSDK
+        {
+            get {
+                return contextosdk;
+            }
+        }
+
+        private SdkPrimavera()
+        {
+        }
+
+        public static SdkPrimavera InicializaContexto(dynamic BSO, dynamic PSO)
+        {
+            contextosdk = new PRISDK100.clsSDKContexto();
+            contextosdk.Inicializa(BSO, "ERP");
+            PSO.InicializaPlataforma(contextosdk);
+
+            return contexto;
+        }
+    }
+
+
+    // MAIN
     public partial class FormAlterarTerceiros : CustomForm
     {
         //Variavél global que contem o contexto e que deverá ser passada para os controlos.
         public clsSDKContexto _sdkContexto;
-        private string _tipoDoc, _serie;
-        private long _numDoc;
+        public StdPlatBS _plat = new StdPlatBS();
 
         public FormAlterarTerceiros()
         {
             InitializeComponent();
         }
 
-        // LOAD
+
+
+        // LOAD e Inicialização
         private void FormAlterarTerceiros_Load(object sender, EventArgs e)
         {
-            InicializaSDKContexto();
+            //if (_sdkContexto == null) {
+            //    _sdkContexto = new clsSDKContexto();
+            //    //Inicializaçao do contexto SDK a partir do objeto BSO e respetivo módulo.
+            //    _sdkContexto.InicializaPlataforma(_plat);
+            //    _sdkContexto.Inicializa(BSO, "ERP");
+            //    //Inicialização da plataforma no contexto e verificação de assinatura digital.
+            //    PSO.InicializaPlataforma(_sdkContexto);
+            //}
+
+            SdkPrimavera.InicializaContexto(BSO, PSO);
+
             f4TipoTerceiro.Inicializa(_sdkContexto);
             f4TipoDoc.Inicializa(_sdkContexto);
+            priGrelhaDocs.Inicializa(_sdkContexto);
 
             date_DataDocInicio.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             date_DataDocFim.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1);
             f4TipoDoc.Text = "FR";
-        }
-        
-        private void priGrelhaDocs_Load(object sender, EventArgs e)
-        { 
-            priGrelhaDocs.Inicializa(_sdkContexto);
+
             InicializapriGrelhaDocs();
-        }
-
-
-        // INICIALIZAÇÕES
-        private void InicializaSDKContexto()
-        {
-            if (_sdkContexto == null)
-            {
-                _sdkContexto = new clsSDKContexto();
-                //Inicializaçao do contexto SDK a partir do objeto BSO e respetivo módulo.
-                _sdkContexto.Inicializa(BSO, "ERP");
-                //Inicialização da plataforma no contexto e verificação de assinatura digital.
-                PSO.InicializaPlataforma(_sdkContexto);
-            }
         }
         
         private void InicializapriGrelhaDocs()
         {
-            priGrelhaDocs.Inicializa(_sdkContexto);
             priGrelhaDocs.TituloGrelha = "DocsReimpressao";
             priGrelhaDocs.PermiteActualizar = true;
             priGrelhaDocs.PermiteAgrupamentosUser = true;
@@ -105,28 +127,36 @@ namespace FRU_AlterarTerceiros
         // BOTÕES
         private void btnAlterarTerceiro_Click(object sender, EventArgs e)
         {
-            // Check linhas da priGrelha
-            var grelha = priGrelhaDocs.Grelha;
-
-            for (int i = 1; i <= priGrelhaDocs.Grelha.DataRowCnt, i++) {
-
-            }
+            string gTipoDoc, gSerie, gNumDoc;
             Dictionary<string, string> valoresControlos = GetControlos();
+            
+            if (!CheckControlos(valoresControlos)) { return; }
 
-            if (CheckControlos(valoresControlos)) {
-                using (StdBE100.StdBEExecSql sql = new StdBEExecSql()) {
+            for (int i = 1; i <= priGrelhaDocs.Grelha.DataRowCnt; i++) {
+                priGrelhaDocs.Grid_SetActiveCell(0, 0);
+
+                // Salta linha se checkbox não activada
+                if (priGrelhaDocs.GetGRID_GetValorCelula(i,"Cf") == false) {
+                    continue;
+                }
+
+                gTipoDoc = priGrelhaDocs.GetGRID_GetValorCelula(i, "TipoDoc");
+                gSerie = priGrelhaDocs.GetGRID_GetValorCelula(i, "Serie");
+                gNumDoc = priGrelhaDocs.GetGRID_GetValorCelula(i, "NumDoc");
+
+                using (StdBEExecSql sql = new StdBEExecSql()) {
                     sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-                    sql.Tabela = "CabecDoc";                                                                                                                // UPDATE CabecDoc
-                    sql.AddCampo("TipoTerceiro", valoresControlos["Terceiro"]);                                                                             // SET TipoTerceiro = ...
-                    sql.AddCampo("Tipodoc", valoresControlos["TipoDoc"], true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);                      // WHERE TipoDoc = ...
-                    sql.AddCampo("Serie", valoresControlos["Serie"], true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);                          // AND ...
-                    sql.AddCampo("NumDoc", Convert.ToInt32(valoresControlos["NumDoc"]), true, StdBETipos.EnumTipoCampoSimplificado.tsInteiro);     // AND ...
+                    sql.Tabela = "CabecDoc";                                                                                    // UPDATE CabecDoc
+                    sql.AddCampo("TipoTerceiro", valoresControlos["Terceiro"]);                                                 // SET TipoTerceiro = ...
+                    sql.AddCampo("Tipodoc", gTipoDoc, true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);                      // WHERE TipoDoc = ...
+                    sql.AddCampo("Serie", gSerie, true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);                          // AND ...
+                    sql.AddCampo("NumDoc", Convert.ToInt32(gNumDoc), true, StdBETipos.EnumTipoCampoSimplificado.tsInteiro);     // AND ...
 
                     sql.AddQuery();
-                    PSO.ExecSql.Executa(sql);
-                    sql.Dispose();
+                    _plat.ExecSql.Executa(sql);
                 }
             }
+        }
 
             //É necessário criar código no Primavera V10 que está Frupor para a empresa ADEGA para fazer o seguinte, poder alterar o tipo de terceiro nos documentos de venda. Para tal é necessário o utilizador introduzir os seguintes campos:
             //- Tipo de documento
@@ -137,10 +167,11 @@ namespace FRU_AlterarTerceiros
             // update cabecdoc
             // set tipoterceiro = ´005´
             // where tipodoc = ´fr´ and serie =´t0123´ and entidade =´mn9998´
-        }
 
         private void btnActualizarPriGrelha_Click(object sender, EventArgs e)
         {
+            priGrelhaDocs.LimpaGrelha();
+
             // Valores dos controlos
             int
                 numDocInicio = (int)num_NumDocInicio.Value,
@@ -151,7 +182,7 @@ namespace FRU_AlterarTerceiros
                 tipoDoc = f4TipoDoc.Text;
 
             if (tipoDoc.Equals(null)) {
-                PSO.MensagensDialogos.MostraAviso("Tipo de Documento está vazio.", StdBSTipos.IconId.PRI_Exclama);
+                _plat.MensagensDialogos.MostraAviso("Tipo de Documento está vazio.", StdBSTipos.IconId.PRI_Exclama);
                 return;
             }
 
