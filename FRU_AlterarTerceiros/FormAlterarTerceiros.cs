@@ -17,7 +17,6 @@ namespace FRU_AlterarTerceiros
     {
         //Variavél global que contem o contexto e que deverá ser passada para os controlos.
         public clsSDKContexto _sdkContexto;
-        public StdPlatBS _plat = new StdPlatBS();
 
         public FormAlterarTerceiros()
         {
@@ -96,49 +95,6 @@ namespace FRU_AlterarTerceiros
 
 
         // BOTÕES
-        private void btnAlterarTerceiro_Click(object sender, EventArgs e)
-        {
-            string gTipoDoc, gSerie, gNumDoc;
-            Dictionary<string, string> valoresControlos = GetControlos();
-            
-            if (!CheckControlos(valoresControlos)) { return; }
-
-            for (int i = 1; i <= priGrelhaDocs.Grelha.DataRowCnt; i++) {
-                priGrelhaDocs.Grid_SetActiveCell(0, 0);
-
-                // Salta linha se checkbox não activada
-                if (priGrelhaDocs.GetGRID_GetValorCelula(i,"Cf") == false) {
-                    continue;
-                }
-
-                gTipoDoc = priGrelhaDocs.GetGRID_GetValorCelula(i, "TipoDoc");
-                gSerie = priGrelhaDocs.GetGRID_GetValorCelula(i, "Serie");
-                gNumDoc = priGrelhaDocs.GetGRID_GetValorCelula(i, "NumDoc");
-
-                using (StdBEExecSql sql = new StdBEExecSql()) {
-                    sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-                    sql.Tabela = "CabecDoc";                                                                                    // UPDATE CabecDoc
-                    sql.AddCampo("TipoTerceiro", valoresControlos["Terceiro"]);                                                 // SET TipoTerceiro = ...
-                    sql.AddCampo("Tipodoc", gTipoDoc, true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);                      // WHERE TipoDoc = ...
-                    sql.AddCampo("Serie", gSerie, true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);                          // AND ...
-                    sql.AddCampo("NumDoc", Convert.ToInt32(gNumDoc), true, StdBETipos.EnumTipoCampoSimplificado.tsInteiro);     // AND ...
-
-                    sql.AddQuery();
-                    _plat.ExecSql.Executa(sql);
-                }
-            }
-        }
-
-            //É necessário criar código no Primavera V10 que está Frupor para a empresa ADEGA para fazer o seguinte, poder alterar o tipo de terceiro nos documentos de venda. Para tal é necessário o utilizador introduzir os seguintes campos:
-            //- Tipo de documento
-            //- Série do documento
-            //- Nº de documento
-            //Depois poder colocar o tipo de terceiro em tabela.
-
-            // update cabecdoc
-            // set tipoterceiro = ´005´
-            // where tipodoc = ´fr´ and serie =´t0123´ and entidade =´mn9998´
-
         private void btnActualizarPriGrelha_Click(object sender, EventArgs e)
         {
             priGrelhaDocs.LimpaGrelha();
@@ -153,7 +109,6 @@ namespace FRU_AlterarTerceiros
                 tipoDoc = f4TipoDoc.Text;
 
             if (tipoDoc.Equals(null)) {
-                _plat.MensagensDialogos.MostraAviso("Por favor especifique um Tipo de Documento.", StdBSTipos.IconId.PRI_Exclama);
                 return;
             }
 
@@ -171,8 +126,7 @@ namespace FRU_AlterarTerceiros
 
             string sqlCommand = String.Join(" ", sqlDict.Values);
 
-            // PriGrelha Databind e execute da query
-            PSO.MensagensDialogos.MostraAviso("SQL", StdBSTipos.IconId.PRI_Informativo, sqlCommand);
+            // Preenchimento da Prigrelha com a query acima
             StdBELista rcSet = BSO.Consulta(sqlCommand);
             priGrelhaDocs.LimpaGrelha();
 
@@ -181,8 +135,64 @@ namespace FRU_AlterarTerceiros
             }
         }
 
+        private void btnAlterarTerceiro_Click(object sender, EventArgs e)
+        {
+            string gTipoDoc, gSerie, gNumDoc;
+            Dictionary<string, string> valoresControlos = GetControlos();
+            List<string> docsComErroNoUpdateSQL = new List<string>();
+
+            if (!CheckControlos(valoresControlos)) { return; }
+
+            for (int i = 1; i <= priGrelhaDocs.Grelha.DataRowCnt; i++) {
+
+                // Salta linha se checkbox não activada. GetGRID_GetValorCelula devolve sempre dynamic, um tipo de dados verificado em runtime.
+                // Por essa razão, não é possivel "assumir" o tipo de dados.
+                // Checkboxes nas Prigrelhas devolvem sempre int (1 e 0) e devem ser verificadas como tal, e não como bool como faz sentido.
+                if (!object.Equals(priGrelhaDocs.GetGRID_GetValorCelula(i, "Cf"), 1)) {
+                    continue;
+                }
+
+                gTipoDoc = priGrelhaDocs.GetGRID_GetValorCelula(i, "TipoDoc");
+                gSerie = priGrelhaDocs.GetGRID_GetValorCelula(i, "Serie");
+                gNumDoc = priGrelhaDocs.GetGRID_GetValorCelula(i, "NumDoc");
+
+                using (StdBEExecSql sql = new StdBEExecSql()) {
+                    sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
+                    sql.Tabela = "CabecDoc";                                                                                    // UPDATE CabecDoc
+                    sql.AddCampo("TipoTerceiro", valoresControlos["Terceiro"]);                                                 // SET TipoTerceiro = ...
+                    sql.AddCampo("Tipodoc", gTipoDoc, true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);                      // WHERE TipoDoc = ...
+                    sql.AddCampo("Serie", gSerie, true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);                          // AND ...
+                    sql.AddCampo("NumDoc", Convert.ToInt32(gNumDoc), true, StdBETipos.EnumTipoCampoSimplificado.tsInteiro);     // AND ...
+
+                    sql.AddQuery();
+                    
+                    // Se Update falhar, preenche lista com NumDoc para mostrar ao cliente.
+                    try {
+                        PSO.ExecSql.Executa(sql);
+                    } 
+                    catch {
+                        docsComErroNoUpdateSQL.Add(gNumDoc);
+                    }
+                }
+            }
+            if (docsComErroNoUpdateSQL.Count != 0) {
+                PSO.MensagensDialogos.MostraAviso("Não foi possivel alterar o Tipo Terceiro em alguns documentos!", StdBSTipos.IconId.PRI_Exclama, String.Join(", ", docsComErroNoUpdateSQL));
+            }
+            else {
+                PSO.MensagensDialogos.MostraAviso("Todos os documentos alterados com sucesso.", StdBSTipos.IconId.PRI_Informativo);
+            }
+        }
+
+            //É necessário criar código no Primavera V10 que está Frupor para a empresa ADEGA para fazer o seguinte, poder alterar o tipo de terceiro nos documentos de venda. Para tal é necessário o utilizador introduzir os seguintes campos:
+            //- Tipo de documento
+            //- Série do documento
+            //- Nº de documento
+            //Depois poder colocar o tipo de terceiro em tabela.
+
+
         private void f4TipoDoc_TextChange(object Sender, F4.TextChangeEventArgs e)
         {
+            // Get Serie do TipoDoc para a ComboBox de Série
             if (f4TipoDoc.Text != "") {
                 string query = "SELECT DISTINCT Serie FROM SeriesVendas WHERE TipoDoc = '" + f4TipoDoc.Text + "' ORDER BY Serie DESC;";
                 cbox_Serie.Items.Clear();
@@ -190,7 +200,6 @@ namespace FRU_AlterarTerceiros
                 cbox_Serie.SelectedIndex = 0;
             }
         }
-
 
         // Retorna null se query vazia.
         private List<string> FillComboBox(string query)
@@ -237,7 +246,7 @@ namespace FRU_AlterarTerceiros
         }
     }
 
-    // INICIALIZA SDK
+    // INICIALIZA CONTEXTO PARA CONTROLOS SDK
     internal class SdkPrimavera
     {
         private static readonly SdkPrimavera contexto = new SdkPrimavera();

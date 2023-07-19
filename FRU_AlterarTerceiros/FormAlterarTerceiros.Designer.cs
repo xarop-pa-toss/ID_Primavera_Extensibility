@@ -30,7 +30,6 @@ namespace FRU_AlterarTerceiros
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.cbox_Serie = new System.Windows.Forms.ComboBox();
             this.btnAlterarTerceiro = new System.Windows.Forms.Button();
             this.f4TipoTerceiro = new PRISDK100.F4();
@@ -42,46 +41,42 @@ namespace FRU_AlterarTerceiros
             this.label2 = new System.Windows.Forms.Label();
             this.btnActualizarPriGrelha = new System.Windows.Forms.Button();
             this.priGrelhaDocs = new PRISDK100.PriGrelha();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.num_NumDocInicio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_NumDocFim)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.priGrelhaDocs)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(25, 112);
+            this.label1.Location = new System.Drawing.Point(9, 23);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(48, 15);
+            this.label1.Size = new System.Drawing.Size(42, 15);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Nº Doc:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(293, 30);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(39, 15);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Série:";
+            this.label1.Text = "Inicial:";
             // 
             // cbox_Serie
             // 
             this.cbox_Serie.FormattingEnabled = true;
-            this.cbox_Serie.Location = new System.Drawing.Point(337, 29);
+            this.cbox_Serie.Location = new System.Drawing.Point(405, 19);
             this.cbox_Serie.Margin = new System.Windows.Forms.Padding(2);
             this.cbox_Serie.Name = "cbox_Serie";
-            this.cbox_Serie.Size = new System.Drawing.Size(54, 21);
+            this.cbox_Serie.Size = new System.Drawing.Size(72, 21);
             this.cbox_Serie.TabIndex = 7;
             // 
             // btnAlterarTerceiro
             // 
-            this.btnAlterarTerceiro.Location = new System.Drawing.Point(254, 364);
+            this.btnAlterarTerceiro.Location = new System.Drawing.Point(476, 116);
             this.btnAlterarTerceiro.Margin = new System.Windows.Forms.Padding(2);
             this.btnAlterarTerceiro.Name = "btnAlterarTerceiro";
-            this.btnAlterarTerceiro.Size = new System.Drawing.Size(98, 28);
+            this.btnAlterarTerceiro.Size = new System.Drawing.Size(109, 34);
             this.btnAlterarTerceiro.TabIndex = 9;
             this.btnAlterarTerceiro.Text = "Alterar Terceiro";
             this.btnAlterarTerceiro.UseVisualStyleBackColor = true;
@@ -104,7 +99,7 @@ namespace FRU_AlterarTerceiros
             this.f4TipoTerceiro.F4Modal = false;
             this.f4TipoTerceiro.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.f4TipoTerceiro.IDCategoria = "TipoTerceiros";
-            this.f4TipoTerceiro.Location = new System.Drawing.Point(296, 109);
+            this.f4TipoTerceiro.Location = new System.Drawing.Point(314, 70);
             this.f4TipoTerceiro.MaxLengthDescricao = 0;
             this.f4TipoTerceiro.MaxLengthF4 = 50;
             this.f4TipoTerceiro.MinimumSize = new System.Drawing.Size(37, 21);
@@ -145,7 +140,7 @@ namespace FRU_AlterarTerceiros
             this.f4TipoDoc.F4Modal = false;
             this.f4TipoDoc.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.f4TipoDoc.IDCategoria = "DocumentosVenda";
-            this.f4TipoDoc.Location = new System.Drawing.Point(15, 29);
+            this.f4TipoDoc.Location = new System.Drawing.Point(14, 19);
             this.f4TipoDoc.Margin = new System.Windows.Forms.Padding(2);
             this.f4TipoDoc.MaxLengthDescricao = 0;
             this.f4TipoDoc.MaxLengthF4 = 50;
@@ -163,7 +158,7 @@ namespace FRU_AlterarTerceiros
             this.f4TipoDoc.ResourcePersonalizada = false;
             this.f4TipoDoc.Restricao = "";
             this.f4TipoDoc.SelectionFormula = "";
-            this.f4TipoDoc.Size = new System.Drawing.Size(254, 22);
+            this.f4TipoDoc.Size = new System.Drawing.Size(387, 22);
             this.f4TipoDoc.TabIndex = 13;
             this.f4TipoDoc.TextoDescricao = "";
             this.f4TipoDoc.WidthEspacamento = 60;
@@ -173,7 +168,7 @@ namespace FRU_AlterarTerceiros
             // 
             // num_NumDocInicio
             // 
-            this.num_NumDocInicio.Location = new System.Drawing.Point(73, 110);
+            this.num_NumDocInicio.Location = new System.Drawing.Point(55, 23);
             this.num_NumDocInicio.Margin = new System.Windows.Forms.Padding(2);
             this.num_NumDocInicio.Maximum = new decimal(new int[] {
             99999,
@@ -198,7 +193,7 @@ namespace FRU_AlterarTerceiros
             // 
             // num_NumDocFim
             // 
-            this.num_NumDocFim.Location = new System.Drawing.Point(151, 110);
+            this.num_NumDocFim.Location = new System.Drawing.Point(55, 55);
             this.num_NumDocFim.Margin = new System.Windows.Forms.Padding(2);
             this.num_NumDocFim.Maximum = new decimal(new int[] {
             99999,
@@ -223,7 +218,7 @@ namespace FRU_AlterarTerceiros
             // 
             this.date_DataDocInicio.CustomFormat = "DD/MM/YYYY";
             this.date_DataDocInicio.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.date_DataDocInicio.Location = new System.Drawing.Point(73, 74);
+            this.date_DataDocInicio.Location = new System.Drawing.Point(51, 22);
             this.date_DataDocInicio.Margin = new System.Windows.Forms.Padding(2);
             this.date_DataDocInicio.Name = "date_DataDocInicio";
             this.date_DataDocInicio.Size = new System.Drawing.Size(87, 20);
@@ -232,29 +227,29 @@ namespace FRU_AlterarTerceiros
             // date_DataDocFim
             // 
             this.date_DataDocFim.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.date_DataDocFim.Location = new System.Drawing.Point(180, 74);
+            this.date_DataDocFim.Location = new System.Drawing.Point(51, 55);
             this.date_DataDocFim.Margin = new System.Windows.Forms.Padding(2);
             this.date_DataDocFim.Name = "date_DataDocFim";
-            this.date_DataDocFim.Size = new System.Drawing.Size(89, 20);
+            this.date_DataDocFim.Size = new System.Drawing.Size(87, 20);
             this.date_DataDocFim.TabIndex = 19;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(8, 77);
+            this.label2.Location = new System.Drawing.Point(5, 22);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(61, 15);
+            this.label2.Size = new System.Drawing.Size(42, 15);
             this.label2.TabIndex = 20;
-            this.label2.Text = "Data Doc:";
+            this.label2.Text = "Inicial:";
             // 
             // btnActualizarPriGrelha
             // 
-            this.btnActualizarPriGrelha.Location = new System.Drawing.Point(396, 364);
+            this.btnActualizarPriGrelha.Location = new System.Drawing.Point(315, 116);
             this.btnActualizarPriGrelha.Margin = new System.Windows.Forms.Padding(2);
             this.btnActualizarPriGrelha.Name = "btnActualizarPriGrelha";
-            this.btnActualizarPriGrelha.Size = new System.Drawing.Size(98, 28);
+            this.btnActualizarPriGrelha.Size = new System.Drawing.Size(91, 34);
             this.btnActualizarPriGrelha.TabIndex = 21;
             this.btnActualizarPriGrelha.Text = "Actualizar";
             this.btnActualizarPriGrelha.UseVisualStyleBackColor = true;
@@ -271,7 +266,7 @@ namespace FRU_AlterarTerceiros
             this.priGrelhaDocs.Cols = null;
             this.priGrelhaDocs.ColsFrozen = -1;
             this.priGrelhaDocs.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.priGrelhaDocs.Location = new System.Drawing.Point(14, 180);
+            this.priGrelhaDocs.Location = new System.Drawing.Point(14, 166);
             this.priGrelhaDocs.Margin = new System.Windows.Forms.Padding(2);
             this.priGrelhaDocs.Name = "priGrelhaDocs";
             this.priGrelhaDocs.NumeroMaxRegistosSemPag = 150000;
@@ -296,47 +291,90 @@ namespace FRU_AlterarTerceiros
             this.priGrelhaDocs.PermiteStatusBar = true;
             this.priGrelhaDocs.PermiteVistas = true;
             this.priGrelhaDocs.PosicionaColunaSeguinte = true;
-            this.priGrelhaDocs.Size = new System.Drawing.Size(719, 179);
+            this.priGrelhaDocs.Size = new System.Drawing.Size(599, 360);
             this.priGrelhaDocs.TabIndex = 22;
             this.priGrelhaDocs.TituloGrelha = "";
             this.priGrelhaDocs.TituloMapa = "";
             this.priGrelhaDocs.TypeNameLinha = "";
             this.priGrelhaDocs.TypeNameLinhas = "";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.date_DataDocInicio);
+            this.groupBox1.Controls.Add(this.date_DataDocFim);
+            this.groupBox1.Location = new System.Drawing.Point(157, 64);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(151, 86);
+            this.groupBox1.TabIndex = 24;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Data Documento";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(15, 57);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(32, 13);
+            this.label5.TabIndex = 25;
+            this.label5.Text = "Final:";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.num_NumDocInicio);
+            this.groupBox2.Controls.Add(this.num_NumDocFim);
+            this.groupBox2.Location = new System.Drawing.Point(14, 64);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(126, 86);
+            this.groupBox2.TabIndex = 25;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Num Documentos";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(19, 57);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(32, 13);
+            this.label6.TabIndex = 26;
+            this.label6.Text = "Final:";
+            // 
             // FormAlterarTerceiros
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.priGrelhaDocs);
             this.Controls.Add(this.btnActualizarPriGrelha);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.date_DataDocFim);
-            this.Controls.Add(this.date_DataDocInicio);
-            this.Controls.Add(this.num_NumDocFim);
-            this.Controls.Add(this.num_NumDocInicio);
             this.Controls.Add(this.f4TipoDoc);
             this.Controls.Add(this.f4TipoTerceiro);
             this.Controls.Add(this.btnAlterarTerceiro);
             this.Controls.Add(this.cbox_Serie);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = false;
             this.Name = "FormAlterarTerceiros";
-            this.Size = new System.Drawing.Size(751, 408);
+            this.Size = new System.Drawing.Size(627, 544);
             this.Text = "Alteração Terceiros";
             this.Load += new System.EventHandler(this.FormAlterarTerceiros_Load);
             ((System.ComponentModel.ISupportInitialize)(this.num_NumDocInicio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_NumDocFim)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.priGrelhaDocs)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cbox_Serie;
         private System.Windows.Forms.Button btnAlterarTerceiro;
         private PRISDK100.F4 f4TipoTerceiro;
@@ -348,5 +386,9 @@ namespace FRU_AlterarTerceiros
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnActualizarPriGrelha;
         private PRISDK100.PriGrelha priGrelhaDocs;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label6;
     }
 }
