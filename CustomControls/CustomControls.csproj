@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3D96FBBA-C4B9-4DC2-A6AA-26E4A8CE6A9D}</ProjectGuid>
+    <ProjectGuid>{019EA63C-22F4-4486-B1DB-1217C51738E0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FRU_AlterarTerceiros</RootNamespace>
-    <AssemblyName>FRU_AlterarTerceiros</AssemblyName>
+    <RootNamespace>CustomControls</RootNamespace>
+    <AssemblyName>CustomControls</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,33 +30,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BasBE100">
-      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\BasBE100.dll</HintPath>
-    </Reference>
-    <Reference Include="ConstantesPrimavera100">
-      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\ConstantesPrimavera100.dll</HintPath>
-    </Reference>
     <Reference Include="ErpBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\ErpBS100.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="GprBE100">
-      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\GprBE100.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="IBasBS100">
-      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\IBasBS100.dll</HintPath>
-    </Reference>
-    <Reference Include="IGprBS100">
-      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\IGprBS100.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="IVndBS100">
-      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\IVndBS100.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Primavera.Extensibility.Attributes">
@@ -67,29 +43,9 @@
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.BusinessEntities.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Primavera.Extensibility.CustomCode">
-      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.CustomCode.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Primavera.Extensibility.CustomForm">
-      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.CustomForm.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Primavera.Extensibility.Integration">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Integration.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="Primavera.Extensibility.Production">
-      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Production.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Primavera.Extensibility.Sales">
-      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Sales.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="PRISDK100, Version=10.0.0.0, Culture=neutral, PublicKeyToken=11cd844aca152173, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\PRISDK100.dll</HintPath>
     </Reference>
     <Reference Include="StdBE100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\StdBE100.dll</HintPath>
@@ -102,32 +58,14 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Linq" />
-    <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UpgradeHelpers.FpSpread">
-      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\UpgradeHelpers.FpSpread.dll</HintPath>
-    </Reference>
-    <Reference Include="UpgradeHelpers.Utils">
-      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\UpgradeHelpers.Utils.dll</HintPath>
-    </Reference>
-    <Reference Include="VndBE100">
-      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\VndBE100.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormAlterarTerceiros.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="FormAlterarTerceiros.Designer.cs">
-      <DependentUpon>FormAlterarTerceiros.cs</DependentUpon>
-    </Compile>
     <Compile Include="PriDataDocGrupo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -143,9 +81,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FormAlterarTerceiros.resx">
-      <DependentUpon>FormAlterarTerceiros.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="PriDataDocGrupo.resx">
       <DependentUpon>PriDataDocGrupo.cs</DependentUpon>
     </EmbeddedResource>
@@ -154,9 +89,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>Call "C:\Program Files\PRIMAVERA\SG100\Apl\RegisterExtension.exe" DEMO id *Pelicano* 1 $(TargetPath) True</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
