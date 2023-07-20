@@ -88,6 +88,9 @@
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Sales.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="PRISDK100">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\PRISDK100.dll</HintPath>
+    </Reference>
     <Reference Include="StdBE100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\StdBE100.dll</HintPath>
       <Private>False</Private>
@@ -121,6 +124,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Purchases\UiEditorCompras.cs" />
+    <Compile Include="QueryHelper.cs" />
     <Compile Include="Sales\UiEditorVendas.cs" />
   </ItemGroup>
   <ItemGroup>

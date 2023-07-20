@@ -29,7 +29,7 @@ namespace PP_PPCS.Sales
             base.AntesDeGravar(ref Cancel, e);
         }
 
-
+        
         public override void ArtigoIdentificado(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
         {
             var DocVenda = this.DocumentoVenda;
