@@ -12,7 +12,7 @@ namespace PP_PPCS
             InitializeComponent();
         }
 
-        string _tabela;
+        string _tabela = "#A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
         StdBELista _RSt = new StdBELista();
 
         private void FormImportaDocs_Load(object sender, EventArgs e)
@@ -20,7 +20,6 @@ namespace PP_PPCS
             SdkPrimavera.InicializaContexto(BSO, PSO);
             prigrelha_Docs.Inicializa(SdkPrimavera.ContextoSDK);
 
-            _tabela = "#A";
             datepicker_DataDocImport.Value = DateTime.Now;
             datepicker_DataDocNew.Value = DateTime.Now;
 
@@ -29,6 +28,11 @@ namespace PP_PPCS
 
         private void InicializaPrigrelhaDocs(DateTime dataImport)
         {
+            // Ver QueriesSQL.cs
+            BSO.Consulta(QueriesSQL.GetQuery01(_tabela, dataImport.ToString()));
+            BSO.Consulta(QueriesSQL.GetQuery02(_tabela, dataImport.ToString()));
+
+            prigrelha_Docs.LimpaGrelha();
             prigrelha_Docs.TituloGrelha = "Documentos do dia: " + dataImport.ToString();
             prigrelha_Docs.PermiteActualizar = true;
             prigrelha_Docs.PermiteAgrupamentosUser = true;
