@@ -85,11 +85,12 @@ namespace FRU_AlterarTerceiros
             //'SS_CELL_TYPE_OWNER_DRAWN = 11
             //'End Enum
 
-            priGrelhaDocs.AddColKey("Cf", 10, "Cf", 10, blnMostraSempre: true, blnVisivel: true);
+            priGrelhaDocs.AddColKey("Cf", 10, "Cf", dblLargura: 5, blnMostraSempre: true, blnVisivel: true,);
             priGrelhaDocs.AddColKey("Data", 5, strTitulo: "Data", dblLargura: 15, strCamposBaseDados: "Data", blnMostraSempre: true);
             priGrelhaDocs.AddColKey("TipoDoc", 5, strTitulo: "Doc", dblLargura: 5, strCamposBaseDados: "TipoDoc", blnDrillDown: true, blnMostraSempre: true);
             priGrelhaDocs.AddColKey("Serie", 5, strTitulo: "Serie", dblLargura: 5, strCamposBaseDados: "Serie", blnMostraSempre: true);
             priGrelhaDocs.AddColKey("NumDoc", 5, strTitulo: "Numero", dblLargura: 8, strCamposBaseDados: "NumDoc", blnDrillDown: true, blnMostraSempre: true);
+            priGrelhaDocs.AddColKey("TipoTerceiro", 2, strTitulo: "Tipo Terceiro", dblLargura: 10, strCamposBaseDados: "TotalDocumento", blnMostraSempre: true);
             priGrelhaDocs.AddColKey("TotalDocumento", 2, strTitulo: "Total", dblLargura: 8, strCamposBaseDados: "TotalDocumento", blnMostraSempre: true);
         }
 
@@ -117,7 +118,7 @@ namespace FRU_AlterarTerceiros
 
             // Criar cada parte da query
             // A coluna Cf recebe NULL pq a Prigrelha estava a dar problemas se a query não tivesse exactamente a mesma quantidade de colunas que a grelha em si
-            sqlDict.Add("select", "SELECT NULL AS Cf, Data, TipoDoc, Serie, NumDoc, TotalDocumento");
+            sqlDict.Add("select", "SELECT NULL AS Cf, Data, TipoDoc, Serie, NumDoc, TipoTerceiro, TotalDocumento");
             sqlDict.Add("from", "FROM CabecDoc");
             sqlDict.Add("whereData", "WHERE Data BETWEEN CONVERT(datetime, '" + dataInicio + "', 103) AND CONVERT(datetime, '" + dataFim + "', 103)");
             sqlDict.Add("whereTipoDoc", "AND TipoDoc = '" + tipoDoc + "'");

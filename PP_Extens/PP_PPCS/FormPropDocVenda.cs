@@ -25,8 +25,6 @@ namespace PP_PPCS
             InicializaCBoxTipoDoc();
             InicializaCBoxSerie();
             InicializaTBoxNumero();
-
-           
         }
 
         private void InicializaCBoxTipoDoc()
