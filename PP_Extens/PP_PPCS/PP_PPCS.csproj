@@ -110,12 +110,25 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UpgradeHelpers.FpSpread">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\UpgradeHelpers.FpSpread.dll</HintPath>
+    </Reference>
+    <Reference Include="UpgradeHelpers.Utils">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\UpgradeHelpers.Utils.dll</HintPath>
+    </Reference>
     <Reference Include="VndBE100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\VndBE100.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="QueriesSQL.cs" />
+    <Compile Include="FormImportaDocs.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FormImportaDocs.Designer.cs">
+      <DependentUpon>FormImportaDocs.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormPropDocVenda.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -127,11 +140,17 @@
     <Compile Include="Sales\UiEditorVendas.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FormImportaDocs.resx">
+      <DependentUpon>FormImportaDocs.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormPropDocVenda.resx">
       <DependentUpon>FormPropDocVenda.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>Call "C:\Program Files\PRIMAVERA\SG100\Apl\RegisterExtension.exe" DEMO id *Pelicano* 1 $(TargetPath) True</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

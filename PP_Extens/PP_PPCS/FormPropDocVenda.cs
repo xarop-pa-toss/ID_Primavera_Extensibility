@@ -22,37 +22,37 @@ namespace PP_PPCS
         {
             StdBELista RSt = BSO.Consulta("SELECT 1 AS Dummy;");
 
-            InicializaCBoxTipoDoc();
-            InicializaCBoxSerie();
             InicializaTBoxNumero();
         }
 
-        private void InicializaCBoxTipoDoc()
+        private void f4TipoDoc_TextChange(object Sender, PRISDK100.F4.TextChangeEventArgs e)
         {
-            string sqlStr; StdBELista rcSet;
-            cBoxTipoDoc.Items.Clear();
-            
-            sqlStr = "SELECT Documento, Descricao FROM DocumentosVenda WHERE Inactivo = 0;";
-            rcSet = BSO.Consulta(sqlStr);
-            rcSet.Inicio();
-
-            while (!rcSet.NoFim()) {
-                if (!cBoxTipoDoc.Items.Contains(rcSet.Valor(0))) {
-                    cBoxTipoDoc.Items.Add(rcSet.Valor(0));
-                }
+            // Get Serie do TipoDoc para a ComboBox de Série
+            if (f4TipoDoc.Text != "") {
+                string query = "SELECT DISTINCT Serie FROM SeriesVendas WHERE TipoDoc = '" + f4TipoDoc.Text + "' ORDER BY Serie DESC;";
+                cBoxSerie.Items.Clear();
+                cBoxSerie.Items.AddRange(FillComboBox(query).ToArray());
+                cBoxSerie.SelectedIndex = 0;
             }
-
-            sqlStr = "SELECT TransformaDocVenda AS col0 FROM ParametrosGCP;";
-            rcSet = BSO.Consulta(sqlStr);
-
-            cBoxTipoDoc.Text = rcSet.Valor(0);
-            _tDoc = cBoxTipoDoc.Text;
-            rcSet.Dispose();
         }
 
-        private void InicializaCBoxSerie()
+        private List<string> FillComboBox(string query)
         {
+            using (StdBE100.StdBELista priLista = BSO.Consulta(query)) {
+                List<string> listaFinal = new List<string>();
 
+                if (!priLista.Vazia()) {
+                    priLista.Inicio();
+                    while (!priLista.NoFim()) {
+                        listaFinal.Add(priLista.Valor(0));
+                        priLista.Seguinte();
+                    }
+                    priLista.Termina();
+
+                    return listaFinal;
+                }
+                return null;
+            }
         }
 
         private void InicializaTBoxNumero()
@@ -61,11 +61,6 @@ namespace PP_PPCS
         }
 
         private void btnActualizar_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void f41_Load(object sender, EventArgs e)
         {
 
         }

@@ -164,7 +164,7 @@ namespace PP_PPCS
             this.f4TipoDoc.WidthEspacamento = 60;
             this.f4TipoDoc.WidthF4 = 1100;
             this.f4TipoDoc.WidthLink = 1300;
-            this.f4TipoDoc.Load += new System.EventHandler(this.f41_Load);
+            this.f4TipoDoc.TextChange += new PRISDK100.F4.TextChangeHandler(this.f4TipoDoc_TextChange);
             // 
             // FormPropDocVenda
             // 
