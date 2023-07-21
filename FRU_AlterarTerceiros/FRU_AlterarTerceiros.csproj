@@ -128,11 +128,18 @@
     <Compile Include="FormAlterarTerceiros.Designer.cs">
       <DependentUpon>FormAlterarTerceiros.cs</DependentUpon>
     </Compile>
+    <Compile Include="OpenFormCode.cs" />
     <Compile Include="PriDataDocGrupo.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PriDataDocGrupo.designer.cs">
       <DependentUpon>PriDataDocGrupo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAlterarTerceiros_WF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAlterarTerceiros_WF.Designer.cs">
+      <DependentUpon>FormAlterarTerceiros_WF.cs</DependentUpon>
     </Compile>
     <Compile Include="PriNumDocGrupo.cs">
       <SubType>UserControl</SubType>
@@ -145,6 +152,9 @@
   <ItemGroup>
     <EmbeddedResource Include="FormAlterarTerceiros.resx">
       <DependentUpon>FormAlterarTerceiros.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAlterarTerceiros_WF.resx">
+      <DependentUpon>FormAlterarTerceiros_WF.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PriDataDocGrupo.resx">
       <DependentUpon>PriDataDocGrupo.cs</DependentUpon>

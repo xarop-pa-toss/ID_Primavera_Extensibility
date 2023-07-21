@@ -1,24 +1,26 @@
-﻿using Primavera.Extensibility.BusinessEntities;
-using Primavera.Extensibility.CustomForm;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PRISDK100; 
-using StdBE100; using StdPlatBS100;
+using System.Windows.Forms;
+using BasBE100; using StdBE100; using ErpBS100; using VndBE100; using PRISDK100; using StdPlatBS100;
+using System.IO;
 
 
 namespace FRU_AlterarTerceiros
 {
-    // MAIN
-    public partial class FormAlterarTerceiros : CustomForm
+    public partial class FormAlterarTerceiros_WF : Form
     {
+        private ErpBS BSO = new ErpBS();
+        private StdPlatBS PSO = new StdPlatBS();
         //Variavél global que contem o contexto e que deverá ser passada para os controlos.
         public clsSDKContexto _sdkContexto;
 
-        public FormAlterarTerceiros()
+        public FormAlterarTerceiros_WF()
         {
             InitializeComponent();
         }
@@ -47,7 +49,7 @@ namespace FRU_AlterarTerceiros
 
             InicializapriGrelhaDocs();
         }
-        
+
         private void InicializapriGrelhaDocs()
         {
             prigrelha_Docs.TituloGrelha = "DocsReimpressao";
@@ -164,11 +166,11 @@ namespace FRU_AlterarTerceiros
                     sql.AddCampo("NumDoc", Convert.ToInt32(gNumDoc), true, StdBETipos.EnumTipoCampoSimplificado.tsInteiro);     // AND ...
 
                     sql.AddQuery();
-                    
+
                     // Se Update falhar, preenche lista com NumDoc para mostrar ao cliente.
                     try {
                         PSO.ExecSql.Executa(sql);
-                    } 
+                    }
                     catch {
                         docsComErroNoUpdateSQL.Add(gNumDoc);
                     }
@@ -176,17 +178,16 @@ namespace FRU_AlterarTerceiros
             }
             if (docsComErroNoUpdateSQL.Count != 0) {
                 PSO.MensagensDialogos.MostraAviso("Não foi possivel alterar o Tipo Terceiro em alguns documentos!", StdBSTipos.IconId.PRI_Exclama, String.Join(", ", docsComErroNoUpdateSQL));
-            }
-            else {
+            } else {
                 PSO.MensagensDialogos.MostraAviso("Todos os documentos alterados com sucesso.", StdBSTipos.IconId.PRI_Informativo);
             }
         }
 
-            //É necessário criar código no Primavera V10 que está Frupor para a empresa ADEGA para fazer o seguinte, poder alterar o tipo de terceiro nos documentos de venda. Para tal é necessário o utilizador introduzir os seguintes campos:
-            //- Tipo de documento
-            //- Série do documento
-            //- Nº de documento
-            //Depois poder colocar o tipo de terceiro em tabela.
+        //É necessário criar código no Primavera V10 que está Frupor para a empresa ADEGA para fazer o seguinte, poder alterar o tipo de terceiro nos documentos de venda. Para tal é necessário o utilizador introduzir os seguintes campos:
+        //- Tipo de documento
+        //- Série do documento
+        //- Nº de documento
+        //Depois poder colocar o tipo de terceiro em tabela.
 
 
         private void f4TipoDoc_TextChange(object Sender, F4.TextChangeEventArgs e)
@@ -203,15 +204,12 @@ namespace FRU_AlterarTerceiros
         // Retorna null se query vazia.
         private List<string> FillComboBox(string query)
         {
-            using(StdBE100.StdBELista priLista = BSO.Consulta(query))
-            {
+            using (StdBE100.StdBELista priLista = BSO.Consulta(query)) {
                 List<string> listaFinal = new List<string>();
 
-                if (!priLista.Vazia())
-                {
+                if (!priLista.Vazia()) {
                     priLista.Inicio();
-                    while (!priLista.NoFim())
-                    {
+                    while (!priLista.NoFim()) {
                         listaFinal.Add(priLista.Valor(0));
                         priLista.Seguinte();
                     }
@@ -228,7 +226,7 @@ namespace FRU_AlterarTerceiros
             Dictionary<string, string> valoresControlos = new Dictionary<string, string>();
 
             valoresControlos.Add("TipoDoc", f4_TipoDoc.Text);
-            valoresControlos.Add("Terceiro",f4_TipoTerceiro.Text);
+            valoresControlos.Add("Terceiro", f4_TipoTerceiro.Text);
             valoresControlos.Add("Serie", cbox_Serie.Text);
             valoresControlos.Add("NumDoc", num_NumDocInicio.Text);
 
@@ -237,39 +235,17 @@ namespace FRU_AlterarTerceiros
 
         private bool CheckControlos(Dictionary<string, string> valoresControlos)
         {
-            if (valoresControlos.Values.Any(value => value == null)) { 
+            if (valoresControlos.Values.Any(value => value == null)) {
                 System.Windows.Forms.MessageBox.Show("Dados insuficientes. Verifique se existem campos vazios.");
                 return false;
             }
             return true;
         }
-    }
 
-    // INICIALIZA CONTEXTO PARA CONTROLOS SDK
-    internal class SdkPrimavera
-    {
-        private static readonly SdkPrimavera contexto = new SdkPrimavera();
-        private static PRISDK100.clsSDKContexto contextosdk;
-
-        public static PRISDK100.clsSDKContexto ContextoSDK
+        private void FormAlterarTerceiros_WF_Load(object sender, EventArgs e)
         {
-            get
-            {
-                return contextosdk;
-            }
-        }
 
-        private SdkPrimavera()
-        {
-        }
-
-        internal static SdkPrimavera InicializaContexto(dynamic BSO, dynamic PSO)
-        {
-            contextosdk = new PRISDK100.clsSDKContexto();
-            contextosdk.Inicializa(BSO, "ERP");
-            PSO.InicializaPlataforma(contextosdk);
-
-            return contexto;
         }
     }
 }
+
