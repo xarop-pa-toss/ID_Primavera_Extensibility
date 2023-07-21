@@ -26,72 +26,14 @@ namespace FRU_AlterarTerceiros
         }
 
         // LOAD e Inicialização
-        private void FormAlterarTerceiros_Load(object sender, EventArgs e)
+        private void FormAlterarTerceiros_WF_Load(object sender, EventArgs e)
         {
-            //if (_sdkContexto == null) {
-            //    _sdkContexto = new clsSDKContexto();
-            //    //Inicializaçao do contexto SDK a partir do objeto BSO e respetivo módulo.
-            //    _sdkContexto.InicializaPlataforma(_plat);
-            //    _sdkContexto.Inicializa(BSO, "ERP");
-            //    //Inicialização da plataforma no contexto e verificação de assinatura digital.
-            //    PSO.InicializaPlataforma(_sdkContexto);
-            //}
-
             SdkPrimavera.InicializaContexto(BSO, PSO);
-
-            f4_TipoTerceiro.Inicializa(SdkPrimavera.ContextoSDK);
-            f4_TipoDoc.Inicializa(SdkPrimavera.ContextoSDK);
-            prigrelha_Docs.Inicializa(SdkPrimavera.ContextoSDK);
 
             datepicker_DataDocInicio.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             datepicker_DataDocFim.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1);
-            f4_TipoDoc.Text = "FR";
 
-            InicializapriGrelhaDocs();
-        }
-
-        private void InicializapriGrelhaDocs()
-        {
-            prigrelha_Docs.TituloGrelha = "DocsReimpressao";
-            prigrelha_Docs.PermiteActualizar = true;
-            prigrelha_Docs.PermiteAgrupamentosUser = true;
-            prigrelha_Docs.PermiteScrollBars = true;
-            prigrelha_Docs.PermiteVistas = false;
-            prigrelha_Docs.PermiteEdicao = false;
-            prigrelha_Docs.PermiteDataFill = false;
-            prigrelha_Docs.PermiteFiltros = false;
-            prigrelha_Docs.PermiteActiveBar = false;
-            prigrelha_Docs.PermiteContextoVazia = false;
-
-            //    ' Colunas da tabela de reimpressão
-            //' Cf - CheckBox - define se vai imprimir ou não
-            //' Data - Date - data de emissão do documento
-            //' Doc (DrillDown) - Str - TipoDoc
-            //' Série - Str
-            //' Numero (DrillDown) - Long/Int
-
-            //'Private Enum ColType
-            //'SS_CELL_TYPE_DATE = 0
-            //'SS_CELL_TYPE_EDIT = 1
-            //'SS_CELL_TYPE_FLOAT = 2
-            //'SS_CELL_TYPE_INTEGER = 3
-            //'SS_CELL_TYPE_PIC = 4
-            //'SS_CELL_TYPE_STATIC_TEXT = 5
-            //'SS_CELL_TYPE_TIME = 6
-            //'SS_CELL_TYPE_BUTTON = 7
-            //'SS_CELL_TYPE_COMBOBOX = 8
-            //'SS_CELL_TYPE_PICTURE = 9
-            //'SS_CELL_TYPE_CHECKBOX = 10
-            //'SS_CELL_TYPE_OWNER_DRAWN = 11
-            //'End Enum
-
-            prigrelha_Docs.AddColKey("Cf", 10, "Cf", dblLargura: 5, blnMostraSempre: true, blnVisivel: true);
-            prigrelha_Docs.AddColKey("Data", 5, strTitulo: "Data", dblLargura: 15, strCamposBaseDados: "Data", blnMostraSempre: true);
-            prigrelha_Docs.AddColKey("TipoDoc", 5, strTitulo: "Doc", dblLargura: 5, strCamposBaseDados: "TipoDoc", blnDrillDown: true, blnMostraSempre: true);
-            prigrelha_Docs.AddColKey("Serie", 5, strTitulo: "Serie", dblLargura: 5, strCamposBaseDados: "Serie", blnMostraSempre: true);
-            prigrelha_Docs.AddColKey("NumDoc", 5, strTitulo: "Numero", dblLargura: 8, strCamposBaseDados: "NumDoc", blnDrillDown: true, blnMostraSempre: true);
-            prigrelha_Docs.AddColKey("TipoTerceiro", 2, strTitulo: "Tipo Terceiro", dblLargura: 10, strCamposBaseDados: "TotalDocumento", blnMostraSempre: true);
-            prigrelha_Docs.AddColKey("TotalDocumento", 2, strTitulo: "Total", dblLargura: 8, strCamposBaseDados: "TotalDocumento", blnMostraSempre: true);
+            FillComboBox(cbox_Docs, "SELECT CONCAT(Documento, ' - ', Descricao) AS Documento FROM DocumentosVenda WHERE Inactivo = 0 ORDER BY Documento DESC;");
         }
 
 
@@ -144,18 +86,16 @@ namespace FRU_AlterarTerceiros
 
             if (!CheckControlos(valoresControlos)) { return; }
 
-            for (int i = 1; i <= prigrelha_Docs.Grelha.DataRowCnt; i++) {
+            foreach (DataRow row in datagrid_Docs.Rows) {
 
-                // Salta linha se checkbox não activada. GetGRID_GetValorCelula devolve sempre dynamic, um tipo de dados verificado em runtime.
-                // Por essa razão, não é possivel "assumir" o tipo de dados.
-                // Checkboxes nas Prigrelhas devolvem sempre int (1 e 0) e devem ser verificadas como tal, e não como bool como faz sentido.
-                if (!object.Equals(prigrelha_Docs.GetGRID_GetValorCelula(i, "Cf"), 1)) {
+                // Se a checkbox não estiver picada, skip pra proxima linha.
+                if (!row.Field<bool>("Cf").Equals(true)) {
                     continue;
                 }
 
-                gTipoDoc = prigrelha_Docs.GetGRID_GetValorCelula(i, "TipoDoc");
-                gSerie = prigrelha_Docs.GetGRID_GetValorCelula(i, "Serie");
-                gNumDoc = prigrelha_Docs.GetGRID_GetValorCelula(i, "NumDoc");
+                gTipoDoc = row.Field<string>("TipoDoc");
+                gSerie = row.Field<string>("Serie");
+                gNumDoc = row.Field<string>("NumDoc");
 
                 using (StdBEExecSql sql = new StdBEExecSql()) {
                     sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
@@ -175,6 +115,7 @@ namespace FRU_AlterarTerceiros
                         docsComErroNoUpdateSQL.Add(gNumDoc);
                     }
                 }
+
             }
             if (docsComErroNoUpdateSQL.Count != 0) {
                 PSO.MensagensDialogos.MostraAviso("Não foi possivel alterar o Tipo Terceiro em alguns documentos!", StdBSTipos.IconId.PRI_Exclama, String.Join(", ", docsComErroNoUpdateSQL));
@@ -183,41 +124,31 @@ namespace FRU_AlterarTerceiros
             }
         }
 
-        //É necessário criar código no Primavera V10 que está Frupor para a empresa ADEGA para fazer o seguinte, poder alterar o tipo de terceiro nos documentos de venda. Para tal é necessário o utilizador introduzir os seguintes campos:
-        //- Tipo de documento
-        //- Série do documento
-        //- Nº de documento
-        //Depois poder colocar o tipo de terceiro em tabela.
-
-
-        private void f4TipoDoc_TextChange(object Sender, F4.TextChangeEventArgs e)
+        private void btn_ActualizarPriGrelha_Click(object sender, EventArgs e)
         {
-            // Get Serie do TipoDoc para a ComboBox de Série
-            if (f4_TipoDoc.Text != "") {
-                string query = "SELECT DISTINCT Serie FROM SeriesVendas WHERE TipoDoc = '" + f4_TipoDoc.Text + "' ORDER BY Serie DESC;";
-                cbox_Serie.Items.Clear();
-                cbox_Serie.Items.AddRange(FillComboBox(query).ToArray());
-                cbox_Serie.SelectedIndex = 0;
-            }
+
         }
 
-        // Retorna null se query vazia.
-        private List<string> FillComboBox(string query)
+        private void cBox_Docs_SelectedIndexChanged(object sender, EventArgs e)
         {
-            using (StdBE100.StdBELista priLista = BSO.Consulta(query)) {
-                List<string> listaFinal = new List<string>();
+            FillComboBox(cbox_Serie, "SELECT DISTINCT Serie FROM CabecDoc WHERE TipoDoc = '" + cbox_Docs.Text + "' ORDER BY Serie DESC;");
+        }
+
+
+        // HELPERS
+        // Preenche qualquer combobox com qualquer query SQL utilizando StdBELista.
+        private void FillComboBox(ComboBox comboBox, string query)
+        {
+            using (StdBELista priLista = BSO.Consulta(query)) {
 
                 if (!priLista.Vazia()) {
                     priLista.Inicio();
                     while (!priLista.NoFim()) {
-                        listaFinal.Add(priLista.Valor(0));
+                        comboBox.Items.Add(priLista.Valor(0));
                         priLista.Seguinte();
                     }
                     priLista.Termina();
-
-                    return listaFinal;
                 }
-                return null;
             }
         }
 
@@ -225,8 +156,8 @@ namespace FRU_AlterarTerceiros
         {
             Dictionary<string, string> valoresControlos = new Dictionary<string, string>();
 
-            valoresControlos.Add("TipoDoc", f4_TipoDoc.Text);
-            valoresControlos.Add("Terceiro", f4_TipoTerceiro.Text);
+            valoresControlos.Add("TipoDoc", cbox_Docs.Text);
+            valoresControlos.Add("Terceiro", cbox_TipoTerceiro.Text);
             valoresControlos.Add("Serie", cbox_Serie.Text);
             valoresControlos.Add("NumDoc", num_NumDocInicio.Text);
 
@@ -240,11 +171,6 @@ namespace FRU_AlterarTerceiros
                 return false;
             }
             return true;
-        }
-
-        private void FormAlterarTerceiros_WF_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

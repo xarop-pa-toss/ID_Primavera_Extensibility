@@ -28,75 +28,42 @@ namespace FRU_AlterarTerceiros
         /// </summary>
         private void InitializeComponent()
         {
-            this.f4_TipoDoc = new PRISDK100.F4();
             this.cbox_Serie = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.datepicker_DataDocInicio = new System.Windows.Forms.DateTimePicker();
             this.datepicker_DataDocFim = new System.Windows.Forms.DateTimePicker();
-            this.prigrelha_Docs = new PRISDK100.PriGrelha();
             this.btn_ActualizarPriGrelha = new System.Windows.Forms.Button();
-            this.f4_TipoTerceiro = new PRISDK100.F4();
             this.btn_AlterarTerceiro = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.num_NumDocInicio = new System.Windows.Forms.NumericUpDown();
             this.num_NumDocFim = new System.Windows.Forms.NumericUpDown();
+            this.datagrid_Docs = new System.Windows.Forms.DataGridView();
+            this.Cf = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Data = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TipoDoc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Serie = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NumDoc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TipoTerceiro = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TotalDocumento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbox_Docs = new System.Windows.Forms.ComboBox();
+            this.cbox_TipoTerceiro = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.prigrelha_Docs)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_NumDocInicio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_NumDocFim)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.datagrid_Docs)).BeginInit();
             this.SuspendLayout();
-            // 
-            // f4_TipoDoc
-            // 
-            this.f4_TipoDoc.AgrupaOutrosTerceiros = false;
-            this.f4_TipoDoc.Audit = "mnuTabDocumentosVenda";
-            this.f4_TipoDoc.AutoComplete = false;
-            this.f4_TipoDoc.BackColorLocked = System.Drawing.SystemColors.ButtonFace;
-            this.f4_TipoDoc.CampoChave = "Documento";
-            this.f4_TipoDoc.CampoChaveFisica = "";
-            this.f4_TipoDoc.CampoDescricao = "Descricao";
-            this.f4_TipoDoc.Caption = "Documento:";
-            this.f4_TipoDoc.CarregarValoresEdicao = false;
-            this.f4_TipoDoc.Categoria = PRISDK100.clsSDKTypes.EnumCategoria.DocumentosVenda;
-            this.f4_TipoDoc.ChaveFisica = "";
-            this.f4_TipoDoc.ChaveNumerica = false;
-            this.f4_TipoDoc.F4Modal = false;
-            this.f4_TipoDoc.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.f4_TipoDoc.IDCategoria = "DocumentosVenda";
-            this.f4_TipoDoc.Location = new System.Drawing.Point(28, 27);
-            this.f4_TipoDoc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.f4_TipoDoc.MaxLengthDescricao = 0;
-            this.f4_TipoDoc.MaxLengthF4 = 50;
-            this.f4_TipoDoc.MinimumSize = new System.Drawing.Size(37, 21);
-            this.f4_TipoDoc.Modulo = "VND";
-            this.f4_TipoDoc.MostraDescricao = true;
-            this.f4_TipoDoc.MostraLink = true;
-            this.f4_TipoDoc.Name = "f4_TipoDoc";
-            this.f4_TipoDoc.PainesInformacaoRelacionada = false;
-            this.f4_TipoDoc.PainesInformacaoRelacionadaMultiplasChaves = false;
-            this.f4_TipoDoc.PermiteDrillDown = true;
-            this.f4_TipoDoc.PermiteEnabledLink = true;
-            this.f4_TipoDoc.PodeEditarDescricao = false;
-            this.f4_TipoDoc.ResourceID = 154;
-            this.f4_TipoDoc.ResourcePersonalizada = false;
-            this.f4_TipoDoc.Restricao = "";
-            this.f4_TipoDoc.SelectionFormula = "";
-            this.f4_TipoDoc.Size = new System.Drawing.Size(516, 27);
-            this.f4_TipoDoc.TabIndex = 31;
-            this.f4_TipoDoc.TextoDescricao = "";
-            this.f4_TipoDoc.WidthEspacamento = 60;
-            this.f4_TipoDoc.WidthF4 = 1100;
-            this.f4_TipoDoc.WidthLink = 1300;
             // 
             // cbox_Serie
             // 
             this.cbox_Serie.FormattingEnabled = true;
-            this.cbox_Serie.Location = new System.Drawing.Point(550, 27);
+            this.cbox_Serie.Location = new System.Drawing.Point(431, 27);
             this.cbox_Serie.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbox_Serie.Name = "cbox_Serie";
             this.cbox_Serie.Size = new System.Drawing.Size(95, 24);
@@ -156,49 +123,6 @@ namespace FRU_AlterarTerceiros
             this.datepicker_DataDocFim.Size = new System.Drawing.Size(115, 22);
             this.datepicker_DataDocFim.TabIndex = 19;
             // 
-            // prigrelha_Docs
-            // 
-            this.prigrelha_Docs.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.prigrelha_Docs.BandaMenuContexto = "";
-            this.prigrelha_Docs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.prigrelha_Docs.BotaoConfigurarActiveBar = true;
-            this.prigrelha_Docs.BotaoProcurarActiveBar = false;
-            this.prigrelha_Docs.CaminhoTemplateImpressao = "";
-            this.prigrelha_Docs.Cols = null;
-            this.prigrelha_Docs.ColsFrozen = -1;
-            this.prigrelha_Docs.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.prigrelha_Docs.Location = new System.Drawing.Point(28, 211);
-            this.prigrelha_Docs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.prigrelha_Docs.Name = "prigrelha_Docs";
-            this.prigrelha_Docs.NumeroMaxRegistosSemPag = 150000;
-            this.prigrelha_Docs.NumeroRegistos = 0;
-            this.prigrelha_Docs.NumLinhasCabecalho = 1;
-            this.prigrelha_Docs.OrientacaoMapa = PRISDK100.clsSDKTypes.OrientacaoImpressao.oiDefault;
-            this.prigrelha_Docs.ParentFormModal = false;
-            this.prigrelha_Docs.PermiteActiveBar = false;
-            this.prigrelha_Docs.PermiteActualizar = true;
-            this.prigrelha_Docs.PermiteAgrupamentosUser = true;
-            this.prigrelha_Docs.PermiteConfigurarDetalhes = false;
-            this.prigrelha_Docs.PermiteContextoVazia = false;
-            this.prigrelha_Docs.PermiteDataFill = false;
-            this.prigrelha_Docs.PermiteDetalhes = true;
-            this.prigrelha_Docs.PermiteEdicao = false;
-            this.prigrelha_Docs.PermiteFiltros = true;
-            this.prigrelha_Docs.PermiteGrafico = true;
-            this.prigrelha_Docs.PermiteGrandeTotal = false;
-            this.prigrelha_Docs.PermiteOrdenacao = true;
-            this.prigrelha_Docs.PermitePaginacao = false;
-            this.prigrelha_Docs.PermiteScrollBars = true;
-            this.prigrelha_Docs.PermiteStatusBar = true;
-            this.prigrelha_Docs.PermiteVistas = true;
-            this.prigrelha_Docs.PosicionaColunaSeguinte = true;
-            this.prigrelha_Docs.Size = new System.Drawing.Size(761, 443);
-            this.prigrelha_Docs.TabIndex = 35;
-            this.prigrelha_Docs.TituloGrelha = "";
-            this.prigrelha_Docs.TituloMapa = "";
-            this.prigrelha_Docs.TypeNameLinha = "";
-            this.prigrelha_Docs.TypeNameLinhas = "";
-            // 
             // btn_ActualizarPriGrelha
             // 
             this.btn_ActualizarPriGrelha.Location = new System.Drawing.Point(429, 150);
@@ -208,55 +132,14 @@ namespace FRU_AlterarTerceiros
             this.btn_ActualizarPriGrelha.TabIndex = 34;
             this.btn_ActualizarPriGrelha.Text = "Actualizar";
             this.btn_ActualizarPriGrelha.UseVisualStyleBackColor = true;
-            // 
-            // f4_TipoTerceiro
-            // 
-            this.f4_TipoTerceiro.AgrupaOutrosTerceiros = false;
-            this.f4_TipoTerceiro.Audit = "mnuTabTipoTerceiros";
-            this.f4_TipoTerceiro.AutoComplete = false;
-            this.f4_TipoTerceiro.BackColorLocked = System.Drawing.SystemColors.ButtonFace;
-            this.f4_TipoTerceiro.CampoChave = "TipoTerceiro";
-            this.f4_TipoTerceiro.CampoChaveFisica = "";
-            this.f4_TipoTerceiro.CampoDescricao = "Descricao";
-            this.f4_TipoTerceiro.Caption = "Tipo Terceiro:";
-            this.f4_TipoTerceiro.CarregarValoresEdicao = false;
-            this.f4_TipoTerceiro.Categoria = PRISDK100.clsSDKTypes.EnumCategoria.TiposTerceiro;
-            this.f4_TipoTerceiro.ChaveFisica = "";
-            this.f4_TipoTerceiro.ChaveNumerica = false;
-            this.f4_TipoTerceiro.F4Modal = false;
-            this.f4_TipoTerceiro.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.f4_TipoTerceiro.IDCategoria = "TipoTerceiros";
-            this.f4_TipoTerceiro.Location = new System.Drawing.Point(428, 93);
-            this.f4_TipoTerceiro.Margin = new System.Windows.Forms.Padding(4);
-            this.f4_TipoTerceiro.MaxLengthDescricao = 0;
-            this.f4_TipoTerceiro.MaxLengthF4 = 50;
-            this.f4_TipoTerceiro.MinimumSize = new System.Drawing.Size(49, 26);
-            this.f4_TipoTerceiro.Modulo = "BAS";
-            this.f4_TipoTerceiro.MostraDescricao = true;
-            this.f4_TipoTerceiro.MostraLink = true;
-            this.f4_TipoTerceiro.Name = "f4_TipoTerceiro";
-            this.f4_TipoTerceiro.PainesInformacaoRelacionada = false;
-            this.f4_TipoTerceiro.PainesInformacaoRelacionadaMultiplasChaves = false;
-            this.f4_TipoTerceiro.PermiteDrillDown = true;
-            this.f4_TipoTerceiro.PermiteEnabledLink = true;
-            this.f4_TipoTerceiro.PodeEditarDescricao = false;
-            this.f4_TipoTerceiro.ResourceID = 688;
-            this.f4_TipoTerceiro.ResourcePersonalizada = false;
-            this.f4_TipoTerceiro.Restricao = "";
-            this.f4_TipoTerceiro.SelectionFormula = "";
-            this.f4_TipoTerceiro.Size = new System.Drawing.Size(356, 26);
-            this.f4_TipoTerceiro.TabIndex = 30;
-            this.f4_TipoTerceiro.TextoDescricao = "";
-            this.f4_TipoTerceiro.WidthEspacamento = 60;
-            this.f4_TipoTerceiro.WidthF4 = 1100;
-            this.f4_TipoTerceiro.WidthLink = 1350;
+            this.btn_ActualizarPriGrelha.Click += new System.EventHandler(this.btn_ActualizarPriGrelha_Click);
             // 
             // btn_AlterarTerceiro
             // 
-            this.btn_AlterarTerceiro.Location = new System.Drawing.Point(644, 150);
+            this.btn_AlterarTerceiro.Location = new System.Drawing.Point(642, 150);
             this.btn_AlterarTerceiro.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_AlterarTerceiro.Name = "btn_AlterarTerceiro";
-            this.btn_AlterarTerceiro.Size = new System.Drawing.Size(145, 42);
+            this.btn_AlterarTerceiro.Size = new System.Drawing.Size(147, 42);
             this.btn_AlterarTerceiro.TabIndex = 29;
             this.btn_AlterarTerceiro.Text = "Alterar Terceiro";
             this.btn_AlterarTerceiro.UseVisualStyleBackColor = true;
@@ -345,50 +228,170 @@ namespace FRU_AlterarTerceiros
             0,
             0});
             // 
+            // datagrid_Docs
+            // 
+            this.datagrid_Docs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.datagrid_Docs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Cf,
+            this.Data,
+            this.TipoDoc,
+            this.Serie,
+            this.NumDoc,
+            this.TipoTerceiro,
+            this.TotalDocumento});
+            this.datagrid_Docs.EnableHeadersVisualStyles = false;
+            this.datagrid_Docs.Location = new System.Drawing.Point(28, 217);
+            this.datagrid_Docs.Name = "datagrid_Docs";
+            this.datagrid_Docs.RowHeadersWidth = 51;
+            this.datagrid_Docs.RowTemplate.Height = 24;
+            this.datagrid_Docs.Size = new System.Drawing.Size(761, 439);
+            this.datagrid_Docs.TabIndex = 38;
+            // 
+            // Cf
+            // 
+            this.Cf.HeaderText = "Cf";
+            this.Cf.MinimumWidth = 6;
+            this.Cf.Name = "Cf";
+            this.Cf.Width = 40;
+            // 
+            // Data
+            // 
+            this.Data.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.Data.HeaderText = "Data";
+            this.Data.MinimumWidth = 6;
+            this.Data.Name = "Data";
+            this.Data.Width = 67;
+            // 
+            // TipoDoc
+            // 
+            this.TipoDoc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.TipoDoc.HeaderText = "Documento";
+            this.TipoDoc.MinimumWidth = 6;
+            this.TipoDoc.Name = "TipoDoc";
+            this.TipoDoc.Width = 109;
+            // 
+            // Serie
+            // 
+            this.Serie.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.Serie.HeaderText = "Serie";
+            this.Serie.MinimumWidth = 6;
+            this.Serie.Name = "Serie";
+            this.Serie.Width = 70;
+            // 
+            // NumDoc
+            // 
+            this.NumDoc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.NumDoc.HeaderText = "Número";
+            this.NumDoc.MinimumWidth = 6;
+            this.NumDoc.Name = "NumDoc";
+            this.NumDoc.Width = 87;
+            // 
+            // TipoTerceiro
+            // 
+            this.TipoTerceiro.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.TipoTerceiro.HeaderText = "TipoTerceiro";
+            this.TipoTerceiro.MinimumWidth = 6;
+            this.TipoTerceiro.Name = "TipoTerceiro";
+            this.TipoTerceiro.Width = 118;
+            // 
+            // TotalDocumento
+            // 
+            this.TotalDocumento.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.TotalDocumento.HeaderText = "Total";
+            this.TotalDocumento.MinimumWidth = 6;
+            this.TotalDocumento.Name = "TotalDocumento";
+            this.TotalDocumento.Width = 69;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(35, 30);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(84, 17);
+            this.label3.TabIndex = 39;
+            this.label3.Text = "Documento:";
+            // 
+            // cbox_Docs
+            // 
+            this.cbox_Docs.FormattingEnabled = true;
+            this.cbox_Docs.Location = new System.Drawing.Point(120, 27);
+            this.cbox_Docs.Name = "cbox_Docs";
+            this.cbox_Docs.Size = new System.Drawing.Size(305, 24);
+            this.cbox_Docs.TabIndex = 40;
+            this.cbox_Docs.SelectedIndexChanged += new System.EventHandler(this.cBox_Docs_SelectedIndexChanged);
+            // 
+            // cbox_TipoTerceiro
+            // 
+            this.cbox_TipoTerceiro.FormattingEnabled = true;
+            this.cbox_TipoTerceiro.Location = new System.Drawing.Point(642, 109);
+            this.cbox_TipoTerceiro.Name = "cbox_TipoTerceiro";
+            this.cbox_TipoTerceiro.Size = new System.Drawing.Size(147, 24);
+            this.cbox_TipoTerceiro.TabIndex = 41;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(539, 112);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(97, 17);
+            this.label4.TabIndex = 42;
+            this.label4.Text = "Tipo Terceiro:";
+            // 
             // FormAlterarTerceiros_WF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(823, 673);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.cbox_TipoTerceiro);
+            this.Controls.Add(this.cbox_Docs);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.datagrid_Docs);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.f4_TipoDoc);
             this.Controls.Add(this.cbox_Serie);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.prigrelha_Docs);
             this.Controls.Add(this.btn_ActualizarPriGrelha);
-            this.Controls.Add(this.f4_TipoTerceiro);
             this.Controls.Add(this.btn_AlterarTerceiro);
             this.Name = "FormAlterarTerceiros_WF";
             this.Text = "Alterar Terceiros";
             this.Load += new System.EventHandler(this.FormAlterarTerceiros_WF_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.prigrelha_Docs)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_NumDocInicio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_NumDocFim)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.datagrid_Docs)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private PRISDK100.F4 f4_TipoDoc;
         private System.Windows.Forms.ComboBox cbox_Serie;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DateTimePicker datepicker_DataDocInicio;
         private System.Windows.Forms.DateTimePicker datepicker_DataDocFim;
-        private PRISDK100.PriGrelha prigrelha_Docs;
         private System.Windows.Forms.Button btn_ActualizarPriGrelha;
-        private PRISDK100.F4 f4_TipoTerceiro;
         private System.Windows.Forms.Button btn_AlterarTerceiro;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown num_NumDocInicio;
         private System.Windows.Forms.NumericUpDown num_NumDocFim;
+        private System.Windows.Forms.DataGridView datagrid_Docs;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Cf;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Data;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TipoDoc;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Serie;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NumDoc;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TipoTerceiro;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TotalDocumento;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cbox_Docs;
+        private System.Windows.Forms.ComboBox cbox_TipoTerceiro;
+        private System.Windows.Forms.Label label4;
     }
 }
