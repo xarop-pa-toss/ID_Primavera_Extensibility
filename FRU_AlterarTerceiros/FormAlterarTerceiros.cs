@@ -35,11 +35,11 @@ namespace FRU_AlterarTerceiros
             //    PSO.InicializaPlataforma(_sdkContexto);
             //}
 
-            SdkPrimavera.InicializaContexto(BSO, PSO);
+            //SdkPrimavera.InicializaContexto(BSO, PSO);
 
-            f4_TipoTerceiro.Inicializa(SdkPrimavera.ContextoSDK);
-            f4_TipoDoc.Inicializa(SdkPrimavera.ContextoSDK);
-            prigrelha_Docs.Inicializa(SdkPrimavera.ContextoSDK);
+            //f4_TipoTerceiro.Inicializa(SdkPrimavera.ContextoSDK);
+            //f4_TipoDoc.Inicializa(SdkPrimavera.ContextoSDK);
+            //prigrelha_Docs.Inicializa(SdkPrimavera.ContextoSDK);
 
             datepicker_DataDocInicio.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             datepicker_DataDocFim.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1);

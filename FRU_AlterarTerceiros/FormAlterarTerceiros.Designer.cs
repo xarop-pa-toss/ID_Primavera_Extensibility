@@ -31,7 +31,7 @@ namespace FRU_AlterarTerceiros
         {
             this.label1 = new System.Windows.Forms.Label();
             this.cbox_Serie = new System.Windows.Forms.ComboBox();
-            this.btn_AlterarTerceiro = new System.Windows.Forms.Button();
+            this.btnAlterarTerceiro = new System.Windows.Forms.Button();
             this.f4_TipoTerceiro = new PRISDK100.F4();
             this.f4_TipoDoc = new PRISDK100.F4();
             this.num_NumDocInicio = new System.Windows.Forms.NumericUpDown();
@@ -39,7 +39,7 @@ namespace FRU_AlterarTerceiros
             this.datepicker_DataDocInicio = new System.Windows.Forms.DateTimePicker();
             this.datepicker_DataDocFim = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
-            this.btn_ActualizarPriGrelha = new System.Windows.Forms.Button();
+            this.btnActualizarPriGrelha = new System.Windows.Forms.Button();
             this.prigrelha_Docs = new PRISDK100.PriGrelha();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -71,16 +71,16 @@ namespace FRU_AlterarTerceiros
             this.cbox_Serie.Size = new System.Drawing.Size(72, 21);
             this.cbox_Serie.TabIndex = 7;
             // 
-            // btn_AlterarTerceiro
+            // btnAlterarTerceiro
             // 
-            this.btn_AlterarTerceiro.Location = new System.Drawing.Point(476, 116);
-            this.btn_AlterarTerceiro.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_AlterarTerceiro.Name = "btn_AlterarTerceiro";
-            this.btn_AlterarTerceiro.Size = new System.Drawing.Size(109, 34);
-            this.btn_AlterarTerceiro.TabIndex = 9;
-            this.btn_AlterarTerceiro.Text = "Alterar Terceiro";
-            this.btn_AlterarTerceiro.UseVisualStyleBackColor = true;
-            this.btn_AlterarTerceiro.Click += new System.EventHandler(this.btnAlterarTerceiro_Click);
+            this.btnAlterarTerceiro.Location = new System.Drawing.Point(476, 116);
+            this.btnAlterarTerceiro.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAlterarTerceiro.Name = "btnAlterarTerceiro";
+            this.btnAlterarTerceiro.Size = new System.Drawing.Size(109, 34);
+            this.btnAlterarTerceiro.TabIndex = 9;
+            this.btnAlterarTerceiro.Text = "Alterar Terceiro";
+            this.btnAlterarTerceiro.UseVisualStyleBackColor = true;
+            this.btnAlterarTerceiro.Click += new System.EventHandler(this.btnAlterarTerceiro_Click);
             // 
             // f4_TipoTerceiro
             // 
@@ -244,16 +244,16 @@ namespace FRU_AlterarTerceiros
             this.label2.TabIndex = 20;
             this.label2.Text = "Inicial:";
             // 
-            // btn_ActualizarPriGrelha
+            // btnActualizarPriGrelha
             // 
-            this.btn_ActualizarPriGrelha.Location = new System.Drawing.Point(315, 116);
-            this.btn_ActualizarPriGrelha.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_ActualizarPriGrelha.Name = "btn_ActualizarPriGrelha";
-            this.btn_ActualizarPriGrelha.Size = new System.Drawing.Size(91, 34);
-            this.btn_ActualizarPriGrelha.TabIndex = 21;
-            this.btn_ActualizarPriGrelha.Text = "Actualizar";
-            this.btn_ActualizarPriGrelha.UseVisualStyleBackColor = true;
-            this.btn_ActualizarPriGrelha.Click += new System.EventHandler(this.btnActualizarPriGrelha_Click);
+            this.btnActualizarPriGrelha.Location = new System.Drawing.Point(315, 116);
+            this.btnActualizarPriGrelha.Margin = new System.Windows.Forms.Padding(2);
+            this.btnActualizarPriGrelha.Name = "btnActualizarPriGrelha";
+            this.btnActualizarPriGrelha.Size = new System.Drawing.Size(91, 34);
+            this.btnActualizarPriGrelha.TabIndex = 21;
+            this.btnActualizarPriGrelha.Text = "Actualizar";
+            this.btnActualizarPriGrelha.UseVisualStyleBackColor = true;
+            this.btnActualizarPriGrelha.Click += new System.EventHandler(this.btnActualizarPriGrelha_Click);
             // 
             // prigrelha_Docs
             // 
@@ -349,10 +349,10 @@ namespace FRU_AlterarTerceiros
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.prigrelha_Docs);
-            this.Controls.Add(this.btn_ActualizarPriGrelha);
+            this.Controls.Add(this.btnActualizarPriGrelha);
             this.Controls.Add(this.f4_TipoDoc);
             this.Controls.Add(this.f4_TipoTerceiro);
-            this.Controls.Add(this.btn_AlterarTerceiro);
+            this.Controls.Add(this.btnAlterarTerceiro);
             this.Controls.Add(this.cbox_Serie);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -376,7 +376,7 @@ namespace FRU_AlterarTerceiros
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cbox_Serie;
-        private System.Windows.Forms.Button btn_AlterarTerceiro;
+        private System.Windows.Forms.Button btnAlterarTerceiro;
         private PRISDK100.F4 f4_TipoTerceiro;
         private PRISDK100.F4 f4_TipoDoc;
         private System.Windows.Forms.NumericUpDown num_NumDocInicio;
@@ -384,7 +384,7 @@ namespace FRU_AlterarTerceiros
         private System.Windows.Forms.DateTimePicker datepicker_DataDocInicio;
         private System.Windows.Forms.DateTimePicker datepicker_DataDocFim;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btn_ActualizarPriGrelha;
+        private System.Windows.Forms.Button btnActualizarPriGrelha;
         private PRISDK100.PriGrelha prigrelha_Docs;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label5;
