@@ -15,9 +15,10 @@ namespace FRU_AlterarTerceiros
 {
     public partial class FormAlterarTerceiros_WF : Form
     {
-        private ErpBS BSO = new ErpBS();
-        private StdPlatBS PSO = new StdPlatBS();
-        //Variavél global que contem o contexto e que deverá ser passada para os controlos.
+        private ErpBS _BSO;
+        private StdPlatBS _PSO; 
+        private StdBSConfApl _objAplConf = new StdBSConfApl();
+        private StdBETransaccao _objStdTransac = new StdBETransaccao();
 
         public FormAlterarTerceiros_WF()
         {
@@ -27,15 +28,15 @@ namespace FRU_AlterarTerceiros
         // LOAD e Inicialização
         private void FormAlterarTerceiros_WF_Load(object sender, EventArgs e)
         {
-            // *** ABRIR EMPRESA ***
-            // *** ASS REG SERVIDOR ***
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "0012004", "faturacao", "*Pelicano*");
+            Motor.PriEngine.CreateContext("0012004", "faturacao", "*Pelicano*");
+            _BSO = Motor.PriEngine.Engine;
+            _PSO = Motor.PriEngine.Platform;
 
             datepicker_DataDocInicio.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             datepicker_DataDocFim.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1);
 
             FillComboBox(cbox_Docs, "SELECT CONCAT(Documento, ' - ', Descricao) AS Documento FROM DocumentosVenda WHERE Inactivo = 0 ORDER BY Documento DESC;");
-            FillComboBox(cbox_TipoTerceiro, "SELECT CONCAT(TipoTerceiro - Descricao) AS TipoTerceiro FROM TipoTerceiros WHERE Clientes = 1;");
+            FillComboBox(cbox_TipoTerceiro, "SELECT CONCAT(TipoTerceiro, ' - ', Descricao) AS TipoTerceiro FROM TipoTerceiros WHERE Clientes = 1;");
         }
 
 
@@ -70,7 +71,7 @@ namespace FRU_AlterarTerceiros
             string sqlCommand = String.Join(" ", sqlDict.Values);
 
             // Preenchimento da Prigrelha com a query acima
-            StdBELista rcSet = BSO.Consulta(sqlCommand);
+            StdBELista rcSet = _BSO.Consulta(sqlCommand);
             rcSet.Inicio();
             datagrid_Docs.Rows.Clear();
 
@@ -110,7 +111,7 @@ namespace FRU_AlterarTerceiros
                 using (StdBEExecSql sql = new StdBEExecSql()) {
                     sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
                     sql.Tabela = "CabecDoc";                                                                                    // UPDATE CabecDoc
-                    sql.AddCampo("TipoTerceiro", valoresControlos["Terceiro"]);                                                 // SET TipoTerceiro = ...
+                    sql.AddCampo("TipoTerceiro", gTipoTerceiro);                                                                // SET TipoTerceiro = ...
                     sql.AddCampo("Tipodoc", gTipoDoc, true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);                      // WHERE TipoDoc = ...
                     sql.AddCampo("Serie", gSerie, true, StdBETipos.EnumTipoCampoSimplificado.tsTexto);                          // AND ...
                     sql.AddCampo("NumDoc", Convert.ToInt32(gNumDoc), true, StdBETipos.EnumTipoCampoSimplificado.tsInteiro);     // AND ...
@@ -119,17 +120,17 @@ namespace FRU_AlterarTerceiros
 
                     // Se Update falhar, preenche lista com NumDoc para mostrar ao cliente.
                     try {
-                        PSO.ExecSql.Executa(sql);
+                        _PSO.ExecSql.Executa(sql);
                     }
-                    catch {
-                        docsComErroNoUpdateSQL.Add(gNumDoc);
+                    catch (Exception ex){
+                        docsComErroNoUpdateSQL.Add(gNumDoc + ex.ToString());
                     }
                 }
             }
             if (docsComErroNoUpdateSQL.Count != 0) {
-                PSO.MensagensDialogos.MostraAviso("Não foi possivel alterar o Tipo Terceiro em alguns documentos!", StdBSTipos.IconId.PRI_Exclama, String.Join(", ", docsComErroNoUpdateSQL));
+                _PSO.MensagensDialogos.MostraAviso("Não foi possivel alterar o Tipo Terceiro em alguns documentos!", StdBSTipos.IconId.PRI_Exclama, String.Join(", ", docsComErroNoUpdateSQL));
             } else {
-                PSO.MensagensDialogos.MostraAviso("Todos os documentos alterados com sucesso.", StdBSTipos.IconId.PRI_Informativo);
+                _PSO.MensagensDialogos.MostraAviso("Todos os documentos alterados com sucesso.", StdBSTipos.IconId.PRI_Informativo);
             }
         }
 
@@ -159,7 +160,7 @@ namespace FRU_AlterarTerceiros
         private void FillComboBox(ComboBox comboBox, string query)
         {
             // Preenche qualquer winforms combobox com qualquer consulta SQL utilizando StdBELista
-            using (StdBELista priLista = BSO.Consulta(query)) {
+            using (StdBELista priLista = _BSO.Consulta(query)) {
 
                 if (!priLista.Vazia()) {
                     priLista.Inicio();
@@ -187,7 +188,7 @@ namespace FRU_AlterarTerceiros
         private bool CheckControlos(Dictionary<string, string> valoresControlos)
         {
             if (valoresControlos.Values.Any(value => value == null)) {
-                System.Windows.Forms.MessageBox.Show("Dados insuficientes. Verifique se existem campos vazios.");
+                _PSO.MensagensDialogos.MostraAviso("Dados insuficientes. Verifique se existem campos vazios.", StdBSTipos.IconId.PRI_Exclama);
                 return false;
             }
             return true;

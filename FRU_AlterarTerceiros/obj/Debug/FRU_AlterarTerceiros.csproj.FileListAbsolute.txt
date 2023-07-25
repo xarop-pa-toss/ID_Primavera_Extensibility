@@ -28,3 +28,15 @@ C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Deb
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.pdb
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.FormAlterarTerceiros_WF.resources
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\Interop.AdmEngine900.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\Interop.MSAPC.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\Interop.MSXML2.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\Interop.Scripting.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\Interop.SQLDMO.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\Interop.StdBE900.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\Interop.StdBESql900.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\Interop.VBA.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\Interop.XtremeCommandBars.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\Interop.XtremeDockingPane.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\bin\Debug\Primavera.Extensibility.Patterns.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRU_AlterarTerceiros\obj\Debug\FRU_AlterarTerceiros.csproj.ResolveComReference.cache
