@@ -1,6 +1,4 @@
 using Primavera.Extensibility.Sales.Editors;
-using Primavera.Extensibility.BusinessEntities;
-using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -22,11 +22,9 @@ namespace PP_Extens
 
             tipodoc = DocumentoCBL.Doc;
 
-            if (DocumentoCBL.Modulo == "C")
-            {
+            if (DocumentoCBL.Modulo == "C") {
                 string[] docArr = { "VFA", "VFS" };
-                if (docArr.Contains(tipodoc) && DocumentoCBL.LinhasGeral.NumItens != 0)
-                {
+                if (docArr.Contains(tipodoc) && DocumentoCBL.LinhasGeral.NumItens != 0) {
                     // Reset variaveis
                     totalDeb = 0; totalCred = 0; totalIvaDeb = 0; totalIvaCred = 0;
                     totalDocOrig = BSO.Compras.Documentos.DaTotalDocumento(this.DocumentoCBL.IdDocOrigem);
@@ -206,7 +204,7 @@ namespace PP_Extens
             base.AntesDeProcessarCBL(ref Cancel, e);
 
         }
-        private void CalculaTotaisLancamento (ref double totalDeb, ref double totalCred, ref double totalIvaDeb, ref double totalIvaCred)
+        private void CalculaTotaisLancamento(ref double totalDeb, ref double totalCred, ref double totalIvaDeb, ref double totalIvaCred)
         {
 
             totalDeb = 0;
@@ -215,52 +213,51 @@ namespace PP_Extens
             totalIvaCred = 0;
             CblBELinhasDocGeral linhasGeral = DocumentoCBL.LinhasGeral;
 
-            for (int i = 1; i < this.DocumentoCBL.LinhasGeral.NumItens; i++)
-            {
+            for (int i = 1; i < this.DocumentoCBL.LinhasGeral.NumItens; i++) {
                 CblBELinhaDocGeral linha = linhasGeral.GetEdita(i);
-                
-                if (linha.Natureza == "D")
-                {
-                    
+
+                if (linha.Natureza == "D") {
+
                 }
+            }
+            //        Private Sub CalculaTotaisLancamento(ByRef totaldeb, totalcred, totalivadeb, totalivacred As Double)
+
+            //    For i = 1 To Me.DocumentoCBL.LinhasGeral.NumItens
+
+
+            //        If Me.DocumentoCBL.LinhasGeral(i).Natureza = "D" Then
+
+            //            totaldeb = totaldeb + Me.DocumentoCBL.LinhasGeral(i).Valor
+
+
+            //            If Me.DocumentoCBL.LinhasGeral(i).Conta Like "243*" Then
+
+            //                totalivadeb = totalivadeb + Me.DocumentoCBL.LinhasGeral(i).Valor
+
+
+            //            End If
+
+
+            //        ElseIf Me.DocumentoCBL.LinhasGeral(i).Natureza = "C" Then
+
+            //            totalcred = totalcred + Me.DocumentoCBL.LinhasGeral(i).Valor
+
+
+            //            If Me.DocumentoCBL.LinhasGeral(i).Conta Like "243*" Then
+
+            //                totalivacred = totalivacred + Me.DocumentoCBL.LinhasGeral(i).Valor
+
+
+            //            End If
+
+
+            //        Else
+
+            //        End If
+
+            //    Next i
+
+            //End Sub
         }
-        //        Private Sub CalculaTotaisLancamento(ByRef totaldeb, totalcred, totalivadeb, totalivacred As Double)
-
-        //    For i = 1 To Me.DocumentoCBL.LinhasGeral.NumItens
-
-
-        //        If Me.DocumentoCBL.LinhasGeral(i).Natureza = "D" Then
-
-        //            totaldeb = totaldeb + Me.DocumentoCBL.LinhasGeral(i).Valor
-
-
-        //            If Me.DocumentoCBL.LinhasGeral(i).Conta Like "243*" Then
-
-        //                totalivadeb = totalivadeb + Me.DocumentoCBL.LinhasGeral(i).Valor
-
-
-        //            End If
-
-
-        //        ElseIf Me.DocumentoCBL.LinhasGeral(i).Natureza = "C" Then
-
-        //            totalcred = totalcred + Me.DocumentoCBL.LinhasGeral(i).Valor
-
-
-        //            If Me.DocumentoCBL.LinhasGeral(i).Conta Like "243*" Then
-
-        //                totalivacred = totalivacred + Me.DocumentoCBL.LinhasGeral(i).Valor
-
-
-        //            End If
-
-
-        //        Else
-
-        //        End If
-
-        //    Next i
-
-        //End Sub
     }
 }

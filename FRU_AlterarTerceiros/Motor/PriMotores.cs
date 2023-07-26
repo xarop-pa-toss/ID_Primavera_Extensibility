@@ -1,12 +1,5 @@
-using Primavera.Extensibility.Platform.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ErpBS100;
-using Primavera.Extensibility.BusinessEntities.ExtensibilityService;
-using Primavera.Extensibility.Integration.Context;
 using StdBE100; using StdPlatBS100; using static StdBE100.StdBETipos;
 
 

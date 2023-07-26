@@ -8,7 +8,7 @@ namespace PP_PPCS
 {
     class QueriesSQL
     {
-        public static string Query01 { get; set; } = @"
+        private static string Query01 = @"
             SELECT 
                 scc.TipoEntidade, 
                 scc.Entidade, 
@@ -55,7 +55,7 @@ namespace PP_PPCS
                 (scc.DataDoc = CONVERT(DATE, '{1}', 105) OR (ISNULL(cc.DataDoc,'') = CONVERT(DATE, '{1}', 105)));
             ";
 
-        public static string Query02 { set; get; } = @"
+        private static string Query02 = @"
             INSERT INTO 
                 {0} (TipoEntidade, Entidade, Filial, TipoDoc, Serie, NumDoc, EntLocal, FilialLoc, TipoDocLoc, SerieLoc, NumDocLocal, Data, Importa) 
             SELECT 
@@ -99,17 +99,22 @@ namespace PP_PPCS
                 scd.Data = CONVERT(DATE, '{1}', 105);
             ";
 
-        public static string GetQuery01(string tabela, string data)
-        {
-            return string.Format(Query01, tabela, data);
-        }
+        private static string Query03 = @"
+        SELECT TipoEntidade, Entidade, Filial, TipoDoc, Serie, NumDoc, EntLocal, FilialLoc, TipoDocLoc, SerieLoc, NumDocLocal, Data, Importa
+        FROM  {0} 
+        ORDER BY By TipoEntidade, Filial, TipoDoc, Serie, NumDoc;
+        ;";
 
-        public static string GetQuery02(string tabela, string data)
+        private static readonly Dictionary<string, string> QueryDict = new Dictionary<string, string>
         {
-            return string.Format(Query02, tabela, data);
+            {"Query01", Query01 },
+            {"Query02", Query02 },
+            {"Query03", Query03 }
+        };
+
+        public static string GetQuery(string queryNome, string tabela, string data)
+        {
+            return string.Format(queryNome, tabela, data);
         }
     }
-
-
-
 }

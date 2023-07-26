@@ -74,11 +74,15 @@ namespace PP_PPCS
             prigrelha_Docs.AddColKey("TipoTerceiro", 2, strTitulo: "Tipo Terceiro", dblLargura: 10, strCamposBaseDados: "TotalDocumento", blnMostraSempre: true);
             prigrelha_Docs.AddColKey("TotalDocumento", 2, strTitulo: "Total", dblLargura: 8, strCamposBaseDados: "TotalDocumento", blnMostraSempre: true);
         }
-    
 
         private void btnSair_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void btn_Processar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

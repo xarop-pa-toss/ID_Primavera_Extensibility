@@ -53,7 +53,7 @@ namespace PP_PPCS
             this.prigrelha_Docs.Cols = null;
             this.prigrelha_Docs.ColsFrozen = -1;
             this.prigrelha_Docs.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.prigrelha_Docs.Location = new System.Drawing.Point(18, 20);
+            this.prigrelha_Docs.Location = new System.Drawing.Point(18, 11);
             this.prigrelha_Docs.Margin = new System.Windows.Forms.Padding(2);
             this.prigrelha_Docs.Name = "prigrelha_Docs";
             this.prigrelha_Docs.NumeroMaxRegistosSemPag = 150000;
@@ -78,7 +78,7 @@ namespace PP_PPCS
             this.prigrelha_Docs.PermiteStatusBar = true;
             this.prigrelha_Docs.PermiteVistas = true;
             this.prigrelha_Docs.PosicionaColunaSeguinte = true;
-            this.prigrelha_Docs.Size = new System.Drawing.Size(721, 388);
+            this.prigrelha_Docs.Size = new System.Drawing.Size(721, 397);
             this.prigrelha_Docs.TabIndex = 23;
             this.prigrelha_Docs.TituloGrelha = "";
             this.prigrelha_Docs.TituloMapa = "";
@@ -131,7 +131,7 @@ namespace PP_PPCS
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Location = new System.Drawing.Point(103, 460);
+            this.groupBox1.Location = new System.Drawing.Point(159, 469);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(337, 40);
             this.groupBox1.TabIndex = 29;
@@ -149,16 +149,17 @@ namespace PP_PPCS
             // 
             // btn_Processar
             // 
-            this.btn_Processar.Location = new System.Drawing.Point(655, 430);
+            this.btn_Processar.Location = new System.Drawing.Point(649, 428);
             this.btn_Processar.Name = "btn_Processar";
             this.btn_Processar.Size = new System.Drawing.Size(90, 32);
             this.btn_Processar.TabIndex = 30;
             this.btn_Processar.Text = "Processar";
             this.btn_Processar.UseVisualStyleBackColor = true;
+            this.btn_Processar.Click += new System.EventHandler(this.btn_Processar_Click);
             // 
             // btn_Sair
             // 
-            this.btn_Sair.Location = new System.Drawing.Point(655, 467);
+            this.btn_Sair.Location = new System.Drawing.Point(649, 466);
             this.btn_Sair.Name = "btn_Sair";
             this.btn_Sair.Size = new System.Drawing.Size(90, 32);
             this.btn_Sair.TabIndex = 31;
