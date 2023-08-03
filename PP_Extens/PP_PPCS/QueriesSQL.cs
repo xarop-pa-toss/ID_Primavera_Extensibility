@@ -100,18 +100,26 @@ namespace PP_PPCS
             ";
 
         private static string Query03 = @"
-            SELECT TipoEntidade, Entidade, Filial, TipoDoc, Serie, NumDoc, EntLocal, FilialLoc, TipoDocLoc, SerieLoc, NumDocLocal, Data, Importa
-            FROM  {0} 
-            ORDER BY By TipoEntidade, Filial, TipoDoc, Serie, NumDoc;
-            ;";
+            SELECT TipoEntidade, Entidade, Filial, TipoDoc, Serie, NumDoc, EntLocal, FilialLoc, TipoDocLoc, SerieLoc, NumDocLocal, Data, Importa 
+            FROM {0}  
+            ORDER BY By TipoEntidade, Filial, TipoDoc, Serie, NumDoc;";
 
-        private static string Query04 = string.Format(@"
+        private static string Query04 = @"
             SELECT * 
             FROM Servidor1.PriPortipesca.dbo.CabecCompras 
-            WHERE Filial = '{0}'
+            WHERE Filial = '{0}' 
                 AND TipoDoc = '{1}' 
-                AND Serie = '{2}'
-                AND NumDoc = '{3}';");
+                AND Serie = '{2}' 
+                AND NumDoc = '{3}';";
+
+        private static string Query05 = @"
+            SELECT * 
+            FROM Servidor1.PriPortipesca.dbo.CabecCompras 
+            WHERE 
+                Filial = '{0}' 
+                AND TipoDoc = '{1}' 
+                AND Serie = '{2}' 
+                AND NumDoc = {3};";
 
 
         public static string GetQuery01(string tabela, string data)
@@ -133,5 +141,14 @@ namespace PP_PPCS
         {
             return string.Format(Query04, filial, tipoDoc, serie, numDoc);
         }
+
+        public static string GetQuery05(string filial, string tipoDoc, string serie, string numDoc)
+        {
+            return string.Format(Query05, filial, tipoDoc, serie, numDoc);
+        }
     }
 }
+
+
+
+

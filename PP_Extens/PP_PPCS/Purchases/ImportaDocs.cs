@@ -5,7 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using StdPlatBS100; using ErpBS100; using CmpBE100; using BasBE100; using StdBE100;
+using StdPlatBS100;
+using ErpBS100;
+using CmpBE100;
+using BasBE100;
+using StdBE100;
 
 
 
@@ -96,7 +100,6 @@ namespace PP_PPCS
                             docNovo = BSO.Compras.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest);
 
                             RSet = BSO.Consulta(QueriesSQL.GetQuery04(Filial, TipoDoc, Serie, NumDoc.ToString()));
-
                             docNovo.DataDoc = DataDoc;
                             docNovo.Entidade = EntLocal;
                             docNovo.DescFornecedor = RSet.Valor("DescEntidade");
@@ -108,7 +111,6 @@ namespace PP_PPCS
                     } else {
 
                         RSet = BSO.Consulta(QueriesSQL.GetQuery04(Filial, TipoDoc, Serie, NumDoc.ToString()));
-
                         docNovo.Filial = Filial;
                         docNovo.Serie = Serie;
                         docNovo.Tipodoc = TipoDoc;
@@ -118,7 +120,26 @@ namespace PP_PPCS
                         docNovo.CamposUtil["CDU_TipoDocOrig"].Valor = TipoDoc;
                         docNovo.CamposUtil["CDU_SerieOrig"].Valor = Serie;
                         docNovo.CamposUtil["CDU_NumDocOrig"].Valor = NumDoc;
+
+                        int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoCompras.compDadosTodos;
+                        BSO.Compras.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
+
+                        docNovo.DataDoc = DataDoc;
+                        if (docNovo.DataIntroducao < DataDoc) { docNovo.DataIntroducao = DataDoc; }
+                        if (docNovo.DataVenc < DataDoc) { docNovo.DataVenc = DataDoc; }
+
+                        docNovo.DescFornecedor = RSet.Valor("DescEntidade");
+                        docNovo.DescFinanceiro = RSet.Valor("DescPag");
+                        docNovo.TrataIvaCaixa = false;
+
+                        RSet.Dispose();
                     }
+
+                    RSet = BSO.Consulta(QueriesSQL.GetQuery05(Filial, TipoDoc, Serie, NumDoc.ToString()));
+                    docNovo.NumDocExterno = TipoDoc + " Nº " + NumDoc.ToString() + "/" + Serie + " - " + RSet.Valor("NumDocExterno");
+
+                    RSet = BSO.Consulta(QueriesSQL.GetQuery06(Filial, TipoDoc, Serie, NumDoc.ToString()));
+
                 }
                 return false;
             }
