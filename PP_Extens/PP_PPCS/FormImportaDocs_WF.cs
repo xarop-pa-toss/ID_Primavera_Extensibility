@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms; using ErpBS100; using StdPlatBS100; using StdBE100;
+using System.Windows.Forms; using ErpBS100; using StdPlatBS100; using StdBE100; using VndBE100;
 
 namespace PP_PPCS
 {
@@ -15,6 +15,7 @@ namespace PP_PPCS
         private ErpBS _BSO;
         private StdPlatBS _PSO;
         private DateTime _dataOrigem, _dataDestino;
+        private StdBELista _RSet;
         string _tabela = "#A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
 
 
@@ -33,14 +34,14 @@ namespace PP_PPCS
             datepicker_DataDocImportar_WF.Value = DateTime.Now;
             datepicker_DataDocNovo_WF.Value = DateTime.Now;
 
-            InicializaPriGrelhaDocs();
-            PreenchePriGrelhaDocs(DateTime.Now);
+            InicializarPriGrelhaDocs();
+            ActualizarPriGrelhaDocs(DateTime.Now);
         }
 
-        private void InicializaPriGrelhaDocs()
+        private void InicializarPriGrelhaDocs()
         {
             prigrelha_Docs_WF.LimpaGrelha();
-            prigrelha_Docs_WF.TituloGrelha = "Documentos do dia: " + dataImport.ToString();
+            prigrelha_Docs_WF.TituloGrelha = "Documentos do dia: " + _dataOrigem.ToString();
             prigrelha_Docs_WF.PermiteActualizar = true;
             prigrelha_Docs_WF.PermiteAgrupamentosUser = true;
             prigrelha_Docs_WF.PermiteScrollBars = true;
@@ -100,8 +101,10 @@ namespace PP_PPCS
             //}
         }
 
-        private void PreenchePriGrelhaDocs(DateTime dataImport)
+        private void ActualizarPriGrelhaDocs(DateTime dataImport)
         {
+            prigrelha_Docs_WF.LimpaGrelha();
+
             // Define data de origem. PriGrelha inicializa com data de hoje.
             _dataOrigem = dataImport;
 
@@ -109,23 +112,56 @@ namespace PP_PPCS
             _BSO.Consulta(QueriesSQL.GetQuery("Query01",_tabela, dataImport.ToString()));
             _BSO.Consulta(QueriesSQL.GetQuery("Query02", _tabela, dataImport.ToString()));
 
-            StdBELista RSet = _BSO.Consulta(QueriesSQL.GetQuery("Query03", _tabela, dataImport.ToString()));
-            prigrelha_Docs_WF.DataBind(RSet);
+            _RSet = _BSO.Consulta(QueriesSQL.GetQuery("Query03", _tabela, dataImport.ToString()));
+            prigrelha_Docs_WF.DataBind(_RSet);
 
         }
 
         private void btn_Processar_WF_Click(object sender, EventArgs e)
         {
+            string entLoc, filialLoc, tipoDocLoc, serieLoc;
+            long numDocLoc;
+            bool Cancel = false;
 
+            _dataDestino = datepicker_DataDocNovo_WF.Value;
+
+            if (!_RSet.Vazia()) {
+                _RSet.Inicio();
+
+                while (!_RSet.NoFim() && Cancel != true) {
+                    
+                    // Uniformização do input na coluna Importa
+                    string importa = _RSet.Valor("Importa");
+                    importa = importa.ToUpper();
+
+                    if (importa == "S" || importa == "N")
+                    {
+                        entLoc = _RSet.Valor("EntLocal");
+                        filialLoc = _RSet.Valor("FilialLoc");
+                        tipoDocLoc = _RSet.Valor("TipoDocLoc");
+                        serieLoc = _RSet.Valor("SerieLoc");
+                        numDocLoc = _RSet.Valor("NumDocLoc");
+
+                        if (_RSet.Valor("TipoEntidade" == "C")  || _RSet.Valor("TipoEntidade" == "F")){
+                            //CriarDocumentoVenda()
+                        }                        
+                    }
+                    _RSet.Seguinte();
+                }
+            }
+            btn_Sair_WF.Focus();
         }
 
         private void btn_Actualizar_WF_Click(object sender, EventArgs e)
         {
-            StdBELista RSet = _BSO.Consulta("DROP TABLE " + _tabela + ";");
+            _BSO.Consulta("DROP TABLE " + _tabela + ";");
+
+            ActualizarPriGrelhaDocs(_dataOrigem);
             
+            _dataDestino = _dataOrigem;
+            datepicker_DataDocNovo_WF = datepicker_DataDocImportar_WF;
 
-
-
+            btn_Processar_WF.Focus();
         }
 
         private void prigrelha_Docs_WF_Load(object sender, EventArgs e)

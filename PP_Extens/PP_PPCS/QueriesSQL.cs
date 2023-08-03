@@ -100,21 +100,38 @@ namespace PP_PPCS
             ";
 
         private static string Query03 = @"
-        SELECT TipoEntidade, Entidade, Filial, TipoDoc, Serie, NumDoc, EntLocal, FilialLoc, TipoDocLoc, SerieLoc, NumDocLocal, Data, Importa
-        FROM  {0} 
-        ORDER BY By TipoEntidade, Filial, TipoDoc, Serie, NumDoc;
-        ;";
+            SELECT TipoEntidade, Entidade, Filial, TipoDoc, Serie, NumDoc, EntLocal, FilialLoc, TipoDocLoc, SerieLoc, NumDocLocal, Data, Importa
+            FROM  {0} 
+            ORDER BY By TipoEntidade, Filial, TipoDoc, Serie, NumDoc;
+            ;";
 
-        private static readonly Dictionary<string, string> QueryDict = new Dictionary<string, string>
-        {
-            {"Query01", Query01 },
-            {"Query02", Query02 },
-            {"Query03", Query03 }
-        };
+        private static string Query04 = string.Format(@"
+            SELECT * 
+            FROM Servidor1.PriPortipesca.dbo.CabecCompras 
+            WHERE Filial = '{0}'
+                AND TipoDoc = '{1}' 
+                AND Serie = '{2}'
+                AND NumDoc = '{3}';");
 
-        public static string GetQuery(string queryNome, string tabela, string data)
+
+        public static string GetQuery01(string tabela, string data)
         {
-            return string.Format(queryNome, tabela, data);
+            return string.Format(Query01, tabela, data);
+        }
+
+        public static string GetQuery02(string tabela, string data)
+        {
+            return string.Format(Query02, tabela, data);
+        }
+
+        public static string GetQuery03(string tabela, string data)
+        {
+            return string.Format(Query03, tabela, data);
+        }
+
+        public static string GetQuery04(string filial, string tipoDoc, string serie, string numDoc)
+        {
+            return string.Format(Query04, filial, tipoDoc, serie, numDoc);
         }
     }
 }
