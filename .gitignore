@@ -1,5 +1,6 @@
 *.xls
 *.xlsx
 *.sql
+*SQL.cs
 formImportTxt.cs
 formFaturasExploracao_WF.cs
