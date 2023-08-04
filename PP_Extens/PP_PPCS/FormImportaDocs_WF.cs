@@ -109,10 +109,10 @@ namespace PP_PPCS
             _dataOrigem = dataImport;
 
             // Ver QueriesSQL.cs
-            _BSO.Consulta(QueriesSQL.GetQuery("Query01",_tabela, dataImport.ToString()));
-            _BSO.Consulta(QueriesSQL.GetQuery("Query02", _tabela, dataImport.ToString()));
+            _BSO.Consulta(QueriesSQL.GetQuery01(_tabela, dataImport.ToString()));
+            _BSO.Consulta(QueriesSQL.GetQuery02(_tabela, dataImport.ToString()));
 
-            _RSet = _BSO.Consulta(QueriesSQL.GetQuery("Query03", _tabela, dataImport.ToString()));
+            _RSet = _BSO.Consulta(QueriesSQL.GetQuery03(_tabela, dataImport.ToString()));
             prigrelha_Docs_WF.DataBind(_RSet);
 
         }
@@ -162,11 +162,6 @@ namespace PP_PPCS
             datepicker_DataDocNovo_WF = datepicker_DataDocImportar_WF;
 
             btn_Processar_WF.Focus();
-        }
-
-        private void prigrelha_Docs_WF_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

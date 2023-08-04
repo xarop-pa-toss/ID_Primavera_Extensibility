@@ -32,12 +32,11 @@ namespace PP_PPCS
             long? NumDocDest,
             DateTime DataDoc,
             string Importa,
-            bool Cancel,
-            string SQLErrors
+            bool Cancel
         #endregion
             )
         {
-            string localstr = "";
+            string localstr = "", SQLErrors = "";
             bool Cancelar = false;
 
             // Preenchimento do novo documento de compra
@@ -139,9 +138,16 @@ namespace PP_PPCS
                     docNovo.NumDocExterno = TipoDoc + " Nº " + NumDoc.ToString() + "/" + Serie + " - " + RSet.Valor("NumDocExterno");
 
                     RSet = BSO.Consulta(QueriesSQL.GetQuery06(Filial, TipoDoc, Serie, NumDoc.ToString()));
+                    RSet.NoInicio();
+                    while (!RSet.NoFim()) {
+                        if (!string.IsNullOrEmpty(RSet.Valor("ArtigoDestino")) && BSO.Base.Artigos.Existe(RSet.Valor("ArtigoDestino"))) {
 
+                            BSO.Compras.Documentos.AdicionaLinha(docNovo, RSet.Valor("ArtigoDestino"), )
+                        }
+                    }
+
+                    return false;
                 }
-                return false;
             }
         }
     }

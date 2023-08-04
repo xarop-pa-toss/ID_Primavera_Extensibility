@@ -121,6 +121,19 @@ namespace PP_PPCS
                 AND Serie = '{2}' 
                 AND NumDoc = {3};";
 
+        private static string Query06 = @"
+            SELECT CASE WHEN tca.CDU_ArtigoDestino IS NULL THEN '' ELSE tca.CDU_ArtigoDestino END AS ArtigoDestino, lc.*, cc.DescEntidade, cc.DescPag 
+            FROM Servidor1.PriPortipesca.dbo.LinhasCompras lc 
+                INNER JOIN Servidor1.PriPortipesca.dbo.CabecCompras cc ON lc.IdCabecCompras = cc.Id 
+                LEFT OUTER JOIN TDU_CorrespondenciaArtigos tca ON lc.Artigo = tca.CDU_ArtigoOriginal 
+            WHERE 
+                cc.Filial = {0} 
+                ANDAnd cc.TipoDoc = {1} 
+                AND cc.Serie = {2} 
+                AND cc.NumDoc =  {3} 
+                AND lc.CDU_Pescado = 1 
+            ORDER BY NumLinha;";
+
 
         public static string GetQuery01(string tabela, string data)
         {
@@ -143,6 +156,11 @@ namespace PP_PPCS
         }
 
         public static string GetQuery05(string filial, string tipoDoc, string serie, string numDoc)
+        {
+            return string.Format(Query05, filial, tipoDoc, serie, numDoc);
+        }
+
+        public static string GetQuery06(string filial, string tipoDoc, string serie, string numDoc)
         {
             return string.Format(Query05, filial, tipoDoc, serie, numDoc);
         }
