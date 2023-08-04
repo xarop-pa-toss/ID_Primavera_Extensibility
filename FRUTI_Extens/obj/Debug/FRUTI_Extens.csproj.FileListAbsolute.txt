@@ -1,0 +1,6 @@
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRUTI_Extens\bin\Debug\FRUTI_Extens.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRUTI_Extens\bin\Debug\FRUTI_Extens.pdb
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRUTI_Extens\obj\Debug\FRUTI_Extens.csproj.AssemblyReference.cache
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRUTI_Extens\obj\Debug\FRUTI_Extens.csproj.CoreCompileInputs.cache
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRUTI_Extens\obj\Debug\FRUTI_Extens.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRUTI_Extens\obj\Debug\FRUTI_Extens.pdb
