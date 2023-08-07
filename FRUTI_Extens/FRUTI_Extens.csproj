@@ -61,6 +61,10 @@
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.BusinessEntities.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Primavera.Extensibility.CustomCode">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.CustomCode.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Primavera.Extensibility.Integration">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Integration.dll</HintPath>
       <Private>False</Private>
@@ -83,8 +87,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Linq" />
     <Reference Include="System.Threading.Tasks" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -96,9 +102,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OpenWForm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Purchases\UiEditorCompras.cs" />
     <Compile Include="Sales\UiEditorVendas.cs" />
+    <Compile Include="VendArtigo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VendArtigo.Designer.cs">
+      <DependentUpon>VendArtigo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VendFornecedor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VendFornecedor.Designer.cs">
+      <DependentUpon>VendFornecedor.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
