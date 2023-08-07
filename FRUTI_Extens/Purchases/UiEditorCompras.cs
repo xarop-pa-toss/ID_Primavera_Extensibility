@@ -20,6 +20,7 @@ namespace FRUTI_Extens.Purchases
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
             List<string> tipoDocList = new List<string> { "VFA", "VFD", "VGR", "VFF", "CVS" };
+            List<string> artigosComErroNoUpdateSQL = new List<string>();
             string strErro = "";
 
             if (PSO.MensagensDialogos.MostraPerguntaSimples("Confirma actualização de preços?") && tipoDocList.Contains(this.DocumentoCompra.Tipodoc)) {                
@@ -56,12 +57,15 @@ namespace FRUTI_Extens.Purchases
                             sql.AddQuery();
 
                             // Se Update falhar, preenche lista com NumDoc para mostrar ao cliente.
+                            BSO.IniciaTransaccao();
                             try {
                                 PSO.ExecSql.Executa(sql);
                             }
                             catch {
-                                docsComErroNoUpdateSQL.Add(gNumDoc);
+                                artigosComErroNoUpdateSQL.Add(artigoActual);
+                                BSO.DesfazTransaccao();
                             }
+                            BSO.TerminaTransaccao();
                         }
                     }
 
