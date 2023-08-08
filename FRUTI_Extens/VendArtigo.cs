@@ -13,13 +13,28 @@ namespace FRUTI_Extens
 {
     public partial class VendArtigo : Form
     {
-        string _relatorio, _rSel, _gSel, _titulo, _dataInicial, _dataFinal, _detalhe;
         private ErpBS _BSO;
         private StdPlatBS _PSO;
 
-        private void btn_Imprimir_Click(object sender, EventArgs e)
+        private void btnImprimirClick(object sender, EventArgs e)
         {
+            string relatorio, rSel, gSel, titulo, dataInicial, dataFinal, detalhe;
 
+            titulo = "Vendas Por SubFamilia";
+            relatorio = "VendArti";
+            dataInicial = dtPicker_dataInicial.Value.ToString();
+            dataFinal = dtPicker_dataFinal.Value.ToString();
+
+            _PSO.Mapas.Inicializar("ERP");
+            _PSO.Mapas.VerificarBdAntesImpressao = true;
+            _PSO.Mapas.SelectionFormula = @"
+                {CabecDoc.Data} >= " + dataInicial +
+                " and {CabecDoc.Data} <= " + dataFinal +
+                " and {SubFamilias.SubFamilia} = '" + f4_subfamilia.Text +
+                "' and {DocumentosVenda.TipoDocumento} = 4";
+            _PSO.Mapas.JanelaPrincipal = 1;
+            _PSO.Mapas.AddFormula("Titulo", "' " + titulo + " (" + dataInicial + " até " + dataFinal + ")'");
+            _PSO.Mapas.ImprimeListagem(relatorio, blnModal: true);
         }
 
         public VendArtigo()
