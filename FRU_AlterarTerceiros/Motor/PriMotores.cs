@@ -23,15 +23,15 @@ namespace FRU_AlterarTerceiros.Motor
         {
             StdBSConfApl objAplConf = new StdBSConfApl();
             StdPlatBS Plataforma = new StdPlatBS();
-            ErpBS MotorLE = new ErpBS();
+            ErpBS MotorLP = new ErpBS();
 
             EnumTipoPlataforma objTipoPlataforma;
             objTipoPlataforma = EnumTipoPlataforma.tpProfissional;
 
-            objAplConf.Instancia = "Default";
+            objAplConf.Instancia = Company;
             objAplConf.AbvtApl = "ERP";
-            objAplConf.PwdUtilizador = "*Pelicano*";
-            objAplConf.Utilizador = "faturacao";
+            objAplConf.Utilizador = User;
+            objAplConf.PwdUtilizador = Password;
             objAplConf.LicVersaoMinima = "10.00";
 
             StdBETransaccao objStdTransac = new StdBETransaccao();
@@ -40,18 +40,18 @@ namespace FRU_AlterarTerceiros.Motor
                 Plataforma.AbrePlataformaEmpresa(Company, objStdTransac, objAplConf, objTipoPlataforma);
             }
             catch (Exception ex) {
-                System.Windows.Forms.MessageBox.Show("Bruh");
+                System.Windows.Forms.MessageBox.Show("Não foi possivel abrir a plataforma/empresa.");
                 throw (ex);
             }
 
             if (Plataforma.Inicializada) {
-                MotorLE.AbreEmpresaTrabalho(objTipoPlataforma, Company, User, Password, objStdTransac, "Default");
+                MotorLP.AbreEmpresaTrabalho(objTipoPlataforma, Company, User, Password, objStdTransac, "Default");
 
                 // Use this service to trigger the API events.
             //    StdBSExtensibility service = new StdBSExtensibility();
             //    // Suppress all message box events from the API.
             //    // Plataforma.ExtensibilityLogger.AllowInteractivity = false;
-            //    service.Initialize(MotorLE);
+            //    service.Initialize(MotorLP);
 
             //    // Check if service is operational
             //    if (service.IsOperational) {
@@ -60,12 +60,12 @@ namespace FRU_AlterarTerceiros.Motor
             //    }
 
                 Platform = Plataforma;
-                Engine = MotorLE;
+                Engine = MotorLP;
 
-            //    if (MotorLE != null && Plataforma.BDInicializada) {
+            //    if (MotorLP != null && Plataforma.BDInicializada) {
             //        //Inicializa o SDK
             //        PriSDKContexto = new PRISDK100.clsSDKContexto();
-            //        PriSDKContexto.Inicializa(MotorLE, ConstantesPrimavera100.Modulos.Vendas);
+            //        PriSDKContexto.Inicializa(MotorLP, ConstantesPrimavera100.Modulos.Vendas);
             //        PriSDKContexto.InicializaPlataforma(Platform);
             //    }
 

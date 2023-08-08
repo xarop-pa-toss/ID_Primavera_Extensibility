@@ -25,7 +25,7 @@ namespace FRUTI_Extens
             if (_sdkContexto == null) {
                 _sdkContexto = new clsSDKContexto();
                 //Inicializaçao do contexto SDK a partir do objeto BSO e respetivo módulo.
-                _sdkContexto.InicializaPlataforma(_pso);
+                _sdkContexto.InicializaPlataforma(PSO);
                 _sdkContexto.Inicializa(BSO, "ERP");
                 //Inicialização da plataforma no contexto e verificação de assinatura digital.
                 PSO.InicializaPlataforma(_sdkContexto);

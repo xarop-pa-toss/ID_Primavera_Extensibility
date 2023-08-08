@@ -55,6 +55,10 @@
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\IGprBS100.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="IRhpBS100">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\IRhpBS100.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="IVndBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\IVndBS100.dll</HintPath>
       <Private>False</Private>
@@ -73,6 +77,10 @@
     </Reference>
     <Reference Include="Primavera.Extensibility.CustomForm">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.CustomForm.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Primavera.Extensibility.HumanResources">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.HumanResources.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Primavera.Extensibility.Integration">
@@ -97,6 +105,10 @@
     <Reference Include="PRISDK100, Version=10.0.0.0, Culture=neutral, PublicKeyToken=11cd844aca152173, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\PRISDK100.dll</HintPath>
+    </Reference>
+    <Reference Include="RhpBE100">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\RhpBE100.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="StdBE100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\StdBE100.dll</HintPath>

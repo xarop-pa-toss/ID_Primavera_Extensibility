@@ -42,10 +42,6 @@ namespace FRU_AlterarTerceiros
             this.num_NumDocInicio = new System.Windows.Forms.NumericUpDown();
             this.num_NumDocFim = new System.Windows.Forms.NumericUpDown();
             this.datagrid_Docs = new System.Windows.Forms.DataGridView();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cbox_Docs = new System.Windows.Forms.ComboBox();
-            this.cbox_TipoTerceiro = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.Cf = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Data = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TipoDoc = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -53,6 +49,10 @@ namespace FRU_AlterarTerceiros
             this.NumDoc = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TipoTerceiro = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TotalDocumento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbox_Docs = new System.Windows.Forms.ComboBox();
+            this.cbox_TipoTerceiro = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_NumDocInicio)).BeginInit();
@@ -63,18 +63,20 @@ namespace FRU_AlterarTerceiros
             // cbox_Serie
             // 
             this.cbox_Serie.FormattingEnabled = true;
-            this.cbox_Serie.Location = new System.Drawing.Point(323, 22);
-            this.cbox_Serie.Margin = new System.Windows.Forms.Padding(2);
+            this.cbox_Serie.Location = new System.Drawing.Point(431, 27);
+            this.cbox_Serie.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbox_Serie.Name = "cbox_Serie";
-            this.cbox_Serie.Size = new System.Drawing.Size(72, 21);
+            this.cbox_Serie.Size = new System.Drawing.Size(95, 24);
             this.cbox_Serie.TabIndex = 28;
+            this.cbox_Serie.SelectedIndexChanged += new System.EventHandler(this.cbox_Serie_SelectedIndexChanged);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 57);
+            this.label5.Location = new System.Drawing.Point(8, 70);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(32, 13);
+            this.label5.Size = new System.Drawing.Size(42, 17);
             this.label5.TabIndex = 25;
             this.label5.Text = "Final:";
             // 
@@ -82,10 +84,9 @@ namespace FRU_AlterarTerceiros
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(5, 22);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(7, 28);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(42, 15);
+            this.label2.Size = new System.Drawing.Size(48, 18);
             this.label2.TabIndex = 20;
             this.label2.Text = "Inicial:";
             // 
@@ -95,9 +96,11 @@ namespace FRU_AlterarTerceiros
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.datepicker_DataDocInicio);
             this.groupBox1.Controls.Add(this.datepicker_DataDocFim);
-            this.groupBox1.Location = new System.Drawing.Point(164, 70);
+            this.groupBox1.Location = new System.Drawing.Point(219, 86);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(151, 86);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Size = new System.Drawing.Size(201, 106);
             this.groupBox1.TabIndex = 36;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Data Documento";
@@ -106,27 +109,27 @@ namespace FRU_AlterarTerceiros
             // 
             this.datepicker_DataDocInicio.CustomFormat = "DD/MM/YYYY";
             this.datepicker_DataDocInicio.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.datepicker_DataDocInicio.Location = new System.Drawing.Point(51, 22);
-            this.datepicker_DataDocInicio.Margin = new System.Windows.Forms.Padding(2);
+            this.datepicker_DataDocInicio.Location = new System.Drawing.Point(68, 26);
+            this.datepicker_DataDocInicio.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.datepicker_DataDocInicio.Name = "datepicker_DataDocInicio";
-            this.datepicker_DataDocInicio.Size = new System.Drawing.Size(87, 20);
+            this.datepicker_DataDocInicio.Size = new System.Drawing.Size(115, 22);
             this.datepicker_DataDocInicio.TabIndex = 18;
             // 
             // datepicker_DataDocFim
             // 
             this.datepicker_DataDocFim.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.datepicker_DataDocFim.Location = new System.Drawing.Point(51, 55);
-            this.datepicker_DataDocFim.Margin = new System.Windows.Forms.Padding(2);
+            this.datepicker_DataDocFim.Location = new System.Drawing.Point(68, 68);
+            this.datepicker_DataDocFim.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.datepicker_DataDocFim.Name = "datepicker_DataDocFim";
-            this.datepicker_DataDocFim.Size = new System.Drawing.Size(87, 20);
+            this.datepicker_DataDocFim.Size = new System.Drawing.Size(115, 22);
             this.datepicker_DataDocFim.TabIndex = 19;
             // 
             // btn_ActualizarPriGrelha
             // 
-            this.btn_ActualizarPriGrelha.Location = new System.Drawing.Point(322, 122);
-            this.btn_ActualizarPriGrelha.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_ActualizarPriGrelha.Location = new System.Drawing.Point(429, 150);
+            this.btn_ActualizarPriGrelha.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_ActualizarPriGrelha.Name = "btn_ActualizarPriGrelha";
-            this.btn_ActualizarPriGrelha.Size = new System.Drawing.Size(91, 34);
+            this.btn_ActualizarPriGrelha.Size = new System.Drawing.Size(121, 42);
             this.btn_ActualizarPriGrelha.TabIndex = 34;
             this.btn_ActualizarPriGrelha.Text = "Actualizar";
             this.btn_ActualizarPriGrelha.UseVisualStyleBackColor = true;
@@ -134,10 +137,10 @@ namespace FRU_AlterarTerceiros
             // 
             // btn_AlterarTerceiro
             // 
-            this.btn_AlterarTerceiro.Location = new System.Drawing.Point(482, 122);
-            this.btn_AlterarTerceiro.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_AlterarTerceiro.Location = new System.Drawing.Point(649, 150);
+            this.btn_AlterarTerceiro.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btn_AlterarTerceiro.Name = "btn_AlterarTerceiro";
-            this.btn_AlterarTerceiro.Size = new System.Drawing.Size(110, 34);
+            this.btn_AlterarTerceiro.Size = new System.Drawing.Size(147, 42);
             this.btn_AlterarTerceiro.TabIndex = 29;
             this.btn_AlterarTerceiro.Text = "Alterar Terceiro";
             this.btn_AlterarTerceiro.UseVisualStyleBackColor = true;
@@ -149,9 +152,11 @@ namespace FRU_AlterarTerceiros
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.num_NumDocInicio);
             this.groupBox2.Controls.Add(this.num_NumDocFim);
-            this.groupBox2.Location = new System.Drawing.Point(21, 70);
+            this.groupBox2.Location = new System.Drawing.Point(28, 86);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(126, 86);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox2.Size = new System.Drawing.Size(168, 106);
             this.groupBox2.TabIndex = 37;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Num Documentos";
@@ -159,9 +164,10 @@ namespace FRU_AlterarTerceiros
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(19, 57);
+            this.label6.Location = new System.Drawing.Point(14, 70);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(32, 13);
+            this.label6.Size = new System.Drawing.Size(42, 17);
             this.label6.TabIndex = 26;
             this.label6.Text = "Final:";
             // 
@@ -169,16 +175,17 @@ namespace FRU_AlterarTerceiros
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(14, 23);
+            this.label1.Location = new System.Drawing.Point(8, 28);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(42, 15);
+            this.label1.Size = new System.Drawing.Size(48, 18);
             this.label1.TabIndex = 0;
             this.label1.Text = "Inicial:";
             // 
             // num_NumDocInicio
             // 
-            this.num_NumDocInicio.Location = new System.Drawing.Point(55, 23);
-            this.num_NumDocInicio.Margin = new System.Windows.Forms.Padding(2);
+            this.num_NumDocInicio.Location = new System.Drawing.Point(72, 28);
+            this.num_NumDocInicio.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.num_NumDocInicio.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -191,7 +198,7 @@ namespace FRU_AlterarTerceiros
             0});
             this.num_NumDocInicio.Name = "num_NumDocInicio";
             this.num_NumDocInicio.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.num_NumDocInicio.Size = new System.Drawing.Size(59, 20);
+            this.num_NumDocInicio.Size = new System.Drawing.Size(89, 22);
             this.num_NumDocInicio.TabIndex = 14;
             this.num_NumDocInicio.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.num_NumDocInicio.Value = new decimal(new int[] {
@@ -202,8 +209,8 @@ namespace FRU_AlterarTerceiros
             // 
             // num_NumDocFim
             // 
-            this.num_NumDocFim.Location = new System.Drawing.Point(55, 55);
-            this.num_NumDocFim.Margin = new System.Windows.Forms.Padding(2);
+            this.num_NumDocFim.Location = new System.Drawing.Point(72, 68);
+            this.num_NumDocFim.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.num_NumDocFim.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -215,7 +222,7 @@ namespace FRU_AlterarTerceiros
             0,
             0});
             this.num_NumDocFim.Name = "num_NumDocFim";
-            this.num_NumDocFim.Size = new System.Drawing.Size(59, 20);
+            this.num_NumDocFim.Size = new System.Drawing.Size(89, 22);
             this.num_NumDocFim.TabIndex = 17;
             this.num_NumDocFim.Value = new decimal(new int[] {
             99999,
@@ -236,53 +243,14 @@ namespace FRU_AlterarTerceiros
             this.TipoTerceiro,
             this.TotalDocumento});
             this.datagrid_Docs.EnableHeadersVisualStyles = false;
-            this.datagrid_Docs.Location = new System.Drawing.Point(21, 176);
-            this.datagrid_Docs.Margin = new System.Windows.Forms.Padding(2);
+            this.datagrid_Docs.Location = new System.Drawing.Point(28, 217);
+            this.datagrid_Docs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.datagrid_Docs.Name = "datagrid_Docs";
             this.datagrid_Docs.RowHeadersVisible = false;
             this.datagrid_Docs.RowHeadersWidth = 51;
             this.datagrid_Docs.RowTemplate.Height = 24;
-            this.datagrid_Docs.Size = new System.Drawing.Size(571, 357);
+            this.datagrid_Docs.Size = new System.Drawing.Size(768, 644);
             this.datagrid_Docs.TabIndex = 38;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(26, 24);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 13);
-            this.label3.TabIndex = 39;
-            this.label3.Text = "Documento:";
-            // 
-            // cbox_Docs
-            // 
-            this.cbox_Docs.FormattingEnabled = true;
-            this.cbox_Docs.Location = new System.Drawing.Point(90, 22);
-            this.cbox_Docs.Margin = new System.Windows.Forms.Padding(2);
-            this.cbox_Docs.Name = "cbox_Docs";
-            this.cbox_Docs.Size = new System.Drawing.Size(230, 21);
-            this.cbox_Docs.TabIndex = 40;
-            this.cbox_Docs.SelectedIndexChanged += new System.EventHandler(this.cBox_Docs_SelectedIndexChanged);
-            // 
-            // cbox_TipoTerceiro
-            // 
-            this.cbox_TipoTerceiro.FormattingEnabled = true;
-            this.cbox_TipoTerceiro.Location = new System.Drawing.Point(482, 89);
-            this.cbox_TipoTerceiro.Margin = new System.Windows.Forms.Padding(2);
-            this.cbox_TipoTerceiro.Name = "cbox_TipoTerceiro";
-            this.cbox_TipoTerceiro.Size = new System.Drawing.Size(111, 21);
-            this.cbox_TipoTerceiro.TabIndex = 41;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(404, 91);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(73, 13);
-            this.label4.TabIndex = 42;
-            this.label4.Text = "Tipo Terceiro:";
             // 
             // Cf
             // 
@@ -298,7 +266,7 @@ namespace FRU_AlterarTerceiros
             this.Data.MinimumWidth = 6;
             this.Data.Name = "Data";
             this.Data.ReadOnly = true;
-            this.Data.Width = 55;
+            this.Data.Width = 67;
             // 
             // TipoDoc
             // 
@@ -307,7 +275,7 @@ namespace FRU_AlterarTerceiros
             this.TipoDoc.MinimumWidth = 6;
             this.TipoDoc.Name = "TipoDoc";
             this.TipoDoc.ReadOnly = true;
-            this.TipoDoc.Width = 87;
+            this.TipoDoc.Width = 109;
             // 
             // Serie
             // 
@@ -316,7 +284,7 @@ namespace FRU_AlterarTerceiros
             this.Serie.MinimumWidth = 6;
             this.Serie.Name = "Serie";
             this.Serie.ReadOnly = true;
-            this.Serie.Width = 56;
+            this.Serie.Width = 70;
             // 
             // NumDoc
             // 
@@ -325,7 +293,7 @@ namespace FRU_AlterarTerceiros
             this.NumDoc.MinimumWidth = 6;
             this.NumDoc.Name = "NumDoc";
             this.NumDoc.ReadOnly = true;
-            this.NumDoc.Width = 69;
+            this.NumDoc.Width = 87;
             // 
             // TipoTerceiro
             // 
@@ -334,7 +302,7 @@ namespace FRU_AlterarTerceiros
             this.TipoTerceiro.MinimumWidth = 6;
             this.TipoTerceiro.Name = "TipoTerceiro";
             this.TipoTerceiro.ReadOnly = true;
-            this.TipoTerceiro.Width = 92;
+            this.TipoTerceiro.Width = 118;
             // 
             // TotalDocumento
             // 
@@ -343,13 +311,51 @@ namespace FRU_AlterarTerceiros
             this.TotalDocumento.MinimumWidth = 6;
             this.TotalDocumento.Name = "TotalDocumento";
             this.TotalDocumento.ReadOnly = true;
-            this.TotalDocumento.Width = 56;
+            this.TotalDocumento.Width = 69;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(25, 30);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(84, 17);
+            this.label3.TabIndex = 39;
+            this.label3.Text = "Documento:";
+            // 
+            // cbox_Docs
+            // 
+            this.cbox_Docs.FormattingEnabled = true;
+            this.cbox_Docs.Location = new System.Drawing.Point(120, 27);
+            this.cbox_Docs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.cbox_Docs.Name = "cbox_Docs";
+            this.cbox_Docs.Size = new System.Drawing.Size(300, 24);
+            this.cbox_Docs.TabIndex = 40;
+            this.cbox_Docs.SelectedIndexChanged += new System.EventHandler(this.cBox_Docs_SelectedIndexChanged);
+            // 
+            // cbox_TipoTerceiro
+            // 
+            this.cbox_TipoTerceiro.FormattingEnabled = true;
+            this.cbox_TipoTerceiro.Location = new System.Drawing.Point(649, 109);
+            this.cbox_TipoTerceiro.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.cbox_TipoTerceiro.Name = "cbox_TipoTerceiro";
+            this.cbox_TipoTerceiro.Size = new System.Drawing.Size(147, 24);
+            this.cbox_TipoTerceiro.TabIndex = 41;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(546, 112);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(97, 17);
+            this.label4.TabIndex = 42;
+            this.label4.Text = "Tipo Terceiro:";
             // 
             // FormAlterarTerceiros_WF
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(617, 547);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(823, 879);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cbox_TipoTerceiro);
             this.Controls.Add(this.cbox_Docs);
@@ -360,8 +366,11 @@ namespace FRU_AlterarTerceiros
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_ActualizarPriGrelha);
             this.Controls.Add(this.btn_AlterarTerceiro);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MaximumSize = new System.Drawing.Size(841, 926);
+            this.MinimumSize = new System.Drawing.Size(841, 926);
             this.Name = "FormAlterarTerceiros_WF";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Alterar Terceiros";
             this.Load += new System.EventHandler(this.FormAlterarTerceiros_WF_Load);
             this.groupBox1.ResumeLayout(false);

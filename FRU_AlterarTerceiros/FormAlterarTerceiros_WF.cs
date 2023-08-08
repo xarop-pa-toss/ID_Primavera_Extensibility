@@ -17,7 +17,6 @@ namespace FRU_AlterarTerceiros
     {
         private ErpBS _BSO;
         private StdPlatBS _PSO; 
-        private StdBSConfApl _objAplConf = new StdBSConfApl();
         private StdBETransaccao _objStdTransac = new StdBETransaccao();
 
         public FormAlterarTerceiros_WF()
@@ -28,7 +27,7 @@ namespace FRU_AlterarTerceiros
         // LOAD e Inicialização
         private void FormAlterarTerceiros_WF_Load(object sender, EventArgs e)
         {
-            Motor.PriEngine.CreateContext("0012004", "faturacao", "*Pelicano*");
+            Motor.PriEngine.CreateContext("ADEGA", "admin", "id1234!!");
             _BSO = Motor.PriEngine.Engine;
             _PSO = Motor.PriEngine.Platform;
 
@@ -131,6 +130,7 @@ namespace FRU_AlterarTerceiros
                 _PSO.MensagensDialogos.MostraAviso("Não foi possivel alterar o Tipo Terceiro em alguns documentos!", StdBSTipos.IconId.PRI_Exclama, String.Join(", ", docsComErroNoUpdateSQL));
             } else {
                 _PSO.MensagensDialogos.MostraAviso("Todos os documentos alterados com sucesso.", StdBSTipos.IconId.PRI_Informativo);
+                btn_ActualizarPriGrelha_Click(sender, e);
             }
         }
 
@@ -192,6 +192,11 @@ namespace FRU_AlterarTerceiros
                 return false;
             }
             return true;
+        }
+
+        private void cbox_Serie_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
