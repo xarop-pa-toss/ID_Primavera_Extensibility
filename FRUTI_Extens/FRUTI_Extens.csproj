@@ -38,6 +38,9 @@
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\CmpBE100.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ConstantesPrimavera100">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\ConstantesPrimavera100.dll</HintPath>
+    </Reference>
     <Reference Include="ErpBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\ErpBS100.dll</HintPath>
       <Private>False</Private>

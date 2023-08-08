@@ -76,9 +76,9 @@ namespace FRUTI_Extens
             this.f4_subfamilia.Size = new System.Drawing.Size(484, 22);
             this.f4_subfamilia.TabIndex = 0;
             this.f4_subfamilia.TextoDescricao = "";
-            this.f4_subfamilia.WidthEspacamento = 0;
+            this.f4_subfamilia.WidthEspacamento = 30;
             this.f4_subfamilia.WidthF4 = 1500;
-            this.f4_subfamilia.WidthLink = 1000;
+            this.f4_subfamilia.WidthLink = 1150;
             // 
             // dtPicker_dataFinal
             // 
@@ -135,6 +135,7 @@ namespace FRUTI_Extens
             this.btn_Imprimir.TabIndex = 4;
             this.btn_Imprimir.Text = "Imprimir";
             this.btn_Imprimir.UseVisualStyleBackColor = true;
+            this.btn_Imprimir.Click += new System.EventHandler(this.btn_Imprimir_Click);
             // 
             // btn_Cancelar
             // 
@@ -144,6 +145,7 @@ namespace FRUTI_Extens
             this.btn_Cancelar.TabIndex = 5;
             this.btn_Cancelar.Text = "Cancelar";
             this.btn_Cancelar.UseVisualStyleBackColor = true;
+            this.btn_Cancelar.Click += new System.EventHandler(this.btn_Cancelar_Click);
             // 
             // VendArtigo
             // 

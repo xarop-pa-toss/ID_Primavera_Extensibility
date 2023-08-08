@@ -16,7 +16,11 @@ namespace FRUTI_Extens
         string _relatorio, _rSel, _gSel, _titulo, _dataInicial, _dataFinal, _detalhe;
         private ErpBS _BSO;
         private StdPlatBS _PSO;
-        private StdBETransaccao _objStdTransac = new StdBETransaccao();
+
+        private void btn_Imprimir_Click(object sender, EventArgs e)
+        {
+
+        }
 
         public VendArtigo()
         {
@@ -31,6 +35,15 @@ namespace FRUTI_Extens
 
             f4_subfamilia.Inicializa(Motor.PriEngine.PriSDKContexto);
 
+            DateTime dataHoje = DateTime.Now;
+            dtPicker_dataInicial.Value = dataHoje.AddDays(-90);
+            dtPicker_dataFinal.Value = dataHoje;
+        }
+
+        private void btn_Cancelar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            this.Dispose();
         }
     }
 }
