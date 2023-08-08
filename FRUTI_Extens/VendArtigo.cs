@@ -7,14 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PRISDK100;
+using PRISDK100; using ErpBS100; using StdBE100; using StdPlatBS100;
 
 namespace FRUTI_Extens
 {
     public partial class VendArtigo : Form
     {
         string _relatorio, _rSel, _gSel, _titulo, _dataInicial, _dataFinal, _detalhe;
-        public clsSDKContexto _sdkContexto;
+        private ErpBS _BSO;
+        private StdPlatBS _PSO;
+        private StdBETransaccao _objStdTransac = new StdBETransaccao();
+
         public VendArtigo()
         {
             InitializeComponent();
@@ -22,19 +25,12 @@ namespace FRUTI_Extens
 
         private void VendArtigo_Load(object sender, EventArgs e)
         {
-            if (_sdkContexto == null) {
-                _sdkContexto = new clsSDKContexto();
-                //Inicializaçao do contexto SDK a partir do objeto BSO e respetivo módulo.
-                _sdkContexto.InicializaPlataforma(PSO);
-                _sdkContexto.Inicializa(BSO, "ERP");
-                //Inicialização da plataforma no contexto e verificação de assinatura digital.
-                PSO.InicializaPlataforma(_sdkContexto);
-            }
-            SdkPrimavera.InicializaContexto(BSO, PSO);
+            Motor.PriEngine.CreateContext("ADEGA", "admin", "id1234!!");
+            _BSO = Motor.PriEngine.Engine;
+            _PSO = Motor.PriEngine.Platform;
 
-            f4_TipoTerceiro.Inicializa(SdkPrimavera.ContextoSDK);
-            f4_TipoDoc.Inicializa(SdkPrimavera.ContextoSDK);
-            prigrelha_Docs.Inicializa(SdkPrimavera.ContextoSDK);
+            f4_subfamilia.Inicializa(Motor.PriEngine.PriSDKContexto);
+
         }
     }
 }

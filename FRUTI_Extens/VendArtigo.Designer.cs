@@ -29,6 +29,14 @@ namespace FRUTI_Extens
         private void InitializeComponent()
         {
             this.f4_subfamilia = new PRISDK100.F4();
+            this.dtPicker_dataFinal = new System.Windows.Forms.DateTimePicker();
+            this.dtPicker_dataInicial = new System.Windows.Forms.DateTimePicker();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btn_Imprimir = new System.Windows.Forms.Button();
+            this.btn_Cancelar = new System.Windows.Forms.Button();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // f4_subfamilia
@@ -48,7 +56,7 @@ namespace FRUTI_Extens
             this.f4_subfamilia.F4Modal = false;
             this.f4_subfamilia.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.f4_subfamilia.IDCategoria = "SubFamilias";
-            this.f4_subfamilia.Location = new System.Drawing.Point(36, 21);
+            this.f4_subfamilia.Location = new System.Drawing.Point(12, 155);
             this.f4_subfamilia.MaxLengthDescricao = 0;
             this.f4_subfamilia.MaxLengthF4 = 50;
             this.f4_subfamilia.MinimumSize = new System.Drawing.Size(37, 21);
@@ -68,19 +76,89 @@ namespace FRUTI_Extens
             this.f4_subfamilia.Size = new System.Drawing.Size(484, 22);
             this.f4_subfamilia.TabIndex = 0;
             this.f4_subfamilia.TextoDescricao = "";
-            this.f4_subfamilia.WidthEspacamento = 60;
-            this.f4_subfamilia.WidthF4 = 1590;
-            this.f4_subfamilia.WidthLink = 1575;
+            this.f4_subfamilia.WidthEspacamento = 0;
+            this.f4_subfamilia.WidthF4 = 1500;
+            this.f4_subfamilia.WidthLink = 1000;
+            // 
+            // dtPicker_dataFinal
+            // 
+            this.dtPicker_dataFinal.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtPicker_dataFinal.Location = new System.Drawing.Point(106, 39);
+            this.dtPicker_dataFinal.Name = "dtPicker_dataFinal";
+            this.dtPicker_dataFinal.Size = new System.Drawing.Size(113, 22);
+            this.dtPicker_dataFinal.TabIndex = 1;
+            // 
+            // dtPicker_dataInicial
+            // 
+            this.dtPicker_dataInicial.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtPicker_dataInicial.Location = new System.Drawing.Point(106, 79);
+            this.dtPicker_dataInicial.Name = "dtPicker_dataInicial";
+            this.dtPicker_dataInicial.Size = new System.Drawing.Size(113, 22);
+            this.dtPicker_dataInicial.TabIndex = 2;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.dtPicker_dataFinal);
+            this.groupBox1.Controls.Add(this.dtPicker_dataInicial);
+            this.groupBox1.Location = new System.Drawing.Point(127, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(244, 127);
+            this.groupBox1.TabIndex = 3;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Parametros";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(19, 39);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(81, 17);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Data Inicial:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(19, 79);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(76, 17);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Data Final:";
+            // 
+            // btn_Imprimir
+            // 
+            this.btn_Imprimir.Location = new System.Drawing.Point(259, 201);
+            this.btn_Imprimir.Name = "btn_Imprimir";
+            this.btn_Imprimir.Size = new System.Drawing.Size(112, 34);
+            this.btn_Imprimir.TabIndex = 4;
+            this.btn_Imprimir.Text = "Imprimir";
+            this.btn_Imprimir.UseVisualStyleBackColor = true;
+            // 
+            // btn_Cancelar
+            // 
+            this.btn_Cancelar.Location = new System.Drawing.Point(384, 201);
+            this.btn_Cancelar.Name = "btn_Cancelar";
+            this.btn_Cancelar.Size = new System.Drawing.Size(112, 34);
+            this.btn_Cancelar.TabIndex = 5;
+            this.btn_Cancelar.Text = "Cancelar";
+            this.btn_Cancelar.UseVisualStyleBackColor = true;
             // 
             // VendArtigo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(627, 322);
+            this.ClientSize = new System.Drawing.Size(513, 247);
+            this.Controls.Add(this.btn_Cancelar);
+            this.Controls.Add(this.btn_Imprimir);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.f4_subfamilia);
             this.Name = "VendArtigo";
             this.Text = "VendArtigo";
             this.Load += new System.EventHandler(this.VendArtigo_Load);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -88,5 +166,12 @@ namespace FRUTI_Extens
         #endregion
 
         private PRISDK100.F4 f4_subfamilia;
+        private System.Windows.Forms.DateTimePicker dtPicker_dataFinal;
+        private System.Windows.Forms.DateTimePicker dtPicker_dataInicial;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btn_Imprimir;
+        private System.Windows.Forms.Button btn_Cancelar;
     }
 }
