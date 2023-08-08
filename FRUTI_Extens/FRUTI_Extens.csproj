@@ -77,6 +77,9 @@
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Sales.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="PRISDK100">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\PRISDK100.dll</HintPath>
+    </Reference>
     <Reference Include="StdBE100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\StdBE100.dll</HintPath>
       <Private>False</Private>
@@ -118,6 +121,11 @@
     <Compile Include="VendFornecedor.Designer.cs">
       <DependentUpon>VendFornecedor.cs</DependentUpon>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="VendArtigo.resx">
+      <DependentUpon>VendArtigo.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

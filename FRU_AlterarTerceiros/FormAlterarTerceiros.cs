@@ -138,8 +138,7 @@ namespace FRU_AlterarTerceiros
         {
             string gTipoDoc, gSerie, gNumDoc;
             Dictionary<string, string> valoresControlos = GetControlos();
-            List<string> docsComErroNo
-                SQL = new List<string>();
+            List<string> docsComErroNoUpdateSQL = new List<string>();
 
             if (!CheckControlos(valoresControlos)) { return; }
 
