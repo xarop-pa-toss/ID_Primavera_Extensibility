@@ -139,6 +139,9 @@
     <EmbeddedResource Include="VendArtigo.resx">
       <DependentUpon>VendArtigo.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="VendFornecedor.resx">
+      <DependentUpon>VendFornecedor.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -56,7 +56,7 @@ namespace FRUTI_Extens
             this.f4_subfamilia.F4Modal = false;
             this.f4_subfamilia.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.f4_subfamilia.IDCategoria = "SubFamilias";
-            this.f4_subfamilia.Location = new System.Drawing.Point(12, 159);
+            this.f4_subfamilia.Location = new System.Drawing.Point(22, 159);
             this.f4_subfamilia.MaxLengthDescricao = 0;
             this.f4_subfamilia.MaxLengthF4 = 50;
             this.f4_subfamilia.MinimumSize = new System.Drawing.Size(37, 21);
@@ -102,7 +102,7 @@ namespace FRUTI_Extens
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.dtPicker_dataFinal);
             this.groupBox1.Controls.Add(this.dtPicker_dataInicial);
-            this.groupBox1.Location = new System.Drawing.Point(98, 12);
+            this.groupBox1.Location = new System.Drawing.Point(108, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(244, 127);
             this.groupBox1.TabIndex = 3;
@@ -130,7 +130,7 @@ namespace FRUTI_Extens
             // btn_Imprimir
             // 
             this.btn_Imprimir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Imprimir.Location = new System.Drawing.Point(177, 201);
+            this.btn_Imprimir.Location = new System.Drawing.Point(187, 201);
             this.btn_Imprimir.Name = "btn_Imprimir";
             this.btn_Imprimir.Size = new System.Drawing.Size(112, 34);
             this.btn_Imprimir.TabIndex = 4;
@@ -139,7 +139,7 @@ namespace FRUTI_Extens
             // 
             // btn_Cancelar
             // 
-            this.btn_Cancelar.Location = new System.Drawing.Point(307, 201);
+            this.btn_Cancelar.Location = new System.Drawing.Point(317, 201);
             this.btn_Cancelar.Name = "btn_Cancelar";
             this.btn_Cancelar.Size = new System.Drawing.Size(112, 34);
             this.btn_Cancelar.TabIndex = 5;
@@ -151,7 +151,7 @@ namespace FRUTI_Extens
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(435, 247);
+            this.ClientSize = new System.Drawing.Size(461, 261);
             this.Controls.Add(this.btn_Cancelar);
             this.Controls.Add(this.btn_Imprimir);
             this.Controls.Add(this.groupBox1);

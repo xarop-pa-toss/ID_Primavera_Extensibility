@@ -24,3 +24,4 @@ C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRUTI_Extens\obj\Debug\FRUTI
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRUTI_Extens\obj\Debug\FRUTI_Extens.VendArtigo.resources
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRUTI_Extens\obj\Debug\FRUTI_Extens.csproj.GenerateResource.cache
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRUTI_Extens\obj\Debug\FRUTI_Extens.csproj.CopyComplete
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\FRUTI_Extens\obj\Debug\FRUTI_Extens.VendFornecedor.resources

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using PRISDK100; using ErpBS100; using StdBE100; using StdPlatBS100;
 
@@ -15,6 +8,11 @@ namespace FRUTI_Extens
     {
         private ErpBS _BSO;
         private StdPlatBS _PSO;
+
+        public VendArtigo()
+        {
+            InitializeComponent();
+        }
 
         private void btnImprimirClick(object sender, EventArgs e)
         {
@@ -35,11 +33,6 @@ namespace FRUTI_Extens
             _PSO.Mapas.JanelaPrincipal = 1;
             _PSO.Mapas.AddFormula("Titulo", "' " + titulo + " (" + dataInicial + " até " + dataFinal + ")'");
             _PSO.Mapas.ImprimeListagem(relatorio, blnModal: true);
-        }
-
-        public VendArtigo()
-        {
-            InitializeComponent();
         }
 
         private void VendArtigo_Load(object sender, EventArgs e)
