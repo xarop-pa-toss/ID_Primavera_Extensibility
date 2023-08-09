@@ -111,6 +111,11 @@
     <Compile Include="OpenWForm.cs" />
     <Compile Include="Motor\PriMotores.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Purchases\UiEditorCompras.cs" />
     <Compile Include="Sales\UiEditorVendas.cs" />
     <Compile Include="VendArtigo.cs">
@@ -127,6 +132,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="VendArtigo.resx">
       <DependentUpon>VendArtigo.cs</DependentUpon>
     </EmbeddedResource>

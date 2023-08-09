@@ -32,8 +32,8 @@ namespace FRUTI_Extens
             this.dtPicker_dataFinal = new System.Windows.Forms.DateTimePicker();
             this.dtPicker_dataInicial = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.btn_Imprimir = new System.Windows.Forms.Button();
             this.btn_Cancelar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
@@ -56,7 +56,7 @@ namespace FRUTI_Extens
             this.f4_subfamilia.F4Modal = false;
             this.f4_subfamilia.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.f4_subfamilia.IDCategoria = "SubFamilias";
-            this.f4_subfamilia.Location = new System.Drawing.Point(12, 155);
+            this.f4_subfamilia.Location = new System.Drawing.Point(12, 159);
             this.f4_subfamilia.MaxLengthDescricao = 0;
             this.f4_subfamilia.MaxLengthF4 = 50;
             this.f4_subfamilia.MinimumSize = new System.Drawing.Size(37, 21);
@@ -73,7 +73,7 @@ namespace FRUTI_Extens
             this.f4_subfamilia.ResourcePersonalizada = false;
             this.f4_subfamilia.Restricao = "";
             this.f4_subfamilia.SelectionFormula = "";
-            this.f4_subfamilia.Size = new System.Drawing.Size(484, 22);
+            this.f4_subfamilia.Size = new System.Drawing.Size(407, 22);
             this.f4_subfamilia.TabIndex = 0;
             this.f4_subfamilia.TextoDescricao = "";
             this.f4_subfamilia.WidthEspacamento = 30;
@@ -102,21 +102,12 @@ namespace FRUTI_Extens
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.dtPicker_dataFinal);
             this.groupBox1.Controls.Add(this.dtPicker_dataInicial);
-            this.groupBox1.Location = new System.Drawing.Point(127, 12);
+            this.groupBox1.Location = new System.Drawing.Point(98, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(244, 127);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Parametros";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(19, 39);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(81, 17);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Data Inicial:";
             // 
             // label2
             // 
@@ -127,19 +118,28 @@ namespace FRUTI_Extens
             this.label2.TabIndex = 4;
             this.label2.Text = "Data Final:";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(19, 39);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(81, 17);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Data Inicial:";
+            // 
             // btn_Imprimir
             // 
-            this.btn_Imprimir.Location = new System.Drawing.Point(259, 201);
+            this.btn_Imprimir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_Imprimir.Location = new System.Drawing.Point(177, 201);
             this.btn_Imprimir.Name = "btn_Imprimir";
             this.btn_Imprimir.Size = new System.Drawing.Size(112, 34);
             this.btn_Imprimir.TabIndex = 4;
             this.btn_Imprimir.Text = "Imprimir";
             this.btn_Imprimir.UseVisualStyleBackColor = true;
-            this.btn_Imprimir.Click += new System.EventHandler(this.btn_Imprimir_Click);
             // 
             // btn_Cancelar
             // 
-            this.btn_Cancelar.Location = new System.Drawing.Point(384, 201);
+            this.btn_Cancelar.Location = new System.Drawing.Point(307, 201);
             this.btn_Cancelar.Name = "btn_Cancelar";
             this.btn_Cancelar.Size = new System.Drawing.Size(112, 34);
             this.btn_Cancelar.TabIndex = 5;
@@ -151,7 +151,7 @@ namespace FRUTI_Extens
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(513, 247);
+            this.ClientSize = new System.Drawing.Size(435, 247);
             this.Controls.Add(this.btn_Cancelar);
             this.Controls.Add(this.btn_Imprimir);
             this.Controls.Add(this.groupBox1);
