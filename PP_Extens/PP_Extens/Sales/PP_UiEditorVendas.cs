@@ -68,7 +68,6 @@ namespace PP_Extens.Sales
 
             // Se data/hora de descarga estiver vazia, fica igual à data/hora de carga
             string descarga = DocumentoVenda.DataHoraDescarga.ToString();
-            if (geral.nz(ref descarga) == null) { DocumentoVenda.DataHoraDescarga = DocumentoVenda.DataHoraCarga; }
             //
 
             // Pede Vendedor se a série o exigir

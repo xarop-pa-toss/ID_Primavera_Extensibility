@@ -19,7 +19,7 @@ namespace FRUTI_Extens
 
         private void btn_Imprimir_Click(object sender, EventArgs e)
         {
-            string relatorio, rSel, gSel, titulo, dataInicial, dataFinal, detalhe;
+            string relatorio, rSel, titulo, dataInicial, dataFinal;
 
             titulo = "Vendas Por Fornecedor";
             relatorio = "VendArt2";
@@ -31,7 +31,7 @@ namespace FRUTI_Extens
             _PSO.Mapas.SelectionFormula = @"
                 {CabecDoc.Data} >= " + dataInicial +
                 " and {CabecDoc.Data} <= " + dataFinal +
-                " and {SubFamilias.SubFamilia} = '" + f4_artigo.Text +
+                " and {Fornecedores_principal.Fornecedor} = '" + f4_Fornecedor.Text +
                 "' and {DocumentosVenda.TipoDocumento} = 4";
             _PSO.Mapas.JanelaPrincipal = 1;
             _PSO.Mapas.AddFormula("Titulo", "' " + titulo + " (" + dataInicial + " até " + dataFinal + ")'");
@@ -40,11 +40,11 @@ namespace FRUTI_Extens
 
         private void VendFornecedor_Load(object sender, EventArgs e)
         {
-            Motor.PriEngine.CreateContext("0012004", "faturacao", "*Pelicano*");
+            Motor.PriEngine.CreateContext("0012004", "id", "*Pelicano*");
             _BSO = Motor.PriEngine.Engine;
             _PSO = Motor.PriEngine.Platform;
 
-            f4_artigo.Inicializa(Motor.PriEngine.PriSDKContexto);
+            f4_Fornecedor.Inicializa(Motor.PriEngine.PriSDKContexto);
 
             DateTime dataHoje = DateTime.Now;
             dtPicker_dataInicial.Value = dataHoje.AddDays(-90);
@@ -55,6 +55,11 @@ namespace FRUTI_Extens
         {
             this.Close();
             this.Dispose();
+        }
+
+        private void f4_Subfamilias_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

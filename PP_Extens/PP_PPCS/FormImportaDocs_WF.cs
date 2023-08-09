@@ -152,6 +152,12 @@ namespace PP_PPCS
             btn_Sair_WF.Focus();
         }
 
+        private void btn_Sair_WF_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            this.Dispose();
+        }
+
         private void btn_Actualizar_WF_Click(object sender, EventArgs e)
         {
             _BSO.Consulta("DROP TABLE " + _tabela + ";");

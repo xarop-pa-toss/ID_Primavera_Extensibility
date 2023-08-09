@@ -8,15 +8,29 @@ namespace FRUTI_Extens
     {
         private ErpBS _BSO;
         private StdPlatBS _PSO;
+        private StdBETransaccao _objStdTransac = new StdBETransaccao();
 
         public VendArtigo()
         {
             InitializeComponent();
         }
 
+        private void VendArtigo_Load(object sender, EventArgs e)
+        {
+            Motor.PriEngine.CreateContext("0012004", "faturacao", "*Pelicano*");
+            _BSO = Motor.PriEngine.Engine;
+            _PSO = Motor.PriEngine.Platform;
+
+            f4_Subfamilia.Inicializa(Motor.PriEngine.PriSDKContexto);
+
+            DateTime dataHoje = DateTime.Now;
+            dtPicker_dataInicial.Value = dataHoje.AddDays(-90);
+            dtPicker_dataFinal.Value = dataHoje;
+        }
+
         private void btnImprimirClick(object sender, EventArgs e)
         {
-            string relatorio, rSel, gSel, titulo, dataInicial, dataFinal, detalhe;
+            string relatorio, rSel, titulo, dataInicial, dataFinal;
 
             titulo = "Vendas Por SubFamilia";
             relatorio = "VendArt1";
@@ -28,24 +42,11 @@ namespace FRUTI_Extens
             _PSO.Mapas.SelectionFormula = @"
                 {CabecDoc.Data} >= " + dataInicial +
                 " and {CabecDoc.Data} <= " + dataFinal +
-                " and {SubFamilias.SubFamilia} = '" + f4_Artigo.Text +
+                " and {SubFamilias.SubFamilia} = '" + f4_Subfamilia.Text +
                 "' and {DocumentosVenda.TipoDocumento} = 4";
             _PSO.Mapas.JanelaPrincipal = 1;
             _PSO.Mapas.AddFormula("Titulo", "' " + titulo + " (" + dataInicial + " até " + dataFinal + ")'");
             _PSO.Mapas.ImprimeListagem(relatorio, blnModal: true);
-        }
-
-        private void VendArtigo_Load(object sender, EventArgs e)
-        {
-            Motor.PriEngine.CreateContext("0012004", "faturacao", "*Pelicano*");
-            _BSO = Motor.PriEngine.Engine;
-            _PSO = Motor.PriEngine.Platform;
-
-            f4_Artigo.Inicializa(Motor.PriEngine.PriSDKContexto);
-
-            DateTime dataHoje = DateTime.Now;
-            dtPicker_dataInicial.Value = dataHoje.AddDays(-90);
-            dtPicker_dataFinal.Value = dataHoje;
         }
 
         private void btn_Cancelar_Click(object sender, EventArgs e)
