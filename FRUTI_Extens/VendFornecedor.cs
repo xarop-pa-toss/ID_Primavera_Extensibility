@@ -38,15 +38,9 @@ namespace FRUTI_Extens
             _PSO.Mapas.ImprimeListagem(relatorio, blnModal: true);
         }
 
-        private void btn_Cancelar_Click(object sender, EventArgs e)
-        {
-            this.Close();
-            this.Dispose();
-        }
-
         private void VendFornecedor_Load(object sender, EventArgs e)
         {
-            Motor.PriEngine.CreateContext("ADEGA", "admin", "id1234!!");
+            Motor.PriEngine.CreateContext("0012004", "faturacao", "*Pelicano*");
             _BSO = Motor.PriEngine.Engine;
             _PSO = Motor.PriEngine.Platform;
 
@@ -55,6 +49,12 @@ namespace FRUTI_Extens
             DateTime dataHoje = DateTime.Now;
             dtPicker_dataInicial.Value = dataHoje.AddDays(-90);
             dtPicker_dataFinal.Value = dataHoje;
+        }
+
+        private void btn_Cancelar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            this.Dispose();
         }
     }
 }

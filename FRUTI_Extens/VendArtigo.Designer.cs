@@ -28,7 +28,6 @@ namespace FRUTI_Extens
         /// </summary>
         private void InitializeComponent()
         {
-            this.f4_subfamilia = new PRISDK100.F4();
             this.dtPicker_dataFinal = new System.Windows.Forms.DateTimePicker();
             this.dtPicker_dataInicial = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -36,49 +35,9 @@ namespace FRUTI_Extens
             this.label1 = new System.Windows.Forms.Label();
             this.btn_Imprimir = new System.Windows.Forms.Button();
             this.btn_Cancelar = new System.Windows.Forms.Button();
+            this.f4_Artigo = new PRISDK100.F4();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // f4_subfamilia
-            // 
-            this.f4_subfamilia.AgrupaOutrosTerceiros = false;
-            this.f4_subfamilia.Audit = "mnuTabFamilias";
-            this.f4_subfamilia.AutoComplete = false;
-            this.f4_subfamilia.BackColorLocked = System.Drawing.SystemColors.ButtonFace;
-            this.f4_subfamilia.CampoChave = "SubFamilia";
-            this.f4_subfamilia.CampoChaveFisica = "";
-            this.f4_subfamilia.CampoDescricao = "Descricao";
-            this.f4_subfamilia.Caption = "Subfamília:";
-            this.f4_subfamilia.CarregarValoresEdicao = false;
-            this.f4_subfamilia.Categoria = PRISDK100.clsSDKTypes.EnumCategoria.SubFamilia;
-            this.f4_subfamilia.ChaveFisica = "";
-            this.f4_subfamilia.ChaveNumerica = false;
-            this.f4_subfamilia.F4Modal = false;
-            this.f4_subfamilia.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.f4_subfamilia.IDCategoria = "SubFamilias";
-            this.f4_subfamilia.Location = new System.Drawing.Point(22, 159);
-            this.f4_subfamilia.MaxLengthDescricao = 0;
-            this.f4_subfamilia.MaxLengthF4 = 50;
-            this.f4_subfamilia.MinimumSize = new System.Drawing.Size(37, 21);
-            this.f4_subfamilia.Modulo = "BAS";
-            this.f4_subfamilia.MostraDescricao = true;
-            this.f4_subfamilia.MostraLink = true;
-            this.f4_subfamilia.Name = "f4_subfamilia";
-            this.f4_subfamilia.PainesInformacaoRelacionada = false;
-            this.f4_subfamilia.PainesInformacaoRelacionadaMultiplasChaves = false;
-            this.f4_subfamilia.PermiteDrillDown = true;
-            this.f4_subfamilia.PermiteEnabledLink = true;
-            this.f4_subfamilia.PodeEditarDescricao = false;
-            this.f4_subfamilia.ResourceID = 684;
-            this.f4_subfamilia.ResourcePersonalizada = false;
-            this.f4_subfamilia.Restricao = "";
-            this.f4_subfamilia.SelectionFormula = "";
-            this.f4_subfamilia.Size = new System.Drawing.Size(407, 22);
-            this.f4_subfamilia.TabIndex = 0;
-            this.f4_subfamilia.TextoDescricao = "";
-            this.f4_subfamilia.WidthEspacamento = 30;
-            this.f4_subfamilia.WidthF4 = 1500;
-            this.f4_subfamilia.WidthLink = 1150;
             // 
             // dtPicker_dataFinal
             // 
@@ -130,7 +89,7 @@ namespace FRUTI_Extens
             // btn_Imprimir
             // 
             this.btn_Imprimir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Imprimir.Location = new System.Drawing.Point(187, 201);
+            this.btn_Imprimir.Location = new System.Drawing.Point(187, 229);
             this.btn_Imprimir.Name = "btn_Imprimir";
             this.btn_Imprimir.Size = new System.Drawing.Size(112, 34);
             this.btn_Imprimir.TabIndex = 4;
@@ -139,7 +98,7 @@ namespace FRUTI_Extens
             // 
             // btn_Cancelar
             // 
-            this.btn_Cancelar.Location = new System.Drawing.Point(317, 201);
+            this.btn_Cancelar.Location = new System.Drawing.Point(317, 229);
             this.btn_Cancelar.Name = "btn_Cancelar";
             this.btn_Cancelar.Size = new System.Drawing.Size(112, 34);
             this.btn_Cancelar.TabIndex = 5;
@@ -147,15 +106,56 @@ namespace FRUTI_Extens
             this.btn_Cancelar.UseVisualStyleBackColor = true;
             this.btn_Cancelar.Click += new System.EventHandler(this.btn_Cancelar_Click);
             // 
+            // f4_Artigo
+            // 
+            this.f4_Artigo.AgrupaOutrosTerceiros = false;
+            this.f4_Artigo.Audit = "mnuTabArtigo";
+            this.f4_Artigo.AutoComplete = false;
+            this.f4_Artigo.BackColorLocked = System.Drawing.SystemColors.ButtonFace;
+            this.f4_Artigo.CampoChave = "Artigo";
+            this.f4_Artigo.CampoChaveFisica = "";
+            this.f4_Artigo.CampoDescricao = "Descricao";
+            this.f4_Artigo.Caption = "Artigo:";
+            this.f4_Artigo.CarregarValoresEdicao = false;
+            this.f4_Artigo.Categoria = PRISDK100.clsSDKTypes.EnumCategoria.Artigos;
+            this.f4_Artigo.ChaveFisica = "";
+            this.f4_Artigo.ChaveNumerica = false;
+            this.f4_Artigo.F4Modal = false;
+            this.f4_Artigo.Font = new System.Drawing.Font("Tahoma", 8.25F);
+            this.f4_Artigo.IDCategoria = "Artigo";
+            this.f4_Artigo.Location = new System.Drawing.Point(33, 156);
+            this.f4_Artigo.MaxLengthDescricao = 0;
+            this.f4_Artigo.MaxLengthF4 = 50;
+            this.f4_Artigo.MinimumSize = new System.Drawing.Size(37, 21);
+            this.f4_Artigo.Modulo = "BAS";
+            this.f4_Artigo.MostraDescricao = true;
+            this.f4_Artigo.MostraLink = true;
+            this.f4_Artigo.Name = "f4_Artigo";
+            this.f4_Artigo.PainesInformacaoRelacionada = false;
+            this.f4_Artigo.PainesInformacaoRelacionadaMultiplasChaves = false;
+            this.f4_Artigo.PermiteDrillDown = true;
+            this.f4_Artigo.PermiteEnabledLink = true;
+            this.f4_Artigo.PodeEditarDescricao = false;
+            this.f4_Artigo.ResourceID = 668;
+            this.f4_Artigo.ResourcePersonalizada = false;
+            this.f4_Artigo.Restricao = "";
+            this.f4_Artigo.SelectionFormula = "";
+            this.f4_Artigo.Size = new System.Drawing.Size(396, 22);
+            this.f4_Artigo.TabIndex = 6;
+            this.f4_Artigo.TextoDescricao = "";
+            this.f4_Artigo.WidthEspacamento = 50;
+            this.f4_Artigo.WidthF4 = 1500;
+            this.f4_Artigo.WidthLink = 1050;
+            // 
             // VendArtigo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(461, 261);
+            this.ClientSize = new System.Drawing.Size(461, 275);
+            this.Controls.Add(this.f4_Artigo);
             this.Controls.Add(this.btn_Cancelar);
             this.Controls.Add(this.btn_Imprimir);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.f4_subfamilia);
             this.Name = "VendArtigo";
             this.Text = "VendArtigo";
             this.Load += new System.EventHandler(this.VendArtigo_Load);
@@ -166,8 +166,6 @@ namespace FRUTI_Extens
         }
 
         #endregion
-
-        private PRISDK100.F4 f4_subfamilia;
         private System.Windows.Forms.DateTimePicker dtPicker_dataFinal;
         private System.Windows.Forms.DateTimePicker dtPicker_dataInicial;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -175,5 +173,6 @@ namespace FRUTI_Extens
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btn_Imprimir;
         private System.Windows.Forms.Button btn_Cancelar;
+        private PRISDK100.F4 f4_Artigo;
     }
 }
