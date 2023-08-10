@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Collections.Generic;
 using PRISDK100; using ErpBS100; using StdBE100; using StdPlatBS100;
 
 namespace FRUTI_Extens
@@ -21,11 +22,26 @@ namespace FRUTI_Extens
             _BSO = Motor.PriEngine.Engine;
             _PSO = Motor.PriEngine.Platform;
 
-            f4_Subfamilia.Inicializa(Motor.PriEngine.PriSDKContexto);
-
             DateTime dataHoje = DateTime.Now;
             dtPicker_dataInicial.Value = dataHoje.AddDays(-90);
             dtPicker_dataFinal.Value = dataHoje;
+        }
+
+        private void InicializarSubfamilia()
+        {
+            List<string> subfamiliasList = new List<string>();
+
+            // Transformar a query em List<string> para usar como DataSource da ComboBox
+            StdBELista subfamiliasPri = _BSO.Consulta("SELECT subfamilia, descricao FROM Subfamilias");
+            subfamiliasPri.Inicio();
+
+            while (!subfamiliasPri.NoFim()) {
+                subfamiliasList.Add(subfamiliasPri.Valor("subfamilia") + " - " + subfamiliasPri.Valor("descricao"));
+            }
+
+            // Popular a combobox com a List
+            cBox_subfamilia.DataSource = subfamiliasList;
+            cBox_subfamilia.SelectedIndex = 0;
         }
 
         private void btnImprimirClick(object sender, EventArgs e)
@@ -37,12 +53,17 @@ namespace FRUTI_Extens
             dataInicial = dtPicker_dataInicial.Value.ToString();
             dataFinal = dtPicker_dataFinal.Value.ToString();
 
+            // Get primeira palavra até ao espaço no texto da ComboBox
+            string original = cBox_subfamilia.Text;
+            int indiceDoEspaco = original.IndexOf(' ');
+            string subfamilia = original.Substring(0, indiceDoEspaco);
+
             _PSO.Mapas.Inicializar("ERP");
             _PSO.Mapas.VerificarBdAntesImpressao = true;
             _PSO.Mapas.SelectionFormula = @"
                 {CabecDoc.Data} >= " + dataInicial +
                 " and {CabecDoc.Data} <= " + dataFinal +
-                " and {SubFamilias.SubFamilia} = '" + f4_Subfamilia.Text +
+                " and {SubFamilias.SubFamilia} = '" + subfamilia +
                 "' and {DocumentosVenda.TipoDocumento} = 4";
             _PSO.Mapas.JanelaPrincipal = 1;
             _PSO.Mapas.AddFormula("Titulo", "' " + titulo + " (" + dataInicial + " até " + dataFinal + ")'");

@@ -35,7 +35,8 @@ namespace FRUTI_Extens
             this.label1 = new System.Windows.Forms.Label();
             this.btn_Imprimir = new System.Windows.Forms.Button();
             this.btn_Cancelar = new System.Windows.Forms.Button();
-            this.f4_Subfamilia = new PRISDK100.F4();
+            this.cBox_subfamilia = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -106,53 +107,30 @@ namespace FRUTI_Extens
             this.btn_Cancelar.UseVisualStyleBackColor = true;
             this.btn_Cancelar.Click += new System.EventHandler(this.btn_Cancelar_Click);
             // 
-            // f4_Subfamilia
+            // cBox_subfamilia
             // 
-            this.f4_Subfamilia.AgrupaOutrosTerceiros = false;
-            this.f4_Subfamilia.Audit = "mnuTabFamilias";
-            this.f4_Subfamilia.AutoComplete = false;
-            this.f4_Subfamilia.BackColorLocked = System.Drawing.SystemColors.ButtonFace;
-            this.f4_Subfamilia.CampoChave = "SubFamilia";
-            this.f4_Subfamilia.CampoChaveFisica = "";
-            this.f4_Subfamilia.CampoDescricao = "Descricao";
-            this.f4_Subfamilia.Caption = "Subfamília:";
-            this.f4_Subfamilia.CarregarValoresEdicao = false;
-            this.f4_Subfamilia.Categoria = PRISDK100.clsSDKTypes.EnumCategoria.SubFamilia;
-            this.f4_Subfamilia.ChaveFisica = "";
-            this.f4_Subfamilia.ChaveNumerica = false;
-            this.f4_Subfamilia.F4Modal = false;
-            this.f4_Subfamilia.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.f4_Subfamilia.IDCategoria = "SubFamilias";
-            this.f4_Subfamilia.Location = new System.Drawing.Point(31, 170);
-            this.f4_Subfamilia.MaxLengthDescricao = 0;
-            this.f4_Subfamilia.MaxLengthF4 = 50;
-            this.f4_Subfamilia.MinimumSize = new System.Drawing.Size(37, 21);
-            this.f4_Subfamilia.Modulo = "BAS";
-            this.f4_Subfamilia.MostraDescricao = true;
-            this.f4_Subfamilia.MostraLink = true;
-            this.f4_Subfamilia.Name = "f4_Subfamilia";
-            this.f4_Subfamilia.PainesInformacaoRelacionada = false;
-            this.f4_Subfamilia.PainesInformacaoRelacionadaMultiplasChaves = false;
-            this.f4_Subfamilia.PermiteDrillDown = true;
-            this.f4_Subfamilia.PermiteEnabledLink = true;
-            this.f4_Subfamilia.PodeEditarDescricao = false;
-            this.f4_Subfamilia.ResourceID = 684;
-            this.f4_Subfamilia.ResourcePersonalizada = false;
-            this.f4_Subfamilia.Restricao = "";
-            this.f4_Subfamilia.SelectionFormula = "";
-            this.f4_Subfamilia.Size = new System.Drawing.Size(398, 21);
-            this.f4_Subfamilia.TabIndex = 6;
-            this.f4_Subfamilia.TextoDescricao = "";
-            this.f4_Subfamilia.WidthEspacamento = 60;
-            this.f4_Subfamilia.WidthF4 = 1590;
-            this.f4_Subfamilia.WidthLink = 1575;
+            this.cBox_subfamilia.FormattingEnabled = true;
+            this.cBox_subfamilia.Location = new System.Drawing.Point(108, 168);
+            this.cBox_subfamilia.Name = "cBox_subfamilia";
+            this.cBox_subfamilia.Size = new System.Drawing.Size(244, 24);
+            this.cBox_subfamilia.TabIndex = 6;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(25, 171);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(77, 17);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Subfamilia:";
             // 
             // VendArtigo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(461, 275);
-            this.Controls.Add(this.f4_Subfamilia);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.cBox_subfamilia);
             this.Controls.Add(this.btn_Cancelar);
             this.Controls.Add(this.btn_Imprimir);
             this.Controls.Add(this.groupBox1);
@@ -162,6 +140,7 @@ namespace FRUTI_Extens
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -173,6 +152,7 @@ namespace FRUTI_Extens
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btn_Imprimir;
         private System.Windows.Forms.Button btn_Cancelar;
-        private PRISDK100.F4 f4_Subfamilia;
+        private System.Windows.Forms.ComboBox cBox_subfamilia;
+        private System.Windows.Forms.Label label3;
     }
 }
