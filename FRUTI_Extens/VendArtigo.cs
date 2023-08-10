@@ -23,8 +23,10 @@ namespace FRUTI_Extens
             _PSO = Motor.PriEngine.Platform;
 
             DateTime dataHoje = DateTime.Now;
-            dtPicker_dataInicial.Value = dataHoje.AddDays(-90);
-            dtPicker_dataFinal.Value = dataHoje;
+            dtPicker_dataInicial.Value = dataHoje;
+            dtPicker_dataFinal.Value = dataHoje.AddDays(-90);
+
+            InicializarSubfamilia();
         }
 
         private void InicializarSubfamilia()
@@ -37,6 +39,7 @@ namespace FRUTI_Extens
 
             while (!subfamiliasPri.NoFim()) {
                 subfamiliasList.Add(subfamiliasPri.Valor("subfamilia") + " - " + subfamiliasPri.Valor("descricao"));
+                subfamiliasPri.Seguinte();
             }
 
             // Popular a combobox com a List
@@ -44,14 +47,20 @@ namespace FRUTI_Extens
             cBox_subfamilia.SelectedIndex = 0;
         }
 
-        private void btnImprimirClick(object sender, EventArgs e)
+        private void btn_Cancelar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            this.Dispose();
+        }
+
+        private void btn_Imprimir_Click(object sender, EventArgs e)
         {
             string relatorio, rSel, titulo, dataInicial, dataFinal;
 
-            titulo = "Vendas Por SubFamilia";
+            titulo = "'Vendas Por SubFamilia ";
             relatorio = "VendArt1";
-            dataInicial = dtPicker_dataInicial.Value.ToString();
-            dataFinal = dtPicker_dataFinal.Value.ToString();
+            dataInicial = "date(" + dtPicker_dataInicial.Value.Date.ToString("yyyy,MM,dd") + ")";
+            dataFinal = "date(" + dtPicker_dataFinal.Value.Date.ToString("yyyy,MM,dd") + ")";
 
             // Get primeira palavra até ao espaço no texto da ComboBox
             string original = cBox_subfamilia.Text;
@@ -60,20 +69,14 @@ namespace FRUTI_Extens
 
             _PSO.Mapas.Inicializar("ERP");
             _PSO.Mapas.VerificarBdAntesImpressao = true;
-            _PSO.Mapas.SelectionFormula = @"
-                {CabecDoc.Data} >= " + dataInicial +
+            _PSO.Mapas.SelectionFormula = 
+                " {CabecDoc.Data} >= " + dataInicial +
                 " and {CabecDoc.Data} <= " + dataFinal +
-                " and {SubFamilias.SubFamilia} = '" + subfamilia +
-                "' and {DocumentosVenda.TipoDocumento} = 4";
+                " and {SubFamilias.SubFamilia} = '" + subfamilia + "'" +
+                " and {DocumentosVenda.TipoDocumento} = 4";
             _PSO.Mapas.JanelaPrincipal = 1;
-            _PSO.Mapas.AddFormula("Titulo", "' " + titulo + " (" + dataInicial + " até " + dataFinal + ")'");
+            _PSO.Mapas.AddFormula("Titulo", titulo + " (" + dtPicker_dataInicial.Value.Date.ToString() + " até " + dtPicker_dataInicial.Value.Date.ToString() + ")'");
             _PSO.Mapas.ImprimeListagem(relatorio, blnModal: true);
-        }
-
-        private void btn_Cancelar_Click(object sender, EventArgs e)
-        {
-            this.Close();
-            this.Dispose();
         }
     }
 }
