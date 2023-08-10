@@ -138,11 +138,29 @@ namespace PP_PPCS
                     docNovo.NumDocExterno = TipoDoc + " Nº " + NumDoc.ToString() + "/" + Serie + " - " + RSet.Valor("NumDocExterno");
 
                     RSet = BSO.Consulta(QueriesSQL.GetQuery06(Filial, TipoDoc, Serie, NumDoc.ToString()));
-                    RSet.NoInicio();
+
                     while (!RSet.NoFim()) {
                         if (!string.IsNullOrEmpty(RSet.Valor("ArtigoDestino")) && BSO.Base.Artigos.Existe(RSet.Valor("ArtigoDestino"))) {
 
-                            BSO.Compras.Documentos.AdicionaLinha(docNovo, RSet.Valor("ArtigoDestino"), )
+                            double quant = Math.Abs((double)RSet.Valor("Quantidade"));
+                            double precotaxaiva = 6;
+
+                            BSO.Compras.Documentos.AdicionaLinha(
+                                docNovo,
+                                RSet.Valor("ArtigoDestino"),
+                                ref quant,
+                                RSet.Valor("Armazem"),
+                                RSet.Valor("Localizacao"),
+                                RSet.Valor("PrecUnit") * 0,
+                                RSet.Valor("Descontro1"),
+                                RSet.Valor("Lote"),
+                                1, 1, 1,
+                                RSet.Valor("DescEntidade"),
+                                RSet.Valor("DescPag"),
+                                0, 0,
+                                false,
+                                false,
+                                );
                         }
                     }
 
