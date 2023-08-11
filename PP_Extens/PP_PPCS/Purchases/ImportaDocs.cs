@@ -160,6 +160,7 @@ namespace PP_PPCS
                                 0, 0,
                                 false,
                                 false,
+                                BSO.Base.Iva.DaValorAtributo("23", "Taxa")
                                 );
                         }
                     }

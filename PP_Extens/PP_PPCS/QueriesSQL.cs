@@ -8,7 +8,7 @@ namespace PP_PPCS
 {
     class QueriesSQL
     {
-        private static string Query01 = @"
+        private static readonly string Query01 = @"
             SELECT 
                 scc.TipoEntidade, 
                 scc.Entidade, 
@@ -55,7 +55,7 @@ namespace PP_PPCS
                 (scc.DataDoc = CONVERT(DATE, '{1}', 105) OR (ISNULL(cc.DataDoc,'') = CONVERT(DATE, '{1}', 105)));
             ";
 
-        private static string Query02 = @"
+        private static readonly string Query02 = @"
             INSERT INTO 
                 {0} (TipoEntidade, Entidade, Filial, TipoDoc, Serie, NumDoc, EntLocal, FilialLoc, TipoDocLoc, SerieLoc, NumDocLocal, Data, Importa) 
             SELECT 
@@ -99,12 +99,12 @@ namespace PP_PPCS
                 scd.Data = CONVERT(DATE, '{1}', 105);
             ";
 
-        private static string Query03 = @"
+        private static readonly string Query03 = @"
             SELECT TipoEntidade, Entidade, Filial, TipoDoc, Serie, NumDoc, EntLocal, FilialLoc, TipoDocLoc, SerieLoc, NumDocLocal, Data, Importa 
             FROM {0}  
             ORDER BY By TipoEntidade, Filial, TipoDoc, Serie, NumDoc;";
 
-        private static string Query04 = @"
+        private static readonly string Query04 = @"
             SELECT * 
             FROM Servidor1.PriPortipesca.dbo.CabecCompras 
             WHERE Filial = '{0}' 
@@ -112,7 +112,7 @@ namespace PP_PPCS
                 AND Serie = '{2}' 
                 AND NumDoc = '{3}';";
 
-        private static string Query05 = @"
+        private static readonly string Query05 = @"
             SELECT * 
             FROM Servidor1.PriPortipesca.dbo.CabecCompras 
             WHERE 
@@ -121,7 +121,7 @@ namespace PP_PPCS
                 AND Serie = '{2}' 
                 AND NumDoc = {3};";
 
-        private static string Query06 = @"
+        private static readonly string Query06 = @"
             SELECT CASE WHEN tca.CDU_ArtigoDestino IS NULL THEN '' ELSE tca.CDU_ArtigoDestino END AS ArtigoDestino, lc.*, cc.DescEntidade, cc.DescPag 
             FROM Servidor1.PriPortipesca.dbo.LinhasCompras lc 
                 INNER JOIN Servidor1.PriPortipesca.dbo.CabecCompras cc ON lc.IdCabecCompras = cc.Id 
@@ -162,7 +162,7 @@ namespace PP_PPCS
 
         public static string GetQuery06(string filial, string tipoDoc, string serie, string numDoc)
         {
-            return string.Format(Query05, filial, tipoDoc, serie, numDoc);
+            return string.Format(Query06, filial, tipoDoc, serie, numDoc);
         }
     }
 }
