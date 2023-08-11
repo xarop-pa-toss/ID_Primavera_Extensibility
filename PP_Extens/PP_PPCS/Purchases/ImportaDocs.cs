@@ -1,23 +1,24 @@
-using Primavera.Extensibility.Purchases.Editors;
+using BasBE100;
+using CctBE100;
+using CmpBE100;
+using ErpBS100;
 using Primavera.Extensibility.BusinessEntities;
+using Primavera.Extensibility.Purchases.Editors;
+using StdBE100;
+using StdPlatBS100;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using StdPlatBS100;
-using ErpBS100;
-using CmpBE100;
-using BasBE100;
-using StdBE100;
-
+using VndBE100;
 
 
 namespace PP_PPCS
 {
     public class ImportaDocs : EditorCompras
     {
-        private void CriarDocumentoCompra(
+        public void CriarDocumentoCompra(
         #region parametros
             string TipoEntidade,
             string Entidade,
@@ -243,11 +244,109 @@ namespace PP_PPCS
 
                     if (docNovo.Linhas.NumItens > 0 && !Cancelar) {
 
+                        string numdoc = NumDoc.HasValue ? NumDoc.Value.ToString() : null;
+
+                        BSO.Compras.Documentos.AdicionaLinhaEspecial(
+                            docNovo,
+                            BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario,
+                            0,
+                            $"Este documento é replicação do documento fisico {TipoDoc} N.º {NumDoc.ToString() ?? null}/{Serie}.");
+
+                        BSO.Compras.Documentos.AdicionaLinhaEspecial(
+                            docNovo,
+                            BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario,
+                            0,
+                            "Cópia do documento original");
+
+                        docNovo.TrataIvaCaixa = false;
+                        docNovo.CamposUtil["CDU_NumDocOrig"].Valor = numdoc;
+                        BSO.Compras.Documentos.Actualiza(docNovo);
+
+                        EntLocal = docNovo.Entidade;
+                        FilialDest = docNovo.Filial;
+                        TipoDocDest = docNovo.Tipodoc;
+                        SerieDest = docNovo.Serie;
+                        NumDocDest = docNovo.NumDoc;
+                        DataDoc = docNovo.DataDoc;
+                        Importa = "N";
                     }
+
+                    RSet.Dispose();
+                    docNovo.Dispose();
                 }
             }
-
+            // Fim de CriarDocumentoCompra
             return;
+        }
+
+        public void CriarDocumentoVenda(
+        #region parametros
+            string TipoEntidade,
+            string Entidade,
+            string Filial,
+            string TipoDoc,
+            string Serie,
+            ref int NumDoc,
+            ref string EntLocal,
+            ref string FilialDest,
+            ref string TipoDocDest,
+            ref string SerieDest,
+            ref int NumDocDest,
+            ref DateTime DataDoc,
+            ref string Importa,
+            ref bool Cancel
+        #endregion
+            )
+        {
+            VndBEDocumentoVenda docNovo = new VndBEDocumentoVenda();
+            CctBEDocumentoLiq docLiq = new CctBEDocumentoLiq();
+            StdBELista RSet = new StdBELista();
+
+            bool Cancelar, ivaIncluido, DocDestinoJaExiste, liqDocAnulada, fazerLiquidacao;
+            string fl = "", tdl = "", sl = "";
+            int ndl = 0;
+            
+            docNovo = BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
+            Cancelar = false;
+
+            switch (Importa) 
+            {
+                case "A": // Anular o documento de destino
+                    if (BSO.Vendas.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, NumDocDest)) {
+                        // A próxima linha preenche as quatro variáveis dadas por referência. Usadas logo a seguir para anular a liquidação.
+                        if (BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)){
+
+                            // Anular a liquidação do documento
+                            BSO.PagamentosRecebimentos.Liquidacoes.Remove(fl, tdl, sl, ndl);
+
+                            // No código da V9 existe um bloco aqui que corrige um suposto bug que não actualiza o numerador dos documentos.
+                            // Query original traduzida: $"UPDATE SeriesCCT SET Numerador = (SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'";
+                            // Descomentar as próximas linhas se necessário.
+
+                            // Como o Update actua sob um Select e temos de usar o StdBEExecSql, vamos primeiro usar BSO.Consulta (Select) e usar o resultado no Update.
+                            StdBELista subSelect = BSO.Consulta($"SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'");
+
+                            using (StdBEExecSql sql = new StdBEExecSql()) {
+                                sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
+                                sql.Tabela = "SeriesCCT";
+                                sql.AddCampo("Numerador", subSelect.Valor(0));
+                                sql.AddQuery();
+
+                                // Se Update falhar, preenche lista com NumDoc para mostrar ao cliente.
+                                try {
+                                    PSO.ExecSql.Executa(sql);
+                                }
+                                catch {
+                                    docsComErroNoUpdateSQL.Add(gNumDoc);
+                                }
+                            }
+                    }
+                    
+                    break; 
+
+            }
+
+
         }
     }
 }
