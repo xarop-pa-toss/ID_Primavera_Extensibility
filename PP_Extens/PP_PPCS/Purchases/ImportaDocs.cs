@@ -143,11 +143,12 @@ namespace PP_PPCS
 
                         int numLinhas = docNovo.Linhas.NumItens;
                         var ultimaLinha = docNovo.Linhas.GetEdita(numLinhas);
+                        double quant = Math.Abs((double)RSet.Valor("Quantidade"));
 
                         if (!string.IsNullOrEmpty(RSet.Valor("ArtigoDestino")) && BSO.Base.Artigos.Existe(RSet.Valor("ArtigoDestino"))) {
 
-                            double quant = Math.Abs((double)RSet.Valor("Quantidade"));
-
+                            // Actualizar sempre numLinhas e ultimaLinha quando se adiciona qualquer linha
+                            // Se a certo ponto ficar demasiado dificil de seguir, encapsular os três.
                             BSO.Compras.Documentos.AdicionaLinha(
                                 docNovo,
                                 RSet.Valor("ArtigoDestino"),
@@ -163,11 +164,11 @@ namespace PP_PPCS
                                 0, 0,
                                 false,
                                 false,
-                                BSO.Base.Iva.DaValorAtributo("23", "Taxa")
+                                BSO.Base.Iva.DaValorAtributo("6", "Taxa")
                                 );
-
                             numLinhas = docNovo.Linhas.NumItens;
                             ultimaLinha = docNovo.Linhas.GetEdita(numLinhas);
+
 
                             ultimaLinha.CamposUtil["CDU_Pescado"] = RSet.Valor("CDU_Pescado");
                             ultimaLinha.CamposUtil["CDU_NomeCientifico"] = RSet.Valor("CDU_NomeCientfico");
@@ -195,14 +196,45 @@ namespace PP_PPCS
                                 }
                             }
                         } else if (BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
+                            BSO.Compras.Documentos.AdicionaLinha(
+                                docNovo,
+                                RSet.Valor("Artigo"),
+                                ref quant,
+                                RSet.Valor("Armazem"),
+                                RSet.Valor("Localizacao"),
+                                RSet.Valor("PrecUnit") * 0,
+                                RSet.Valor("Descontro1"),
+                                RSet.Valor("Lote"),
+                                1, 1, 1,
+                                RSet.Valor("DescEntidade"),
+                                RSet.Valor("DescPag"),
+                                0, 0,
+                                false,
+                                false,
+                                BSO.Base.Iva.DaValorAtributo("6", "Taxa")
+                                );
+                            numLinhas = docNovo.Linhas.NumItens;
+                            ultimaLinha = docNovo.Linhas.GetEdita(numLinhas);
 
-                        }
+                            ultimaLinha.CamposUtil["CDU_Caixas"] = RSet.Valor("CDU_Caixas");
+                            ultimaLinha.CamposUtil["CDU_Pescado"] = RSet.Valor("CDU_Pescado");
+                            ultimaLinha.CamposUtil["CDU_NomeCientifico"] = RSet.Valor("CDU_NomeCientifico");
+                            ultimaLinha.CamposUtil["CDU_Origem"] = RSet.Valor("CDU_Origem");
+                            ultimaLinha.CamposUtil["CDU_FormaObtencao"] = RSet.Valor("CDU_FormaObtencao");
+                            ultimaLinha.CamposUtil["CDU_ZonaFAO"] = RSet.Valor("CDU_ZonaFAO");
+                            ultimaLinha.CamposUtil["CDU_VendaEmCaixa"] = RSet.Valor("CDU_VendaEmCaixa");
+                            ultimaLinha.CamposUtil["CDU_KilosPorCAixa"] = RSet.Valor("CDU_KilosPorCaixa");
+
+                        } else if (RSet.Valor("Artigo") is null) {
+                            BSO.Compras.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario);
+                        } 
                     }
                 }
-
-                return false;
             }
+
+            return false;
         }
     }
 }
+
 
