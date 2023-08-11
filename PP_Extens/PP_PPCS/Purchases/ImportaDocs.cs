@@ -17,22 +17,22 @@ namespace PP_PPCS
 {
     public class ImportaDocs : EditorCompras
     {
-        private bool CriarDocumentoCompra(
+        private void CriarDocumentoCompra(
         #region parametros
             string TipoEntidade,
             string Entidade,
             string Filial,
             string TipoDoc,
             string Serie,
-            long? NumDoc,
-            string EntLocal,
-            string FilialDest,
-            string TipoDocDest,
-            string SerieDest,
-            long? NumDocDest,
-            DateTime DataDoc,
-            string Importa,
-            bool Cancel
+            ref long? NumDoc,
+            ref string EntLocal,
+            ref string FilialDest,
+            ref string TipoDocDest,
+            ref string SerieDest,
+            ref long? NumDocDest,
+            ref DateTime DataDoc,
+            ref string Importa,
+            ref bool Cancel
         #endregion
             )
         {
@@ -106,7 +106,7 @@ namespace PP_PPCS
 
                             RSet.Dispose();
                             if (docNovo.Linhas.NumItens > 0) { docNovo.Linhas.RemoveTodos(); }
-                        } else { return false; }
+                        } else { return; }
                     } else {
 
                         RSet = BSO.Consulta(QueriesSQL.GetQuery04(Filial, TipoDoc, Serie, NumDoc.ToString()));
@@ -225,14 +225,29 @@ namespace PP_PPCS
                             ultimaLinha.CamposUtil["CDU_VendaEmCaixa"] = RSet.Valor("CDU_VendaEmCaixa");
                             ultimaLinha.CamposUtil["CDU_KilosPorCAixa"] = RSet.Valor("CDU_KilosPorCaixa");
 
-                        } else if (RSet.Valor("Artigo") is null) {
-                            BSO.Compras.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario);
                         } 
+                        else if (RSet.Valor("Artigo") is null) {
+                            BSO.Compras.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario);
+                        }
+                        else {
+                            PSO.MensagensDialogos.MostraAviso(
+                                $"ATENÇÃO!\n\nO artigo {RSet.Valor("Artigo")} não esxiste na base de dados.\nCrie o artigo e volte a importar o documento.",
+                                StdBSTipos.IconId.PRI_Exclama,
+                                $"Artigo: {RSet.Valor("Artigo")} - {RSet.Valor("Descricao")}");
+                            Cancel = true;
+                            return;
+                        }
+
+                        RSet.Seguinte();
+                    } // end while
+
+                    if (docNovo.Linhas.NumItens > 0 && !Cancelar) {
+
                     }
                 }
             }
 
-            return false;
+            return;
         }
     }
 }
