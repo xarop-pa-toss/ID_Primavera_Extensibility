@@ -226,11 +226,9 @@ namespace PP_PPCS
                             ultimaLinha.CamposUtil["CDU_VendaEmCaixa"] = RSet.Valor("CDU_VendaEmCaixa");
                             ultimaLinha.CamposUtil["CDU_KilosPorCAixa"] = RSet.Valor("CDU_KilosPorCaixa");
 
-                        } 
-                        else if (RSet.Valor("Artigo") is null) {
+                        } else if (RSet.Valor("Artigo") is null) {
                             BSO.Compras.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario);
-                        }
-                        else {
+                        } else {
                             PSO.MensagensDialogos.MostraAviso(
                                 $"ATENÇÃO!\n\nO artigo {RSet.Valor("Artigo")} não esxiste na base de dados.\nCrie o artigo e volte a importar o documento.",
                                 StdBSTipos.IconId.PRI_Exclama,
@@ -305,48 +303,49 @@ namespace PP_PPCS
             bool Cancelar, ivaIncluido, DocDestinoJaExiste, liqDocAnulada, fazerLiquidacao;
             string fl = "", tdl = "", sl = "";
             int ndl = 0;
-            
+
             docNovo = BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
             Cancelar = false;
 
-            switch (Importa) 
-            {
+            switch (Importa) {
                 case "A": // Anular o documento de destino
                     if (BSO.Vendas.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, NumDocDest)) {
                         // A próxima linha preenche as quatro variáveis dadas por referência. Usadas logo a seguir para anular a liquidação.
-                        if (BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)){
+                        if (BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)) {
 
                             // Anular a liquidação do documento
                             BSO.PagamentosRecebimentos.Liquidacoes.Remove(fl, tdl, sl, ndl);
 
+                            #region PossivelBugFix
                             // No código da V9 existe um bloco aqui que corrige um suposto bug que não actualiza o numerador dos documentos.
                             // Query original traduzida: $"UPDATE SeriesCCT SET Numerador = (SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'";
                             // Descomentar as próximas linhas se necessário.
 
-                            // Como o Update actua sob um Select e temos de usar o StdBEExecSql, vamos primeiro usar BSO.Consulta (Select) e usar o resultado no Update.
-                            StdBELista subSelect = BSO.Consulta($"SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'");
+                            //// Como o Update actua sob um Select e temos de usar o StdBEExecSql, vamos primeiro usar BSO.Consulta (Select) e usar o resultado no Update.
+                            //StdBELista subSelect = BSO.Consulta($"SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'");
 
-                            using (StdBEExecSql sql = new StdBEExecSql()) {
-                                sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-                                sql.Tabela = "SeriesCCT";
-                                sql.AddCampo("Numerador", subSelect.Valor(0));
-                                sql.AddQuery();
+                            //using (StdBEExecSql sql = new StdBEExecSql()) {
+                            //    sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
+                            //    sql.Tabela = "SeriesCCT";
+                            //    sql.AddCampo("Numerador", subSelect.Valor(0));
+                            //    sql.AddQuery();
 
-                                // Se Update falhar, preenche lista com NumDoc para mostrar ao cliente.
-                                try {
-                                    PSO.ExecSql.Executa(sql);
-                                }
-                                catch {
-                                    docsComErroNoUpdateSQL.Add(gNumDoc);
-                                }
-                            }
+                            //    PSO.ExecSql.Executa(sql);
+                            //}
+                            #endregion
+                        }
+
+                        docNovo = BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
+
+                        docNovo.DataDoc = DataDoc;
+                        docNovo.Entidade = Entidade;
+
+                        if (docNovo.Linhas.NumItens > 0) { docNovo.Linhas.RemoveTodos(); }
+
+
                     }
-                    
-                    break; 
-
+                break;
             }
-
-
         }
     }
 }

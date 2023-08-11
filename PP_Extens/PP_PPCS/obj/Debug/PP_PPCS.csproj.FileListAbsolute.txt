@@ -39,3 +39,11 @@ C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\obj\Debug\PP_PPCS.csproj.CopyComplete
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\obj\Debug\PP_PPCS.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\obj\Debug\PP_PPCS.pdb
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\CctBE100.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\CctBS100.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\ICctBS100.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\Primavera.MicroServices.PayablesReceivables.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\en\CctBS100.resources.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\es\CctBS100.resources.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\fr\CctBS100.resources.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\pt-cl\CctBS100.resources.dll
