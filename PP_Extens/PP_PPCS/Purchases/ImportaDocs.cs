@@ -39,6 +39,7 @@ namespace PP_PPCS
         {
             string localstr = "", SQLErrors = "";
             bool Cancelar = false;
+            int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoCompras.compDadosTodos;
 
             // Preenchimento do novo documento de compra
             if (Importa == "A" && BSO.Compras.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest) == true) {
@@ -105,7 +106,7 @@ namespace PP_PPCS
                             docNovo.DescFornecedor = RSet.Valor("DescEntidade");
                             docNovo.DescFinanceiro = RSet.Valor("DescPag");
 
-                            RSet.Dispose();
+                            RSet.Termina();
                             if (docNovo.Linhas.NumItens > 0) { docNovo.Linhas.RemoveTodos(); }
                         } else { return; }
                     } else {
@@ -121,7 +122,7 @@ namespace PP_PPCS
                         docNovo.CamposUtil["CDU_SerieOrig"].Valor = Serie;
                         docNovo.CamposUtil["CDU_NumDocOrig"].Valor = NumDoc;
 
-                        int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoCompras.compDadosTodos;
+                        
                         BSO.Compras.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
 
                         docNovo.DataDoc = DataDoc;
@@ -132,7 +133,7 @@ namespace PP_PPCS
                         docNovo.DescFinanceiro = RSet.Valor("DescPag");
                         docNovo.TrataIvaCaixa = false;
 
-                        RSet.Dispose();
+                        RSet.Termina();
                     }
 
                     RSet = BSO.Consulta(QueriesSQL.GetQuery05(Filial, TipoDoc, Serie, NumDoc.ToString()));
@@ -269,7 +270,7 @@ namespace PP_PPCS
                         Importa = "N";
                     }
 
-                    RSet.Dispose();
+                    RSet.Termina();
                     docNovo.Dispose();
                 }
             }
@@ -299,6 +300,7 @@ namespace PP_PPCS
             VndBEDocumentoVenda docNovo = new VndBEDocumentoVenda();
             CctBEDocumentoLiq docLiq = new CctBEDocumentoLiq();
             StdBELista RSet = new StdBELista();
+            int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoCompras.compDadosTodos;
 
             bool Cancelar, ivaIncluido, DocDestinoJaExiste, liqDocAnulada, fazerLiquidacao;
             string fl = "", tdl = "", sl = "";
@@ -341,56 +343,55 @@ namespace PP_PPCS
                         docNovo.Entidade = Entidade;
 
                         if (docNovo.Linhas.NumItens > 0) { docNovo.Linhas.RemoveTodos(); }
-                    }
-                    else {
+                    } else {
                         DocDestinoJaExiste = false;
                         docNovo = new VndBEDocumentoVenda();
 
-                        RSet = BSO.Consulta($
+                        RSet = BSO.Consulta(QueriesSQL.GetQuery07(Filial, TipoDoc, Serie, NumDoc.ToString()));
 
 
-                        //localstr = "Select * From Servidor1.PriPortipesca.dbo.CabecDoc Where Filial = '" & _
-                        //            Filial & "' And TipoDoc = '" & TipoDoc & "' And Serie = '" & Serie & "' And NumDoc = " & CStr(Numdoc) & ";"
+                        docNovo.Tipodoc = TipoDocDest;
+                        docNovo.Filial = Filial;
+                        docNovo.Serie = Serie;
+                        docNovo.TipoEntidade = TipoEntidade;
+                        docNovo.Entidade = EntLocal;
+                        docNovo.CamposUtil["CDU_FilialOrig"].Valor = Filial;
+                        docNovo.CamposUtil["CDU_TipoDocOrig"].Valor = TipoDoc;
+                        docNovo.CamposUtil["CDU_SerieOrig"].Valor = Serie;
+                        docNovo.CamposUtil["CDU_NumDocOrig"].Valor = NumDoc;
 
+                        BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
 
-                        //Set RecSet = Aplicacao.BSO.DSO.BDAPL.Execute(localstr)
+                        docNovo.DataDoc = DataDoc;
+                        docNovo.DescEntidade = RSet.Valor("DescEntidade");
+                        docNovo.DescFinanceiro = RSet.Valor("DescPag");
+                        docNovo.Responsavel = RSet.Valor("RespCobranca");
+                        docNovo.TrataIvaCaixa = false;
 
+                        if (docNovo.DataVenc < docNovo.DataDoc) { docNovo.DataVenc = docNovo.DataDoc; }
 
-                        //DocNovo.TipoDoc = TipoDocDest
-                        //DocNovo.Filial = Filial
-                        //DocNovo.Serie = Serie
-                        //DocNovo.TipoEntidade = TipoEntidade
-                        //DocNovo.Entidade = EntLocal
-                        //DocNovo.CamposUtil("CDU_FilialOrig") = nz(Filial)
-                        //DocNovo.CamposUtil("CDU_TipoDocOrig") = nz(TipoDoc)
-                        //DocNovo.CamposUtil("CDU_SerieOrig") = nz(Serie)
-                        //DocNovo.CamposUtil("CDU_NumDocOrig") = nzn(Numdoc)
-
-
-                        //Aplicacao.BSO.Comercial.Vendas.PreencheDadosRelacionados DocNovo, vdDadosTodos
-
-
-                        //DocNovo.DataDoc = DataDoc
-                        //DocNovo.DescEntidade = nzn(RecSet!DescEntidade)
-                        //DocNovo.DescFinanceiro = nzn(RecSet!DescPag)
-                        //DocNovo.Responsavel = nzn(RecSet!RespCobranca)
-                        //DocNovo.TrataIvaCaixa = False
-
-
-                        //If DocNovo.DataVenc < DocNovo.DataDoc Then
-
-
-                        //    DocNovo.DataVenc = DocNovo.DataDoc
-
-
-                        //End If
-
-
-                        RecSet.Close
-
-                    End If
+                        RSet.Termina();
                     }
-                break;
+
+                    // Verificar se o documento original é com iva incluido
+                    ivaIncluido = BSO.Consulta(QueriesSQL.GetQuery08(TipoDoc, Serie, NumDoc.ToString())).Valor("invaincluido");
+
+                    RSet = BSO.Consulta(QueriesSQL)
+
+                    //RecSet.Close
+
+                    //localstr = "Select Case When tca.CDU_ArtigoDestino Is Null Then '' Else tca.CDU_ArtigoDestino End As ArtigoDestino, ld.* " & _
+                    //            "       , cd.DescEntidade, cd.DescPag " & _
+                    //            "   From Servidor1.PriPortipesca.dbo.LinhasDoc ld " & _
+                    //            "       Inner Join Servidor1.PriPortipesca.dbo.CabecDoc cd On ld.IdCabecDoc = cd.Id " & _
+                    //            "       Left Outer Join TDU_CorrespondenciaArtigos tca On ld.Artigo = tca.CDU_ArtigoOriginal " & _
+                    //            "   Where cd.Filial = '" & Filial & "' And cd.TipoDoc = '" & TipoDoc & "' And cd.Serie = '" & Serie & "' And " & _
+                    //            "       cd.NumDoc = " & CStr(Numdoc) & " And ld.CDU_Pescado = 1 " & _
+                    //            "   Order By NumLinha;"
+
+
+                    //Set RecSet = Aplicacao.BSO.DSO.BDAPL.Execute(localstr)
+                    break;
             }
         }
     }
