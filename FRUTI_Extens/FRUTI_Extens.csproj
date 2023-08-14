@@ -72,6 +72,10 @@
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Integration.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Primavera.Extensibility.Platform">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Platform.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Primavera.Extensibility.Purchases">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Purchases.dll</HintPath>
       <Private>False</Private>
@@ -109,6 +113,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Motor\GetEmpresa.cs" />
     <Compile Include="OpenWForm.cs" />
     <Compile Include="Motor\PriMotores.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

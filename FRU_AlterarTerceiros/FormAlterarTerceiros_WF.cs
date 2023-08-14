@@ -16,8 +16,8 @@ namespace FRU_AlterarTerceiros
     public partial class FormAlterarTerceiros_WF : Form
     {
         private ErpBS _BSO;
-        private StdPlatBS _PSO; 
-        private StdBETransaccao _objStdTransac = new StdBETransaccao();
+        private StdPlatBS _PSO;
+        private StdBETransaccao _objStdTransac = new StdBETransaccao();        
 
         public FormAlterarTerceiros_WF()
         {
@@ -27,10 +27,14 @@ namespace FRU_AlterarTerceiros
         // LOAD e Inicialização
         private void FormAlterarTerceiros_WF_Load(object sender, EventArgs e)
         {
-            Motor.PriEngine.CreateContext("ADEGA", "admin", "id1234!!");
+            Motor.PriEngine.CreateContext(Motor.GetEmpresa.codEmpresa, "id", "*Pelicano*");
             _BSO = Motor.PriEngine.Engine;
             _PSO = Motor.PriEngine.Platform;
-
+            //_BSO = new ErpBS();
+            //_PSO = new StdPlatBS();
+            //_BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, Motor.GetEmpresa.codEmpresa, "id", "*Pelicano*");
+            
+            //
             datepicker_DataDocInicio.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             datepicker_DataDocFim.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1);
 

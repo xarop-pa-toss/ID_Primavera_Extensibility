@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FRU_AlterarTerceiros
 {
-    public class PriCustomCode1 : CustomCode
+    public class OpenFormCode : CustomCode
     {
         public void Abrir_formFaturasExploracao_WF()
         {
