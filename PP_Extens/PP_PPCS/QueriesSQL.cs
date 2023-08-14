@@ -203,7 +203,7 @@ namespace PP_PPCS
             return string.Format(Query08, tipoDoc, serie, numDoc);
         }
 
-        public static string GetQuery09(string, filial, string tipoDoc, string serie, string numDoc)
+        public static string GetQuery09(string filial, string tipoDoc, string serie, string numDoc)
         {
             return string.Format(Query09, filial, tipoDoc, serie, numDoc);
         }
