@@ -18,7 +18,7 @@ namespace FRUTI_Extens
 
         private void VendArtigo_Load(object sender, EventArgs e)
         {
-            Motor.PriEngine.CreateContext(Motor.GetEmpresa.codEmpresa, "id", "*Pelicano*");
+            Motor.PriEngine.CreateContext(Motor.GetEmpresa.codEmpresa, "id", "*pelicano*");
             _BSO = Motor.PriEngine.Engine;
             _PSO = Motor.PriEngine.Platform;
 

@@ -27,7 +27,7 @@ namespace FRU_AlterarTerceiros
         // LOAD e Inicialização
         private void FormAlterarTerceiros_WF_Load(object sender, EventArgs e)
         {
-            Motor.PriEngine.CreateContext(Motor.GetEmpresa.codEmpresa, "id", "*Pelicano*");
+            Motor.PriEngine.CreateContext(Motor.GetEmpresa.codEmpresa, "admin", "frup-115");
             _BSO = Motor.PriEngine.Engine;
             _PSO = Motor.PriEngine.Platform;
             //_BSO = new ErpBS();

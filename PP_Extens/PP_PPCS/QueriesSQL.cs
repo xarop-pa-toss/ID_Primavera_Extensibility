@@ -96,12 +96,11 @@ namespace PP_PPCS
             LEFT OUTER JOIN 
                 Clientes cl ON ce.CDU_EntLocal = cl.Cliente 
             WHERE 
-                scd.Data = CONVERT(DATE, '{1}', 105);
-            ";
+                scd.Data = CONVERT(DATE, '{1}', 105);";
 
         private static readonly string Query03 = @"
             SELECT TipoEntidade, Entidade, Filial, TipoDoc, Serie, NumDoc, EntLocal, FilialLoc, TipoDocLoc, SerieLoc, NumDocLocal, Data, Importa 
-            FROM {0}  
+            FROM {0} 
             ORDER BY By TipoEntidade, Filial, TipoDoc, Serie, NumDoc;";
 
         private static readonly string Query04 = @"
@@ -110,7 +109,7 @@ namespace PP_PPCS
             WHERE Filial = '{0}' 
                 AND TipoDoc = '{1}' 
                 AND Serie = '{2}' 
-                AND NumDoc = '{3}';";
+                AND NumDoc = {3};";
 
         private static readonly string Query05 = @"
             SELECT * 
@@ -127,12 +126,21 @@ namespace PP_PPCS
                 INNER JOIN Servidor1.PriPortipesca.dbo.CabecCompras cc ON lc.IdCabecCompras = cc.Id 
                 LEFT OUTER JOIN TDU_CorrespondenciaArtigos tca ON lc.Artigo = tca.CDU_ArtigoOriginal 
             WHERE 
-                cc.Filial = {0} 
-                ANDAnd cc.TipoDoc = {1} 
-                AND cc.Serie = {2} 
-                AND cc.NumDoc =  {3} 
+                cc.Filial = '{0}' 
+                AND cc.TipoDoc = '{1}' 
+                AND cc.Serie = '{2}' 
+                AND cc.NumDoc = {3} 
                 AND lc.CDU_Pescado = 1 
             ORDER BY NumLinha;";
+
+        private static readonly string Query07 = @"
+            SELECT 
+            FROM Servidor1.PriPortipesca.dbo.CabecDoc 
+            WHERE 
+                Filial = '{0}' 
+                AND cc.TipoDoc = '{1}' 
+                AND cc.Serie = '{2}' 
+                AND cc.NumDoc =  {3};";
 
 
         public static string GetQuery01(string tabela, string data)
@@ -163,6 +171,11 @@ namespace PP_PPCS
         public static string GetQuery06(string filial, string tipoDoc, string serie, string numDoc)
         {
             return string.Format(Query06, filial, tipoDoc, serie, numDoc);
+        }
+
+        public static string GetQuery07(string filial, string tipoDoc, string serie, string numDoc)
+        {
+            return string.Format(Query07, filial, tipoDoc, serie, numDoc);
         }
     }
 }

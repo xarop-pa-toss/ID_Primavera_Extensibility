@@ -2,7 +2,7 @@ using Primavera.Extensibility.Platform.Services;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 
 
-namespace FRU_AlterarTerceiros.Motor
+namespace FRUTI_Extens.Motor
 {
     public class GetEmpresa : Plataforma
     {

@@ -341,8 +341,54 @@ namespace PP_PPCS
                         docNovo.Entidade = Entidade;
 
                         if (docNovo.Linhas.NumItens > 0) { docNovo.Linhas.RemoveTodos(); }
+                    }
+                    else {
+                        DocDestinoJaExiste = false;
+                        docNovo = new VndBEDocumentoVenda();
+
+                        RSet = BSO.Consulta($
 
 
+                        //localstr = "Select * From Servidor1.PriPortipesca.dbo.CabecDoc Where Filial = '" & _
+                        //            Filial & "' And TipoDoc = '" & TipoDoc & "' And Serie = '" & Serie & "' And NumDoc = " & CStr(Numdoc) & ";"
+
+
+                        //Set RecSet = Aplicacao.BSO.DSO.BDAPL.Execute(localstr)
+
+
+                        //DocNovo.TipoDoc = TipoDocDest
+                        //DocNovo.Filial = Filial
+                        //DocNovo.Serie = Serie
+                        //DocNovo.TipoEntidade = TipoEntidade
+                        //DocNovo.Entidade = EntLocal
+                        //DocNovo.CamposUtil("CDU_FilialOrig") = nz(Filial)
+                        //DocNovo.CamposUtil("CDU_TipoDocOrig") = nz(TipoDoc)
+                        //DocNovo.CamposUtil("CDU_SerieOrig") = nz(Serie)
+                        //DocNovo.CamposUtil("CDU_NumDocOrig") = nzn(Numdoc)
+
+
+                        //Aplicacao.BSO.Comercial.Vendas.PreencheDadosRelacionados DocNovo, vdDadosTodos
+
+
+                        //DocNovo.DataDoc = DataDoc
+                        //DocNovo.DescEntidade = nzn(RecSet!DescEntidade)
+                        //DocNovo.DescFinanceiro = nzn(RecSet!DescPag)
+                        //DocNovo.Responsavel = nzn(RecSet!RespCobranca)
+                        //DocNovo.TrataIvaCaixa = False
+
+
+                        //If DocNovo.DataVenc < DocNovo.DataDoc Then
+
+
+                        //    DocNovo.DataVenc = DocNovo.DataDoc
+
+
+                        //End If
+
+
+                        RecSet.Close
+
+                    End If
                     }
                 break;
             }
