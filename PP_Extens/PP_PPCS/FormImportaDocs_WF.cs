@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
 using System.Windows.Forms; using ErpBS100; using StdPlatBS100; using StdBE100; using VndBE100;
 
 namespace PP_PPCS
@@ -16,7 +17,6 @@ namespace PP_PPCS
         private StdPlatBS _PSO;
         private DateTime _dataOrigem, _dataDestino;
         private StdBELista _RSet;
-        string _tabela = "#A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
 
 
         public FormImportaDocs_WF()
@@ -26,6 +26,12 @@ namespace PP_PPCS
 
         private void FormImportaDocs_WF_Load(object sender, EventArgs e)
         {
+            // ALTERAR AQUI AMBIENTE A USAR
+            // 'teste' ou 'prod'
+            string ambiente = "teste";
+            
+            new QueriesSQL(ambiente);
+
             Motor.PriEngine.CreateContext("0012004", "id", "*Pelicano*");
             _BSO = Motor.PriEngine.Engine;
             _PSO = Motor.PriEngine.Platform;
@@ -160,7 +166,31 @@ namespace PP_PPCS
 
         private void btn_Actualizar_WF_Click(object sender, EventArgs e)
         {
-            StdBEExecSql sql = new StdBEExecSql();
+            #region Drop Table
+
+            SqlConnectionStringBuilder connString = new SqlConnectionStringBuilder {
+                DataSource = "",
+                InitialCatalog = "PRIPPCS",
+                IntegratedSecurity = true
+            }
+
+            string connectionString = 
+            string tabela = "#A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
+
+            using (SqlConnection connection = new SqlConnection(connectionString)) {
+                connection.Open();
+
+                string drop = $"DROP TABLE {tabela};";
+
+                using (SqlCommand command = new SqlCommand(drop, connection)) {
+                    try { command.ExecuteNonQuery(); 
+                    }
+                    catch {
+                        _PSO.MensagensDialogos.MostraAviso("Não foi possivel actualizar a tabela.", StdBSTipos.IconId.PRI_Exclama, $"Erro ao fazer Drop da tabela {tabela}.")
+                    }
+                }
+            }
+            #endregion
             //_BSO.Consulta("DROP TABLE " + _tabela + ";");
 
             ActualizarPriGrelhaDocs(_dataOrigem);

@@ -10,9 +10,12 @@ namespace PP_PPCS
     {
         // Set ambiente (teste ou produção)
         private static string _servidor;
+        private string connString, dropQuery;
+        private System.Data.SqlClient 
         public QueriesSQL(string ambiente)
         {
-            if (ambiente == "teste") { _servidor = "PRIMAVERA_P10"; 
+            if (ambiente == "teste") 
+                { _servidor = "PRIMAVERA_P10"; 
             } 
             else if (ambiente == "prod") { _servidor = "Servidor1"; 
             }
