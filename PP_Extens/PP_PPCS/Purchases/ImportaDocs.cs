@@ -19,8 +19,13 @@ namespace PP_PPCS
     public class ImportaDocs : EditorCompras
     {
         // ALTERAR AQUI AMBIENTE A USAR
-        // 'teste' ou 'producao'
-        private string ambiente = ;
+        // 'teste' ou 'prod'
+        private string ambiente = "teste";
+
+        public ImportaDocs()
+        {
+            QueriesSQL queriesSQL = new QueriesSQL(ambiente);
+        }
 
         public void CriarDocumentoCompra(
         #region parametros
