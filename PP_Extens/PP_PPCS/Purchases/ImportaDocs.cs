@@ -18,6 +18,9 @@ namespace PP_PPCS
 {
     public class ImportaDocs : EditorCompras
     {
+        // ALTERAR AQUI NOME DO SERVIDOR SQL A USAR
+        private string ambiente = "PRIMAVERA_P10"
+
         public void CriarDocumentoCompra(
         #region parametros
             string TipoEntidade,
