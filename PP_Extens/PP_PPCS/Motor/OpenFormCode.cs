@@ -10,7 +10,7 @@ namespace PP_PPCS
 {
     public class PriCustomCode1 : CustomCode
     {
-        public void Abrir_formFaturasExploracao_WF()
+        public void Abrir_formImportaDocs_WF()
         {
             FormImportaDocs_WF form = new FormImportaDocs_WF();
             form.ShowDialog();

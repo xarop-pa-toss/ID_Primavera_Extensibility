@@ -143,7 +143,7 @@
       <DependentUpon>FormImportaDocs_WF.cs</DependentUpon>
     </Compile>
     <Compile Include="Motor\OpenFormCode.cs" />
-    <Compile Include="PriEngine.cs" />
+    <Compile Include="Motor\PriEngine.cs" />
     <Compile Include="QueriesSQL.cs" />
     <Compile Include="FormImportaDocs.cs">
       <SubType>UserControl</SubType>

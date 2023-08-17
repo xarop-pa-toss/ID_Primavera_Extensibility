@@ -160,7 +160,8 @@ namespace PP_PPCS
 
         private void btn_Actualizar_WF_Click(object sender, EventArgs e)
         {
-            _BSO.Consulta("DROP TABLE " + _tabela + ";");
+            StdBEExecSql sql = new StdBEExecSql();
+            //_BSO.Consulta("DROP TABLE " + _tabela + ";");
 
             ActualizarPriGrelhaDocs(_dataOrigem);
             
