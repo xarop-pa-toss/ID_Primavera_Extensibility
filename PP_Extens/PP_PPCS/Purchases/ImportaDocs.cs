@@ -24,7 +24,7 @@ namespace PP_PPCS
 
         public ImportaDocs()
         {
-            QueriesSQL queriesSQL = new QueriesSQL(ambiente);
+            new QueriesSQL(ambiente);
         }
 
         public void CriarDocumentoCompra(
