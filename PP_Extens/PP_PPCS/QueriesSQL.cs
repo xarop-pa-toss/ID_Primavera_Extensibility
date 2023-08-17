@@ -10,11 +10,13 @@ namespace PP_PPCS
     {
         // Set ambiente (teste ou produção)
         private static string _servidor;
-        public QueriesSQL(string servidor)
+        public QueriesSQL(string ambiente)
         {
-            if (servidor == "teste") { _servidor = "Primavera_P10"; }
-            else if (servidor == "prod") { _servidor = "Servidor1"}
-            _servidor = servidor;
+            if (ambiente == "teste") { _servidor = "Primavera_P10"; 
+            } 
+            else if (ambiente == "prod") { _servidor = "Servidor1"; 
+            }
+            else { throw new ArgumentException("Valor inválido para 'ambiente'. Valores aceitáveis são 'teste' e 'prod'."); }
         }
 
         private static readonly string Query01 = @"
