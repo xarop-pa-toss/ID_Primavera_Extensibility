@@ -12,6 +12,8 @@ namespace PP_PPCS
         private static string _servidor;
         public QueriesSQL(string servidor)
         {
+            if (servidor == "teste") { _servidor = "Primavera_P10"; }
+            else if (servidor == "prod") { _servidor = "Servidor1"}
             _servidor = servidor;
         }
 
