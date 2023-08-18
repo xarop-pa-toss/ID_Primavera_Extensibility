@@ -2,7 +2,6 @@ C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\obj\Debug\
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\obj\Debug\PP_PPCS.csproj.CoreCompileInputs.cache
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\obj\Debug\PP_PPCS.FormPropDocVenda.resources
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\obj\Debug\PP_PPCS.csproj.GenerateResource.cache
-C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\obj\Debug\PP_PPCS.FormImportaDocs.resources
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\obj\Debug\PP_PPCS.FormImportaDocs_WF.resources
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\PP_PPCS.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\PP_PPCS.pdb
