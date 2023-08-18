@@ -118,7 +118,7 @@ namespace PP_PPCS
             _BSO.Consulta(QueriesSQL.GetQuery01(_tabela, dataImport.ToString()));
             _BSO.Consulta(QueriesSQL.GetQuery02(_tabela, dataImport.ToString()));
 
-            _RSet = _BSO.Consulta(QueriesSQL.GetQuery03(_tabela, dataImport.ToString()));
+            _RSet = _BSO.Consulta(QueriesSQL.GetQuery03(_tabela);
             prigrelha_Docs_WF.DataBind(_RSet);
         }
 
