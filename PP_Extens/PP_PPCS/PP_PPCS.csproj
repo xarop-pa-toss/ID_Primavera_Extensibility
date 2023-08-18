@@ -148,12 +148,6 @@
     <Compile Include="Motor\OpenFormCode.cs" />
     <Compile Include="Motor\PriEngine.cs" />
     <Compile Include="QueriesSQL.cs" />
-    <Compile Include="FormImportaDocs.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="FormImportaDocs.Designer.cs">
-      <DependentUpon>FormImportaDocs.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormPropDocVenda.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -164,9 +158,6 @@
     <Compile Include="Sales\UiEditorVendas.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FormImportaDocs.resx">
-      <DependentUpon>FormImportaDocs.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormImportaDocs_WF.resx">
       <DependentUpon>FormImportaDocs_WF.cs</DependentUpon>
     </EmbeddedResource>
