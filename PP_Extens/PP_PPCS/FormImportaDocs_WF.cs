@@ -120,7 +120,6 @@ namespace PP_PPCS
 
             _RSet = _BSO.Consulta(QueriesSQL.GetQuery03(_tabela, dataImport.ToString()));
             prigrelha_Docs_WF.DataBind(_RSet);
-
         }
 
         private void btn_Processar_WF_Click(object sender, EventArgs e)
