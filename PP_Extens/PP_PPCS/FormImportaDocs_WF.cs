@@ -166,32 +166,14 @@ namespace PP_PPCS
 
         private void btn_Actualizar_WF_Click(object sender, EventArgs e)
         {
-            #region Drop Table
-
-            SqlConnectionStringBuilder connString = new SqlConnectionStringBuilder {
-                DataSource = "",
-                InitialCatalog = "PRIPPCS",
-                IntegratedSecurity = true
-            }
-
-            string connectionString = 
             string tabela = "#A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
 
-            using (SqlConnection connection = new SqlConnection(connectionString)) {
-                connection.Open();
-
-                string drop = $"DROP TABLE {tabela};";
-
-                using (SqlCommand command = new SqlCommand(drop, connection)) {
-                    try { command.ExecuteNonQuery(); 
-                    }
-                    catch {
-                        _PSO.MensagensDialogos.MostraAviso("Não foi possivel actualizar a tabela.", StdBSTipos.IconId.PRI_Exclama, $"Erro ao fazer Drop da tabela {tabela}.")
-                    }
-                }
+            try {
+                QueriesSQL.DropTabela(tabela);
             }
-            #endregion
-            //_BSO.Consulta("DROP TABLE " + _tabela + ";");
+            catch {
+                _PSO.MensagensDialogos.MostraAviso("Não foi possivel actualizar a tabela.", StdBSTipos.IconId.PRI_Exclama, $"Erro ao fazer Drop da tabela {tabela}.");
+            }
 
             ActualizarPriGrelhaDocs(_dataOrigem);
             
