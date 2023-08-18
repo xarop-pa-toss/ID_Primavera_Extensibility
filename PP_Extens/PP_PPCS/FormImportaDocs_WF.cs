@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
 using System.Windows.Forms; using ErpBS100; using StdPlatBS100; using StdBE100; using VndBE100;
 
 namespace PP_PPCS
@@ -17,6 +16,7 @@ namespace PP_PPCS
         private StdPlatBS _PSO;
         private DateTime _dataOrigem, _dataDestino;
         private StdBELista _RSet;
+        private string _tabela = "#A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
 
 
         public FormImportaDocs_WF()
@@ -166,13 +166,12 @@ namespace PP_PPCS
 
         private void btn_Actualizar_WF_Click(object sender, EventArgs e)
         {
-            string tabela = "#A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
 
             try {
-                QueriesSQL.DropTabela(tabela);
+                QueriesSQL.DropTabela(_tabela);
             }
             catch {
-                _PSO.MensagensDialogos.MostraAviso("Não foi possivel actualizar a tabela.", StdBSTipos.IconId.PRI_Exclama, $"Erro ao fazer Drop da tabela {tabela}.");
+                _PSO.MensagensDialogos.MostraAviso("Não foi possivel actualizar a tabela.", StdBSTipos.IconId.PRI_Exclama, $"Erro ao fazer Drop da tabela {_tabela}.");
             }
 
             ActualizarPriGrelhaDocs(_dataOrigem);
