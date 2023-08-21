@@ -115,7 +115,7 @@ namespace PP_PPCS
             _dataOrigem = dataImport;
 
             // Ver QueriesSQL.cs
-            _BSO.Consulta(QueriesSQL.GetQuery01(_tabela, dataImport.ToString()));
+            QueriesSQL.CreateTabela(_tabela, dataImport.ToString());
             QueriesSQL.InsertTabela(_tabela, dataImport.ToString());
 
             _RSet = _BSO.Consulta(QueriesSQL.GetQuery03(_tabela));
