@@ -18,7 +18,6 @@ namespace PP_PPCS
         private StdBELista _RSet;
         private string _tabela = "#A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
 
-
         public FormImportaDocs_WF()
         {
             InitializeComponent();
@@ -31,6 +30,7 @@ namespace PP_PPCS
             string ambiente = "teste";
             
             new QueriesSQL(ambiente);
+            QueriesSQL.AbrirSQL();
 
             Motor.PriEngine.CreateContext("0012004", "id", "*Pelicano*");
             _BSO = Motor.PriEngine.Engine;
@@ -161,6 +161,11 @@ namespace PP_PPCS
         {
             this.Close();
             this.Dispose();
+        }
+
+        private void FormImportaDocs_WF_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            QueriesSQL.FecharSQL();
         }
 
         private void btn_Actualizar_WF_Click(object sender, EventArgs e)
