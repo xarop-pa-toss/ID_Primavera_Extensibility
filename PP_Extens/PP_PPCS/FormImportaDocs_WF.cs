@@ -16,7 +16,7 @@ namespace PP_PPCS
         private StdPlatBS _PSO;
         private DateTime _dataOrigem, _dataDestino;
         private StdBELista _RSet;
-        private string _tabela = "#A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
+        private string _tabela = "A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
 
         public FormImportaDocs_WF()
         {
@@ -32,7 +32,7 @@ namespace PP_PPCS
             new QueriesSQL(ambiente);
             QueriesSQL.AbrirSQL();
 
-            Motor.PriEngine.CreateContext("0012004", "id", "*Pelicano*");
+            Motor.PriEngine.CreateContext("PRIPPCS", "id", "*Pelicano*");
             _BSO = Motor.PriEngine.Engine;
             _PSO = Motor.PriEngine.Platform;
             prigrelha_Docs_WF.Inicializa(Motor.PriEngine.PriSDKContexto);
@@ -41,7 +41,6 @@ namespace PP_PPCS
             datepicker_DataDocNovo_WF.Value = DateTime.Now;
 
             InicializarPriGrelhaDocs();
-            ActualizarPriGrelhaDocs(DateTime.Now);
         }
 
         private void InicializarPriGrelhaDocs()
@@ -121,6 +120,8 @@ namespace PP_PPCS
 
             _RSet = _BSO.Consulta(QueriesSQL.GetQuery03(_tabela));
             prigrelha_Docs_WF.DataBind(_RSet);
+
+            QueriesSQL.DropTabela(_tabela);
         }
 
         private void btn_Processar_WF_Click(object sender, EventArgs e)
@@ -172,12 +173,12 @@ namespace PP_PPCS
         private void btn_Actualizar_WF_Click(object sender, EventArgs e)
         {
 
-            try {
-                QueriesSQL.DropTabela(_tabela);
-            }
-            catch {
-                _PSO.MensagensDialogos.MostraAviso("Não foi possivel actualizar a tabela.", StdBSTipos.IconId.PRI_Exclama, $"Erro ao fazer Drop da tabela {_tabela}.");
-            }
+            //try {
+            //    QueriesSQL.DropTabela(_tabela);
+            //}
+            //catch {
+            //    _PSO.MensagensDialogos.MostraAviso("Não foi possivel actualizar a tabela.", StdBSTipos.IconId.PRI_Exclama, $"Erro ao fazer Drop da tabela {_tabela}.");
+            //}
 
             ActualizarPriGrelhaDocs(_dataOrigem);
             
