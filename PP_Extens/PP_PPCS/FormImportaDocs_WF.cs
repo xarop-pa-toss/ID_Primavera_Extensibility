@@ -73,6 +73,7 @@ namespace PP_PPCS
             //'SS_CELL_TYPE_OWNER_DRAWN = 11
             //'End Enum
 
+
             prigrelha_Docs_WF.AddColKey("T.E", 5, "T.E", 24, true);
             prigrelha_Docs_WF.AddColKey("Entidade", 5, "Entidade", 55, true, blnDrillDown: true);
             prigrelha_Docs_WF.AddColKey("Filial", 5, "Filial", 21, true, blnVisivel: false);
@@ -106,7 +107,7 @@ namespace PP_PPCS
             //    }
             //}
         }
-
+        
         private void ActualizarPriGrelhaDocs(DateTime dataImport)
         {
             prigrelha_Docs_WF.LimpaGrelha();
