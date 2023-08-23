@@ -73,19 +73,19 @@ namespace PP_PPCS
             //'End Enum
 
 
-            prigrelha_Docs_WF.AddColKey("T.E", 5, "T.E", 24, true);
-            prigrelha_Docs_WF.AddColKey("Entidade", 5, "Entidade", 55, true, blnDrillDown: true);
-            prigrelha_Docs_WF.AddColKey("Filial", 5, "Filial", 21, true, blnVisivel: false);
-            prigrelha_Docs_WF.AddColKey("T.Doc", 5, "T.Doc", 30, true);
-            prigrelha_Docs_WF.AddColKey("Serie", 5, "Serie", 40, true);
-            prigrelha_Docs_WF.AddColKey("N.Doc", 5, "N.Doc", 50, true);
-            prigrelha_Docs_WF.AddColKey("Ent.Loc", 5, "Ent.Loc.", 55, true);
-            prigrelha_Docs_WF.AddColKey("Fil.Loc", 5, "Fil.Loc.", 20, true, blnVisivel: false);
-            prigrelha_Docs_WF.AddColKey("T.Doc.Loc", 5, "T.Doc.Loc", 35, true);
-            prigrelha_Docs_WF.AddColKey("Serie Loc.", 5, "Serie Loc.", 40, true);
-            prigrelha_Docs_WF.AddColKey("N.Doc.Loc", 5, "N.Doc.Loc", 50, true);
-            prigrelha_Docs_WF.AddColKey("Data Loc.", 5, "Data Loc.", 50, true);
-            prigrelha_Docs_WF.AddColKey("Importar", 5, "Importar", 40, true);
+            prigrelha_Docs_WF.AddColKey("T.E", 5, "T.E", 5, true);
+            prigrelha_Docs_WF.AddColKey("Entidade", 5, "Entidade", 5, true, blnDrillDown: true);
+            prigrelha_Docs_WF.AddColKey("Filial", 5, "Filial", 5, true, blnVisivel: false);
+            prigrelha_Docs_WF.AddColKey("T.Doc", 5, "T.Doc", 5, true);
+            prigrelha_Docs_WF.AddColKey("Serie", 5, "Serie", 5, true);
+            prigrelha_Docs_WF.AddColKey("N.Doc", 5, "N.Doc", 5, true);
+            prigrelha_Docs_WF.AddColKey("Ent.Loc", 5, "Ent.Loc.", 5, true);
+            prigrelha_Docs_WF.AddColKey("Fil.Loc", 5, "Fil.Loc.", 5, true, blnVisivel: false);
+            prigrelha_Docs_WF.AddColKey("T.Doc.Loc", 5, "T.Doc.Loc", 5, true);
+            prigrelha_Docs_WF.AddColKey("Serie Loc.", 5, "Serie Loc.", 5, true);
+            prigrelha_Docs_WF.AddColKey("N.Doc.Loc", 5, "N.Doc.Loc", 5, true);
+            prigrelha_Docs_WF.AddColKey("Data Loc.", 5, "Data Loc.", 5, true);
+            prigrelha_Docs_WF.AddColKey("Importar", 5, "Importar", 5, false);
 
             //using (StdBEExecSql sql = new StdBEExecSql()) {
             //    sql.tpQuery = StdBETipos.EnumTpQuery.tpDELETE;
@@ -109,10 +109,7 @@ namespace PP_PPCS
         
         private void ActualizarPriGrelhaDocs(DateTime dataImport)
         {
-            prigrelha_Docs_WF.LimpaGrelha();
-
-            // Define data de origem. PriGrelha inicializa com data de hoje.
-            _dataOrigem = dataImport;
+            prigrelha_Docs_WF.LimpaGrelha();            
 
             // Ver QueriesSQL.cs
             QueriesSQL.CreateTabela(_tabela, dataImport.ToString());
@@ -180,7 +177,7 @@ namespace PP_PPCS
             //    _PSO.MensagensDialogos.MostraAviso("Não foi possivel actualizar a tabela.", StdBSTipos.IconId.PRI_Exclama, $"Erro ao fazer Drop da tabela {_tabela}.");
             //}
 
-            ActualizarPriGrelhaDocs(_dataOrigem);
+            ActualizarPriGrelhaDocs(datepicker_DataDocImportar_WF.Value);
             
             _dataDestino = _dataOrigem;
             datepicker_DataDocNovo_WF = datepicker_DataDocImportar_WF;
