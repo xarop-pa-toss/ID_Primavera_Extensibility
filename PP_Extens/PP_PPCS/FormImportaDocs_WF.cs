@@ -57,7 +57,7 @@ namespace PP_PPCS
             prigrelha_Docs_WF.PermiteScrollBars = true;
             prigrelha_Docs_WF.PermiteVistas = false;
             prigrelha_Docs_WF.PermiteEdicao = true;
-            prigrelha_Docs_WF.PermiteDataFill = false;
+            prigrelha_Docs_WF.PermiteDataFill = true;
             prigrelha_Docs_WF.PermiteFiltros = false;
             prigrelha_Docs_WF.PermiteActiveBar = false;
             prigrelha_Docs_WF.PermiteContextoVazia = false;
