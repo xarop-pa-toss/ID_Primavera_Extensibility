@@ -56,7 +56,7 @@ namespace PP_PPCS
             prigrelha_Docs_WF.PermiteScrollBars = true;
             prigrelha_Docs_WF.PermiteVistas = false;
             prigrelha_Docs_WF.PermiteEdicao = true;
-            prigrelha_Docs_WF.PermiteDataFill = false;
+            prigrelha_Docs_WF.PermiteDataFill = true;
             prigrelha_Docs_WF.PermiteFiltros = false;
             prigrelha_Docs_WF.PermiteActiveBar = false;
             prigrelha_Docs_WF.PermiteContextoVazia = false;
@@ -184,6 +184,7 @@ namespace PP_PPCS
             QueriesSQL.AbrirSQL();
             ActualizarPriGrelhaDocs(datepicker_DataDocImportar_WF.Value);
             prigrelha_Docs_WF.Grid_BloqueiaColuna("Importar", "Importar", 0, prigrelha_Docs_WF.Grelha.DataRowCnt, false);
+            prigrelha_Docs_WF.Grid_
             QueriesSQL.FecharSQL();
 
             _dataDestino = _dataOrigem;

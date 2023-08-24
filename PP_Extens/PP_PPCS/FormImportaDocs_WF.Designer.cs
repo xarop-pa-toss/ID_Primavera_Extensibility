@@ -137,7 +137,7 @@ namespace PP_PPCS
             this.prigrelha_Docs_WF.PermiteAgrupamentosUser = true;
             this.prigrelha_Docs_WF.PermiteConfigurarDetalhes = false;
             this.prigrelha_Docs_WF.PermiteContextoVazia = false;
-            this.prigrelha_Docs_WF.PermiteDataFill = false;
+            this.prigrelha_Docs_WF.PermiteDataFill = true;
             this.prigrelha_Docs_WF.PermiteDetalhes = true;
             this.prigrelha_Docs_WF.PermiteEdicao = true;
             this.prigrelha_Docs_WF.PermiteFiltros = true;
