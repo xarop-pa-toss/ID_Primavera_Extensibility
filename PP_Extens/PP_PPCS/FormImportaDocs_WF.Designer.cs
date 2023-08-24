@@ -45,9 +45,11 @@ namespace PP_PPCS
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Location = new System.Drawing.Point(152, 469);
+            this.groupBox1.Location = new System.Drawing.Point(203, 577);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(337, 40);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Size = new System.Drawing.Size(449, 49);
             this.groupBox1.TabIndex = 38;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Legenda para coluna \"Importar\"";
@@ -55,7 +57,8 @@ namespace PP_PPCS
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 18);
+            this.label3.Location = new System.Drawing.Point(8, 22);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(374, 15);
             this.label3.TabIndex = 30;
@@ -63,9 +66,10 @@ namespace PP_PPCS
             // 
             // btn_Actualizar_WF
             // 
-            this.btn_Actualizar_WF.Location = new System.Drawing.Point(239, 421);
+            this.btn_Actualizar_WF.Location = new System.Drawing.Point(319, 518);
+            this.btn_Actualizar_WF.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_Actualizar_WF.Name = "btn_Actualizar_WF";
-            this.btn_Actualizar_WF.Size = new System.Drawing.Size(75, 33);
+            this.btn_Actualizar_WF.Size = new System.Drawing.Size(100, 41);
             this.btn_Actualizar_WF.TabIndex = 37;
             this.btn_Actualizar_WF.Text = "Actualizar";
             this.btn_Actualizar_WF.UseVisualStyleBackColor = true;
@@ -74,23 +78,26 @@ namespace PP_PPCS
             // datepicker_DataDocNovo_WF
             // 
             this.datepicker_DataDocNovo_WF.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.datepicker_DataDocNovo_WF.Location = new System.Drawing.Point(481, 428);
+            this.datepicker_DataDocNovo_WF.Location = new System.Drawing.Point(641, 527);
+            this.datepicker_DataDocNovo_WF.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.datepicker_DataDocNovo_WF.Name = "datepicker_DataDocNovo_WF";
-            this.datepicker_DataDocNovo_WF.Size = new System.Drawing.Size(95, 20);
+            this.datepicker_DataDocNovo_WF.Size = new System.Drawing.Size(125, 20);
             this.datepicker_DataDocNovo_WF.TabIndex = 36;
             // 
             // datepicker_DataDocImportar_WF
             // 
             this.datepicker_DataDocImportar_WF.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.datepicker_DataDocImportar_WF.Location = new System.Drawing.Point(137, 428);
+            this.datepicker_DataDocImportar_WF.Location = new System.Drawing.Point(183, 527);
+            this.datepicker_DataDocImportar_WF.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.datepicker_DataDocImportar_WF.Name = "datepicker_DataDocImportar_WF";
-            this.datepicker_DataDocImportar_WF.Size = new System.Drawing.Size(96, 20);
+            this.datepicker_DataDocImportar_WF.Size = new System.Drawing.Size(127, 20);
             this.datepicker_DataDocImportar_WF.TabIndex = 35;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(357, 431);
+            this.label2.Location = new System.Drawing.Point(476, 530);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(135, 15);
             this.label2.TabIndex = 34;
@@ -99,7 +106,8 @@ namespace PP_PPCS
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 431);
+            this.label1.Location = new System.Drawing.Point(31, 530);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(124, 15);
             this.label1.TabIndex = 33;
@@ -115,9 +123,9 @@ namespace PP_PPCS
             this.prigrelha_Docs_WF.CaminhoTemplateImpressao = "";
             this.prigrelha_Docs_WF.Cols = null;
             this.prigrelha_Docs_WF.ColsFrozen = -1;
-            this.prigrelha_Docs_WF.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.prigrelha_Docs_WF.Location = new System.Drawing.Point(11, 11);
-            this.prigrelha_Docs_WF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.prigrelha_Docs_WF.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.prigrelha_Docs_WF.Location = new System.Drawing.Point(15, 14);
+            this.prigrelha_Docs_WF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.prigrelha_Docs_WF.Name = "prigrelha_Docs_WF";
             this.prigrelha_Docs_WF.NumeroMaxRegistosSemPag = 150000;
             this.prigrelha_Docs_WF.NumeroRegistos = 0;
@@ -131,7 +139,7 @@ namespace PP_PPCS
             this.prigrelha_Docs_WF.PermiteContextoVazia = false;
             this.prigrelha_Docs_WF.PermiteDataFill = false;
             this.prigrelha_Docs_WF.PermiteDetalhes = true;
-            this.prigrelha_Docs_WF.PermiteEdicao = false;
+            this.prigrelha_Docs_WF.PermiteEdicao = true;
             this.prigrelha_Docs_WF.PermiteFiltros = true;
             this.prigrelha_Docs_WF.PermiteGrafico = true;
             this.prigrelha_Docs_WF.PermiteGrandeTotal = false;
@@ -141,7 +149,7 @@ namespace PP_PPCS
             this.prigrelha_Docs_WF.PermiteStatusBar = true;
             this.prigrelha_Docs_WF.PermiteVistas = true;
             this.prigrelha_Docs_WF.PosicionaColunaSeguinte = true;
-            this.prigrelha_Docs_WF.Size = new System.Drawing.Size(721, 397);
+            this.prigrelha_Docs_WF.Size = new System.Drawing.Size(961, 488);
             this.prigrelha_Docs_WF.TabIndex = 32;
             this.prigrelha_Docs_WF.TituloGrelha = "";
             this.prigrelha_Docs_WF.TituloMapa = "";
@@ -150,9 +158,10 @@ namespace PP_PPCS
             // 
             // btn_Sair_WF
             // 
-            this.btn_Sair_WF.Location = new System.Drawing.Point(642, 466);
+            this.btn_Sair_WF.Location = new System.Drawing.Point(856, 574);
+            this.btn_Sair_WF.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_Sair_WF.Name = "btn_Sair_WF";
-            this.btn_Sair_WF.Size = new System.Drawing.Size(90, 32);
+            this.btn_Sair_WF.Size = new System.Drawing.Size(120, 39);
             this.btn_Sair_WF.TabIndex = 40;
             this.btn_Sair_WF.Text = "Sair";
             this.btn_Sair_WF.UseVisualStyleBackColor = true;
@@ -160,9 +169,10 @@ namespace PP_PPCS
             // 
             // btn_Processar_WF
             // 
-            this.btn_Processar_WF.Location = new System.Drawing.Point(642, 428);
+            this.btn_Processar_WF.Location = new System.Drawing.Point(856, 527);
+            this.btn_Processar_WF.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_Processar_WF.Name = "btn_Processar_WF";
-            this.btn_Processar_WF.Size = new System.Drawing.Size(90, 32);
+            this.btn_Processar_WF.Size = new System.Drawing.Size(120, 39);
             this.btn_Processar_WF.TabIndex = 39;
             this.btn_Processar_WF.Text = "Processar";
             this.btn_Processar_WF.UseVisualStyleBackColor = true;
@@ -170,9 +180,9 @@ namespace PP_PPCS
             // 
             // FormImportaDocs_WF
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(743, 518);
+            this.ClientSize = new System.Drawing.Size(991, 638);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_Actualizar_WF);
             this.Controls.Add(this.datepicker_DataDocNovo_WF);
@@ -182,6 +192,7 @@ namespace PP_PPCS
             this.Controls.Add(this.prigrelha_Docs_WF);
             this.Controls.Add(this.btn_Sair_WF);
             this.Controls.Add(this.btn_Processar_WF);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormImportaDocs_WF";
             this.Text = "FormImportaDocs_WF";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormImportaDocs_WF_FormClosing);
