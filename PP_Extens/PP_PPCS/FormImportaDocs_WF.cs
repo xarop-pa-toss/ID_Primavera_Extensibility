@@ -56,7 +56,7 @@ namespace PP_PPCS
             prigrelha_Docs_WF.PermiteScrollBars = true;
             prigrelha_Docs_WF.PermiteVistas = false;
             prigrelha_Docs_WF.PermiteEdicao = true;
-            //prigrelha_Docs_WF.PermiteDataFill = true;
+            prigrelha_Docs_WF.PermiteDataFill = false;
             prigrelha_Docs_WF.PermiteFiltros = false;
             prigrelha_Docs_WF.PermiteActiveBar = false;
             prigrelha_Docs_WF.PermiteContextoVazia = false;
@@ -87,9 +87,10 @@ namespace PP_PPCS
             prigrelha_Docs_WF.AddColKey("Fil.Loc", 5, "Fil.Loc.", 7, true, blnVisivel: false);
             prigrelha_Docs_WF.AddColKey("T.Doc.Loc", 5, "T.Doc.Loc", 8, true);
             prigrelha_Docs_WF.AddColKey("Serie Loc.", 5, "Serie Loc.", 8, true);
-            prigrelha_Docs_WF.AddColKey("N.Doc.Loc", 5, "N.Doc.Loc", 6, true);
+            prigrelha_Docs_WF.AddColKey("N.Doc.Loc", 5, "N.Doc.Loc", 8, true);
             prigrelha_Docs_WF.AddColKey("Data Loc.", 5, "Data Loc.", 9, true);
-            prigrelha_Docs_WF.AddColKey("Importar", 5, "Importar", 5, true);
+            prigrelha_Docs_WF.AddColKey("Importar", 5, "Importar", 7, true);
+            
 
             //using (StdBEExecSql sql = new StdBEExecSql()) {
             //    sql.tpQuery = StdBETipos.EnumTpQuery.tpDELETE;
@@ -182,6 +183,7 @@ namespace PP_PPCS
             //}
             QueriesSQL.AbrirSQL();
             ActualizarPriGrelhaDocs(datepicker_DataDocImportar_WF.Value);
+            prigrelha_Docs_WF.Grid_BloqueiaColuna("Importar", "Importar", 0, prigrelha_Docs_WF.Grelha.DataRowCnt, false);
             QueriesSQL.FecharSQL();
 
             _dataDestino = _dataOrigem;
