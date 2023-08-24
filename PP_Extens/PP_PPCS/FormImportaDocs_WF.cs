@@ -51,7 +51,7 @@ namespace PP_PPCS
             prigrelha_Docs_WF.PermiteAgrupamentosUser = true;
             prigrelha_Docs_WF.PermiteScrollBars = true;
             prigrelha_Docs_WF.PermiteVistas = false;
-            prigrelha_Docs_WF.PermiteEdicao = false;
+            prigrelha_Docs_WF.PermiteEdicao = true;
             prigrelha_Docs_WF.PermiteDataFill = false;
             prigrelha_Docs_WF.PermiteFiltros = false;
             prigrelha_Docs_WF.PermiteActiveBar = false;
@@ -73,18 +73,18 @@ namespace PP_PPCS
             //'End Enum
 
 
-            prigrelha_Docs_WF.AddColKey("T.E", 5, "T.E", 5, true);
-            prigrelha_Docs_WF.AddColKey("Entidade", 5, "Entidade", 5, true, blnDrillDown: true);
+            prigrelha_Docs_WF.AddColKey("T.E", 5, "T.E", 4, true);
+            prigrelha_Docs_WF.AddColKey("Entidade", 5, "Entidade", 7, true, blnDrillDown: true);
             prigrelha_Docs_WF.AddColKey("Filial", 5, "Filial", 5, true, blnVisivel: false);
-            prigrelha_Docs_WF.AddColKey("T.Doc", 5, "T.Doc", 5, true);
-            prigrelha_Docs_WF.AddColKey("Serie", 5, "Serie", 5, true);
-            prigrelha_Docs_WF.AddColKey("N.Doc", 5, "N.Doc", 5, true);
-            prigrelha_Docs_WF.AddColKey("Ent.Loc", 5, "Ent.Loc.", 5, true);
-            prigrelha_Docs_WF.AddColKey("Fil.Loc", 5, "Fil.Loc.", 5, true, blnVisivel: false);
-            prigrelha_Docs_WF.AddColKey("T.Doc.Loc", 5, "T.Doc.Loc", 5, true);
-            prigrelha_Docs_WF.AddColKey("Serie Loc.", 5, "Serie Loc.", 5, true);
+            prigrelha_Docs_WF.AddColKey("T.Doc", 5, "T.Doc", 6, true);
+            prigrelha_Docs_WF.AddColKey("Serie", 5, "Serie", 6, true);
+            prigrelha_Docs_WF.AddColKey("N.Doc", 5, "N.Doc", 6, true);
+            prigrelha_Docs_WF.AddColKey("Ent.Loc", 5, "Ent.Loc.", 6, true);
+            prigrelha_Docs_WF.AddColKey("Fil.Loc", 5, "Fil.Loc.", 6, true, blnVisivel: false);
+            prigrelha_Docs_WF.AddColKey("T.Doc.Loc", 5, "T.Doc.Loc", 6, true);
+            prigrelha_Docs_WF.AddColKey("Serie Loc.", 5, "Serie Loc.", 7, true);
             prigrelha_Docs_WF.AddColKey("N.Doc.Loc", 5, "N.Doc.Loc", 5, true);
-            prigrelha_Docs_WF.AddColKey("Data Loc.", 5, "Data Loc.", 5, true);
+            prigrelha_Docs_WF.AddColKey("Data Loc.", 5, "Data Loc.", 8, true);
             prigrelha_Docs_WF.AddColKey("Importar", 5, "Importar", 5, false);
 
             //using (StdBEExecSql sql = new StdBEExecSql()) {
@@ -119,6 +119,7 @@ namespace PP_PPCS
             prigrelha_Docs_WF.DataBind(_RSet);
 
             QueriesSQL.DropTabela(_tabela);
+            QueriesSQL.FecharSQL();
         }
 
         private void btn_Processar_WF_Click(object sender, EventArgs e)
@@ -158,6 +159,7 @@ namespace PP_PPCS
 
         private void btn_Sair_WF_Click(object sender, EventArgs e)
         {
+            QueriesSQL.FecharSQL();
             this.Close();
             this.Dispose();
         }
