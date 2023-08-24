@@ -79,17 +79,17 @@ namespace PP_PPCS
 
 
             prigrelha_Docs_WF.AddColKey("T.E", 5, "T.E", 4, true);
-            prigrelha_Docs_WF.AddColKey("Entidade", 5, "Entidade", 9, true, blnDrillDown: true);
-            prigrelha_Docs_WF.AddColKey("Filial", 5, "Filial", 5, true, blnVisivel: false);
-            prigrelha_Docs_WF.AddColKey("T.Doc", 5, "T.Doc", 6, true);
-            prigrelha_Docs_WF.AddColKey("Serie", 5, "Serie", 6, true);
-            prigrelha_Docs_WF.AddColKey("N.Doc", 5, "N.Doc", 6, true);
-            prigrelha_Docs_WF.AddColKey("Ent.Loc", 5, "Ent.Loc.", 6, true);
-            prigrelha_Docs_WF.AddColKey("Fil.Loc", 5, "Fil.Loc.", 6, true, blnVisivel: false);
-            prigrelha_Docs_WF.AddColKey("T.Doc.Loc", 5, "T.Doc.Loc", 7, true);
-            prigrelha_Docs_WF.AddColKey("Serie Loc.", 5, "Serie Loc.", 7, true);
-            prigrelha_Docs_WF.AddColKey("N.Doc.Loc", 5, "N.Doc.Loc", 5, true);
-            prigrelha_Docs_WF.AddColKey("Data Loc.", 5, "Data Loc.", 8, true);
+            prigrelha_Docs_WF.AddColKey("Entidade", 5, "Entidade", 10, true, blnDrillDown: true);
+            prigrelha_Docs_WF.AddColKey("Filial", 5, "Filial", 6, true, blnVisivel: false);
+            prigrelha_Docs_WF.AddColKey("T.Doc", 5, "T.Doc", 7, true);
+            prigrelha_Docs_WF.AddColKey("Serie", 5, "Serie", 7, true);
+            prigrelha_Docs_WF.AddColKey("N.Doc", 5, "N.Doc", 7, true);
+            prigrelha_Docs_WF.AddColKey("Ent.Loc", 5, "Ent.Loc.", 7, true);
+            prigrelha_Docs_WF.AddColKey("Fil.Loc", 5, "Fil.Loc.", 7, true, blnVisivel: false);
+            prigrelha_Docs_WF.AddColKey("T.Doc.Loc", 5, "T.Doc.Loc", 8, true);
+            prigrelha_Docs_WF.AddColKey("Serie Loc.", 5, "Serie Loc.", 8, true);
+            prigrelha_Docs_WF.AddColKey("N.Doc.Loc", 5, "N.Doc.Loc", 6, true);
+            prigrelha_Docs_WF.AddColKey("Data Loc.", 5, "Data Loc.", 9, true);
             prigrelha_Docs_WF.AddColKey("Importar", 5, "Importar", 5, false);
 
             //using (StdBEExecSql sql = new StdBEExecSql()) {
