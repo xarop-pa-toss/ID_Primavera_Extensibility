@@ -149,6 +149,8 @@ namespace PP_PPCS
 
                         if (_RSet.Valor("TipoEntidade" == "C")  || _RSet.Valor("TipoEntidade" == "F")){
                             //CriarDocumentoVenda()
+                            ImportaDocs importaDocs = new ImportaDocs();
+                            //importaDocs.CriarDocumentoVenda()
                         }                        
                     }
                     _RSet.Seguinte();
