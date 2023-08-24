@@ -42,6 +42,11 @@ namespace PP_PPCS
 
             InicializarPriGrelhaDocs();
         }
+        private void FormImportaDocs_WF_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            QueriesSQL.FecharSQL();
+        }
+
 
         private void InicializarPriGrelhaDocs()
         {
@@ -74,7 +79,7 @@ namespace PP_PPCS
 
 
             prigrelha_Docs_WF.AddColKey("T.E", 5, "T.E", 4, true);
-            prigrelha_Docs_WF.AddColKey("Entidade", 5, "Entidade", 7, true, blnDrillDown: true);
+            prigrelha_Docs_WF.AddColKey("Entidade", 5, "Entidade", 9, true, blnDrillDown: true);
             prigrelha_Docs_WF.AddColKey("Filial", 5, "Filial", 5, true, blnVisivel: false);
             prigrelha_Docs_WF.AddColKey("T.Doc", 5, "T.Doc", 6, true);
             prigrelha_Docs_WF.AddColKey("Serie", 5, "Serie", 6, true);
@@ -122,6 +127,7 @@ namespace PP_PPCS
             QueriesSQL.FecharSQL();
         }
 
+
         private void btn_Processar_WF_Click(object sender, EventArgs e)
         {
             string entLoc, filialLoc, tipoDocLoc, serieLoc;
@@ -164,11 +170,6 @@ namespace PP_PPCS
             QueriesSQL.FecharSQL();
             this.Close();
             this.Dispose();
-        }
-
-        private void FormImportaDocs_WF_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            QueriesSQL.FecharSQL();
         }
 
         private void btn_Actualizar_WF_Click(object sender, EventArgs e)

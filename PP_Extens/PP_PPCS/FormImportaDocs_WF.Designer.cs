@@ -123,7 +123,7 @@ namespace PP_PPCS
             this.prigrelha_Docs_WF.CaminhoTemplateImpressao = "";
             this.prigrelha_Docs_WF.Cols = null;
             this.prigrelha_Docs_WF.ColsFrozen = -1;
-            this.prigrelha_Docs_WF.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.prigrelha_Docs_WF.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.prigrelha_Docs_WF.Location = new System.Drawing.Point(15, 14);
             this.prigrelha_Docs_WF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.prigrelha_Docs_WF.Name = "prigrelha_Docs_WF";
