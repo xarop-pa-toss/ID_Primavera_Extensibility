@@ -30,7 +30,6 @@ namespace PP_PPCS
             string ambiente = "teste";
             
             new QueriesSQL(ambiente);
-            QueriesSQL.AbrirSQL();
 
             Motor.PriEngine.CreateContext("PRIPPCS", "id", "*Pelicano*");
             _BSO = Motor.PriEngine.Engine;
@@ -57,7 +56,7 @@ namespace PP_PPCS
             prigrelha_Docs_WF.PermiteScrollBars = true;
             prigrelha_Docs_WF.PermiteVistas = false;
             prigrelha_Docs_WF.PermiteEdicao = true;
-            prigrelha_Docs_WF.PermiteDataFill = true;
+            //prigrelha_Docs_WF.PermiteDataFill = true;
             prigrelha_Docs_WF.PermiteFiltros = false;
             prigrelha_Docs_WF.PermiteActiveBar = false;
             prigrelha_Docs_WF.PermiteContextoVazia = false;
@@ -90,7 +89,7 @@ namespace PP_PPCS
             prigrelha_Docs_WF.AddColKey("Serie Loc.", 5, "Serie Loc.", 8, true);
             prigrelha_Docs_WF.AddColKey("N.Doc.Loc", 5, "N.Doc.Loc", 6, true);
             prigrelha_Docs_WF.AddColKey("Data Loc.", 5, "Data Loc.", 9, true);
-            prigrelha_Docs_WF.AddColKey("Importar", 5, "Importar", 5, false);
+            prigrelha_Docs_WF.AddColKey("Importar", 5, "Importar", 5, true);
 
             //using (StdBEExecSql sql = new StdBEExecSql()) {
             //    sql.tpQuery = StdBETipos.EnumTpQuery.tpDELETE;
@@ -181,9 +180,10 @@ namespace PP_PPCS
             //catch {
             //    _PSO.MensagensDialogos.MostraAviso("Não foi possivel actualizar a tabela.", StdBSTipos.IconId.PRI_Exclama, $"Erro ao fazer Drop da tabela {_tabela}.");
             //}
-
+            QueriesSQL.AbrirSQL();
             ActualizarPriGrelhaDocs(datepicker_DataDocImportar_WF.Value);
-            
+            QueriesSQL.FecharSQL();
+
             _dataDestino = _dataOrigem;
             datepicker_DataDocNovo_WF = datepicker_DataDocImportar_WF;
 
