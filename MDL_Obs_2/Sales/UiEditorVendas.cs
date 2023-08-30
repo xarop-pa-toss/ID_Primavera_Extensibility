@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-
 namespace MDL_Obs.Sales
 {
     public class UiEditorVendas : EditorVendas

@@ -55,8 +55,6 @@ namespace PP_PPCS
             prigrelha_Docs_WF.PermiteAgrupamentosUser = true;
             prigrelha_Docs_WF.PermiteScrollBars = true;
             prigrelha_Docs_WF.PermiteVistas = false;
-            prigrelha_Docs_WF.PermiteEdicao = true;
-            prigrelha_Docs_WF.PermiteDataFill = true;
             prigrelha_Docs_WF.PermiteFiltros = false;
             prigrelha_Docs_WF.PermiteActiveBar = false;
             prigrelha_Docs_WF.PermiteContextoVazia = false;
@@ -89,7 +87,7 @@ namespace PP_PPCS
             prigrelha_Docs_WF.AddColKey("Serie Loc.", 5, "Serie Loc.", 8, true);
             prigrelha_Docs_WF.AddColKey("N.Doc.Loc", 5, "N.Doc.Loc", 8, true);
             prigrelha_Docs_WF.AddColKey("Data Loc.", 5, "Data Loc.", 9, true);
-            prigrelha_Docs_WF.AddColKey("Importar", 5, "Importar", 7, true);
+            prigrelha_Docs_WF.AddColKey("Importar", 5, "Importar", 7, false);
             
 
             //using (StdBEExecSql sql = new StdBEExecSql()) {
@@ -120,8 +118,11 @@ namespace PP_PPCS
             QueriesSQL.CreateTabela(_tabela, dataImport.ToString());
             QueriesSQL.InsertTabela(_tabela, dataImport.ToString());
 
-            _RSet = _BSO.Consulta(QueriesSQL.GetQuery03(_tabela));
-            prigrelha_Docs_WF.DataBind(_RSet);
+            DataTable RSet = _BSO.ConsultaDataTable(QueriesSQL.GetQuery03(_tabela));
+            //prigrelha_Docs_WF.DataBind(RSet);
+            dataGridView1.DataSource = RSet;
+            prigrelha_Docs_WF.PermiteEdicao = true;
+            prigrelha_Docs_WF.PermiteDataFill = true;
 
             QueriesSQL.DropTabela(_tabela);
             QueriesSQL.FecharSQL();
@@ -177,14 +178,13 @@ namespace PP_PPCS
 
             //try {
             //    QueriesSQL.DropTabela(_tabela);
-            //}
+            //}d
             //catch {
             //    _PSO.MensagensDialogos.MostraAviso("Não foi possivel actualizar a tabela.", StdBSTipos.IconId.PRI_Exclama, $"Erro ao fazer Drop da tabela {_tabela}.");
             //}
             QueriesSQL.AbrirSQL();
             ActualizarPriGrelhaDocs(datepicker_DataDocImportar_WF.Value);
-            prigrelha_Docs_WF.Grid_BloqueiaColuna("Importar", "Importar", 0, prigrelha_Docs_WF.Grelha.DataRowCnt, false);
-            prigrelha_Docs_WF.Grid_
+            prigrelha_Docs_WF.Grid_BloqueiaColuna("T.E", "Importar", 0, prigrelha_Docs_WF.Grelha.DataRowCnt, false);
             QueriesSQL.FecharSQL();
 
             _dataDestino = _dataOrigem;
