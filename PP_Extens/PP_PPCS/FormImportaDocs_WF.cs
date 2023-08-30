@@ -39,6 +39,7 @@ namespace PP_PPCS
             datepicker_DataDocImportar_WF.Value = DateTime.Now;
             datepicker_DataDocNovo_WF.Value = DateTime.Now;
 
+            QueriesSQL.AbrirSQL();
             InicializarPriGrelhaDocs();
         }
         private void FormImportaDocs_WF_FormClosing(object sender, FormClosingEventArgs e)
@@ -120,7 +121,7 @@ namespace PP_PPCS
 
             DataTable RSet = _BSO.ConsultaDataTable(QueriesSQL.GetQuery03(_tabela));
             //prigrelha_Docs_WF.DataBind(RSet);
-            dataGridView1.DataSource = RSet;
+            DataGrid1.DataSource = RSet;
             prigrelha_Docs_WF.PermiteEdicao = true;
             prigrelha_Docs_WF.PermiteDataFill = true;
 

@@ -35,13 +35,11 @@ namespace PP_PPCS
             this.datepicker_DataDocImportar_WF = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.prigrelha_Docs_WF = new PRISDK100.PriGrelha();
             this.btn_Sair_WF = new System.Windows.Forms.Button();
             this.btn_Processar_WF = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.DataGrid1 = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.prigrelha_Docs_WF)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DataGrid1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -107,50 +105,6 @@ namespace PP_PPCS
             this.label1.TabIndex = 33;
             this.label1.Text = "Data docs a importar:";
             // 
-            // prigrelha_Docs_WF
-            // 
-            this.prigrelha_Docs_WF.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.prigrelha_Docs_WF.BandaMenuContexto = "";
-            this.prigrelha_Docs_WF.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.prigrelha_Docs_WF.BotaoConfigurarActiveBar = true;
-            this.prigrelha_Docs_WF.BotaoProcurarActiveBar = false;
-            this.prigrelha_Docs_WF.CaminhoTemplateImpressao = "";
-            this.prigrelha_Docs_WF.CausesValidation = false;
-            this.prigrelha_Docs_WF.Cols = null;
-            this.prigrelha_Docs_WF.ColsFrozen = -1;
-            this.prigrelha_Docs_WF.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.prigrelha_Docs_WF.Location = new System.Drawing.Point(11, 389);
-            this.prigrelha_Docs_WF.Margin = new System.Windows.Forms.Padding(2);
-            this.prigrelha_Docs_WF.Name = "prigrelha_Docs_WF";
-            this.prigrelha_Docs_WF.NumeroMaxRegistosSemPag = 150000;
-            this.prigrelha_Docs_WF.NumeroRegistos = 0;
-            this.prigrelha_Docs_WF.NumLinhasCabecalho = 1;
-            this.prigrelha_Docs_WF.OrientacaoMapa = PRISDK100.clsSDKTypes.OrientacaoImpressao.oiDefault;
-            this.prigrelha_Docs_WF.ParentFormModal = false;
-            this.prigrelha_Docs_WF.PermiteActiveBar = false;
-            this.prigrelha_Docs_WF.PermiteActualizar = true;
-            this.prigrelha_Docs_WF.PermiteAgrupamentosUser = true;
-            this.prigrelha_Docs_WF.PermiteConfigurarDetalhes = false;
-            this.prigrelha_Docs_WF.PermiteContextoVazia = false;
-            this.prigrelha_Docs_WF.PermiteDataFill = true;
-            this.prigrelha_Docs_WF.PermiteDetalhes = true;
-            this.prigrelha_Docs_WF.PermiteEdicao = true;
-            this.prigrelha_Docs_WF.PermiteFiltros = true;
-            this.prigrelha_Docs_WF.PermiteGrafico = true;
-            this.prigrelha_Docs_WF.PermiteGrandeTotal = false;
-            this.prigrelha_Docs_WF.PermiteOrdenacao = true;
-            this.prigrelha_Docs_WF.PermitePaginacao = false;
-            this.prigrelha_Docs_WF.PermiteScrollBars = true;
-            this.prigrelha_Docs_WF.PermiteStatusBar = true;
-            this.prigrelha_Docs_WF.PermiteVistas = true;
-            this.prigrelha_Docs_WF.PosicionaColunaSeguinte = true;
-            this.prigrelha_Docs_WF.Size = new System.Drawing.Size(17, 19);
-            this.prigrelha_Docs_WF.TabIndex = 32;
-            this.prigrelha_Docs_WF.TituloGrelha = "";
-            this.prigrelha_Docs_WF.TituloMapa = "";
-            this.prigrelha_Docs_WF.TypeNameLinha = "";
-            this.prigrelha_Docs_WF.TypeNameLinhas = "";
-            // 
             // btn_Sair_WF
             // 
             this.btn_Sair_WF.Location = new System.Drawing.Point(642, 466);
@@ -171,28 +125,27 @@ namespace PP_PPCS
             this.btn_Processar_WF.UseVisualStyleBackColor = true;
             this.btn_Processar_WF.Click += new System.EventHandler(this.btn_Processar_WF_Click);
             // 
-            // dataGridView1
+            // DataGrid1
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 12);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.Size = new System.Drawing.Size(720, 372);
-            this.dataGridView1.TabIndex = 41;
+            this.DataGrid1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DataGrid1.Location = new System.Drawing.Point(12, 12);
+            this.DataGrid1.Name = "DataGrid1";
+            this.DataGrid1.RowHeadersWidth = 51;
+            this.DataGrid1.Size = new System.Drawing.Size(720, 372);
+            this.DataGrid1.TabIndex = 41;
             // 
             // FormImportaDocs_WF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(743, 518);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.DataGrid1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_Actualizar_WF);
             this.Controls.Add(this.datepicker_DataDocNovo_WF);
             this.Controls.Add(this.datepicker_DataDocImportar_WF);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.prigrelha_Docs_WF);
             this.Controls.Add(this.btn_Sair_WF);
             this.Controls.Add(this.btn_Processar_WF);
             this.Name = "FormImportaDocs_WF";
@@ -201,8 +154,7 @@ namespace PP_PPCS
             this.Load += new System.EventHandler(this.FormImportaDocs_WF_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.prigrelha_Docs_WF)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DataGrid1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -219,7 +171,6 @@ namespace PP_PPCS
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btn_Sair_WF;
         private System.Windows.Forms.Button btn_Processar_WF;
-        internal PRISDK100.PriGrelha prigrelha_Docs_WF;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView DataGrid1;
     }
 }
