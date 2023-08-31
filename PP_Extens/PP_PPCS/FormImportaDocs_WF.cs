@@ -133,6 +133,12 @@ namespace PP_PPCS
 
         private void InicializarDataGrid(DateTime dataImport)
         {
+            for (int i = 0; i < 13; i++) {
+                DataGridViewTextBoxColumn coluna = new DataGridViewTextBoxColumn();
+                DataGrid1.Columns.Add(coluna);
+            }
+
+
             DataGrid1.Columns[0].Name = "T.E.";
             DataGrid1.Columns[0].HeaderText = "T.E.";
             DataGrid1.Columns[0].Width = 24;
@@ -194,11 +200,11 @@ namespace PP_PPCS
             DataGrid1.Columns[9].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             DataGrid1.Columns[9].ReadOnly = false;
 
-            DataGrid1.Columns[9].Name = "Serie Loc.";
-            DataGrid1.Columns[9].HeaderText = "Serie Loc.";
-            DataGrid1.Columns[9].Width = 40;
-            DataGrid1.Columns[9].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            DataGrid1.Columns[9].ReadOnly = false;
+            DataGrid1.Columns[10].Name = "Serie Loc.";
+            DataGrid1.Columns[10].HeaderText = "Serie Loc.";
+            DataGrid1.Columns[10].Width = 40;
+            DataGrid1.Columns[10].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            DataGrid1.Columns[10].ReadOnly = false;
 
             DataGrid1.Columns[11].Name = "Data.Loc.";
             DataGrid1.Columns[11].HeaderText = "Data.Loc.";
