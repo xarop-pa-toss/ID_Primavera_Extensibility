@@ -222,8 +222,6 @@ namespace PP_PPCS
 
         private void ActualizarDataGrid(DateTime dataImport)
         {
-            if (DataGrid1.RowCount > 0) { DataGrid1.Rows.Clear(); }
-
             // Ver QueriesSQL.cs
             QueriesSQL.CreateTabela(_tabela, dataImport.ToString());
             QueriesSQL.InsertTabela(_tabela, dataImport.ToString());
