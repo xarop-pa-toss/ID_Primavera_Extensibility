@@ -138,7 +138,6 @@ namespace PP_PPCS
                 DataGrid1.Columns.Add(coluna);
             }
 
-
             DataGrid1.Columns[0].Name = "T.E.";
             DataGrid1.Columns[0].HeaderText = "T.E.";
             DataGrid1.Columns[0].Width = 24;
@@ -223,7 +222,7 @@ namespace PP_PPCS
 
         private void ActualizarDataGrid(DateTime dataImport)
         {
-            DataGrid1.Rows.Clear();
+            if (DataGrid1.RowCount > 0) { DataGrid1.Rows.Clear(); }
 
             // Ver QueriesSQL.cs
             QueriesSQL.CreateTabela(_tabela, dataImport.ToString());
