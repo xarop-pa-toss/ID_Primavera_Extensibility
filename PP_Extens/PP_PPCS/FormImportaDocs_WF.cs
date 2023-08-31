@@ -40,7 +40,8 @@ namespace PP_PPCS
             datepicker_DataDocNovo_WF.Value = DateTime.Now;
 
             QueriesSQL.AbrirSQL();
-            InicializarPriGrelhaDocs();
+            //InicializarPriGrelhaDocs();
+            InicializarDataGrid(datepicker_DataDocImportar_WF.Value);
         }
         
         private void FormImportaDocs_WF_FormClosing(object sender, FormClosingEventArgs e)
@@ -132,20 +133,11 @@ namespace PP_PPCS
 
         private void InicializarDataGrid(DateTime dataImport)
         {
-            // Ver QueriesSQL.cs
-            QueriesSQL.CreateTabela(_tabela, dataImport.ToString());
-            QueriesSQL.InsertTabela(_tabela, dataImport.ToString());
-
-            DataTable RSet = _BSO.ConsultaDataTable(QueriesSQL.GetQuery03(_tabela));
-            
-            DataGrid1.DataSource = RSet;
-
             DataGrid1.Columns[0].Name = "T.E.";
             DataGrid1.Columns[0].HeaderText = "T.E.";
             DataGrid1.Columns[0].Width = 24;
             DataGrid1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             DataGrid1.Columns[0].ReadOnly = true;
-
 
             DataGrid1.Columns[1].Name = "Entidade";
             DataGrid1.Columns[1].HeaderText = "Entidade";
@@ -220,9 +212,24 @@ namespace PP_PPCS
             DataGrid1.Columns[12].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             DataGrid1.Columns[12].ReadOnly = false;
 
+            ActualizarDataGrid(dataImport);
+        }
+
+        private void ActualizarDataGrid(DateTime dataImport)
+        {
+            DataGrid1.Rows.Clear();
+
+            // Ver QueriesSQL.cs
+            QueriesSQL.CreateTabela(_tabela, dataImport.ToString());
+            QueriesSQL.InsertTabela(_tabela, dataImport.ToString());
+
+            DataTable RSet = _BSO.ConsultaDataTable(QueriesSQL.GetQuery03(_tabela));
+            DataGrid1.DataSource = RSet;
+
             QueriesSQL.DropTabela(_tabela);
             QueriesSQL.FecharSQL();
         }
+
 
         private void btn_Processar_WF_Click(object sender, EventArgs e)
         {
@@ -270,16 +277,8 @@ namespace PP_PPCS
 
         private void btn_Actualizar_WF_Click(object sender, EventArgs e)
         {
-
-            //try {
-            //    QueriesSQL.DropTabela(_tabela);
-            //}d
-            //catch {
-            //    _PSO.MensagensDialogos.MostraAviso("Não foi possivel actualizar a tabela.", StdBSTipos.IconId.PRI_Exclama, $"Erro ao fazer Drop da tabela {_tabela}.");
-            //}
             QueriesSQL.AbrirSQL();
-            ActualizarPriGrelhaDocs(datepicker_DataDocImportar_WF.Value);
-            prigrelha_Docs_WF.Grid_BloqueiaColuna("T.E", "Importar", 0, prigrelha_Docs_WF.Grelha.DataRowCnt, false);
+            ActualizarDataGrid(datepicker_DataDocImportar_WF.Value);
             QueriesSQL.FecharSQL();
 
             _dataDestino = _dataOrigem;
