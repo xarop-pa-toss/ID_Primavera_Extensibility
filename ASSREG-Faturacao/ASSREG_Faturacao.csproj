@@ -149,7 +149,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExcelControl_WF.cs" />
-    <Compile Include="pendentes.cs" />
     <Compile Include="Sales\GetEmpresa.cs" />
     <Compile Include="Sales\formFaturasExploracao_WF.cs">
       <SubType>Form</SubType>
