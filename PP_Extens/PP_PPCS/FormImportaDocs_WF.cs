@@ -138,80 +138,93 @@ namespace PP_PPCS
                 DataGrid1.Columns.Add(coluna);
             }
 
-            DataGrid1.Columns[0].Name = "T.E.";
+            //DataGrid1.Columns[0].Name = "TipoEntidade";
+            DataGrid1.Columns[0].DataPropertyName = "TipoEntidade";
             DataGrid1.Columns[0].HeaderText = "T.E.";
             DataGrid1.Columns[0].Width = 24;
             DataGrid1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             DataGrid1.Columns[0].ReadOnly = true;
 
-            DataGrid1.Columns[1].Name = "Entidade";
+            //DataGrid1.Columns[1].Name = "Entidade";
+            DataGrid1.Columns[1].DataPropertyName = "Entidade";
             DataGrid1.Columns[1].HeaderText = "Entidade";
             DataGrid1.Columns[1].Width = 54;
             DataGrid1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             DataGrid1.Columns[1].ReadOnly = true;
 
-            DataGrid1.Columns[2].Name = "Filial";
+            //DataGrid1.Columns[2].Name = "Filial";
+            DataGrid1.Columns[2].DataPropertyName = "Filial";
             DataGrid1.Columns[2].HeaderText = "Filial";
             DataGrid1.Columns[2].Width = 20;
             DataGrid1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             DataGrid1.Columns[2].ReadOnly = true;
             DataGrid1.Columns[2].Visible = false;
 
-            DataGrid1.Columns[3].Name = "T.Doc";
+            //DataGrid1.Columns[3].Name = "TipoDoc";
+            DataGrid1.Columns[3].DataPropertyName = "TipoDoc";
             DataGrid1.Columns[3].HeaderText = "T.Doc";
             DataGrid1.Columns[3].Width = 35;
             DataGrid1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             DataGrid1.Columns[3].ReadOnly = true;
 
-            DataGrid1.Columns[4].Name = "Serie";
+            //DataGrid1.Columns[4].Name = "Serie";
+            DataGrid1.Columns[4].DataPropertyName = "Serie";
             DataGrid1.Columns[4].HeaderText = "Serie";
             DataGrid1.Columns[4].Width = 39;
             DataGrid1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             DataGrid1.Columns[4].ReadOnly = true;
 
-            DataGrid1.Columns[5].Name = "N.Doc";
+            //DataGrid1.Columns[5].Name = "NumDoc";
+            DataGrid1.Columns[5].DataPropertyName = "NumDoc";
             DataGrid1.Columns[5].HeaderText = "N.Doc";
             DataGrid1.Columns[5].Width = 50;
             DataGrid1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             DataGrid1.Columns[5].ReadOnly = true;
 
-            DataGrid1.Columns[6].Name = "Ent.Loc.";
+            //DataGrid1.Columns[6].Name = "EntLocal";
+            DataGrid1.Columns[6].DataPropertyName = "EntLocal";
             DataGrid1.Columns[6].HeaderText = "Ent.Loc.";
             DataGrid1.Columns[6].Width = 55;
             DataGrid1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            DataGrid1.Columns[6].ReadOnly = false;
+            DataGrid1.Columns[6].ReadOnly = true;
 
-            DataGrid1.Columns[7].Name = "Fil.Loc.";
+            //DataGrid1.Columns[7].Name = "FilialLoc";
+            DataGrid1.Columns[7].DataPropertyName = "FilialLoc";
             DataGrid1.Columns[7].HeaderText = "Fil.Loc.";
             DataGrid1.Columns[7].Width = 20;
             DataGrid1.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             DataGrid1.Columns[7].ReadOnly = true;
 
-            DataGrid1.Columns[8].Name = "T.Doc.Loc";
+            //DataGrid1.Columns[8].Name = "TipoDocLoc";
+            DataGrid1.Columns[8].DataPropertyName = "TipoDocLoc";
             DataGrid1.Columns[8].HeaderText = "T.Doc.Loc";
             DataGrid1.Columns[8].Width = 35;
             DataGrid1.Columns[8].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             DataGrid1.Columns[8].ReadOnly = true;
 
-            DataGrid1.Columns[9].Name = "Serie Loc.";
+            //DataGrid1.Columns[9].Name = "SerieLoc";
+            DataGrid1.Columns[9].DataPropertyName = "SerieLoc";
             DataGrid1.Columns[9].HeaderText = "Serie Loc.";
             DataGrid1.Columns[9].Width = 40;
             DataGrid1.Columns[9].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            DataGrid1.Columns[9].ReadOnly = false;
+            DataGrid1.Columns[9].ReadOnly = true;
 
-            DataGrid1.Columns[10].Name = "Serie Loc.";
-            DataGrid1.Columns[10].HeaderText = "Serie Loc.";
+            //DataGrid1.Columns[10].Name = "NumDocLocal";
+            DataGrid1.Columns[10].DataPropertyName = "NumDocLocal";
+            DataGrid1.Columns[10].HeaderText = "N.Doc.Loc.";
             DataGrid1.Columns[10].Width = 40;
             DataGrid1.Columns[10].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            DataGrid1.Columns[10].ReadOnly = false;
+            DataGrid1.Columns[10].ReadOnly = true;
 
-            DataGrid1.Columns[11].Name = "Data.Loc.";
+            //DataGrid1.Columns[11].Name = "Data";
+            DataGrid1.Columns[11].DataPropertyName = "Data";
             DataGrid1.Columns[11].HeaderText = "Data.Loc.";
             DataGrid1.Columns[11].Width = 50;
             DataGrid1.Columns[11].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            DataGrid1.Columns[11].ReadOnly = false;
+            DataGrid1.Columns[11].ReadOnly = true;
 
-            DataGrid1.Columns[12].Name = "Importar";
+            //DataGrid1.Columns[12].Name = "Importa";
+            DataGrid1.Columns[12].DataPropertyName = "Importa";
             DataGrid1.Columns[12].HeaderText = "Importar";
             DataGrid1.Columns[12].Width = 40;
             DataGrid1.Columns[12].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
