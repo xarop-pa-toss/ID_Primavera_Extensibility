@@ -15,7 +15,7 @@ namespace PP_PPCS
         private ErpBS _BSO;
         private StdPlatBS _PSO;
         private DateTime _dataOrigem, _dataDestino;
-        private StdBELista _RSet;
+        private DataTable _RSet;
         private string _tabela = "A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
 
         public FormImportaDocs_WF()
@@ -233,7 +233,7 @@ namespace PP_PPCS
             col = DataGrid1.Columns[11];
             col.DataPropertyName = "Data";
             col.HeaderText = "Data.Loc.";
-            col.Width = 65;
+            col.Width = 85;
             col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             col.ReadOnly = true;
 
@@ -254,8 +254,8 @@ namespace PP_PPCS
             QueriesSQL.CreateTabela(_tabela, dataImport.ToString());
             QueriesSQL.InsertTabela(_tabela, dataImport.ToString());
 
-            DataTable RSet = _BSO.ConsultaDataTable(QueriesSQL.GetQuery03(_tabela));
-            DataGrid1.DataSource = RSet;
+            DataTable _RSet = _BSO.ConsultaDataTable(QueriesSQL.GetQuery03(_tabela));
+            DataGrid1.DataSource = _RSet;
 
             QueriesSQL.DropTabela(_tabela);
             QueriesSQL.FecharSQL();
@@ -270,30 +270,34 @@ namespace PP_PPCS
 
             _dataDestino = datepicker_DataDocNovo_WF.Value;
 
-            if (!_RSet.Vazia()) {
-                _RSet.Inicio();
+            foreach (DataRow linha in _RSet.Rows) {
+                if (Cancel == true) { return; }
 
-                while (!_RSet.NoFim() && Cancel != true) {
-                    
-                    // Uniformização do input na coluna Importa
-                    string importa = _RSet.Valor("Importa");
-                    importa = importa.ToUpper();
+                // Catch minusculas na coluna Importa
+                string importa = linha["Importa"].ToString();
+                importa = importa.ToUpper();
 
-                    if (importa == "S" || importa == "N")
-                    {
-                        entLoc = _RSet.Valor("EntLocal");
-                        filialLoc = _RSet.Valor("FilialLoc");
-                        tipoDocLoc = _RSet.Valor("TipoDocLoc");
-                        serieLoc = _RSet.Valor("SerieLoc");
-                        numDocLoc = _RSet.Valor("NumDocLoc");
+                if (importa == "S" || importa == "A") {
+                    entLoc = linha["EntLocal"].ToString();
+                    filialLoc = linha["FilialLoc"].ToString();
+                    tipoDocLoc = linha["TipoDocLoc"].ToString();
+                    serieLoc = linha["SerieLoc"].ToString();
+                    numDocLoc = (long)linha["NumDocLoc"];
 
-                        if (_RSet.Valor("TipoEntidade" == "C")  || _RSet.Valor("TipoEntidade" == "F")){
-                            //CriarDocumentoVenda()
-                            ImportaDocs importaDocs = new ImportaDocs();
-                            //importaDocs.CriarDocumentoVenda()
-                        }                        
+                    ImportaDocs importaDocs = new ImportaDocs();
+                    if (linha["TipoEntidade"] == "C") {
+                        importaDocs.CriarDocumentoVenda();
                     }
-                    _RSet.Seguinte();
+                    else if (linha["TipoEntidade"] == "F") {
+                        importaDocs.CriarDocumentoCompra();
+                    }
+
+                    linha["EntLocal"] = entLoc;
+                    linha["FilialLoc"] = filialLoc;
+                    linha["TipoDocLoc"] = tipoDocLoc;
+                    linha["SerieLoc"] = serieLoc;
+                    linha["NumDocLocal"] = numDocLoc;
+                    linha["Importa"] = "N";
                 }
             }
             btn_Sair_WF.Focus();
