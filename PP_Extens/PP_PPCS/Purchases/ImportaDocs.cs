@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VndBE100;
+using System.Data;
 
 
 namespace PP_PPCS
@@ -22,24 +23,7 @@ namespace PP_PPCS
         {
         }
 
-        public void CriarDocumentoCompra(
-        #region parametros
-            string TipoEntidade,
-            string Entidade,
-            string Filial,
-            string TipoDoc,
-            string Serie,
-            ref long? NumDoc,
-            ref string EntLocal,
-            ref string FilialDest,
-            ref string TipoDocDest,
-            ref string SerieDest,
-            ref long? NumDocDest,
-            ref DateTime DataDoc,
-            ref string Importa,
-            ref bool Cancel
-        #endregion
-            )
+        public void CriarDocumentoCompra(ref DataRow linha, bool Cancel)           
         {
             string localstr = "", SQLErrors = "";
             bool Cancelar = false;
@@ -275,24 +259,7 @@ namespace PP_PPCS
             return;
         }
 
-        public void CriarDocumentoVenda(
-        #region parametros
-            string TipoEntidade,
-            string Entidade,
-            string Filial,
-            string TipoDoc,
-            string Serie,
-            ref int NumDoc,
-            ref string EntLocal,
-            ref string FilialDest,
-            ref string TipoDocDest,
-            ref string SerieDest,
-            ref int NumDocDest,
-            ref DateTime DataDoc,
-            ref string Importa,
-            ref bool Cancel
-        #endregion
-            )
+        public void CriarDocumentoVenda(ref DataRow linha, bool Cancel)
         {
             VndBEDocumentoVenda docNovo = new VndBEDocumentoVenda();
             CctBEDocumentoLiq docLiq = new CctBEDocumentoLiq();

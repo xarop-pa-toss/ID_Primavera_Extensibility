@@ -270,8 +270,10 @@ namespace PP_PPCS
 
             _dataDestino = datepicker_DataDocNovo_WF.Value;
 
-            foreach (DataRow linha in _RSet.Rows) {
+            for (int i = 0; i < _RSet.Rows.Count; i++) {
                 if (Cancel == true) { return; }
+
+                DataRow linha = _RSet.Rows[i];
 
                 // Catch minusculas na coluna Importa
                 string importa = linha["Importa"].ToString();
@@ -286,10 +288,9 @@ namespace PP_PPCS
 
                     ImportaDocs importaDocs = new ImportaDocs();
                     if (linha["TipoEntidade"] == "C") {
-                        importaDocs.CriarDocumentoVenda();
-                    }
-                    else if (linha["TipoEntidade"] == "F") {
-                        importaDocs.CriarDocumentoCompra();
+                        importaDocs.CriarDocumentoVenda(ref linha, Cancel);
+                    } else if (linha["TipoEntidade"] == "F") {
+                        importaDocs.CriarDocumentoCompra(ref linha, Cancel);
                     }
 
                     linha["EntLocal"] = entLoc;
