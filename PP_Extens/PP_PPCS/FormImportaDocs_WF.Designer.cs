@@ -45,9 +45,9 @@ namespace PP_PPCS
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Location = new System.Drawing.Point(152, 469);
+            this.groupBox1.Location = new System.Drawing.Point(188, 469);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(337, 40);
+            this.groupBox1.Size = new System.Drawing.Size(394, 40);
             this.groupBox1.TabIndex = 38;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Legenda para coluna \"Importar\"";
@@ -63,7 +63,7 @@ namespace PP_PPCS
             // 
             // btn_Actualizar_WF
             // 
-            this.btn_Actualizar_WF.Location = new System.Drawing.Point(239, 421);
+            this.btn_Actualizar_WF.Location = new System.Drawing.Point(262, 420);
             this.btn_Actualizar_WF.Name = "btn_Actualizar_WF";
             this.btn_Actualizar_WF.Size = new System.Drawing.Size(75, 33);
             this.btn_Actualizar_WF.TabIndex = 2;
@@ -74,23 +74,23 @@ namespace PP_PPCS
             // datepicker_DataDocNovo_WF
             // 
             this.datepicker_DataDocNovo_WF.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.datepicker_DataDocNovo_WF.Location = new System.Drawing.Point(481, 428);
+            this.datepicker_DataDocNovo_WF.Location = new System.Drawing.Point(540, 428);
             this.datepicker_DataDocNovo_WF.Name = "datepicker_DataDocNovo_WF";
-            this.datepicker_DataDocNovo_WF.Size = new System.Drawing.Size(95, 20);
+            this.datepicker_DataDocNovo_WF.Size = new System.Drawing.Size(107, 20);
             this.datepicker_DataDocNovo_WF.TabIndex = 36;
             // 
             // datepicker_DataDocImportar_WF
             // 
             this.datepicker_DataDocImportar_WF.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.datepicker_DataDocImportar_WF.Location = new System.Drawing.Point(137, 428);
+            this.datepicker_DataDocImportar_WF.Location = new System.Drawing.Point(142, 428);
             this.datepicker_DataDocImportar_WF.Name = "datepicker_DataDocImportar_WF";
-            this.datepicker_DataDocImportar_WF.Size = new System.Drawing.Size(96, 20);
+            this.datepicker_DataDocImportar_WF.Size = new System.Drawing.Size(105, 20);
             this.datepicker_DataDocImportar_WF.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(357, 431);
+            this.label2.Location = new System.Drawing.Point(399, 428);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(135, 15);
             this.label2.TabIndex = 34;
@@ -99,7 +99,7 @@ namespace PP_PPCS
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 431);
+            this.label1.Location = new System.Drawing.Point(12, 428);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(124, 15);
             this.label1.TabIndex = 33;
@@ -107,7 +107,7 @@ namespace PP_PPCS
             // 
             // btn_Sair_WF
             // 
-            this.btn_Sair_WF.Location = new System.Drawing.Point(642, 466);
+            this.btn_Sair_WF.Location = new System.Drawing.Point(807, 469);
             this.btn_Sair_WF.Name = "btn_Sair_WF";
             this.btn_Sair_WF.Size = new System.Drawing.Size(90, 32);
             this.btn_Sair_WF.TabIndex = 40;
@@ -117,7 +117,7 @@ namespace PP_PPCS
             // 
             // btn_Processar_WF
             // 
-            this.btn_Processar_WF.Location = new System.Drawing.Point(642, 428);
+            this.btn_Processar_WF.Location = new System.Drawing.Point(807, 424);
             this.btn_Processar_WF.Name = "btn_Processar_WF";
             this.btn_Processar_WF.Size = new System.Drawing.Size(90, 32);
             this.btn_Processar_WF.TabIndex = 39;
@@ -131,14 +131,14 @@ namespace PP_PPCS
             this.DataGrid1.Location = new System.Drawing.Point(12, 12);
             this.DataGrid1.Name = "DataGrid1";
             this.DataGrid1.RowHeadersWidth = 51;
-            this.DataGrid1.Size = new System.Drawing.Size(720, 372);
+            this.DataGrid1.Size = new System.Drawing.Size(885, 372);
             this.DataGrid1.TabIndex = 41;
             // 
             // FormImportaDocs_WF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(743, 518);
+            this.ClientSize = new System.Drawing.Size(909, 518);
             this.Controls.Add(this.DataGrid1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_Actualizar_WF);
