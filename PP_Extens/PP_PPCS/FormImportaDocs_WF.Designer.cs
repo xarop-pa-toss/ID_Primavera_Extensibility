@@ -107,9 +107,9 @@ namespace PP_PPCS
             // 
             // btn_Sair_WF
             // 
-            this.btn_Sair_WF.Location = new System.Drawing.Point(807, 469);
+            this.btn_Sair_WF.Location = new System.Drawing.Point(807, 466);
             this.btn_Sair_WF.Name = "btn_Sair_WF";
-            this.btn_Sair_WF.Size = new System.Drawing.Size(90, 32);
+            this.btn_Sair_WF.Size = new System.Drawing.Size(90, 36);
             this.btn_Sair_WF.TabIndex = 40;
             this.btn_Sair_WF.Text = "Sair";
             this.btn_Sair_WF.UseVisualStyleBackColor = true;
@@ -117,9 +117,9 @@ namespace PP_PPCS
             // 
             // btn_Processar_WF
             // 
-            this.btn_Processar_WF.Location = new System.Drawing.Point(807, 424);
+            this.btn_Processar_WF.Location = new System.Drawing.Point(807, 420);
             this.btn_Processar_WF.Name = "btn_Processar_WF";
-            this.btn_Processar_WF.Size = new System.Drawing.Size(90, 32);
+            this.btn_Processar_WF.Size = new System.Drawing.Size(90, 36);
             this.btn_Processar_WF.TabIndex = 39;
             this.btn_Processar_WF.Text = "Processar";
             this.btn_Processar_WF.UseVisualStyleBackColor = true;
