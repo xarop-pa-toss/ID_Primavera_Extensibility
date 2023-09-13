@@ -38,14 +38,14 @@ namespace FRUTI_Extens.Purchases
                         artigoActual = DocumentoCompra.Linhas.GetEdita(i).Artigo;
                         prLiquido = DocumentoCompra.Linhas.GetEdita(i).PrecoLiquido / DocumentoCompra.Linhas.GetEdita(i).Quantidade;
                         // Se o CDU_Margem do artigo for nulo fica a zero, senão continua sem alteração.
-                        margemArtigo = (BSO.Base.Artigos.DaValorAtributo(artigoActual, "CDU_Margem") == null) ? 0 : BSO.Base.Artigos.DaValorAtributo(artigoActual, "CDU_Margem");
+                        margemArtigo = (BSO.Base.Artigos.DaValorAtributo(artigoActual, "CDU_Margem") == null) ? 0 : Convert.ToDouble(BSO.Base.Artigos.DaValorAtributo(artigoActual, "CDU_Margem"));
                         codIvaArtigo = BSO.Base.Artigos.DaValorAtributo(artigoActual, "IVA");
                         taxaIVAArtigo = BSO.Base.Iva.DaValorAtributo(codIvaArtigo, "Taxa");
 
                         if (margemArtigo != 0) {
                             _indArray++;
                             novoPVP4 = prLiquido + (prLiquido * margemArtigo / 100);
-                            novoPVP1 = novoPVP4 + (novoPVP4 + taxaIVAArtigo / 100);
+                            novoPVP1 = novoPVP4 + (novoPVP4 * (taxaIVAArtigo / 100));
 
                             StdBEExecSql sql = new StdBEExecSql();
                             sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
@@ -71,7 +71,7 @@ namespace FRUTI_Extens.Purchases
 
                     if (_indArray == 0) { return; }
 
-                    BSO.IniciaTransaccao();
+                    if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
 
 
                 }
