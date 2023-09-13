@@ -44,6 +44,9 @@
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\ErpBS100.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ErpDS100">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\ErpDS100.dll</HintPath>
+    </Reference>
     <Reference Include="IBasBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\IBasBS100.dll</HintPath>
     </Reference>
@@ -67,6 +70,9 @@
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Integration.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Primavera.Extensibility.Platform">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\Primavera.Extensibility.Platform.dll</HintPath>
+    </Reference>
     <Reference Include="Primavera.Extensibility.Sales">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Sales.dll</HintPath>
       <Private>False</Private>
@@ -87,6 +93,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Linq" />
     <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Windows.Forms" />
@@ -101,11 +108,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormGeraFatura_WF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGeraFatura_WF.Designer.cs">
+      <DependentUpon>FormGeraFatura_WF.cs</DependentUpon>
+    </Compile>
     <Compile Include="Motor\GetEmpresa.cs" />
     <Compile Include="Motor\PriMotores.cs" />
     <Compile Include="OpenWForm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Sales\UiEditorVendas.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FormGeraFatura_WF.resx">
+      <DependentUpon>FormGeraFatura_WF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

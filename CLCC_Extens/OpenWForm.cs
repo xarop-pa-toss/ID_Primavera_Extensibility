@@ -4,15 +4,9 @@ namespace CLCC_Extens.Sales
 {
     public class OpenWForm : CustomCode
     {
-        public void Abrir_VendArtigo_WF()
+        public void Abrir_FormGeraFatura_WF()
         {
-            VendArtigo form = new VendArtigo();
-            form.ShowDialog();
-            PSO.UI.AdicionaFormMDI(form);
-        }
-        public void Abrir_VendFornecedor_WF()
-        {
-            VendFornecedor form = new VendFornecedor();
+            FormGeraFatura_WF form = new FormGeraFatura_WF();
             form.ShowDialog();
             PSO.UI.AdicionaFormMDI(form);
         }
