@@ -34,7 +34,7 @@ namespace FRUTI_Extens.Purchases
                     string artigoActual, codIvaArtigo;
                     double margemArtigo, novoPVP1, novoPVP4, taxaIVAArtigo, prUnit, prLiquido;
                     
-                    for (int i = 1; i < DocumentoCompra.Linhas.NumItens; i++) {
+                    for (int i = 1; i < DocumentoCompra.Linhas.NumItens + 1; i++) {
                         artigoActual = DocumentoCompra.Linhas.GetEdita(i).Artigo;
                         prLiquido = DocumentoCompra.Linhas.GetEdita(i).PrecoLiquido / DocumentoCompra.Linhas.GetEdita(i).Quantidade;
                         // Se o CDU_Margem do artigo for nulo fica a zero, senão continua sem alteração.

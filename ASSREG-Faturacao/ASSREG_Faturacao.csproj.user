@@ -3,4 +3,8 @@
   <PropertyGroup>
     <ReferencePath>C:\Program Files\PRIMAVERA\SG100\Apl\</ReferencePath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\PRIMAVERA\SG100\Apl\Erp100LP.exe</StartProgram>
+  </PropertyGroup>
 </Project>

@@ -81,9 +81,8 @@ namespace ASRLB_ImportacaoFatura.Sales
             //}
 
             // *** ABRIR EMPRESA ***
-            // *** ASS REG SERVIDOR ***
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, GetEmpresa.codEmpresa, "faturacao", "*Pelicano*");
-
+            // *** ASS REG SERVIDOR *** GetEmpresa.codEmpresa
+            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "0012004", "faturacao", "*Pelicano*");
             // Carrega TDUs das Taxas Penalizadoras no arranque
             StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
             StdBELista listaTaxa_PP = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP';");
@@ -192,7 +191,6 @@ namespace ASRLB_ImportacaoFatura.Sales
                         string erroFat = EmitirFatura(DocVenda);
                         if (erroFat != "") { ErroAoEmitir(erroFat); break; }
                     }
-
                     DocVenda.Dispose();
                 }
                 if (_comErro) { break; }
@@ -270,6 +268,16 @@ namespace ASRLB_ImportacaoFatura.Sales
         private void formFaturasExploracao_WF_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void formFaturasExploracao_WF_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
+
+            BSO.Dispose();
+            linhaDict.Clear();
+            _escaloes.Clear();
+            _escaloesArroz.Clear();
         }
 
         private void ProcessarLinha(VndBEDocumentoVenda DocVenda, string comPenalizacao)
@@ -483,28 +491,37 @@ namespace ASRLB_ImportacaoFatura.Sales
             // Mesma razão pela qual comPenalizacao não é bool mas string.
             if (comPenalizacao.Equals("Não"))
             {
-                _taxa1 = DictTaxa[_cultura].Valor("CDU_escalaoUm");
+                _taxa1 = DictTaxa[_cultura].Valor("CDU_EscalaoUm");
                 return;
             }
             else if (comPenalizacao.Equals("Sim"))
             {
-                _taxa1 = DictTaxa[_cultura].Valor("CDU_escalaoUm");
-                _taxa2 = DictTaxa[_cultura].Valor("CDU_escalaoDois");
-                _taxa3 = DictTaxa[_cultura].Valor("CDU_escalaoTres");
+                _taxa1 = DictTaxa[_cultura].Valor("CDU_EscalaoUm");
+                _taxa2 = DictTaxa[_cultura].Valor("CDU_EscalaoDois");
+                _taxa3 = DictTaxa[_cultura].Valor("CDU_EscalaoTres");
                 return;
-                //_taxa2022 = DictTaxa[_cultura].Valor("CDU_escalaoUm");
+                //_taxa2022 = DictTaxa[_cultura].Valor("CDU_EscalaoUm");
             }
         }
 
         private void CalcRegantes_TaxaRecursosHidricos(string cultura)
         {
-            double baseTRH_U = 0.000706;
-            double baseTRH_A = 0.0035;
             double reducao25 = 0.25;
             double agravamento = 1.2;
             double reducao90 = 0.9;
-
             double TRH_U, TRH_A;
+
+            // TRH de base está na TDU_TRH para que cliente a possa alterar
+            double baseTRH_U = 0, baseTRH_A = 0;
+
+            using (StdBELista trh = BSO.Consulta("SELECT MAX(CDU_TRH_U) FROM TDU_TRH")) {
+                baseTRH_U = Convert.ToDouble(trh.Valor(0));
+            }
+
+            using (StdBELista trh = BSO.Consulta("SELECT MAX(CDU_TRH_A) FROM TDU_TRH")) {
+                baseTRH_A = Convert.ToDouble(trh.Valor(0));
+            }
+
             double consumoTotal = Convert.ToDouble(_consumoTotal);
             if (_consumo2022 != 0) { consumoTotal += _consumo2022; }
 
