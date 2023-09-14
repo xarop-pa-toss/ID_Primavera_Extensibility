@@ -1,4 +1,4 @@
-﻿using System; using System.IO; using System.Collections.Generic;
+﻿using System; using System.IO; using System.Collections.Generic; using System.Linq;
 using System.Windows.Forms;
 using ErpBS100; using StdPlatBS100;
 
@@ -25,6 +25,7 @@ namespace CLCC_Extens
             listBox_Output.Items.Clear();
             txtbox_Ficheiro.Clear();
         }
+
 
         private void btn_EscolherFicheiro_Click(object sender, EventArgs e)
         {
@@ -56,20 +57,23 @@ namespace CLCC_Extens
                 _PSO.MensagensDialogos.MostraAviso("O ficheiro não existe no caminho especificado.", StdBSTipos.IconId.PRI_Exclama);
                 return;
             }
-            #endregion
 
             listBox_Output.Items.Clear();
             listBox_Output.Items.Add("A copiar ficheiro...");
+            #endregion
 
             #region Criação de ficheiro temporário
             _nomeNovo = $"{DateTime.Now:ddMMyyHHmm}.txt";
             _pathCompletoNovo = $"C:\\TEMP\\{_nomeNovo}";
-            #endregion
 
             listBox_Output.Items.Add($"Ficheiro copiado para {_pathCompletoNovo}");
             listBox_Output.Items.Add("A ler informação do ficheiro...");
+            #endregion
+
+            #region Verificação das linhas e exposição dos erros ao utilizador
+            List<string> linhasLista;
             try {
-                List<string> linhasLista = new List<string>(File.ReadAllLines(_pathCompletoNovo));
+                linhasLista = new List<string>(File.ReadAllLines(_pathCompletoNovo));
             }
             catch {
                 listBox_Output.Items.Add("Erro ao ler linhas do ficheiro. Não foi gerado nenhum documento.");
@@ -77,68 +81,59 @@ namespace CLCC_Extens
                 return;
             }
 
-            listBox_Output.Items.Add("A validar linhas");
+            listBox_Output.Items.Add("A validar linhas...");
+            List<string> linhasErrosLista = ValidarLinhas(linhasLista);
 
+            // Se linhasErros não estiver vazia, é porque tem erros. Cada linha da linhasErros tem o número da linha com erro no ficheiro .txt.
+            foreach (string erro in linhasErrosLista) {
+                listBox_Output.Items.Add(erro);
+            }
+
+            if (linhasErrosLista.Any()) {
+                listBox_Output.Items.Add("Existem linhas com erros, por favor verifique")
+            }
+            #endregion
         }
 
-        private List<string> ValidarLinhas(string path)
+
+        private List<string> ValidarLinhas(List<string> linhasLista)
         {
-            
-            _ficheiroComErros = false;
+            // Código original VBA traduzido por ChatGPT com algumas alterações
+            // Percorre as linhas retiradas do ficheiro .txt e valida algumas condições. Se alguma falhar, guarda o número da linha na List linhasErrosLista
+            int linhasLidas = 0;
+            bool jaVerificado = false;
 
-FNUM = FreeFile
-Open strFich For Input Access Read As #FNUM  'Input é para ler
-NumFich = FNUM
-i = 0
-k = 0
+            List<string> linhasErrosLista = new List<string>();
 
-List1.AddItem "Lendo ficheiro, aguarde por favor"
+            foreach (string line in linhasLista) { 
+                
+                linhasLidas++;
+                Console.WriteLine($"Linha {linhasLidas}");
 
-Do Until EOF(FNUM)
-    i = i + 1
+                if (line.StartsWith("***")) {
+                    // Ignorar linha
+                } else if (line.Trim().Substring(0, 2).ToUpper() == "TC" && !jaVerificado) {
+                    // É linha com documento de venda
+                    jaVerificado = true;
+                    if (!_BSO.Base.Artigos.Existe("TC")) {
+                        linhasErrosLista.Add($"Erro: Produto inexistente - TC");
+                    }
+                } else if (!line.StartsWith("***") && line.Substring(0, 2).ToUpper() != "TC") {
+                    // É um cliente
+                    var lineParts = line.Split(',');
+                    var cliente = lineParts[0].Trim();
+                    var condPagamento = lineParts[1].Trim();
 
-    List1.AddItem "Linha " & i
+                    if (!_BSO.Base.Clientes.Existe(cliente)) {
+                        linhasErrosLista.Add($"Erro: Linha {linhasLidas}. Entidade inexistente - {cliente}");
+                    }
 
-    ReDim Preserve arrLinhas(1 To i)
-    Line Input #FNUM, arrLinhas(i)
-    
-    If Mid(arrLinhas(i), 1, 3) = "***" Then
-        'Ignora, não faz nada
-    ElseIf UCase(Trim(Mid(arrLinhas(i), 1, 2))) = "TC" And jaVerificado = False Then
-
-
-        'É uma linha de Factura
-        jaVerificado = True
-        If Aplicacao.BSO.Comercial.Artigos.Existe("TC") = False Then
-            k = k + 1
-            ReDim Preserve ArrErros(1 To k)
-            ArrErros(k) = "Erro: Produto inexistente - TC"
-            ExistemErros = True
-        End If
-    ElseIf UCase(Trim(Mid(arrLinhas(i), 1, 2))) <> "TC" And Mid(arrLinhas(i), 1, 2) <> "***" Then
-        'É o cliente
-        If Aplicacao.BSO.Comercial.Clientes.Existe(Trim(Split(arrLinhas(i), ",")(0))) = False Then
-            k = k + 1
-            ReDim Preserve ArrErros(1 To k)
-            ArrErros(k) = "Erro linha " & i & ". Entidade inexistente - " & Trim(Split(arrLinhas(i), ",")(0)) & ""
-            ExistemErros = True
-
-
-        End If
-
-
-        If Aplicacao.BSO.Comercial.CondsPagamento.Existe(Trim(Split(arrLinhas(i), ",")(1))) = False Then
-            k = k + 1
-            ReDim Preserve ArrErros(1 To k)
-            ArrErros(k) = "Erro linha " & i & ". Condição de Pagamento inexistente - " & Trim(Split(arrLinhas(i), ",")(1)) & ""
-            ExistemErros = True
-        End If
-
-
-    End If
-Loop
-
-Close FNUM
+                    if (!_BSO.Base.CondsPagamento.Existe(condPagamento)) {
+                        linhasErrosLista.Add($"Erro: Linha {linhasLidas}. Condição de pagamento inexistente - {condPagamento}");
+                    }
+                }
+            }
+            return linhasErrosLista;
         }
     }
 }
