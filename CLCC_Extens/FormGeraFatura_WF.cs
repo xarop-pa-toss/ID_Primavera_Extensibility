@@ -1,6 +1,7 @@
 ﻿using System; using System.IO; using System.Collections.Generic; using System.Linq;
 using System.Windows.Forms;
-using ErpBS100; using StdPlatBS100;
+using Primavera.Extensibility.Sales.Editors;
+using ErpBS100; using StdPlatBS100; using VndBE100; using BasBE100; using StdBE100;
 
 namespace CLCC_Extens
 {
@@ -90,11 +91,124 @@ namespace CLCC_Extens
             }
 
             if (linhasErrosLista.Any()) {
-                listBox_Output.Items.Add("Existem linhas com erros, por favor verifique")
+                listBox_Output.Items.Add("Existem linhas com erros, por favor verifique o ficheiro e tente novamente.");
+                listBox_Output.Items.Add("Não foi gerado nenhum documento.");
+                _PSO.MensagensDialogos.MostraAviso("ERROS NO FICHEIRO.\nNão foi gerado nenhum documento.", StdBSTipos.IconId.PRI_Critico);
+                return;
             }
+            #endregion
+
+            #region Criação de documentos de venda
+            bool criacaoDocs = CriarDocumentosVenda(linhasLista);
+
+            if (!criacaoDocs) {
+                _PSO.MensagensDialogos.MostraAviso("ERRO! Nenhum documento foi criado.\nVer detalhes na janela principal.", StdBSTipos.IconId.PRI_Critico);
+            } 
+            else {
+                _PSO.MensagensDialogos.MostraAviso("Todos os documentos foram criados com sucesso.", StdBSTipos.IconId.PRI_Informativo);
+            }
+
             #endregion
         }
 
+
+        private bool CriarDocumentosVenda(List<string> linhasLista)
+        {
+            try {
+                _BSO.IniciaTransaccao();
+
+                int i = 0;
+                while (i < linhasLista.Count) {
+                    if (!linhasLista[i].StartsWith("TC") && !linhasLista[i].StartsWith("***")) {
+
+                        // É Cliente -> fazer CabecDoc
+                        List<string> customerInfo = linhasLista[i].Split(',').Select(s => s.Trim()).ToList();
+
+                        VndBEDocumentoVenda docVenda = new VndBEDocumentoVenda
+                        {
+                            Entidade = customerInfo[0],
+                            TipoEntidade = "C",
+                            Tipodoc = "FR",
+                            Serie = _BSO.Base.Series.DaSerieDefeito("V", "FR"),
+                            TipoLancamento = "000",
+                            DataDoc = DateTime.Now,
+                            CondPag = customerInfo[1]
+                        };
+
+                        int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosTodos;
+                        docVenda = _BSO.Vendas.Documentos.PreencheDadosRelacionados(docVenda,ref vdDadosTodos);
+
+                        int k = i + 1;
+                        bool UltimaLinha = false;
+
+                        while (k < linhasLista.Count && linhasLista[k].StartsWith("TC") && !UltimaLinha) {
+                            List<string> Arr = linhasLista[k].Split(',').Select(s => s.Trim()).ToList();
+
+                            if (Arr.Count == 1) {
+                                _BSO.DesfazTransaccao();
+                                listBox_Output.Items.Add($"Linha Inconsistente: {k}.\nOPERAÇÃO CANCELADA!");
+                                return false;
+                            }
+
+                            StdBELista BELista = _BSO.Consulta($"SELECT Iva from IVA where taxa={Arr[5]}");
+
+                            if (BELista.NoFim()) {
+                                _BSO.DesfazTransaccao();
+                                listBox_Output.Items.Add($"Cód. da Taxa de Iva associada à Taxa na linha {k} inexistente!\nOPERAÇÃO CANCELADA!");
+                                return false;
+                            }
+
+                            var (Artigo, Descricao, Qtd, PrecU, CodIva, TaxaIva, Desc) = (Arr[1], Arr[2], double.Parse(Arr[3]), double.Parse(Arr[4]), BELista.Valor("Iva").ToString(), double.Parse(Arr[5]), double.Parse(Arr[6]));
+                            string Armazem = ""; string Localizacao = "";
+
+                            _BSO.Vendas.Documentos.AdicionaLinha(docVenda, Artigo, ref Qtd, ref Armazem, ref Localizacao, PrecU, Desc);
+
+                            VndBELinhaDocumentoVenda LinhaDoc = docVenda.Linhas.GetEdita(docVenda.Linhas.NumItens);
+
+                            LinhaDoc.Artigo = Artigo;
+                            LinhaDoc.Descricao = Descricao;
+                            LinhaDoc.CodIva = CodIva;
+                            LinhaDoc.TaxaIva = (float)TaxaIva;
+                            LinhaDoc.Desconto1 = Desc;
+
+                            k++;
+
+                            if (k >= linhasLista.Count) {
+                                UltimaLinha = true;
+                                k--;
+                            }
+
+                            BELista.Dispose();
+                        }
+
+                        _BSO.Vendas.Documentos.CalculaValoresTotais(docVenda);
+
+                        int vdDadosPrestacao = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosPrestacao;
+                        docVenda = _BSO.Vendas.Documentos.PreencheDadosRelacionados(docVenda, ref vdDadosPrestacao);
+
+                        string strErro = "", strAvisos = "", serieDocLiq = docVenda.Serie;
+                        if (_BSO.Vendas.Documentos.ValidaActualizacao(docVenda, _BSO.Vendas.TabVendas.Edita(docVenda.Tipodoc), ref serieDocLiq, ref strErro)) {
+                            _BSO.Vendas.Documentos.Actualiza(docVenda, ref strAvisos);
+                            listBox_Output.Items.Add($"Inserção bem sucedida da Factura {docVenda.NumDoc}.{strAvisos}");
+                        } else {
+                            _BSO.DesfazTransaccao();
+                            listBox_Output.Items.Add($"Ocorreram erros ao gerar a Factura para o cliente {linhasLista[i]}: {strErro}\nOPERAÇÃO CANCELADA!");
+                            return false;
+                        }
+                        docVenda= null;
+                    }
+                    i++;
+                }
+                _BSO.TerminaTransaccao();
+                listBox_Output.Items.Add($"*** Todos os documentos foram criados com sucesso. ***");
+                return true;
+            }
+            catch (Exception ex) {
+                _BSO.DesfazTransaccao();
+                listBox_Output.Items.Add($"Ocorreram Erros: {ex.Message}\nOPERAÇÃO CANCELADA!");
+                return false;
+            }
+        }
 
         private List<string> ValidarLinhas(List<string> linhasLista)
         {
@@ -105,8 +219,8 @@ namespace CLCC_Extens
 
             List<string> linhasErrosLista = new List<string>();
 
-            foreach (string line in linhasLista) { 
-                
+            foreach (string line in linhasLista) {
+
                 linhasLidas++;
                 Console.WriteLine($"Linha {linhasLidas}");
 
@@ -135,5 +249,7 @@ namespace CLCC_Extens
             }
             return linhasErrosLista;
         }
+
     }
 }
+
