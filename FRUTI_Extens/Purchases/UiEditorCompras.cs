@@ -15,10 +15,9 @@ namespace FRUTI_Extens.Purchases
 {
     public class UiEditorCompras : EditorCompras
     {
-        private int _indArray = 0;
-
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
+            int _indArray = 0;
             List<string> tipoDocList = new List<string> { "VFA", "VFD", "VGR", "VFF", "CVS" };
             List<string> artigosComErroNoUpdateSQL = new List<string>();
             string strErro = "";
@@ -72,8 +71,6 @@ namespace FRUTI_Extens.Purchases
                     if (_indArray == 0) { return; }
 
                     if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
-
-
                 }
             }
             base.AntesDeGravar(ref Cancel, e);
