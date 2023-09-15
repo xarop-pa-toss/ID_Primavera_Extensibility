@@ -45,8 +45,6 @@ namespace CLCC_Extens
 
         private void btn_Iniciar_Click(object sender, EventArgs e)
         {
-            int i;
-            string res;
 
             #region Validação de existência do ficheiro
             if (string.IsNullOrEmpty(txtbox_Ficheiro.Text)) {
@@ -107,10 +105,13 @@ namespace CLCC_Extens
             else {
                 _PSO.MensagensDialogos.MostraAviso("Todos os documentos foram criados com sucesso.", StdBSTipos.IconId.PRI_Informativo);
             }
-
             #endregion
         }
 
+        private void btn_Cancelar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
         private bool CriarDocumentosVenda(List<string> linhasLista)
         {
@@ -200,7 +201,7 @@ namespace CLCC_Extens
                     i++;
                 }
                 _BSO.TerminaTransaccao();
-                listBox_Output.Items.Add($"*** Todos os documentos foram criados com sucesso. ***");
+                listBox_Output.Items.Add($"OPERAÇÃO REALIZADA COM EXITO!");
                 return true;
             }
             catch (Exception ex) {
