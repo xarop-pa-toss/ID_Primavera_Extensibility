@@ -76,6 +76,5 @@ namespace FRUTI_Extens.Purchases
             base.AntesDeGravar(ref Cancel, e);
 
         }
-
     }
 }
