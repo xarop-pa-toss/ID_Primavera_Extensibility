@@ -73,8 +73,7 @@ namespace FRUTI_Extens.Purchases
                     if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
                 }
             }
-            base.AntesDeGravar(ref Cancel, e);
-
+//            base.AntesDeGravar(ref Cancel, e);
         }
     }
 }
