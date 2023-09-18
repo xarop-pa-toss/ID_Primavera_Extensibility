@@ -54,8 +54,8 @@ namespace FRUTI_Extens.Purchases
                             #region Método de Update 1 - com connection string tradicional.
                             Motor.DBUpdate sql = new Motor.DBUpdate();
                             sql.ExecutarUpdate($"UPDATE Artigomoeda " +
-                                $"SET PVP4 = {novoPVP4str} AND PVP1 = {novoPVP1str} " +
-                                $"WHERE artigo = {artigoActual}");
+                                $"SET PVP4 = {novoPVP4str}, PVP1 = {novoPVP1str} " +
+                                $"WHERE artigo = '{artigoActual}'");
                             #endregion
                             #region Método de Update 2 - Pelo método Primavera (com bug)
                             //StdBEExecSql sql = new StdBEExecSql();
