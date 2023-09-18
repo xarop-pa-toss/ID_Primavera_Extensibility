@@ -113,6 +113,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Motor\DBUpdate.cs" />
     <Compile Include="Motor\GetEmpresa.cs" />
     <Compile Include="OpenWForm.cs" />
     <Compile Include="Motor\PriMotores.cs" />

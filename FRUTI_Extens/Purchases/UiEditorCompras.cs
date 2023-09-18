@@ -17,6 +17,8 @@ namespace FRUTI_Extens.Purchases
     {
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
+            base.AntesDeGravar(ref Cancel, e);
+
             int _indArray = 0;
             List<string> tipoDocList = new List<string> { "VFA", "VFD", "VGR", "VFF", "CVS" };
             List<string> artigosComErroNoUpdateSQL = new List<string>();
@@ -30,7 +32,7 @@ namespace FRUTI_Extens.Purchases
                 } 
                 else {
                     _indArray = 0;
-                    string artigoActual, codIvaArtigo;
+                    string artigoActual, codIvaArtigo, novoPVP1str, novoPVP4str;
                     double margemArtigo, novoPVP1, novoPVP4, taxaIVAArtigo, prUnit, prLiquido;
                     
                     for (int i = 1; i < DocumentoCompra.Linhas.NumItens + 1; i++) {
@@ -46,25 +48,37 @@ namespace FRUTI_Extens.Purchases
                             novoPVP4 = prLiquido + (prLiquido * margemArtigo / 100);
                             novoPVP1 = novoPVP4 + (novoPVP4 * (taxaIVAArtigo / 100));
 
-                            StdBEExecSql sql = new StdBEExecSql();
-                            sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-                            sql.Tabela = "Artigomoeda";
-                            sql.AddCampo("PVP4", novoPVP4.ToString().Replace(",", "."));
-                            sql.AddCampo("PVP1", novoPVP1.ToString().Replace(",", "."));
-                            sql.AddCampo("artigo", artigoActual, true);
+                            novoPVP4str = novoPVP4.ToString().Replace(",", ".");
+                            novoPVP1str = novoPVP1.ToString().Replace(",", ".");
 
-                            sql.AddQuery();
+                            #region Método de Update 1 - com connection string tradicional.
+                            Motor.DBUpdate sql = new Motor.DBUpdate();
+                            sql.ExecutarUpdate($"UPDATE Artigomoeda " +
+                                $"SET PVP4 = {novoPVP4str} AND PVP1 = {novoPVP1str} " +
+                                $"WHERE artigo = {artigoActual}");
+                            #endregion
+                            #region Método de Update 2 - Pelo método Primavera (com bug)
+                            //StdBEExecSql sql = new StdBEExecSql();
+                            //sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
+                            //sql.Tabela = "Artigomoeda";
+                            //sql.AddCampo("PVP4", novoPVP4.ToString().Replace(",", "."));
+                            //sql.AddCampo("PVP1", novoPVP1.ToString().Replace(",", "."));
+                            //sql.AddCampo("artigo", artigoActual, true);
 
-                            // Se Update falhar, preenche lista com NumDoc para mostrar ao cliente.
-                            BSO.IniciaTransaccao();
-                            try {
-                                PSO.ExecSql.Executa(sql);
-                            }
-                            catch {
-                                artigosComErroNoUpdateSQL.Add(artigoActual);
-                                BSO.DesfazTransaccao();
-                            }
-                            BSO.TerminaTransaccao();
+                            //sql.AddQuery();
+
+                            //// Se Update falhar, preenche lista com NumDoc para mostrar ao cliente.
+                            //BSO.IniciaTransaccao();
+                            //try {
+                            //    PSO.ExecSql.Executa(sql);
+                            //}
+                            //catch {
+                            //    artigosComErroNoUpdateSQL.Add(artigoActual);
+                            //    BSO.DesfazTransaccao();
+                            //}
+                            //sql.Dispose();
+                            //BSO.TerminaTransaccao();
+                            #endregion
                         }
                     }
 
@@ -73,7 +87,6 @@ namespace FRUTI_Extens.Purchases
                     if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
                 }
             }
-//            base.AntesDeGravar(ref Cancel, e);
         }
     }
 }
