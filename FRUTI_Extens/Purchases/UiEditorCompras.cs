@@ -51,13 +51,17 @@ namespace FRUTI_Extens.Purchases
                             novoPVP4str = novoPVP4.ToString().Replace(",", ".");
                             novoPVP1str = novoPVP1.ToString().Replace(",", ".");
 
-                            #region Método de Update 1 - com connection string tradicional.
-                            Motor.DBUpdate sql = new Motor.DBUpdate();
-                            sql.ExecutarUpdate($"UPDATE Artigomoeda " +
-                                $"SET PVP4 = {novoPVP4str}, PVP1 = {novoPVP1str} " +
-                                $"WHERE artigo = '{artigoActual}'");
+                            #region Método de Update 1 - com ActualizaValorAtributo
+                            BSO.Base.Artigos.ActualizaValorAtributo(artigoActual, "PVP1", novoPVP1str);
+                            BSO.Base.Artigos.ActualizaValorAtributo(artigoActual, "PVP4", novoPVP4str);
                             #endregion
-                            #region Método de Update 2 - Pelo método Primavera (com bug)
+                            #region Método de Update 2 - com connection string tradicional. (Não funciona)
+                            //Motor.DBUpdate sql = new Motor.DBUpdate();
+                            //sql.ExecutarUpdate($"UPDATE Artigomoeda " +
+                            //    $"SET PVP4 = {novoPVP4str}, PVP1 = {novoPVP1str} " +
+                            //    $"WHERE artigo = '{artigoActual}'");
+                            #endregion
+                            #region Método de Update 3 - Pelo método Primavera (com bug. funciona só da primeira vez)
                             //StdBEExecSql sql = new StdBEExecSql();
                             //sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
                             //sql.Tabela = "Artigomoeda";
@@ -78,7 +82,7 @@ namespace FRUTI_Extens.Purchases
                             //}
                             //sql.Dispose();
                             //BSO.TerminaTransaccao();
-                            #endregion
+                            #endregion.
                         }
                     }
 
