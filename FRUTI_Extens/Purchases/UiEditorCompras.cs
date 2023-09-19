@@ -17,8 +17,6 @@ namespace FRUTI_Extens.Purchases
     {
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
-            base.AntesDeGravar(ref Cancel, e);
-
             int _indArray = 0;
             List<string> tipoDocList = new List<string> { "VFA", "VFD", "VGR", "VFF", "CVS" };
             List<string> artigosComErroNoUpdateSQL = new List<string>();
@@ -31,6 +29,7 @@ namespace FRUTI_Extens.Purchases
                     Cancel = true;
                 } 
                 else {
+                    BSO.IniciaTransaccao();
                     _indArray = 0;
                     string artigoActual, codIvaArtigo, novoPVP1str, novoPVP4str;
                     double margemArtigo, novoPVP1, novoPVP4, taxaIVAArtigo, prUnit, prLiquido;
@@ -40,7 +39,7 @@ namespace FRUTI_Extens.Purchases
                         prLiquido = DocumentoCompra.Linhas.GetEdita(i).PrecoLiquido / DocumentoCompra.Linhas.GetEdita(i).Quantidade;
                         // Se o CDU_Margem do artigo for nulo fica a zero, senão continua sem alteração.
                         margemArtigo = (BSO.Base.Artigos.DaValorAtributo(artigoActual, "CDU_Margem") == null) ? 0 : Convert.ToDouble(BSO.Base.Artigos.DaValorAtributo(artigoActual, "CDU_Margem"));
-                        codIvaArtigo = BSO.Base.Artigos.DaValorAtributo(artigoActual, "IVA");
+                        codIvaArtigo = (BSO.Base.Artigos.DaValorAtributo(artigoActual, "IVA") == null) ? 0 : BSO.Base.Artigos.DaValorAtributo(artigoActual, "IVA");
                         taxaIVAArtigo = BSO.Base.Iva.DaValorAtributo(codIvaArtigo, "Taxa");
 
                         if (margemArtigo != 0) {
@@ -48,12 +47,14 @@ namespace FRUTI_Extens.Purchases
                             novoPVP4 = prLiquido + (prLiquido * margemArtigo / 100);
                             novoPVP1 = novoPVP4 + (novoPVP4 * (taxaIVAArtigo / 100));
 
-                            novoPVP4str = novoPVP4.ToString().Replace(",", ".");
-                            novoPVP1str = novoPVP1.ToString().Replace(",", ".");
+                            //novoPVP4str = novoPVP4.ToString().Replace(",", ".");
+                            //novoPVP1str = novoPVP1.ToString().Replace(",", ".");
 
-                            #region Método de Update 1 - com ActualizaValorAtributo
-                            BSO.Base.Artigos.ActualizaValorAtributo(artigoActual, "PVP1", novoPVP1str);
-                            BSO.Base.Artigos.ActualizaValorAtributo(artigoActual, "PVP4", novoPVP4str);
+                            #region Método de Update 1 - com Objecto ArtigoMoeda
+                            BasBEArtigoMoeda art = BSO.Base.ArtigosPrecos.Edita(artigoActual, "EUR", "UN");
+                            art.PVP1 = novoPVP1;
+                            art.PVP4 = novoPVP4;
+                            BSO.Base.ArtigosPrecos.Actualiza(art);
                             #endregion
                             #region Método de Update 2 - com connection string tradicional. (Não funciona)
                             //Motor.DBUpdate sql = new Motor.DBUpdate();
@@ -85,12 +86,14 @@ namespace FRUTI_Extens.Purchases
                             #endregion.
                         }
                     }
+                    BSO.TerminaTransaccao();
 
                     if (_indArray == 0) { return; }
 
                     if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
                 }
             }
+            base.AntesDeGravar(ref Cancel, e);
         }
     }
 }
