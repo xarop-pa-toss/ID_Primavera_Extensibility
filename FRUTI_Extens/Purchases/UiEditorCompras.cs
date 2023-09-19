@@ -56,34 +56,6 @@ namespace FRUTI_Extens.Purchases
                             art.PVP4 = novoPVP4;
                             BSO.Base.ArtigosPrecos.Actualiza(art);
                             #endregion
-                            #region Método de Update 2 - com connection string tradicional. (Não funciona)
-                            //Motor.DBUpdate sql = new Motor.DBUpdate();
-                            //sql.ExecutarUpdate($"UPDATE Artigomoeda " +
-                            //    $"SET PVP4 = {novoPVP4str}, PVP1 = {novoPVP1str} " +
-                            //    $"WHERE artigo = '{artigoActual}'");
-                            #endregion
-                            #region Método de Update 3 - Pelo método Primavera (com bug. funciona só da primeira vez)
-                            //StdBEExecSql sql = new StdBEExecSql();
-                            //sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-                            //sql.Tabela = "Artigomoeda";
-                            //sql.AddCampo("PVP4", novoPVP4.ToString().Replace(",", "."));
-                            //sql.AddCampo("PVP1", novoPVP1.ToString().Replace(",", "."));
-                            //sql.AddCampo("artigo", artigoActual, true);
-
-                            //sql.AddQuery();
-
-                            //// Se Update falhar, preenche lista com NumDoc para mostrar ao cliente.
-                            //BSO.IniciaTransaccao();
-                            //try {
-                            //    PSO.ExecSql.Executa(sql);
-                            //}
-                            //catch {
-                            //    artigosComErroNoUpdateSQL.Add(artigoActual);
-                            //    BSO.DesfazTransaccao();
-                            //}
-                            //sql.Dispose();
-                            //BSO.TerminaTransaccao();
-                            #endregion.
                         }
                     }
                     BSO.TerminaTransaccao();
