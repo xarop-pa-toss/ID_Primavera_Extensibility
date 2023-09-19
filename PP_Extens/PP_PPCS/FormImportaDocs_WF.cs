@@ -293,12 +293,12 @@ namespace PP_PPCS
                         importaDocs.CriarDocumentoCompra(ref linha, Cancel);
                     }
 
-                    linha["EntLocal"] = entLoc;
-                    linha["FilialLoc"] = filialLoc;
-                    linha["TipoDocLoc"] = tipoDocLoc;
-                    linha["SerieLoc"] = serieLoc;
-                    linha["NumDocLocal"] = numDocLoc;
-                    linha["Importa"] = "N";
+                    //linha["EntLocal"] = entLoc;
+                    //linha["FilialLoc"] = filialLoc;
+                    //linha["TipoDocLoc"] = tipoDocLoc;
+                    //linha["SerieLoc"] = serieLoc;
+                    //linha["NumDocLocal"] = numDocLoc;
+                    //linha["Importa"] = "N";
                 }
             }
             btn_Sair_WF.Focus();

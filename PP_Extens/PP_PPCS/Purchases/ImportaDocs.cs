@@ -30,6 +30,20 @@ namespace PP_PPCS
             bool Cancelar = false;
             int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoCompras.compDadosTodos;
 
+            string TipoEntidade = linha["TipoEntidade"].ToString();
+            string Entidade = linha["Entidade"].ToString();
+            string Filial = linha["Filial"].ToString();
+            string TipoDoc = linha["TipoDoc"].ToString();
+            string Serie = linha["Serie"].ToString();
+            int? NumDoc = (int)linha["NumDoc"];
+            DateTime DataDoc = Convert.ToDateTime(linha["Data"]);
+            string EntLocal = linha["EntLocal"].ToString();
+            string FilialDest = linha["FilialLoc"].ToString();
+            string TipoDocDest = linha["TipoDocLoc"].ToString();
+            string SerieDest = linha["SerieLoc"].ToString();
+            int NumDocDest = (int)linha["NumDocLocal"];
+            string Importa = linha["Importa"].ToString();
+
             // Preenchimento do novo documento de compra
             if (Importa == "A" && BSO.Compras.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest) == true) {
                 CmpBEDocumentoCompra docNovo = new CmpBEDocumentoCompra();
@@ -82,7 +96,7 @@ namespace PP_PPCS
                     // Verificar existência do documento de destino
                     localstr = FilialDest + SerieDest;
 
-                    if (!string.IsNullOrEmpty(localstr) && NumDocDest.HasValue) {
+                    if (!string.IsNullOrEmpty(localstr) && NumDocDest != null) {
 
                         // Documento já existente, verificar a existência e editar se existir
                         if (BSO.Compras.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest)) {
@@ -270,6 +284,20 @@ namespace PP_PPCS
             bool Cancelar, ivaIncluido, DocDestinoJaExiste, liqDocAnulada, fazerLiquidacao;
             string fl = "", tdl = "", sl = "";
             int ndl = 0;
+
+            string TipoEntidade = linha["TipoEntidade"].ToString();
+            string Entidade = linha["Entidade"].ToString();
+            string Filial = linha["Filial"].ToString();
+            string TipoDoc = linha["TipoDoc"].ToString();
+            string Serie = linha["Serie"].ToString();
+            int NumDoc = (int)linha["NumDoc"];
+            DateTime DataDoc = Convert.ToDateTime(linha["Data"]);
+            string EntLocal = linha["EntLocal"].ToString();
+            string FilialDest = linha["FilialLoc"].ToString();
+            string TipoDocDest = linha["TipoDocLoc"].ToString();
+            string SerieDest = linha["SerieLoc"].ToString();
+            int NumDocDest = (int)linha["NumDocLocal"];
+            string Importa = linha["Importa"].ToString();
 
             docNovo = BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
             Cancelar = false;
