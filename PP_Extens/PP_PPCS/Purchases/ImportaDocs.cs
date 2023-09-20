@@ -508,15 +508,17 @@ namespace PP_PPCS
                                     }
                                 } else if (!string.IsNullOrEmpty(RSet.Valor("Artigo")) && _BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
 
+                                    string armazem = RSet.Valor("Armazem").ToString(), loc = RSet.Valor("Localizacao").ToString();
+
                                     _BSO.Vendas.Documentos.AdicionaLinha(
                                         docNovo,
                                         RSet.Valor("Artigo").ToString(),
                                         ref quant,
-                                        RSet.Valor("Armazem").ToString(),
-                                        RSet.Valor("Localizacao").ToString(),
+                                        ref armazem,
+                                        ref loc,
                                         Convert.ToDouble(RSet.Valor("PrecUnit")),
                                         Convert.ToDouble(RSet.Valor("Desconto1")),
-                                        null, 0, 0, 0,
+                                        "", 0, 0, 0,
                                         Convert.ToDouble(RSet.Valor("DescEntidade")),
                                         Convert.ToDouble(RSet.Valor("DescPag")),
                                         0, 0, false, ivaIncluido);
