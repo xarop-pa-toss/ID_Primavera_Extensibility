@@ -19,6 +19,8 @@ namespace PP_PPCS
 {
     public class ImportaDocs : EditorCompras
     {
+        private ErpBS _BSO = Motor.PriEngine.Engine;
+        private StdPlatBS _PSO = Motor.PriEngine.Platform;
 
         public ImportaDocs()
         {
@@ -45,35 +47,35 @@ namespace PP_PPCS
             string Importa = linha["Importa"].ToString();
 
             // Preenchimento do novo documento de compra
-            if (Importa == "A" && BSO.Compras.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest) == true) {
+            if (Importa == "A" && _BSO.Compras.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest) == true) {
                 CmpBEDocumentoCompra docNovo = new CmpBEDocumentoCompra();
-                docNovo = BSO.Compras.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest);
+                docNovo = _BSO.Compras.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest);
                 docNovo.DataDoc = DataDoc;
                 docNovo.Entidade = EntLocal;
                 if (docNovo.Linhas.NumItens > 0) { docNovo.Linhas.RemoveTodos(); }
 
                 // Linhas de comentário adicionadas ao novo documento de compra
-                BSO.Compras.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario, Descricao: @"
+                _BSO.Compras.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario, Descricao: @"
                     Este documento é replicação do documento físico " + TipoDoc + " Nº " + NumDoc.ToString() + "/" + Serie + ".");
-                BSO.Compras.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario, Descricao: @"
+                _BSO.Compras.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario, Descricao: @"
                     Cópia do documento original.");
-                BSO.Compras.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario, Descricao: @"
+                _BSO.Compras.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario, Descricao: @"
                     Documento original anulado!");
 
-                BSO.Compras.Documentos.PreencheDadosRelacionados(docNovo);
-                BSO.Compras.Documentos.Actualiza(docNovo);
+                _BSO.Compras.Documentos.PreencheDadosRelacionados(docNovo);
+                _BSO.Compras.Documentos.Actualiza(docNovo);
 
                 docNovo.Dispose();
             } else if (Importa == "S") {
                 // Verificar se a entidade fornecedor existe
-                if (!BSO.Base.Fornecedores.Existe(EntLocal)) {
+                if (!_BSO.Base.Fornecedores.Existe(EntLocal)) {
                     string docFull = TipoDoc + " N.º " + NumDoc.ToString() + "/" + Serie;
                     localstr = Microsoft.VisualBasic.Interaction.InputBox(
                         "A entidade (" + Entidade + ") no documento " + docFull + ".\n" +
                         "Não existe ou não possui correspondencia.\n\n" +
                         "Qual a entidade a utilizar?", Title: docFull);
 
-                    if (BSO.Base.Fornecedores.Existe(localstr)) {
+                    if (_BSO.Base.Fornecedores.Existe(localstr)) {
                         EntLocal = localstr;
 
                         string query = string.Format(@"
@@ -82,14 +84,14 @@ namespace PP_PPCS
                             WHERE CDU_TipoEntidade = {1}
                                 AND CDU_EntERP = {2}", EntLocal, TipoEntidade, Entidade);
 
-                        PSO.ExecSql.ExecutaSP("query", ref SQLErrors);
+                        _PSO.ExecSql.ExecutaSP("query", ref SQLErrors);
                     } else {
                         EntLocal = "";
                     }
                 }
 
                 // Controlar a existência de entidade e série do documento
-                if (EntLocal != "" && BSO.Base.Series.Existe("C", TipoDoc, Serie)) {
+                if (EntLocal != "" && _BSO.Base.Series.Existe("C", TipoDoc, Serie)) {
                     CmpBEDocumentoCompra docNovo = new CmpBEDocumentoCompra();
                     StdBELista RSet = new StdBELista();
 
@@ -99,11 +101,11 @@ namespace PP_PPCS
                     if (!string.IsNullOrEmpty(localstr) && NumDocDest != null) {
 
                         // Documento já existente, verificar a existência e editar se existir
-                        if (BSO.Compras.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest)) {
+                        if (_BSO.Compras.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest)) {
 
-                            docNovo = BSO.Compras.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest);
+                            docNovo = _BSO.Compras.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest);
 
-                            RSet = BSO.Consulta(QueriesSQL.GetQuery04(Filial, TipoDoc, Serie, NumDoc.ToString()));
+                            RSet = _BSO.Consulta(QueriesSQL.GetQuery04(Filial, TipoDoc, Serie, NumDoc.ToString()));
                             docNovo.DataDoc = DataDoc;
                             docNovo.Entidade = EntLocal;
                             docNovo.DescFornecedor = RSet.Valor("DescEntidade");
@@ -114,7 +116,7 @@ namespace PP_PPCS
                         } else { return; }
                     } else {
 
-                        RSet = BSO.Consulta(QueriesSQL.GetQuery04(Filial, TipoDoc, Serie, NumDoc.ToString()));
+                        RSet = _BSO.Consulta(QueriesSQL.GetQuery04(Filial, TipoDoc, Serie, NumDoc.ToString()));
                         docNovo.Filial = Filial;
                         docNovo.Serie = Serie;
                         docNovo.Tipodoc = TipoDoc;
@@ -126,7 +128,7 @@ namespace PP_PPCS
                         docNovo.CamposUtil["CDU_NumDocOrig"].Valor = NumDoc;
 
                         
-                        BSO.Compras.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
+                        _BSO.Compras.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
 
                         docNovo.DataDoc = DataDoc;
                         if (docNovo.DataIntroducao < DataDoc) { docNovo.DataIntroducao = DataDoc; }
@@ -139,10 +141,10 @@ namespace PP_PPCS
                         RSet.Termina();
                     }
 
-                    RSet = BSO.Consulta(QueriesSQL.GetQuery05(Filial, TipoDoc, Serie, NumDoc.ToString()));
+                    RSet = _BSO.Consulta(QueriesSQL.GetQuery05(Filial, TipoDoc, Serie, NumDoc.ToString()));
                     docNovo.NumDocExterno = TipoDoc + " Nº " + NumDoc.ToString() + "/" + Serie + " - " + RSet.Valor("NumDocExterno");
 
-                    RSet = BSO.Consulta(QueriesSQL.GetQuery06(Filial, TipoDoc, Serie, NumDoc.ToString()));
+                    RSet = _BSO.Consulta(QueriesSQL.GetQuery06(Filial, TipoDoc, Serie, NumDoc.ToString()));
 
                     while (!RSet.NoFim()) {
 
@@ -150,11 +152,11 @@ namespace PP_PPCS
                         var ultimaLinha = docNovo.Linhas.GetEdita(numLinhas);
                         double quant = Math.Abs((double)RSet.Valor("Quantidade"));
 
-                        if (!string.IsNullOrEmpty(RSet.Valor("ArtigoDestino")) && BSO.Base.Artigos.Existe(RSet.Valor("ArtigoDestino"))) {
+                        if (!string.IsNullOrEmpty(RSet.Valor("ArtigoDestino")) && _BSO.Base.Artigos.Existe(RSet.Valor("ArtigoDestino"))) {
 
                             // Actualizar sempre numLinhas e ultimaLinha quando se adiciona qualquer linha
                             // Se a certo ponto ficar demasiado dificil de seguir, encapsular os três.
-                            BSO.Compras.Documentos.AdicionaLinha(
+                            _BSO.Compras.Documentos.AdicionaLinha(
                                 docNovo,
                                 RSet.Valor("ArtigoDestino"),
                                 ref quant,
@@ -169,7 +171,7 @@ namespace PP_PPCS
                                 0, 0,
                                 false,
                                 false,
-                                BSO.Base.Iva.DaValorAtributo("6", "Taxa")
+                                _BSO.Base.Iva.DaValorAtributo("6", "Taxa")
                                 );
                             numLinhas = docNovo.Linhas.NumItens;
                             ultimaLinha = docNovo.Linhas.GetEdita(numLinhas);
@@ -195,13 +197,13 @@ namespace PP_PPCS
                                     ultimaLinha.CamposUtil["CDU_vendaEmCaixa"].Valor = 0;
                                 } else {
                                     if (!Cancelar) {
-                                        PSO.MensagensDialogos.MostraAviso($"Não é possível converter o artigo {RSet.Valor("Artigo")} em {RSet.Valor("ArtigoDestino")}.\nO documento não será importado.", StdBSTipos.IconId.PRI_Exclama);
+                                        _PSO.MensagensDialogos.MostraAviso($"Não é possível converter o artigo {RSet.Valor("Artigo")} em {RSet.Valor("ArtigoDestino")}.\nO documento não será importado.", StdBSTipos.IconId.PRI_Exclama);
                                     }
                                     Cancelar = true;
                                 }
                             }
-                        } else if (BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
-                            BSO.Compras.Documentos.AdicionaLinha(
+                        } else if (_BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
+                            _BSO.Compras.Documentos.AdicionaLinha(
                                 docNovo,
                                 RSet.Valor("Artigo"),
                                 ref quant,
@@ -216,7 +218,7 @@ namespace PP_PPCS
                                 0, 0,
                                 false,
                                 false,
-                                BSO.Base.Iva.DaValorAtributo("6", "Taxa")
+                                _BSO.Base.Iva.DaValorAtributo("6", "Taxa")
                                 );
                             numLinhas = docNovo.Linhas.NumItens;
                             ultimaLinha = docNovo.Linhas.GetEdita(numLinhas);
@@ -231,9 +233,9 @@ namespace PP_PPCS
                             ultimaLinha.CamposUtil["CDU_KilosPorCAixa"] = RSet.Valor("CDU_KilosPorCaixa");
 
                         } else if (RSet.Valor("Artigo") is null) {
-                            BSO.Compras.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario);
+                            _BSO.Compras.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario);
                         } else {
-                            PSO.MensagensDialogos.MostraAviso(
+                            _PSO.MensagensDialogos.MostraAviso(
                                 $"ATENÇÃO!\n\nO artigo {RSet.Valor("Artigo")} não esxiste na base de dados.\nCrie o artigo e volte a importar o documento.",
                                 StdBSTipos.IconId.PRI_Exclama,
                                 $"Artigo: {RSet.Valor("Artigo")} - {RSet.Valor("Descricao")}");
@@ -248,14 +250,14 @@ namespace PP_PPCS
 
                         string numdoc = NumDoc.HasValue ? NumDoc.Value.ToString() : null;
 
-                        BSO.Compras.Documentos.AdicionaLinhaEspecial( docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario, 0,
+                        _BSO.Compras.Documentos.AdicionaLinhaEspecial( docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario, 0,
                             $"Este documento é replicação do documento fisico {TipoDoc} N.º {NumDoc.ToString() ?? null}/{Serie}.");
 
-                        BSO.Compras.Documentos.AdicionaLinhaEspecial( docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario, 0, "Cópia do documento original");
+                        _BSO.Compras.Documentos.AdicionaLinhaEspecial( docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario, 0, "Cópia do documento original");
 
                         docNovo.TrataIvaCaixa = false;
                         docNovo.CamposUtil["CDU_NumDocOrig"].Valor = numdoc;
-                        BSO.Compras.Documentos.Actualiza(docNovo);
+                        _BSO.Compras.Documentos.Actualiza(docNovo);
 
                         EntLocal = docNovo.Entidade;
                         FilialDest = docNovo.Filial;
@@ -300,25 +302,25 @@ namespace PP_PPCS
             int NumDocDest = (int)linha["NumDocLocal"];
             string Importa = linha["Importa"].ToString();
 
-            docNovo = BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
+            docNovo = _BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
             Cancelar = false;
 
             switch (Importa) {
                 case "A": // Anular o documento de destino
-                    if (BSO.Vendas.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, NumDocDest)) {
+                    if (_BSO.Vendas.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, NumDocDest)) {
                         // A próxima linha preenche as quatro variáveis dadas por referência. Usadas logo a seguir para anular a liquidação.
-                        if (BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)) {
+                        if (_BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)) {
 
                             // Anular a liquidação do documento
-                            BSO.PagamentosRecebimentos.Liquidacoes.Remove(fl, tdl, sl, ndl);
+                            _BSO.PagamentosRecebimentos.Liquidacoes.Remove(fl, tdl, sl, ndl);
 
                             #region PossivelBugFix
                             // No código da V9 existe um bloco aqui que corrige um suposto bug que não actualiza o numerador dos documentos.
                             // Query original traduzida: $"UPDATE SeriesCCT SET Numerador = (SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'";
                             // Descomentar as próximas linhas se necessário.
 
-                            //// Como o Update actua sob um Select e temos de usar o StdBEExecSql, vamos primeiro usar BSO.Consulta (Select) e usar o resultado no Update.
-                            //StdBELista subSelect = BSO.Consulta($"SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'");
+                            //// Como o Update actua sob um Select e temos de usar o StdBEExecSql, vamos primeiro usar _BSO.Consulta (Select) e usar o resultado no Update.
+                            //StdBELista subSelect = _BSO.Consulta($"SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'");
 
                             //using (StdBEExecSql sql = new StdBEExecSql()) {
                             //    sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
@@ -326,12 +328,12 @@ namespace PP_PPCS
                             //    sql.AddCampo("Numerador", subSelect.Valor(0));
                             //    sql.AddQuery();
 
-                            //    PSO.ExecSql.Executa(sql);
+                            //    _PSO.ExecSql.Executa(sql);
                             //}
                             #endregion
                         }
 
-                        docNovo = BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
+                        docNovo = _BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
 
                         docNovo.DataDoc = DataDoc;
                         docNovo.Entidade = EntLocal;
@@ -339,15 +341,15 @@ namespace PP_PPCS
                         if (docNovo.Linhas.NumItens > 0) { docNovo.Linhas.RemoveTodos(); }
 
                         // Linhas de comentário adicionadas ao novo documento de compra
-                        BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: @"
+                        _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: @"
                             Este documento é replicação do documento físico " + TipoDoc + " Nº " + NumDoc.ToString() + "/" + Serie + ".");
-                        BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "Cópia do documento original.");
-                        BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "Documento original anulado!");
+                        _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "Cópia do documento original.");
+                        _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "Documento original anulado!");
 
-                        BSO.Vendas.Documentos.Actualiza(docNovo);
+                        _BSO.Vendas.Documentos.Actualiza(docNovo);
                         docNovo.Dispose();
 
-                        if (BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)) {
+                        if (_BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)) {
                             //' O doc. venda acabado de gravar fez liquidação automática.
                             //' Garantir que o numerador da série do doc. liquidação criado fica correto (parece ser um bug do Primavera):
                             #region PossivelBugFix
@@ -355,8 +357,8 @@ namespace PP_PPCS
                             // Query original traduzida: $"UPDATE SeriesCCT SET Numerador = (SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'";
                             // Descomentar as próximas linhas se necessário.
 
-                            //// Como o Update actua sob um Select e temos de usar o StdBEExecSql, vamos primeiro usar BSO.Consulta (Select) e usar o resultado no Update.
-                            //StdBELista subSelect = BSO.Consulta($"SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'");
+                            //// Como o Update actua sob um Select e temos de usar o StdBEExecSql, vamos primeiro usar _BSO.Consulta (Select) e usar o resultado no Update.
+                            //StdBELista subSelect = _BSO.Consulta($"SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'");
 
                             //using (StdBEExecSql sql = new StdBEExecSql()) {
                             //    sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
@@ -364,7 +366,7 @@ namespace PP_PPCS
                             //    sql.AddCampo("Numerador", subSelect.Valor(0));
                             //    sql.AddQuery();
 
-                            //    PSO.ExecSql.Executa(sql);
+                            //    _PSO.ExecSql.Executa(sql);
                             //}
                             #endregion
                         }
@@ -374,26 +376,26 @@ namespace PP_PPCS
                 case "S": // Importar o documento
 
                     // Verificar se a entidade já existe
-                    if (!BSO.Base.Clientes.Existe(EntLocal)) {
-                        PSO.MensagensDialogos.MostraAviso($"A entidade {Entidade} no documento {TipoDoc} N.º{NumDoc}/{Serie} não possui entidade local correspondente." +
+                    if (!_BSO.Base.Clientes.Existe(EntLocal)) {
+                        _PSO.MensagensDialogos.MostraAviso($"A entidade {Entidade} no documento {TipoDoc} N.º{NumDoc}/{Serie} não possui entidade local correspondente." +
                             $"Este documento não vai ser importado!", StdBSTipos.IconId.PRI_Critico);
                         Cancel = true;
                     } else {
 
-                        if (!BSO.Base.Series.Existe("V", TipoDocDest, Serie)) {
-                            PSO.MensagensDialogos.MostraAviso($"A série do documento {TipoDoc} N.º{NumDoc}/{Serie} não está criada localmente." +
+                        if (!_BSO.Base.Series.Existe("V", TipoDocDest, Serie)) {
+                            _PSO.MensagensDialogos.MostraAviso($"A série do documento {TipoDoc} N.º{NumDoc}/{Serie} não está criada localmente." +
                             $"Este documento não vai ser importado!", StdBSTipos.IconId.PRI_Critico);
                             Cancel = true;
                         } else {
                             // Verificar se documento de destino existe
-                            if (BSO.Vendas.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, NumDocDest)) {
+                            if (_BSO.Vendas.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, NumDocDest)) {
 
                                 DocDestinoJaExiste = true;
                                 liqDocAnulada = false;
 
-                                if (BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)) {
+                                if (_BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)) {
                                     // Anular a liquidação do documento
-                                    BSO.PagamentosRecebimentos.Liquidacoes.Remove(fl, tdl, sl, ndl);
+                                    _BSO.PagamentosRecebimentos.Liquidacoes.Remove(fl, tdl, sl, ndl);
                                     liqDocAnulada = true;
 
                                     #region PossivelBugFix
@@ -401,8 +403,8 @@ namespace PP_PPCS
                                     // Query original traduzida: $"UPDATE SeriesCCT SET Numerador = (SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'";
                                     // Descomentar as próximas linhas se necessário.
 
-                                    //// Como o Update actua sob um Select e temos de usar o StdBEExecSql, vamos primeiro usar BSO.Consulta (Select) e usar o resultado no Update.
-                                    //StdBELista subSelect = BSO.Consulta($"SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'");
+                                    //// Como o Update actua sob um Select e temos de usar o StdBEExecSql, vamos primeiro usar _BSO.Consulta (Select) e usar o resultado no Update.
+                                    //StdBELista subSelect = _BSO.Consulta($"SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'");
 
                                     //using (StdBEExecSql sql = new StdBEExecSql()) {
                                     //    sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
@@ -410,13 +412,13 @@ namespace PP_PPCS
                                     //    sql.AddCampo("Numerador", subSelect.Valor(0));
                                     //    sql.AddQuery();
 
-                                    //    PSO.ExecSql.Executa(sql);
+                                    //    _PSO.ExecSql.Executa(sql);
                                     //}
                                     #endregion
                                 }
 
                                 docNovo = new VndBEDocumentoVenda();
-                                RSet = BSO.Consulta(QueriesSQL.GetQuery07(Filial, TipoDoc, Serie, NumDoc.ToString()));
+                                RSet = _BSO.Consulta(QueriesSQL.GetQuery07(Filial, TipoDoc, Serie, NumDoc.ToString()));
 
                                 docNovo.DataDoc = DataDoc;
                                 docNovo.Entidade = EntLocal;
@@ -441,7 +443,7 @@ namespace PP_PPCS
                                 docNovo.CamposUtil["CDU_SerieOrig"].Valor = Serie;
                                 docNovo.CamposUtil["CDU_NumDocOrig"].Valor = NumDoc;
 
-                                BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
+                                _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
 
                                 docNovo.DataDoc = DataDoc;
                                 docNovo.DescEntidade = RSet.Valor("DescEntidade");
@@ -455,18 +457,18 @@ namespace PP_PPCS
                             }
 
                             // Verificar se o documento original é com iva incluido
-                            ivaIncluido = BSO.Consulta(QueriesSQL.GetQuery08(TipoDoc, Serie, NumDoc.ToString())).Valor("invaincluido");
+                            ivaIncluido = _BSO.Consulta(QueriesSQL.GetQuery08(TipoDoc, Serie, NumDoc.ToString())).Valor("invaincluido");
                             //
-                            RSet = BSO.Consulta(QueriesSQL.GetQuery09(Filial, TipoDoc, Serie, NumDoc.ToString()));
+                            RSet = _BSO.Consulta(QueriesSQL.GetQuery09(Filial, TipoDoc, Serie, NumDoc.ToString()));
 
                             int numLinhas = docNovo.Linhas.NumItens;
                             var ultimaLinha = docNovo.Linhas.GetEdita(numLinhas);
                             double quant = Math.Abs((double)RSet.Valor("Quantidade"));
 
                             while (!RSet.NoFim() && !Cancelar) {
-                                if (!string.IsNullOrEmpty(RSet.Valor("ArtigoDestino")) && BSO.Base.Artigos.Existe(RSet.Valor("ArtigoDestino"))) {
+                                if (!string.IsNullOrEmpty(RSet.Valor("ArtigoDestino")) && _BSO.Base.Artigos.Existe(RSet.Valor("ArtigoDestino"))) {
 
-                                    BSO.Vendas.Documentos.AdicionaLinha(
+                                    _BSO.Vendas.Documentos.AdicionaLinha(
                                         docNovo,
                                         RSet.Valor("ArtigoDestino"),
                                         ref quant,
@@ -499,14 +501,14 @@ namespace PP_PPCS
                                             ultimaLinha.CamposUtil["CDU_VendaEmCaixa"].Valor = 0;
                                         } else {
                                             if (!Cancelar) {
-                                                PSO.MensagensDialogos.MostraAviso($"Não é possível converter o artigo {RSet.Valor("Artigo")} em {RSet.Valor("ArtigoDestino")}. \n\nO documento não será importado!", StdBSTipos.IconId.PRI_Critico);
+                                                _PSO.MensagensDialogos.MostraAviso($"Não é possível converter o artigo {RSet.Valor("Artigo")} em {RSet.Valor("ArtigoDestino")}. \n\nO documento não será importado!", StdBSTipos.IconId.PRI_Critico);
                                             }
                                             Cancelar = true;
                                         }
                                     }
-                                } else if (!string.IsNullOrEmpty(RSet.Valor("Artigo")) && BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
+                                } else if (!string.IsNullOrEmpty(RSet.Valor("Artigo")) && _BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
 
-                                    BSO.Vendas.Documentos.AdicionaLinha(
+                                    _BSO.Vendas.Documentos.AdicionaLinha(
                                         docNovo,
                                         RSet.Valor("Artigo"),
                                         ref quant,
@@ -530,10 +532,10 @@ namespace PP_PPCS
                                     ultimaLinha.CamposUtil["CDU_Fornecedor"].Valor = RSet.Valor("CDU_Fornecedor");
                                 } else if (string.IsNullOrEmpty(RSet.Valor("Artigo"))) {
 
-                                    BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "");
+                                    _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "");
                                 } else {
 
-                                    PSO.MensagensDialogos.MostraAviso($"Atenção!\n\nO artigo {RSet.Valor("Artigo")} não existe na base de dados.\nCrie o artigo e volte a importar o documento.", StdBSTipos.IconId.PRI_Exclama);
+                                    _PSO.MensagensDialogos.MostraAviso($"Atenção!\n\nO artigo {RSet.Valor("Artigo")} não existe na base de dados.\nCrie o artigo e volte a importar o documento.", StdBSTipos.IconId.PRI_Exclama);
                                     Cancelar = true;
                                 }
                                 RSet.Seguinte();
@@ -547,13 +549,13 @@ namespace PP_PPCS
                                 if (DocDestinoJaExiste && fazerLiquidacao) { fazerLiquidacao = true; }
                                 Cancel = true;
                             } else if (DocDestinoJaExiste || docNovo.Linhas.NumItens > 0) {
-                                BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario,
+                                _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario,
                                     Descricao: $"Este documento é replicação do documento fisico {TipoDoc} N.º {NumDoc}/{Serie}.");
-                                BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario,
+                                _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario,
                                     Descricao: "Cópia do documento original");
 
                                 // GRAVAR O DOCUMENTO DE VENDA
-                                BSO.Vendas.Documentos.Actualiza(docNovo);
+                                _BSO.Vendas.Documentos.Actualiza(docNovo);
 
                                 EntLocal = docNovo.Entidade;
                                 FilialDest = docNovo.Filial;
@@ -563,15 +565,15 @@ namespace PP_PPCS
                                 DataDoc = docNovo.DataDoc;
                                 Importa = "N";
 
-                                if (BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)) {
+                                if (_BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)) {
                                     // O documento acabado de gravar fez liquidação automática.
                                     #region PossivelBugFix
                                     // No código da V9 existe um bloco aqui que corrige um suposto bug que não actualiza o numerador dos documentos.
                                     // Query original traduzida: $"UPDATE SeriesCCT SET Numerador = (SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'";
                                     // Descomentar as próximas linhas se necessário.
 
-                                    //// Como o Update actua sob um Select e temos de usar o StdBEExecSql, vamos primeiro usar BSO.Consulta (Select) e usar o resultado no Update.
-                                    //StdBELista subSelect = BSO.Consulta($"SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'");
+                                    //// Como o Update actua sob um Select e temos de usar o StdBEExecSql, vamos primeiro usar _BSO.Consulta (Select) e usar o resultado no Update.
+                                    //StdBELista subSelect = _BSO.Consulta($"SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'");
 
                                     //using (StdBEExecSql sql = new StdBEExecSql()) {
                                     //    sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
@@ -579,7 +581,7 @@ namespace PP_PPCS
                                     //    sql.AddCampo("Numerador", subSelect.Valor(0));
                                     //    sql.AddQuery();
 
-                                    //    PSO.ExecSql.Executa(sql);
+                                    //    _PSO.ExecSql.Executa(sql);
                                     //}
                                     #endregion
                                 } else {
@@ -588,32 +590,32 @@ namespace PP_PPCS
                             }
                             docNovo.Dispose();
 
-                            if (fazerLiquidacao && BSO.PagamentosRecebimentos.Pendentes.Existe(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest)) {
+                            if (fazerLiquidacao && _BSO.PagamentosRecebimentos.Pendentes.Existe(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest)) {
                                 // Liquidar o documento acabado de criar/alterar
                                 docLiq = new CctBEDocumentoLiq();
 
                                 docLiq.Tipodoc = "VDR";
-                                docLiq.Serie = (BSO.Base.Series.Existe("M", docLiq.Tipodoc, SerieDest)) ? SerieDest : BSO.Base.Series.DaSerieDefeito("M", docLiq.Tipodoc, DataDoc);
+                                docLiq.Serie = (_BSO.Base.Series.Existe("M", docLiq.Tipodoc, SerieDest)) ? SerieDest : _BSO.Base.Series.DaSerieDefeito("M", docLiq.Tipodoc, DataDoc);
                                 docLiq.TipoEntidade = "C";
                                 docLiq.Entidade = EntLocal;
 
                                 int cctDadosTodos = (int)BasBETiposGcp.PreencheRelacaoCCT.cctDadosTodos;
-                                BSO.PagamentosRecebimentos.Liquidacoes.PreencheDadosRelacionados(docLiq, ref cctDadosTodos);
+                                _BSO.PagamentosRecebimentos.Liquidacoes.PreencheDadosRelacionados(docLiq, ref cctDadosTodos);
 
                                 docLiq.DataDoc = DataDoc;
 
                                 double x = 1;
-                                BSO.PagamentosRecebimentos.Liquidacoes.AdicionaLinha(
+                                _BSO.PagamentosRecebimentos.Liquidacoes.AdicionaLinha(
                                     docLiq, FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, 1, "PEN", 0,
-                                    BSO.PagamentosRecebimentos.Pendentes.DaValorAtributo("V", TipoDocDest, NumDocDest, 1, SerieDest, FilialDest, "PEN", 0, "ValorPendente"), ref x, 0);
+                                    _BSO.PagamentosRecebimentos.Pendentes.DaValorAtributo("V", TipoDocDest, NumDocDest, 1, SerieDest, FilialDest, "PEN", 0, "ValorPendente"), ref x, 0);
 
                                 #region PossivelBugFix
                                 // No código da V9 existe um bloco aqui que corrige um suposto bug que não actualiza o numerador dos documentos.
                                 // Query original traduzida: $"UPDATE SeriesCCT SET Numerador = (SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'";
                                 // Descomentar as próximas linhas se necessário.
 
-                                //// Como o Update actua sob um Select e temos de usar o StdBEExecSql, vamos primeiro usar BSO.Consulta (Select) e usar o resultado no Update.
-                                //StdBELista subSelect = BSO.Consulta($"SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'");
+                                //// Como o Update actua sob um Select e temos de usar o StdBEExecSql, vamos primeiro usar _BSO.Consulta (Select) e usar o resultado no Update.
+                                //StdBELista subSelect = _BSO.Consulta($"SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'");
 
                                 //using (StdBEExecSql sql = new StdBEExecSql()) {
                                 //    sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
@@ -621,7 +623,7 @@ namespace PP_PPCS
                                 //    sql.AddCampo("Numerador", subSelect.Valor(0));
                                 //    sql.AddQuery();
 
-                                //    PSO.ExecSql.Executa(sql);
+                                //    _PSO.ExecSql.Executa(sql);
                                 //}
                                 #endregion
                             }

@@ -281,10 +281,12 @@ namespace PP_PPCS
 
                 if (importa == "S" || importa == "A") {
 
+                    string TE = linha["TipoEntidade"].ToString().ToUpper();
+
                     ImportaDocs importaDocs = new ImportaDocs();
-                    if (linha["TipoEntidade"].ToString() == "C") {
+                    if (TE.Equals("C")) {
                         importaDocs.CriarDocumentoVenda(ref linha, Cancel);
-                    } else if (linha["TipoEntidade"].ToString() == "F") {
+                    } else if (TE.Equals("F")) {
                         importaDocs.CriarDocumentoCompra(ref linha, Cancel);
                     }
                 }
