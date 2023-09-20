@@ -149,7 +149,7 @@ namespace PP_PPCS
                     while (!RSet.NoFim()) {
 
                         int numLinhas = docNovo.Linhas.NumItens;
-                        var ultimaLinha = docNovo.Linhas.GetEdita(numLinhas);
+                        CmpBELinhaDocumentoCompra ultimaLinha;
                         double quant = Math.Abs((double)RSet.Valor("Quantidade"));
 
                         if (!string.IsNullOrEmpty(RSet.Valor("ArtigoDestino")) && _BSO.Base.Artigos.Existe(RSet.Valor("ArtigoDestino"))) {
@@ -173,9 +173,8 @@ namespace PP_PPCS
                                 false,
                                 _BSO.Base.Iva.DaValorAtributo("6", "Taxa")
                                 );
-                            numLinhas = docNovo.Linhas.NumItens;
-                            ultimaLinha = docNovo.Linhas.GetEdita(numLinhas);
 
+                            ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
 
                             ultimaLinha.CamposUtil["CDU_Pescado"] = RSet.Valor("CDU_Pescado");
                             ultimaLinha.CamposUtil["CDU_NomeCientifico"] = RSet.Valor("CDU_NomeCientfico");
@@ -220,8 +219,8 @@ namespace PP_PPCS
                                 false,
                                 _BSO.Base.Iva.DaValorAtributo("6", "Taxa")
                                 );
-                            numLinhas = docNovo.Linhas.NumItens;
-                            ultimaLinha = docNovo.Linhas.GetEdita(numLinhas);
+
+                            ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
 
                             ultimaLinha.CamposUtil["CDU_Caixas"] = RSet.Valor("CDU_Caixas");
                             ultimaLinha.CamposUtil["CDU_Pescado"] = RSet.Valor("CDU_Pescado");
@@ -458,11 +457,10 @@ namespace PP_PPCS
 
                             // Verificar se o documento original é com iva incluido
                             ivaIncluido = _BSO.Consulta(QueriesSQL.GetQuery08(TipoDoc, Serie)).Valor("IvaIncluido");
-                            //
+                            
                             RSet = _BSO.Consulta(QueriesSQL.GetQuery09(Filial, TipoDoc, Serie, NumDoc.ToString()));
 
-                            int numLinhas = docNovo.Linhas.NumItens;
-                            var ultimaLinha = docNovo.Linhas.GetEdita(numLinhas);
+                            VndBELinhaDocumentoVenda ultimaLinha;
                             double quant = Math.Abs((double)RSet.Valor("Quantidade"));
 
                             while (!RSet.NoFim() && !Cancelar) {
@@ -480,6 +478,8 @@ namespace PP_PPCS
                                         RSet.Valor("DescEntidade"),
                                         RSet.Valor("DescPag"),
                                         0, 0, false, ivaIncluido);
+
+                                    ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
 
                                     ultimaLinha.CamposUtil["CDU_Pescado"].Valor = RSet.Valor("CDU_Pescado");
                                     ultimaLinha.CamposUtil["CDU_NomeCientifico"].Valor = RSet.Valor("CDU_NomeCientifico");
@@ -520,6 +520,8 @@ namespace PP_PPCS
                                         RSet.Valor("DescEntidade"),
                                         RSet.Valor("DescPag"),
                                         0, 0, false, ivaIncluido);
+
+                                    ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
 
                                     ultimaLinha.CamposUtil["CDU_Pescado"].Valor = RSet.Valor("CDU_Pescado");
                                     ultimaLinha.CamposUtil["CDU_NomeCientifico"].Valor = RSet.Valor("CDU_NomeCientifico");
