@@ -510,15 +510,15 @@ namespace PP_PPCS
 
                                     _BSO.Vendas.Documentos.AdicionaLinha(
                                         docNovo,
-                                        RSet.Valor("Artigo"),
+                                        RSet.Valor("Artigo").ToString(),
                                         ref quant,
-                                        RSet.Valor("Armazem"),
-                                        RSet.Valor("Localizacao"),
-                                        RSet.Valor("PrecUnit"),
-                                        RSet.Valor("Desconto1"),
+                                        RSet.Valor("Armazem").ToString(),
+                                        RSet.Valor("Localizacao").ToString(),
+                                        Convert.ToDouble(RSet.Valor("PrecUnit")),
+                                        Convert.ToDouble(RSet.Valor("Desconto1")),
                                         null, 0, 0, 0,
-                                        RSet.Valor("DescEntidade"),
-                                        RSet.Valor("DescPag"),
+                                        Convert.ToDouble(RSet.Valor("DescEntidade")),
+                                        Convert.ToDouble(RSet.Valor("DescPag")),
                                         0, 0, false, ivaIncluido);
 
                                     ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
