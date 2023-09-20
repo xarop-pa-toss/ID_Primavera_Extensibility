@@ -28,7 +28,6 @@ namespace PP_PPCS
             // ALTERAR AQUI AMBIENTE A USAR
             // 'teste' ou 'prod'
             string ambiente = "teste";
-            
             new QueriesSQL(ambiente);
 
             Motor.PriEngine.CreateContext("PRIPPCS", "id", "*Pelicano*");
