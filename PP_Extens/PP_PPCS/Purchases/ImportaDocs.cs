@@ -457,7 +457,7 @@ namespace PP_PPCS
                             }
 
                             // Verificar se o documento original é com iva incluido
-                            ivaIncluido = _BSO.Consulta(QueriesSQL.GetQuery08(TipoDoc, Serie, NumDoc.ToString())).Valor("ivaincluido");
+                            ivaIncluido = _BSO.Consulta(QueriesSQL.GetQuery08(TipoDoc, Serie)).Valor("IvaIncluido");
                             //
                             RSet = _BSO.Consulta(QueriesSQL.GetQuery09(Filial, TipoDoc, Serie, NumDoc.ToString()));
 
