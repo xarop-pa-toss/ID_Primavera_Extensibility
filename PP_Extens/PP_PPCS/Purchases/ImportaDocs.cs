@@ -276,6 +276,7 @@ namespace PP_PPCS
 
         public void CriarDocumentoVenda(ref DataRow linha, bool Cancel)
         {
+
             VndBEDocumentoVenda docNovo = new VndBEDocumentoVenda();
             CctBEDocumentoLiq docLiq = new CctBEDocumentoLiq();
             StdBELista RSet = new StdBELista();

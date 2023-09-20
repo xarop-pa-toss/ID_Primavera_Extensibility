@@ -254,7 +254,7 @@ namespace PP_PPCS
             QueriesSQL.CreateTabela(_tabela, dataImport.ToString());
             QueriesSQL.InsertTabela(_tabela, dataImport.ToString());
 
-            DataTable _RSet = _BSO.ConsultaDataTable(QueriesSQL.GetQuery03(_tabela));
+            _RSet = _BSO.ConsultaDataTable(QueriesSQL.GetQuery03(_tabela));
             DataGrid1.DataSource = _RSet;
 
             QueriesSQL.DropTabela(_tabela);
@@ -280,25 +280,13 @@ namespace PP_PPCS
                 importa = importa.ToUpper();
 
                 if (importa == "S" || importa == "A") {
-                    entLoc = linha["EntLocal"].ToString();
-                    filialLoc = linha["FilialLoc"].ToString();
-                    tipoDocLoc = linha["TipoDocLoc"].ToString();
-                    serieLoc = linha["SerieLoc"].ToString();
-                    numDocLoc = (long)linha["NumDocLoc"];
 
                     ImportaDocs importaDocs = new ImportaDocs();
-                    if (linha["TipoEntidade"] == "C") {
+                    if (linha["TipoEntidade"].ToString() == "C") {
                         importaDocs.CriarDocumentoVenda(ref linha, Cancel);
-                    } else if (linha["TipoEntidade"] == "F") {
+                    } else if (linha["TipoEntidade"].ToString() == "F") {
                         importaDocs.CriarDocumentoCompra(ref linha, Cancel);
                     }
-
-                    //linha["EntLocal"] = entLoc;
-                    //linha["FilialLoc"] = filialLoc;
-                    //linha["TipoDocLoc"] = tipoDocLoc;
-                    //linha["SerieLoc"] = serieLoc;
-                    //linha["NumDocLocal"] = numDocLoc;
-                    //linha["Importa"] = "N";
                 }
             }
             btn_Sair_WF.Focus();
