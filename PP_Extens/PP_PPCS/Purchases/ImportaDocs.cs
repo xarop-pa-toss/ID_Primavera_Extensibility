@@ -508,17 +508,21 @@ namespace PP_PPCS
                                     }
                                 } else if (!string.IsNullOrEmpty(RSet.Valor("Artigo")) && _BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
 
+                                    string armazem, localizacao;
+                                    armazem = RSet.Valor("Armazem").ToString();
+                                    localizacao = RSet.Valor("Localizacao").ToString();
+
                                     _BSO.Vendas.Documentos.AdicionaLinha(
                                     docNovo,
-                                    RSet.Valor("ArtigoDestino"),
+                                    RSet.Valor("ArtigoDestino").ToString(),
                                     ref quant,
-                                    RSet.Valor("Armazem"),
-                                    RSet.Valor("Localizacao"),
-                                    RSet.Valor("PrecUnit"),
-                                    RSet.Valor("Desconto1"),
+                                    ref armazem,
+                                    ref localizacao,
+                                    Convert.ToDouble(RSet.Valor("PrecUnit")),
+                                    Convert.ToDouble(RSet.Valor("Desconto1")),
                                     "", 0, 0, 0,
-                                    RSet.Valor("DescEntidade"),
-                                    RSet.Valor("DescPag"),
+                                    Convert.ToDouble(RSet.Valor("DescEntidade")),
+                                    Convert.ToDouble(RSet.Valor("DescPag")),
                                     0, 0, false, ivaIncluido);
 
                                     ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
