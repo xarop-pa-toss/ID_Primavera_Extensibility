@@ -508,13 +508,16 @@ namespace PP_PPCS
                                     }
                                 } else if (!string.IsNullOrEmpty(RSet.Valor("Artigo")) && _BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
 
-                                    string armazem, localizacao;
+                                    string armazem, localizacao; double precoTaxaIva;
                                     armazem = RSet.Valor("Armazem").ToString();
                                     localizacao = RSet.Valor("Localizacao").ToString();
+                                    precoTaxaIva = RSet.Valor("TaxaIva");
+
+                                    System.Windows.Forms.MessageBox.Show(RSet.Valor("Artigo").ToString());
 
                                     _BSO.Vendas.Documentos.AdicionaLinha(
                                     docNovo,
-                                    RSet.Valor("ArtigoDestino").ToString(),
+                                    RSet.Valor("Artigo").ToString(),
                                     ref quant,
                                     ref armazem,
                                     ref localizacao,
@@ -523,7 +526,7 @@ namespace PP_PPCS
                                     "", 0, 0, 0,
                                     Convert.ToDouble(RSet.Valor("DescEntidade")),
                                     Convert.ToDouble(RSet.Valor("DescPag")),
-                                    0, 0, false, ivaIncluido);
+                                    0, 0, false, ivaIncluido, ref precoTaxaIva);
 
                                     ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
 
