@@ -544,7 +544,7 @@ namespace PP_PPCS
                                     ultimaLinha.CamposUtil["CDU_VendaEmCaixa"].Valor = RSet.Valor("CDU_VendaEmCaixa");
                                     ultimaLinha.CamposUtil["CDU_KilosPorCaixa"].Valor = RSet.Valor("CDU_KilosPorCaixa");
                                     ultimaLinha.CamposUtil["CDU_Fornecedor"].Valor = RSet.Valor("CDU_Fornecedor");
-                                    ultimaLinha.TipoLinha = "10";
+                                    //ultimaLinha.TipoLinha = "10";
 
                                     docNovo.Linhas.Insere(ultimaLinha);
 
@@ -573,7 +573,10 @@ namespace PP_PPCS
                                 _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario,
                                     Descricao: "Cópia do documento original");
 
-                                // GRAVAR O DOCUMENTO DE VENDA
+                                // Preenchimento dos campos relacionados com os que preenchemos + preenchimento manual da data de carga (mais uns segundos para compensar tempo de execução do programa)
+                                _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
+                                docNovo.DataHoraCarga = DateTime.Now.AddSeconds(5);
+
                                 _BSO.Vendas.Documentos.Actualiza(docNovo);
 
                                 EntLocal = docNovo.Entidade;
