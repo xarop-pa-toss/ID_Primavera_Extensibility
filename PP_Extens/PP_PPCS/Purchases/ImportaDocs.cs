@@ -574,7 +574,9 @@ namespace PP_PPCS
                                     Descricao: "Cópia do documento original");
 
                                 // Preenchimento dos campos relacionados com os que preenchemos + preenchimento manual da data de carga (mais uns segundos para compensar tempo de execução do programa)
-                                //DateTime dataDocCarga = docNovo.DataDoc;
+                                docNovo.HoraDefinida = true;
+                                docNovo.DataHoraCarga = docNovo.DataDoc;
+                                //docNovo.DataDoc = DateTime.Now;
                                 //dataHoraCarga.AddSeconds(5);
                                 //docNovo.DataHoraCarga = dataHoraCarga;
 
