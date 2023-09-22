@@ -574,9 +574,9 @@ namespace PP_PPCS
                                     Descricao: "Cópia do documento original");
 
                                 // Preenchimento dos campos relacionados com os que preenchemos + preenchimento manual da data de carga (mais uns segundos para compensar tempo de execução do programa)
-                                DateTime dataHoraCarga = docNovo.DataDoc;
-                                dataHoraCarga.AddSeconds(5);
-                                docNovo.DataHoraCarga = dataHoraCarga;
+                                //DateTime dataDocCarga = docNovo.DataDoc;
+                                //dataHoraCarga.AddSeconds(5);
+                                //docNovo.DataHoraCarga = dataHoraCarga;
 
                                 _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
                                 System.Windows.Forms.MessageBox.Show(docNovo.DataDoc + " <-> " + docNovo.DataHoraCarga);
