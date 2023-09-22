@@ -333,8 +333,6 @@ namespace PP_PPCS
                         }
 
                         docNovo = _BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
-
-                        docNovo.DataDoc = DataDoc;
                         docNovo.Entidade = EntLocal;
 
                         if (docNovo.Linhas.NumItens > 0) { docNovo.Linhas.RemoveTodos(); }
@@ -345,6 +343,10 @@ namespace PP_PPCS
                         _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "Cópia do documento original.");
                         _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "Documento original anulado!");
 
+                        docNovo.DataDoc = DataDoc;
+                        docNovo.HoraDefinida = false;
+
+                        _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
                         _BSO.Vendas.Documentos.Actualiza(docNovo);
                         docNovo.Dispose();
 
@@ -419,7 +421,6 @@ namespace PP_PPCS
                                 docNovo = _BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
                                 RSet = _BSO.Consulta(QueriesSQL.GetQuery07(Filial, TipoDoc, Serie, NumDoc.ToString()));
 
-                                docNovo.DataDoc = DataDoc;
                                 docNovo.Entidade = EntLocal;
                                 docNovo.DescEntidade = RSet.Valor("DescEntidade");
                                 docNovo.DescFinanceiro = RSet.Valor("DescPag");
@@ -544,7 +545,7 @@ namespace PP_PPCS
                                     ultimaLinha.CamposUtil["CDU_VendaEmCaixa"].Valor = RSet.Valor("CDU_VendaEmCaixa");
                                     ultimaLinha.CamposUtil["CDU_KilosPorCaixa"].Valor = RSet.Valor("CDU_KilosPorCaixa");
                                     ultimaLinha.CamposUtil["CDU_Fornecedor"].Valor = RSet.Valor("CDU_Fornecedor");
-                                    //ultimaLinha.TipoLinha = "10";
+                                    ultimaLinha.TipoLinha = "10";
 
                                     docNovo.Linhas.Insere(ultimaLinha);
 
@@ -573,14 +574,13 @@ namespace PP_PPCS
                                 _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario,
                                     Descricao: "Cópia do documento original");
 
-                                // Preenchimento dos campos relacionados com os que preenchemos + preenchimento manual da data de carga (mais uns segundos para compensar tempo de execução do programa)
-                                docNovo.HoraDefinida = true;
-                                docNovo.DataHoraCarga = docNovo.DataDoc;
-                                //docNovo.DataDoc = DateTime.Now;
-                                //dataHoraCarga.AddSeconds(5);
-                                //docNovo.DataHoraCarga = dataHoraCarga;
-
                                 _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
+
+                                // Preenchimento manual das datas de modo a não serem sobrepostas pelo PreencheDadosRelacionados
+                                docNovo.HoraDefinida = true;
+                                docNovo.DataDoc = DataDoc;
+                                docNovo.DataHoraCarga = DataDoc;
+
                                 System.Windows.Forms.MessageBox.Show(docNovo.DataDoc + " <-> " + docNovo.DataHoraCarga);
                                 _BSO.Vendas.Documentos.Actualiza(docNovo);
 
