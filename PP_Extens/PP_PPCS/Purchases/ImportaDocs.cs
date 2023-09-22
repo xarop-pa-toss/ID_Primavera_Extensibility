@@ -512,22 +512,11 @@ namespace PP_PPCS
                                     armazem = RSet.Valor("Armazem").ToString();
                                     localizacao = RSet.Valor("Localizacao").ToString();
 
-                                    //_BSO.Vendas.Documentos.AdicionaLinha(
-                                    //docNovo,
-                                    //RSet.Valor("Artigo").ToString(),
-                                    //ref quant,
-                                    //ref armazem,
-                                    //ref localizacao,
-                                    //Convert.ToDouble(RSet.Valor("PrecUnit")),
-                                    //Convert.ToDouble(RSet.Valor("Desconto1")),
-                                    //null, 0, 0, 0,
-                                    //Convert.ToDouble(RSet.Valor("DescEntidade")),
-                                    //Convert.ToDouble(RSet.Valor("DescPag")),
-                                    //0, 0, false, ivaIncluido);
-
                                     //ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
+                                    //BasBEArtigo art = new BasBEArtigo();
 
                                     docNovo.DescEntidade = Convert.ToDouble(RSet.Valor("DescEntidade"));
+                                    ultimaLinha.TipoLinha = "10";
                                     ultimaLinha.Artigo = RSet.Valor("Artigo").ToString();
                                     ultimaLinha.Quantidade = quant;
                                     ultimaLinha.Armazem = armazem;
@@ -535,6 +524,10 @@ namespace PP_PPCS
                                     ultimaLinha.PrecUnit = Convert.ToDouble(RSet.Valor("PrecUnit"));
                                     ultimaLinha.Desconto1 = Convert.ToDouble(RSet.Valor("Desconto1"));
                                     ultimaLinha.DescontoComercial = Convert.ToDouble(RSet.Valor("DescPag"));
+
+                                    float taxaIvaFloat;
+                                    ultimaLinha.TaxaIva = float.TryParse(_BSO.Base.Artigos.DaValorAtributo(ultimaLinha.Artigo, "IVA"), out taxaIvaFloat);
+                                    ultimaLinha.Unidade = _BSO.Base.Artigos.DaValorAtributo(ultimaLinha.Artigo, "Unidade");
 
                                     ultimaLinha.CamposUtil["CDU_Pescado"].Valor = RSet.Valor("CDU_Pescado");
                                     ultimaLinha.CamposUtil["CDU_NomeCientifico"].Valor = RSet.Valor("CDU_NomeCientifico");
@@ -545,7 +538,6 @@ namespace PP_PPCS
                                     ultimaLinha.CamposUtil["CDU_VendaEmCaixa"].Valor = RSet.Valor("CDU_VendaEmCaixa");
                                     ultimaLinha.CamposUtil["CDU_KilosPorCaixa"].Valor = RSet.Valor("CDU_KilosPorCaixa");
                                     ultimaLinha.CamposUtil["CDU_Fornecedor"].Valor = RSet.Valor("CDU_Fornecedor");
-                                    ultimaLinha.TipoLinha = "10";
 
                                     docNovo.Linhas.Insere(ultimaLinha);
 
@@ -582,6 +574,7 @@ namespace PP_PPCS
                                 docNovo.DataHoraCarga = DataDoc;
 
                                 System.Windows.Forms.MessageBox.Show(docNovo.DataDoc + " <-> " + docNovo.DataHoraCarga);
+                                _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo,ref  vdDadosTodos);
                                 _BSO.Vendas.Documentos.Actualiza(docNovo);
 
                                 EntLocal = docNovo.Entidade;
