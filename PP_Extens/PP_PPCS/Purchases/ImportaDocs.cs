@@ -544,6 +544,7 @@ namespace PP_PPCS
                                     ultimaLinha.CamposUtil["CDU_VendaEmCaixa"].Valor = RSet.Valor("CDU_VendaEmCaixa");
                                     ultimaLinha.CamposUtil["CDU_KilosPorCaixa"].Valor = RSet.Valor("CDU_KilosPorCaixa");
                                     ultimaLinha.CamposUtil["CDU_Fornecedor"].Valor = RSet.Valor("CDU_Fornecedor");
+                                    ultimaLinha.TipoLinha = "10";
 
                                     docNovo.Linhas.Insere(ultimaLinha);
 
