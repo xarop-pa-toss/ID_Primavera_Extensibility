@@ -416,7 +416,7 @@ namespace PP_PPCS
                                     #endregion
                                 }
 
-                                docNovo = new VndBEDocumentoVenda();
+                                docNovo = _BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
                                 RSet = _BSO.Consulta(QueriesSQL.GetQuery07(Filial, TipoDoc, Serie, NumDoc.ToString()));
 
                                 docNovo.DataDoc = DataDoc;
@@ -441,14 +441,13 @@ namespace PP_PPCS
                                 docNovo.CamposUtil["CDU_TipoDocOrig"].Valor = TipoDoc;
                                 docNovo.CamposUtil["CDU_SerieOrig"].Valor = Serie;
                                 docNovo.CamposUtil["CDU_NumDocOrig"].Valor = NumDoc;
-
-                                _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
-
                                 docNovo.DataDoc = DataDoc;
                                 docNovo.DescEntidade = RSet.Valor("DescEntidade");
                                 docNovo.DescFinanceiro = RSet.Valor("DescPag");
                                 docNovo.Responsavel = RSet.Valor("RespCobranca");
                                 docNovo.TrataIvaCaixa = false;
+
+                                _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
 
                                 if (docNovo.DataVenc < docNovo.DataDoc) { docNovo.DataVenc = docNovo.DataDoc; }
 
@@ -456,7 +455,7 @@ namespace PP_PPCS
                             }
 
                             // Verificar se o documento original é com iva incluido
-                            ivaIncluido = (int)_BSO.Consulta(QueriesSQL.GetQuery08(TipoDoc, Serie)).Valor("IvaIncluido");
+                            //ivaIncluido = (int)_BSO.Consulta(QueriesSQL.GetQuery08(TipoDoc, Serie)).Valor("IvaIncluido");
                             
                             RSet = _BSO.Consulta(QueriesSQL.GetQuery09(Filial, TipoDoc, Serie, NumDoc.ToString()));
 
