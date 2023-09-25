@@ -519,7 +519,7 @@ namespace PP_PPCS
                                 // Preenchimento manual das datas de modo a não serem sobrepostas pelo PreencheDadosRelacionados
                                 docNovo.HoraDefinida = true;
                                 docNovo.DataDoc = DataDoc;
-                                docNovo.DataHoraCarga = DataDoc.AddMinutes(1);
+                                docNovo.DataHoraCarga = DataDoc.AddSeconds(3);
 
                                 _BSO.Vendas.Documentos.Actualiza(docNovo);
 
