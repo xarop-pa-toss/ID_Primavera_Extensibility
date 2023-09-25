@@ -459,18 +459,18 @@ namespace PP_PPCS
                             }
 
                             // LINHAS DOC
-                            // Verificar se o documento original é com iva incluido.
+                            // Verificar se o documento original é com iva incluido + outras variáveis necessárias para passar por ref
                             bool ivaIncluido = _BSO.Consulta(QueriesSQL.GetQuery08(TipoDoc, Serie)).Valor("IvaIncluido") ? true : false;
+                            double quantidade = Math.Abs((double)RSet.Valor("Quantidade"));
+                            string armazem = RSet.Valor("Armazem");
+                            string localizacao = RSet.Valor("Localizacao");
+
                             RSet = _BSO.Consulta(QueriesSQL.GetQuery09(Filial, TipoDoc, Serie, NumDoc.ToString()));
 
                             VndBELinhaDocumentoVenda ultimaLinha = new VndBELinhaDocumentoVenda();
 
                             while (!RSet.NoFim() && !Cancelar) {
                                 if (!string.IsNullOrEmpty(RSet.Valor("ArtigoDestino")) && _BSO.Base.Artigos.Existe(RSet.Valor("ArtigoDestino"))) {
-
-                                    double quantidade = Math.Abs((double)RSet.Valor("Quantidade"));
-                                    string armazem = RSet.Valor("Armazem");
-                                    string localizacao = RSet.Valor("Localizacao");
 
                                     docNovo.DescEntidade = Convert.ToDouble(RSet.Valor("DescEntidade"));
 
@@ -509,8 +509,22 @@ namespace PP_PPCS
                                 } else if (!string.IsNullOrEmpty(RSet.Valor("Artigo")) && _BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
 
                                     docNovo.DescEntidade = Convert.ToDouble(RSet.Valor("DescEntidade"));
-                                    PreencheUltimaLinha(ref ultimaLinha, RSet);
-                                    docNovo.Linhas.Insere(ultimaLinha);
+
+                                    _BSO.Vendas.Documentos.AdicionaLinha(
+                                    docNovo,
+                                    RSet.Valor("Artigo"),
+                                    ref quantidade,
+                                    ref armazem,
+                                    ref localizacao,
+                                    RSet.Valor("PrecUnit"),
+                                    RSet.Valor("Desconto1"),
+                                    "", 0, 0, 0,
+                                    RSet.Valor("DescEntidade"),
+                                    RSet.Valor("DescPag"),
+                                    0, 0, false, ivaIncluido);
+
+                                    //PreencheUltimaLinha(ref ultimaLinha, RSet);
+                                    //docNovo.Linhas.Insere(ultimaLinha);
 
                                 } else if (string.IsNullOrEmpty(RSet.Valor("Artigo"))) {
 
