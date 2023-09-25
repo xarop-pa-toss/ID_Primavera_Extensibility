@@ -461,35 +461,12 @@ namespace PP_PPCS
                             RSet = _BSO.Consulta(QueriesSQL.GetQuery09(Filial, TipoDoc, Serie, NumDoc.ToString()));
 
                             VndBELinhaDocumentoVenda ultimaLinha = new VndBELinhaDocumentoVenda();
-                            double quant = Math.Abs((double)RSet.Valor("Quantidade"));
 
                             while (!RSet.NoFim() && !Cancelar) {
                                 if (!string.IsNullOrEmpty(RSet.Valor("ArtigoDestino")) && _BSO.Base.Artigos.Existe(RSet.Valor("ArtigoDestino"))) {
 
-                                    //_BSO.Vendas.Documentos.AdicionaLinha(
-                                    //    docNovo,
-                                    //    RSet.Valor("ArtigoDestino"),
-                                    //    ref quant,
-                                    //    RSet.Valor("Armazem"),
-                                    //    RSet.Valor("Localizacao"),
-                                    //    RSet.Valor("PrecUnit"),
-                                    //    RSet.Valor("Desconto1"),
-                                    //    null, 0, 0, 0,
-                                    //    RSet.Valor("DescEntidade"),
-                                    //    RSet.Valor("DescPag"),
-                                    //    0, 0, false, ivaIncluido);
-
-                                    ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
-
-                                    ultimaLinha.CamposUtil["CDU_Pescado"].Valor = RSet.Valor("CDU_Pescado");
-                                    ultimaLinha.CamposUtil["CDU_NomeCientifico"].Valor = RSet.Valor("CDU_NomeCientifico");
-                                    ultimaLinha.CamposUtil["CDU_Origem"].Valor = RSet.Valor("CDU_Origem");
-                                    ultimaLinha.CamposUtil["CDU_FormaObtencao"].Valor = RSet.Valor("CDU_FormaObtencao");
-                                    ultimaLinha.CamposUtil["CDU_ZonaFAO"].Valor = RSet.Valor("CDU_ZonaFAO");
-                                    ultimaLinha.CamposUtil["CDU_Caixas"].Valor = RSet.Valor("CDU_Caixas");
-                                    ultimaLinha.CamposUtil["CDU_VendaEmCaixa"].Valor = RSet.Valor("CDU_VendaEmCaixa");
-                                    ultimaLinha.CamposUtil["CDU_KilosPorCaixa"].Valor = RSet.Valor("CDU_KilosPorCaixa");
-                                    ultimaLinha.CamposUtil["CDU_Fornecedor"].Valor = RSet.Valor("CDU_Fornecedor");
+                                    docNovo.DescEntidade = Convert.ToDouble(RSet.Valor("DescEntidade"));
+                                    PreencheUltimaLinha(ref ultimaLinha, RSet);
 
                                     if (ultimaLinha.Unidade != RSet.Valor("Unidade")) {
 
@@ -505,48 +482,19 @@ namespace PP_PPCS
                                             }
                                             Cancelar = true;
                                         }
+
+                                        docNovo.Linhas.Insere(ultimaLinha);
                                     }
                                 } else if (!string.IsNullOrEmpty(RSet.Valor("Artigo")) && _BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
 
-                                    string armazem, localizacao; double precoTaxaIva;
-                                    armazem = RSet.Valor("Armazem").ToString();
-                                    localizacao = RSet.Valor("Localizacao").ToString();
-
-                                    //ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
-                                    //BasBEArtigo art = new BasBEArtigo();
-
                                     docNovo.DescEntidade = Convert.ToDouble(RSet.Valor("DescEntidade"));
-                                    ultimaLinha.TipoLinha = "10";
-                                    ultimaLinha.Artigo = RSet.Valor("Artigo").ToString();
-                                    ultimaLinha.Quantidade = quant;
-                                    ultimaLinha.Armazem = armazem;
-                                    ultimaLinha.Localizacao = localizacao;
-                                    ultimaLinha.PrecUnit = Convert.ToDouble(RSet.Valor("PrecUnit"));
-                                    ultimaLinha.Desconto1 = Convert.ToDouble(RSet.Valor("Desconto1"));
-                                    ultimaLinha.DescontoComercial = Convert.ToDouble(RSet.Valor("DescPag"));
-
-                                    float taxaIvaFloat;
-                                    ultimaLinha.TaxaIva = float.TryParse(_BSO.Base.Artigos.DaValorAtributo(ultimaLinha.Artigo, "IVA"), out taxaIvaFloat);
-                                    ultimaLinha.Unidade = _BSO.Base.Artigos.DaValorAtributo(ultimaLinha.Artigo, "Unidade");
-
-                                    ultimaLinha.CamposUtil["CDU_Pescado"].Valor = RSet.Valor("CDU_Pescado");
-                                    ultimaLinha.CamposUtil["CDU_NomeCientifico"].Valor = RSet.Valor("CDU_NomeCientifico");
-                                    ultimaLinha.CamposUtil["CDU_Origem"].Valor = RSet.Valor("CDU_Origem");
-                                    ultimaLinha.CamposUtil["CDU_FormaObtencao"].Valor = RSet.Valor("CDU_FormaObtencao");
-                                    ultimaLinha.CamposUtil["CDU_ZonaFAO"].Valor = RSet.Valor("CDU_ZonaFAO");
-                                    ultimaLinha.CamposUtil["CDU_Caixas"].Valor = RSet.Valor("CDU_Caixas");
-                                    ultimaLinha.CamposUtil["CDU_VendaEmCaixa"].Valor = RSet.Valor("CDU_VendaEmCaixa");
-                                    ultimaLinha.CamposUtil["CDU_KilosPorCaixa"].Valor = RSet.Valor("CDU_KilosPorCaixa");
-                                    ultimaLinha.CamposUtil["CDU_Fornecedor"].Valor = RSet.Valor("CDU_Fornecedor");
-
+                                    PreencheUltimaLinha(ref ultimaLinha, RSet);
                                     docNovo.Linhas.Insere(ultimaLinha);
-
 
                                 } else if (string.IsNullOrEmpty(RSet.Valor("Artigo"))) {
 
                                     _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "");
                                 } else {
-
                                     _PSO.MensagensDialogos.MostraAviso($"Atenção!\n\nO artigo {RSet.Valor("Artigo")} não existe na base de dados.\nCrie o artigo e volte a importar o documento.", StdBSTipos.IconId.PRI_Exclama);
                                     Cancelar = true;
                                 }
@@ -571,10 +519,8 @@ namespace PP_PPCS
                                 // Preenchimento manual das datas de modo a não serem sobrepostas pelo PreencheDadosRelacionados
                                 docNovo.HoraDefinida = true;
                                 docNovo.DataDoc = DataDoc;
-                                docNovo.DataHoraCarga = DataDoc;
+                                docNovo.DataHoraCarga = DataDoc.AddMinutes(1);
 
-                                System.Windows.Forms.MessageBox.Show(docNovo.DataDoc + " <-> " + docNovo.DataHoraCarga);
-                                _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo,ref  vdDadosTodos);
                                 _BSO.Vendas.Documentos.Actualiza(docNovo);
 
                                 EntLocal = docNovo.Entidade;
@@ -651,6 +597,35 @@ namespace PP_PPCS
                     }
                     break;
             }
+        }
+
+        private void PreencheUltimaLinha (ref VndBELinhaDocumentoVenda ultimaLinha, StdBELista RSet)
+        {
+            ultimaLinha.TipoLinha = "10";
+            ultimaLinha.Artigo = RSet.Valor("Artigo").ToString();
+            ultimaLinha.Quantidade = Math.Abs((double)RSet.Valor("Quantidade"));
+            ultimaLinha.Armazem = RSet.Valor("Armazem").ToString();
+            ultimaLinha.Localizacao = RSet.Valor("Localizacao").ToString();
+            ultimaLinha.PrecUnit = Convert.ToDouble(RSet.Valor("PrecUnit"));
+            ultimaLinha.Desconto1 = Convert.ToDouble(RSet.Valor("Desconto1"));
+            ultimaLinha.DescontoComercial = Convert.ToDouble(RSet.Valor("DescPag"));
+            ultimaLinha.Unidade = RSet.Valor("Unidade");
+            ultimaLinha.TaxaIva = RSet.Valor("TaxaIva");
+            ultimaLinha.CodIva = RSet.Valor("CodIva");
+
+            //string codIVA = _BSO.Base.Artigos.DaValorAtributo(ultimaLinha.Artigo, "IVA");
+            //float taxaIvaFloat = _BSO.Base.Iva.DaValorAtributo(codIVA, "Taxa");
+            //ultimaLinha.TaxaIva = taxaIvaFloat;
+
+            ultimaLinha.CamposUtil["CDU_Pescado"].Valor = RSet.Valor("CDU_Pescado");
+            ultimaLinha.CamposUtil["CDU_NomeCientifico"].Valor = RSet.Valor("CDU_NomeCientifico");
+            ultimaLinha.CamposUtil["CDU_Origem"].Valor = RSet.Valor("CDU_Origem");
+            ultimaLinha.CamposUtil["CDU_FormaObtencao"].Valor = RSet.Valor("CDU_FormaObtencao");
+            ultimaLinha.CamposUtil["CDU_ZonaFAO"].Valor = RSet.Valor("CDU_ZonaFAO");
+            ultimaLinha.CamposUtil["CDU_Caixas"].Valor = RSet.Valor("CDU_Caixas");
+            ultimaLinha.CamposUtil["CDU_VendaEmCaixa"].Valor = RSet.Valor("CDU_VendaEmCaixa");
+            ultimaLinha.CamposUtil["CDU_KilosPorCaixa"].Valor = RSet.Valor("CDU_KilosPorCaixa");
+            ultimaLinha.CamposUtil["CDU_Fornecedor"].Valor = RSet.Valor("CDU_Fornecedor");
         }
     }
 }
