@@ -283,9 +283,9 @@ namespace PP_PPCS
             StdBELista RSet = new StdBELista();
             int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoCompras.compDadosTodos;
 
-            bool Cancelar, DocDestinoJaExiste, liqDocAnulada, fazerLiquidacao;
+            bool Cancelar, docDestinoJaExiste, liqDocAnulada, fazerLiquidacao;
             string fl = "", tdl = "", sl = "";
-            int ndl = 0, ivaIncluido;
+            int ndl = 0;
 
             string TipoEntidade = linha["TipoEntidade"].ToString();
             string Entidade = linha["Entidade"].ToString();
@@ -333,7 +333,9 @@ namespace PP_PPCS
                         }
 
                         docNovo = _BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
+                        docNovo.HoraDefinida = false;
                         docNovo.Entidade = EntLocal;
+                        docNovo.DataDoc = DataDoc;
 
                         if (docNovo.Linhas.NumItens > 0) { docNovo.Linhas.RemoveTodos(); }
 
@@ -342,9 +344,6 @@ namespace PP_PPCS
                             Este documento é replicação do documento físico " + TipoDoc + " Nº " + NumDoc.ToString() + "/" + Serie + ".");
                         _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "Cópia do documento original.");
                         _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "Documento original anulado!");
-
-                        docNovo.DataDoc = DataDoc;
-                        docNovo.HoraDefinida = false;
 
                         _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
                         _BSO.Vendas.Documentos.Actualiza(docNovo);
@@ -388,10 +387,11 @@ namespace PP_PPCS
                             $"Este documento não vai ser importado!", StdBSTipos.IconId.PRI_Critico);
                             Cancel = true;
                         } else {
-                            // Verificar se documento de destino existe
+                            // Verificar se documento de destino existe.
+                            // Se sim, anula liquidação e abre documento para ser editado. Se não, cria um novo.
                             if (_BSO.Vendas.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, NumDocDest)) {
 
-                                DocDestinoJaExiste = true;
+                                docDestinoJaExiste = true;
                                 liqDocAnulada = false;
 
                                 if (_BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)) {
@@ -421,6 +421,7 @@ namespace PP_PPCS
                                 docNovo = _BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
                                 RSet = _BSO.Consulta(QueriesSQL.GetQuery07(Filial, TipoDoc, Serie, NumDoc.ToString()));
 
+                                docNovo.DataDoc = DataDoc;
                                 docNovo.Entidade = EntLocal;
                                 docNovo.DescEntidade = RSet.Valor("DescEntidade");
                                 docNovo.DescFinanceiro = RSet.Valor("DescPag");
@@ -431,7 +432,8 @@ namespace PP_PPCS
                                 if (docNovo.Linhas.NumItens > 0) { docNovo.Linhas.RemoveTodos(); }
                             } else {
 
-                                DocDestinoJaExiste = false;
+                                docDestinoJaExiste = false;
+                                docNovo = new VndBEDocumentoVenda();
 
                                 docNovo.Tipodoc = TipoDocDest;
                                 docNovo.Filial = Filial;
@@ -442,22 +444,23 @@ namespace PP_PPCS
                                 docNovo.CamposUtil["CDU_TipoDocOrig"].Valor = TipoDoc;
                                 docNovo.CamposUtil["CDU_SerieOrig"].Valor = Serie;
                                 docNovo.CamposUtil["CDU_NumDocOrig"].Valor = NumDoc;
+
+                                _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
+
                                 docNovo.DataDoc = DataDoc;
                                 docNovo.DescEntidade = RSet.Valor("DescEntidade");
                                 docNovo.DescFinanceiro = RSet.Valor("DescPag");
                                 docNovo.Responsavel = RSet.Valor("RespCobranca");
                                 docNovo.TrataIvaCaixa = false;
 
-                                _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
-
                                 if (docNovo.DataVenc < docNovo.DataDoc) { docNovo.DataVenc = docNovo.DataDoc; }
 
                                 RSet.Termina();
                             }
 
-                            // Verificar se o documento original é com iva incluido
-                            //ivaIncluido = (int)_BSO.Consulta(QueriesSQL.GetQuery08(TipoDoc, Serie)).Valor("IvaIncluido");
-                            
+                            // LINHAS DOC
+                            // Verificar se o documento original é com iva incluido.
+                            bool ivaIncluido = _BSO.Consulta(QueriesSQL.GetQuery08(TipoDoc, Serie)).Valor("IvaIncluido") ? true : false;
                             RSet = _BSO.Consulta(QueriesSQL.GetQuery09(Filial, TipoDoc, Serie, NumDoc.ToString()));
 
                             VndBELinhaDocumentoVenda ultimaLinha = new VndBELinhaDocumentoVenda();
@@ -465,8 +468,26 @@ namespace PP_PPCS
                             while (!RSet.NoFim() && !Cancelar) {
                                 if (!string.IsNullOrEmpty(RSet.Valor("ArtigoDestino")) && _BSO.Base.Artigos.Existe(RSet.Valor("ArtigoDestino"))) {
 
+                                    double quantidade = Math.Abs((double)RSet.Valor("Quantidade"));
+                                    string armazem = RSet.Valor("Armazem");
+                                    string localizacao = RSet.Valor("Localizacao");
+
                                     docNovo.DescEntidade = Convert.ToDouble(RSet.Valor("DescEntidade"));
-                                    PreencheUltimaLinha(ref ultimaLinha, RSet);
+
+                                    _BSO.Vendas.Documentos.AdicionaLinha(
+                                        docNovo,
+                                        RSet.Valor("Artigo"),
+                                        ref quantidade,
+                                        ref armazem,
+                                        ref localizacao,
+                                        RSet.Valor("PrecUnit"),
+                                        RSet.Valor("Desconto1"),
+                                        "", 0, 0, 0,
+                                        RSet.Valor("DescEntidade"),
+                                        RSet.Valor("DescPag"),
+                                        0, 0, false, ivaIncluido);
+
+                                    //PreencheUltimaLinha(ref ultimaLinha, RSet);
 
                                     if (ultimaLinha.Unidade != RSet.Valor("Unidade")) {
 
@@ -506,9 +527,9 @@ namespace PP_PPCS
 
                             if (Cancelar) {
                                 // O documento não vai ser gravado e a liquidação é reactivada
-                                if (DocDestinoJaExiste && fazerLiquidacao) { fazerLiquidacao = true; }
+                                if (docDestinoJaExiste && fazerLiquidacao) { fazerLiquidacao = true; }
                                 Cancel = true;
-                            } else if (DocDestinoJaExiste || docNovo.Linhas.NumItens > 0) {
+                            } else if (docDestinoJaExiste || docNovo.Linhas.NumItens > 0) {
                                 _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario,
                                     Descricao: $"Este documento é replicação do documento fisico {TipoDoc} N.º {NumDoc}/{Serie}.");
                                 _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario,
