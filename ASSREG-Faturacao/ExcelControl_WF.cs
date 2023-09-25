@@ -156,11 +156,15 @@ namespace ASRLB_ImportacaoFatura
                     // Copia os conteudos de cada tabela no DtSet para a tabela buffer
                     for (int t = 0; t < DtSet.Tables.Count; t++)
                     {
-                        foreach (DataRow row in DtSet.Tables[t].Rows)
+                        foreach (DataRow linha in DtSet.Tables[t].Rows)
                         {
-                            DtTableBuffer.Rows.Add(row.ItemArray);
+                            DtTableBuffer.Rows.Add(linha.ItemArray);
                         }
                     }
+
+                    // *** FIX ***
+                    // Pela logica do programa, ele nunca irá processar a última linha. Por isso duplica-se a última linha para ficar certo
+                    DtTableBuffer.Rows.Add(DtTableBuffer.Rows[DtTableBuffer.Rows.Count]);
 
                     DataSet DtSetFinal = new DataSet();
                     DtSetFinal.Tables.Add(DtTableBuffer);
