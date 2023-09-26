@@ -448,6 +448,7 @@ namespace PP_PPCS
                                 _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
 
                                 docNovo.DataDoc = DataDoc;
+                                docNovo.DataHoraCarga = DataDoc.AddSeconds(1);
                                 docNovo.DescEntidade = RSet.Valor("DescEntidade");
                                 docNovo.DescFinanceiro = RSet.Valor("DescPag");
                                 docNovo.Responsavel = RSet.Valor("RespCobranca");
@@ -459,48 +460,16 @@ namespace PP_PPCS
                             }
 
                             // LINHAS DOC
-                            // Verificar se o documento original é com iva incluido + outras variáveis necessárias para passar por ref
-                            bool ivaIncluido = _BSO.Consulta(QueriesSQL.GetQuery08(TipoDoc, Serie)).Valor("IvaIncluido") ? true : false;
-                            double quantidade = Math.Abs((double)RSet.Valor("Quantidade"));
-                            string armazem = RSet.Valor("Armazem");
-                            string localizacao = RSet.Valor("Localizacao");
-
                             RSet = _BSO.Consulta(QueriesSQL.GetQuery09(Filial, TipoDoc, Serie, NumDoc.ToString()));
-
-                            VndBELinhasDocumentoVenda linhas = new VndBELinhasDocumentoVenda();
                             VndBELinhaDocumentoVenda ultimaLinha = new VndBELinhaDocumentoVenda();
+                            // Ver se série de documento tem IVA incluido por defeito
+                            bool ivaIncluido = _BSO.Consulta(QueriesSQL.GetQuery08(TipoDoc, Serie)).Valor("IvaIncluido") ? true : false;
 
                             while (!RSet.NoFim() && !Cancelar) {
                                 if (!string.IsNullOrEmpty(RSet.Valor("ArtigoDestino")) && _BSO.Base.Artigos.Existe(RSet.Valor("ArtigoDestino"))) {
 
-                                    docNovo.DescEntidade = Convert.ToDouble(RSet.Valor("DescEntidade"));
+                                    AdicionaLinha(RSet, docNovo, ivaIncluido, "ArtigoDestino");
 
-                                    _BSO.Vendas.Documentos.AdicionaLinha(
-                                        docNovo,
-                                        RSet.Valor("ArtigoDestino"),
-                                        ref quantidade,
-                                        ref armazem,
-                                        ref localizacao,
-                                        RSet.Valor("PrecUnit"),
-                                        RSet.Valor("Desconto1"),
-                                        "", 0, 0, 0,
-                                        RSet.Valor("DescEntidade"),
-                                        RSet.Valor("DescPag"),
-                                        0, 0, false, ivaIncluido);
-
-                                    // Get última linha (a que foi adicionada no passo anterior)
-                                    ultimaLinha = docNovo.Linhas.Last();
-                                    ultimaLinha.CamposUtil["CDU_Pescado"].Valor = RSet.Valor("CDU_Pescado");
-                                    ultimaLinha.CamposUtil["CDU_NomeCientifico"].Valor = RSet.Valor("CDU_NomeCientifico");
-                                    ultimaLinha.CamposUtil["CDU_Origem"].Valor = RSet.Valor("CDU_Origem");
-                                    ultimaLinha.CamposUtil["CDU_FormaObtencao"].Valor = RSet.Valor("CDU_FormaObtencao");
-                                    ultimaLinha.CamposUtil["CDU_ZonaFAO"].Valor = RSet.Valor("CDU_ZonaFAO");
-                                    ultimaLinha.CamposUtil["CDU_Caixas"].Valor = RSet.Valor("CDU_Caixas");
-                                    ultimaLinha.CamposUtil["CDU_VendaEmCaixa"].Valor = RSet.Valor("CDU_VendaEmCaixa");
-                                    ultimaLinha.CamposUtil["CDU_KilosPorCaixa"].Valor = RSet.Valor("CDU_KilosPorCaixa");
-                                    ultimaLinha.CamposUtil["CDU_Fornecedor"].Valor = RSet.Valor("CDU_Fornecedor");
-                                    
-                                    //PreencheUltimaLinha(ref ultimaLinha, RSet);
                                     if (ultimaLinha.Unidade != RSet.Valor("Unidade")) {
                                         double kilosPorCaixa = (double)RSet.Valor("CDU_KilosPorCaixa");
 
@@ -514,28 +483,10 @@ namespace PP_PPCS
                                             }
                                             Cancelar = true;
                                         }
-
-                                        docNovo.Linhas.Insere(ultimaLinha);
-                                    }
+                                        //docNovo.Linhas.Insere(ultimaLinha);
                                 } else if (!string.IsNullOrEmpty(RSet.Valor("Artigo")) && _BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
 
-                                    docNovo.DescEntidade = Convert.ToDouble(RSet.Valor("DescEntidade"));
-
-                                    _BSO.Vendas.Documentos.AdicionaLinha(
-                                    docNovo,
-                                    RSet.Valor("Artigo"),
-                                    ref quantidade,
-                                    ref armazem,
-                                    ref localizacao,
-                                    RSet.Valor("PrecUnit"),
-                                    RSet.Valor("Desconto1"),
-                                    "", 0, 0, 0,
-                                    RSet.Valor("DescEntidade"),
-                                    RSet.Valor("DescPag"),
-                                    0, 0, false, ivaIncluido);
-
-                                    //PreencheUltimaLinha(ref ultimaLinha, RSet);
-                                    //docNovo.Linhas.Insere(ultimaLinha);
+                                    AdicionaLinha(RSet, docNovo, ivaIncluido, "Artigo");
 
                                 } else if (string.IsNullOrEmpty(RSet.Valor("Artigo"))) {
 
@@ -646,23 +597,26 @@ namespace PP_PPCS
             }
         }
 
-        private void PreencheUltimaLinha (ref VndBELinhaDocumentoVenda ultimaLinha, StdBELista RSet)
+        private void AdicionaLinha(StdBELista RSet, VndBEDocumentoVenda docNovo, bool ivaIncluido, string tipoArtigo)
         {
-            ultimaLinha.TipoLinha = "10";
-            ultimaLinha.Artigo = RSet.Valor("Artigo").ToString();
-            ultimaLinha.Quantidade = Math.Abs((double)RSet.Valor("Quantidade"));
-            ultimaLinha.Armazem = RSet.Valor("Armazem").ToString();
-            ultimaLinha.Localizacao = RSet.Valor("Localizacao").ToString();
-            ultimaLinha.PrecUnit = Convert.ToDouble(RSet.Valor("PrecUnit"));
-            ultimaLinha.Desconto1 = Convert.ToDouble(RSet.Valor("Desconto1"));
-            ultimaLinha.DescontoComercial = Convert.ToDouble(RSet.Valor("DescPag"));
-            ultimaLinha.Unidade = RSet.Valor("Unidade");
-            ultimaLinha.TaxaIva = RSet.Valor("TaxaIva");
-            ultimaLinha.CodIva = RSet.Valor("CodIva");
+            // Verificar se o documento original é com iva incluido + outras variáveis necessárias para passar por ref
+            double quantidade = Math.Abs((double)RSet.Valor("Quantidade"));
+            string armazem = RSet.Valor("Armazem");
+            string localizacao = RSet.Valor("Localizacao");
+            VndBELinhaDocumentoVenda ultimaLinha = docNovo.Linhas.Last();
 
-            //string codIVA = _BSO.Base.Artigos.DaValorAtributo(ultimaLinha.Artigo, "IVA");
-            //float taxaIvaFloat = _BSO.Base.Iva.DaValorAtributo(codIVA, "Taxa");
-            //ultimaLinha.TaxaIva = taxaIvaFloat;
+            _BSO.Vendas.Documentos.AdicionaLinha(
+            docNovo,
+            RSet.Valor("Artigo"),
+            ref quantidade,
+            ref armazem,
+            ref localizacao,
+            RSet.Valor("PrecUnit"),
+            RSet.Valor("Desconto1"),
+            "", 0, 0, 0,
+            RSet.Valor("DescEntidade"),
+            RSet.Valor("DescPag"),
+            0, 0, false, ivaIncluido);
 
             ultimaLinha.CamposUtil["CDU_Pescado"].Valor = RSet.Valor("CDU_Pescado");
             ultimaLinha.CamposUtil["CDU_NomeCientifico"].Valor = RSet.Valor("CDU_NomeCientifico");
