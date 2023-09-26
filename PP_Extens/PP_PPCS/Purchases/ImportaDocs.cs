@@ -467,6 +467,7 @@ namespace PP_PPCS
 
                             RSet = _BSO.Consulta(QueriesSQL.GetQuery09(Filial, TipoDoc, Serie, NumDoc.ToString()));
 
+                            VndBELinhasDocumentoVenda linhas = new VndBELinhasDocumentoVenda();
                             VndBELinhaDocumentoVenda ultimaLinha = new VndBELinhaDocumentoVenda();
 
                             while (!RSet.NoFim() && !Cancelar) {
@@ -476,7 +477,7 @@ namespace PP_PPCS
 
                                     _BSO.Vendas.Documentos.AdicionaLinha(
                                         docNovo,
-                                        RSet.Valor("Artigo"),
+                                        RSet.Valor("ArtigoDestino"),
                                         ref quantidade,
                                         ref armazem,
                                         ref localizacao,
@@ -487,17 +488,27 @@ namespace PP_PPCS
                                         RSet.Valor("DescPag"),
                                         0, 0, false, ivaIncluido);
 
+                                    // Get última linha (a que foi adicionada no passo anterior)
+                                    ultimaLinha = docNovo.Linhas.Last();
+                                    ultimaLinha.CamposUtil["CDU_Pescado"].Valor = RSet.Valor("CDU_Pescado");
+                                    ultimaLinha.CamposUtil["CDU_NomeCientifico"].Valor = RSet.Valor("CDU_NomeCientifico");
+                                    ultimaLinha.CamposUtil["CDU_Origem"].Valor = RSet.Valor("CDU_Origem");
+                                    ultimaLinha.CamposUtil["CDU_FormaObtencao"].Valor = RSet.Valor("CDU_FormaObtencao");
+                                    ultimaLinha.CamposUtil["CDU_ZonaFAO"].Valor = RSet.Valor("CDU_ZonaFAO");
+                                    ultimaLinha.CamposUtil["CDU_Caixas"].Valor = RSet.Valor("CDU_Caixas");
+                                    ultimaLinha.CamposUtil["CDU_VendaEmCaixa"].Valor = RSet.Valor("CDU_VendaEmCaixa");
+                                    ultimaLinha.CamposUtil["CDU_KilosPorCaixa"].Valor = RSet.Valor("CDU_KilosPorCaixa");
+                                    ultimaLinha.CamposUtil["CDU_Fornecedor"].Valor = RSet.Valor("CDU_Fornecedor");
+                                    
                                     //PreencheUltimaLinha(ref ultimaLinha, RSet);
-
                                     if (ultimaLinha.Unidade != RSet.Valor("Unidade")) {
-
                                         double kilosPorCaixa = (double)RSet.Valor("CDU_KilosPorCaixa");
-                                        if (ultimaLinha.Unidade == "KG" && RSet.Valor("Unidade") == "CX" && kilosPorCaixa != 0) {
 
+                                        if (ultimaLinha.Unidade == "KG" && RSet.Valor("Unidade") == "CX" && kilosPorCaixa != 0) {
                                             ultimaLinha.Quantidade = ultimaLinha.Quantidade * kilosPorCaixa;
                                             ultimaLinha.PrecUnit = ultimaLinha.PrecUnit / kilosPorCaixa;
                                             ultimaLinha.CamposUtil["CDU_VendaEmCaixa"].Valor = 0;
-                                        } else {
+                                        } else
                                             if (!Cancelar) {
                                                 _PSO.MensagensDialogos.MostraAviso($"Não é possível converter o artigo {RSet.Valor("Artigo")} em {RSet.Valor("ArtigoDestino")}. \n\nO documento não será importado!", StdBSTipos.IconId.PRI_Critico);
                                             }
@@ -533,6 +544,7 @@ namespace PP_PPCS
                                     _PSO.MensagensDialogos.MostraAviso($"Atenção!\n\nO artigo {RSet.Valor("Artigo")} não existe na base de dados.\nCrie o artigo e volte a importar o documento.", StdBSTipos.IconId.PRI_Exclama);
                                     Cancelar = true;
                                 }
+
                                 RSet.Seguinte();
                             } // End Loop RSet
 
