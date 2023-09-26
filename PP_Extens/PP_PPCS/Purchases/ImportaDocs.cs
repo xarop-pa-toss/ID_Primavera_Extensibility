@@ -26,7 +26,7 @@ namespace PP_PPCS
         {
         }
 
-        public void CriarDocumentoCompra(ref DataRow linha, bool Cancel)           
+        public void CriarDocumentoCompra(ref DataRow linha, bool Cancel)
         {
             string localstr = "", SQLErrors = "";
             bool Cancelar;
@@ -123,7 +123,7 @@ namespace PP_PPCS
 
                         docNovo = new CmpBEDocumentoCompra();
                         RSet = _BSO.Consulta(QueriesSQL.GetQuery04(Filial, TipoDoc, Serie, NumDoc.ToString()));
-                        
+
                         docNovo.Filial = Filial;
                         docNovo.Serie = Serie;
                         docNovo.Tipodoc = TipoDocDest;
@@ -133,7 +133,7 @@ namespace PP_PPCS
                         docNovo.CamposUtil["CDU_TipoDocOrig"].Valor = TipoDoc;
                         docNovo.CamposUtil["CDU_SerieOrig"].Valor = Serie;
                         docNovo.CamposUtil["CDU_NumDocOrig"].Valor = NumDoc;
-                        
+
                         _BSO.Compras.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
 
                         docNovo.DataDoc = DataDoc;
@@ -158,38 +158,10 @@ namespace PP_PPCS
                         double quant = Math.Abs((double)RSet.Valor("Quantidade"));
 
                         if (!string.IsNullOrEmpty(RSet.Valor("ArtigoDestino")) && _BSO.Base.Artigos.Existe(RSet.Valor("ArtigoDestino"))) {
-
-                            // Actualizar sempre numLinhas e ultimaLinha quando se adiciona qualquer linha
-                            // Se a certo ponto ficar demasiado dificil de seguir, encapsular os três.
-                            _BSO.Compras.Documentos.AdicionaLinha(
-                                docNovo,
-                                RSet.Valor("ArtigoDestino"),
-                                ref quant,
-                                RSet.Valor("Armazem"),
-                                RSet.Valor("Localizacao"),
-                                RSet.Valor("PrecUnit") * 0,
-                                RSet.Valor("Desconto1"),
-                                RSet.Valor("Lote"),
-                                0, 0, 0,
-                                RSet.Valor("DescEntidade") == null ? 0 : RSet.Valor("DescEntidade"),
-                                RSet.Valor("DescPag") == null ? 0 : RSet.Valor("DescPag"),
-                                0, 0,
-                                false,
-                                false,
-                                _BSO.Base.Iva.DaValorAtributo("6", "Taxa")
-                                );
+                            
+                            AdicionaLinhaCompra(RSet, docNovo, "ArtigoDestino");
 
                             ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
-
-                            ultimaLinha.CamposUtil["CDU_Pescado"] = RSet.Valor("CDU_Pescado");
-                            ultimaLinha.CamposUtil["CDU_NomeCientifico"] = RSet.Valor("CDU_NomeCientfico");
-                            ultimaLinha.CamposUtil["CDU_Origem"] = RSet.Valor("CDU_Origem");
-                            ultimaLinha.CamposUtil["CDU_FormaObtencao"] = RSet.Valor("CDU_FormaObtencao");
-                            ultimaLinha.CamposUtil["CDU_ZonaFAO"] = RSet.Valor("CDU_ZonaFAO");
-                            ultimaLinha.CamposUtil["CDU_Caixas"] = RSet.Valor("CDU_Caixas");
-                            ultimaLinha.CamposUtil["CDU_VendaEmCaixa"] = RSet.Valor("CDU_VendaEmCaixa");
-                            ultimaLinha.CamposUtil["CDU_KilosPorCaixa"] = RSet.Valor("CDU_KilosPorCaixa");
-                            ultimaLinha.CamposUtil["CDU_Fornecedor"] = RSet.Valor("CDU_Fornecedor");
 
                             if (ultimaLinha.Unidade != RSet.Valor("Unidade")) {
                                 dynamic kilosPorCaixa = RSet.Valor("CDU_KilosPorCaixa");
@@ -206,34 +178,8 @@ namespace PP_PPCS
                                 }
                             }
                         } else if (_BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
-                            _BSO.Compras.Documentos.AdicionaLinha(
-                                docNovo,
-                                RSet.Valor("Artigo"),
-                                ref quant,
-                                RSet.Valor("Armazem"),
-                                RSet.Valor("Localizacao"),
-                                RSet.Valor("PrecUnit") * 0,
-                                RSet.Valor("Descontro1"),
-                                RSet.Valor("Lote"),
-                                0, 0, 0,
-                                RSet.Valor("DescEntidade") == null ? 0 : RSet.Valor("DescEntidade"),
-                                RSet.Valor("DescPag") == null ? 0 : RSet.Valor("DescPag"),
-                                0, 0,
-                                false,
-                                false,
-                                _BSO.Base.Iva.DaValorAtributo("6", "Taxa")
-                                );
-
-                            ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
-
-                            ultimaLinha.CamposUtil["CDU_Caixas"] = RSet.Valor("CDU_Caixas");
-                            ultimaLinha.CamposUtil["CDU_Pescado"] = RSet.Valor("CDU_Pescado");
-                            ultimaLinha.CamposUtil["CDU_NomeCientifico"] = RSet.Valor("CDU_NomeCientifico");
-                            ultimaLinha.CamposUtil["CDU_Origem"] = RSet.Valor("CDU_Origem");
-                            ultimaLinha.CamposUtil["CDU_FormaObtencao"] = RSet.Valor("CDU_FormaObtencao");
-                            ultimaLinha.CamposUtil["CDU_ZonaFAO"] = RSet.Valor("CDU_ZonaFAO");
-                            ultimaLinha.CamposUtil["CDU_VendaEmCaixa"] = RSet.Valor("CDU_VendaEmCaixa");
-                            ultimaLinha.CamposUtil["CDU_KilosPorCAixa"] = RSet.Valor("CDU_KilosPorCaixa");
+                            
+                            AdicionaLinhaCompra(RSet, docNovo, "Artigo");
 
                         } else if (RSet.Valor("Artigo") is null) {
                             _BSO.Compras.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario);
@@ -249,14 +195,14 @@ namespace PP_PPCS
                         RSet.Seguinte();
                     } // end while
 
+//---------------------------
                     if (docNovo.Linhas.NumItens > 0 && !Cancelar) {
 
                         string numdoc = NumDoc.HasValue ? NumDoc.Value.ToString() : null;
 
-                        _BSO.Compras.Documentos.AdicionaLinhaEspecial( docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario, 0,
+                        _BSO.Compras.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario, 0,
                             $"Este documento é replicação do documento fisico {TipoDoc} N.º {NumDoc.ToString() ?? null}/{Serie}.");
-
-                        _BSO.Compras.Documentos.AdicionaLinhaEspecial( docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario, 0, "Cópia do documento original");
+                        _BSO.Compras.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.compTipoLinhaEspecial.compLinha_Comentario, 0, "Cópia do documento original");
 
                         docNovo.TrataIvaCaixa = false;
                         docNovo.CamposUtil["CDU_NumDocOrig"].Valor = numdoc;
@@ -506,8 +452,8 @@ namespace PP_PPCS
 
                                 #region GRAVAR DOCUMENTO VENDA
 
-                                _BSO.Vendas.Documentos.Actualiza(docNovo); 
-                                
+                                _BSO.Vendas.Documentos.Actualiza(docNovo);
+
                                 if (ultimaLinha.Unidade != RSet.Valor("Unidade")) {
                                     double kilosPorCaixa = (double)RSet.Valor("CDU_KilosPorCaixa");
 
@@ -622,17 +568,18 @@ namespace PP_PPCS
             string localizacao = RSet.Valor("Localizacao");
 
             _BSO.Vendas.Documentos.AdicionaLinha(
-            docNovo,
-            RSet.Valor(tipoArtigo),
-            ref quantidade,
-            ref armazem,
-            ref localizacao,
-            RSet.Valor("PrecUnit"),
-            RSet.Valor("Desconto1"),
-            "", 0, 0, 0,
-            RSet.Valor("DescEntidade"),
-            RSet.Valor("DescPag"),
-            0, 0, false, ivaIncluido);
+                docNovo,
+                RSet.Valor(tipoArtigo),
+                ref quantidade,
+                ref armazem,
+                ref localizacao,
+                RSet.Valor("PrecUnit"),
+                RSet.Valor("Desconto1"),
+                "", 0, 0, 0,
+                RSet.Valor("DescEntidade"),
+                RSet.Valor("DescPag"),
+                0, 0, false, ivaIncluido
+            );
 
             VndBELinhaDocumentoVenda ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
             ultimaLinha.CamposUtil["CDU_Pescado"].Valor = RSet.Valor("CDU_Pescado");
@@ -664,8 +611,9 @@ namespace PP_PPCS
                 0, 0, 0,
                 RSet.Valor("DescEntidade") == null ? 0 : RSet.Valor("DescEntidade"),
                 RSet.Valor("DescPag") == null ? 0 : RSet.Valor("DescPag"),
-                0, 0, false, false, 
-                _BSO.Base.Iva.DaValorAtributo("6", "Taxa"));
+                0, 0, false, false,
+                _BSO.Base.Iva.DaValorAtributo("6", "Taxa")
+            );
 
             CmpBELinhaDocumentoCompra ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
             ultimaLinha.CamposUtil["CDU_Pescado"] = RSet.Valor("CDU_Pescado");
@@ -676,52 +624,9 @@ namespace PP_PPCS
             ultimaLinha.CamposUtil["CDU_Caixas"] = RSet.Valor("CDU_Caixas");
             ultimaLinha.CamposUtil["CDU_VendaEmCaixa"] = RSet.Valor("CDU_VendaEmCaixa");
             ultimaLinha.CamposUtil["CDU_KilosPorCaixa"] = RSet.Valor("CDU_KilosPorCaixa");
-            ultimaLinha.CamposUtil["CDU_Fornecedor"] = RSet.Valor("CDU_Fornecedor");
 
-                if (ultimaLinha.Unidade != RSet.Valor("Unidade")) {
-                    dynamic kilosPorCaixa = RSet.Valor("CDU_KilosPorCaixa");
-
-                    if (ultimaLinha.Unidade == "KG" && RSet.Valor("Unidade") == "CX" && kilosPorCaixa != 0) {
-                        ultimaLinha.Quantidade = ultimaLinha.Quantidade * kilosPorCaixa;
-                        ultimaLinha.PrecUnit = ultimaLinha.PrecUnit / kilosPorCaixa;
-                        ultimaLinha.CamposUtil["CDU_vendaEmCaixa"].Valor = 0;
-                    } else {
-                        if (!Cancelar) {
-                            _PSO.MensagensDialogos.MostraAviso($"Não é possível converter o artigo {RSet.Valor("Artigo")} em {RSet.Valor("ArtigoDestino")}.\nO documento não será importado.", StdBSTipos.IconId.PRI_Exclama);
-                        }
-                        Cancelar = true;
-                    }
-                }
-            } else if (_BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
-                _BSO.Compras.Documentos.AdicionaLinha(
-                    docNovo,
-                    RSet.Valor("Artigo"),
-                    ref quant,
-                    RSet.Valor("Armazem"),
-                    RSet.Valor("Localizacao"),
-                    RSet.Valor("PrecUnit") * 0,
-                    RSet.Valor("Descontro1"),
-                    RSet.Valor("Lote"),
-                    0, 0, 0,
-                    RSet.Valor("DescEntidade") == null ? 0 : RSet.Valor("DescEntidade"),
-                    RSet.Valor("DescPag") == null ? 0 : RSet.Valor("DescPag"),
-                    0, 0,
-                    false,
-                    false,
-                    _BSO.Base.Iva.DaValorAtributo("6", "Taxa")
-                    );
-
-                ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
-
-                ultimaLinha.CamposUtil["CDU_Caixas"] = RSet.Valor("CDU_Caixas");
-                ultimaLinha.CamposUtil["CDU_Pescado"] = RSet.Valor("CDU_Pescado");
-                ultimaLinha.CamposUtil["CDU_NomeCientifico"] = RSet.Valor("CDU_NomeCientifico");
-                ultimaLinha.CamposUtil["CDU_Origem"] = RSet.Valor("CDU_Origem");
-                ultimaLinha.CamposUtil["CDU_FormaObtencao"] = RSet.Valor("CDU_FormaObtencao");
-                ultimaLinha.CamposUtil["CDU_ZonaFAO"] = RSet.Valor("CDU_ZonaFAO");
-                ultimaLinha.CamposUtil["CDU_VendaEmCaixa"] = RSet.Valor("CDU_VendaEmCaixa");
-                ultimaLinha.CamposUtil["CDU_KilosPorCAixa"] = RSet.Valor("CDU_KilosPorCaixa");
-            }
+            if (tipoArtigo == "ArtigoDestino") { ultimaLinha.CamposUtil["CDU_Fornecedor"] = RSet.Valor("CDU_Fornecedor"); }
+        }
     }
 }
 
