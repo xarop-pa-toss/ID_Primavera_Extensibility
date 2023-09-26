@@ -447,6 +447,7 @@ namespace PP_PPCS
 
                                 _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
 
+                                docNovo.HoraDefinida = true;
                                 docNovo.DataDoc = DataDoc;
                                 docNovo.DataHoraCarga = DataDoc.AddSeconds(1);
                                 docNovo.DescEntidade = RSet.Valor("DescEntidade");
@@ -477,17 +478,18 @@ namespace PP_PPCS
                                 } else if (string.IsNullOrEmpty(RSet.Valor("Artigo"))) {
 
                                     _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "");
+
                                 } else {
                                     _PSO.MensagensDialogos.MostraAviso($"Atenção!\n\nO artigo {RSet.Valor("Artigo")} não existe na base de dados.\nCrie o artigo e volte a importar o documento.", StdBSTipos.IconId.PRI_Exclama);
                                     Cancelar = true;
                                 }
-
                                 RSet.Seguinte();
                             } // End Loop RSet
 
                             RSet.Dispose();
                             fazerLiquidacao = false;
 
+                            // SE CANCELAR = TRUE
                             if (Cancelar) {
                                 // O documento não vai ser gravado e a liquidação é reactivada
                                 if (docDestinoJaExiste && fazerLiquidacao) { fazerLiquidacao = true; }
@@ -498,13 +500,27 @@ namespace PP_PPCS
                                 _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario,
                                     Descricao: "Cópia do documento original");
 
-                                _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
+
+                                #region GRAVAR DOCUMENTO VENDA
+
+                                _BSO.Vendas.Documentos.Actualiza(docNovo); 
+                                
+                                if (ultimaLinha.Unidade != RSet.Valor("Unidade")) {
+                                    double kilosPorCaixa = (double)RSet.Valor("CDU_KilosPorCaixa");
+
+                                    if (ultimaLinha.Unidade == "KG" && RSet.Valor("Unidade") == "CX" && kilosPorCaixa != 0) {
+                                        ultimaLinha.Quantidade = ultimaLinha.Quantidade * kilosPorCaixa;
+                                        ultimaLinha.PrecUnit = ultimaLinha.PrecUnit / kilosPorCaixa;
+                                        ultimaLinha.CamposUtil["CDU_VendaEmCaixa"].Valor = 0;
+                                    } else
+                                        if (!Cancelar) {
+                                        _PSO.MensagensDialogos.MostraAviso($"Não é possível converter o artigo {RSet.Valor("Artigo")} em {RSet.Valor("ArtigoDestino")}. \n\nO documento não será importado!", StdBSTipos.IconId.PRI_Critico);
+                                    }
+                                    Cancelar = true;
+                                }
+                                //docNovo.Linhas.Insere(ultimaLinha);
 
                                 // Preenchimento manual das datas de modo a não serem sobrepostas pelo PreencheDadosRelacionados
-                                docNovo.HoraDefinida = true;
-                                docNovo.DataDoc = DataDoc;
-                                docNovo.DataHoraCarga = DataDoc.AddSeconds(3);
-
                                 _BSO.Vendas.Documentos.Actualiza(docNovo);
 
                                 EntLocal = docNovo.Entidade;
@@ -539,13 +555,14 @@ namespace PP_PPCS
                                 }
                             }
                             docNovo.Dispose();
+                            #endregion
 
                             if (fazerLiquidacao && _BSO.PagamentosRecebimentos.Pendentes.Existe(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest)) {
                                 // Liquidar o documento acabado de criar/alterar
                                 docLiq = new CctBEDocumentoLiq();
 
                                 docLiq.Tipodoc = "VDR";
-                                docLiq.Serie = (_BSO.Base.Series.Existe("M", docLiq.Tipodoc, SerieDest)) ? SerieDest : _BSO.Base.Series.DaSerieDefeito("M", docLiq.Tipodoc, DataDoc);
+                                docLiq.Serie = _BSO.Base.Series.Existe("M", docLiq.Tipodoc, SerieDest) ? SerieDest : _BSO.Base.Series.DaSerieDefeito("M", docLiq.Tipodoc, DataDoc);
                                 docLiq.TipoEntidade = "C";
                                 docLiq.Entidade = EntLocal;
 
@@ -554,10 +571,21 @@ namespace PP_PPCS
 
                                 docLiq.DataDoc = DataDoc;
 
-                                double x = 1;
+                                double x = 0;
                                 _BSO.PagamentosRecebimentos.Liquidacoes.AdicionaLinha(
-                                    docLiq, FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, 1, "PEN", 0,
-                                    _BSO.PagamentosRecebimentos.Pendentes.DaValorAtributo("V", TipoDocDest, NumDocDest, 1, SerieDest, FilialDest, "PEN", 0, "ValorPendente"), ref x, 0);
+                                    docLiq,
+                                    FilialDest,
+                                    "V",
+                                    TipoDocDest,
+                                    SerieDest,
+                                    NumDocDest,
+                                    1, "PEN", 0,
+                                    _BSO.PagamentosRecebimentos.Pendentes.DaValorAtributo("V", TipoDocDest, NumDocDest, 1, SerieDest, FilialDest, "PEN", 0, "ValorPendente"),
+                                    ref x, 0);
+
+                                _BSO.PagamentosRecebimentos.Liquidacoes.Actualiza(docLiq);
+
+                                docLiq.Dispose();
 
                                 #region PossivelBugFix
                                 // No código da V9 existe um bloco aqui que corrige um suposto bug que não actualiza o numerador dos documentos.
