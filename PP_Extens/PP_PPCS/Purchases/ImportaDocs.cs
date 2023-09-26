@@ -29,8 +29,10 @@ namespace PP_PPCS
         public void CriarDocumentoCompra(ref DataRow linha, bool Cancel)           
         {
             string localstr = "", SQLErrors = "";
-            bool Cancelar = false;
+            bool Cancelar;
             int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoCompras.compDadosTodos;
+            CmpBEDocumentoCompra docNovo;
+            StdBELista RSet = new StdBELista();
 
             string TipoEntidade = linha["TipoEntidade"].ToString();
             string Entidade = linha["Entidade"].ToString();
@@ -39,17 +41,19 @@ namespace PP_PPCS
             string Serie = linha["Serie"].ToString();
             int? NumDoc = (int)linha["NumDoc"];
             DateTime DataDoc = Convert.ToDateTime(linha["Data"]);
-            string EntLocal = linha["EntLocal"].ToString();
+            string EntLocal = linha["EntLocal"].ToString() == null ? null : linha["EntLocal"].ToString();
             string FilialDest = linha["FilialLoc"].ToString();
             string TipoDocDest = linha["TipoDocLoc"].ToString();
             string SerieDest = linha["SerieLoc"].ToString();
             int NumDocDest = (int)linha["NumDocLocal"];
             string Importa = linha["Importa"].ToString();
 
+            Cancelar = false;
+
             // Preenchimento do novo documento de compra
-            if (Importa == "A" && _BSO.Compras.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest) == true) {
-                CmpBEDocumentoCompra docNovo = new CmpBEDocumentoCompra();
-                docNovo = _BSO.Compras.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest);
+            if (Importa == "A" && _BSO.Compras.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, NumDocDest) == true) {
+                docNovo = _BSO.Compras.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
+
                 docNovo.DataDoc = DataDoc;
                 docNovo.Entidade = EntLocal;
                 if (docNovo.Linhas.NumItens > 0) { docNovo.Linhas.RemoveTodos(); }
@@ -66,6 +70,7 @@ namespace PP_PPCS
                 _BSO.Compras.Documentos.Actualiza(docNovo);
 
                 docNovo.Dispose();
+
             } else if (Importa == "S") {
                 // Verificar se a entidade fornecedor existe
                 if (!_BSO.Base.Fornecedores.Existe(EntLocal)) {
@@ -84,7 +89,7 @@ namespace PP_PPCS
                             WHERE CDU_TipoEntidade = {1}
                                 AND CDU_EntERP = {2}", EntLocal, TipoEntidade, Entidade);
 
-                        _PSO.ExecSql.ExecutaSP("query", ref SQLErrors);
+                        _PSO.ExecSql.ExecutaSP(query, ref SQLErrors);
                     } else {
                         EntLocal = "";
                     }
@@ -92,41 +97,42 @@ namespace PP_PPCS
 
                 // Controlar a existência de entidade e série do documento
                 if (EntLocal != "" && _BSO.Base.Series.Existe("C", TipoDoc, Serie)) {
-                    CmpBEDocumentoCompra docNovo = new CmpBEDocumentoCompra();
-                    StdBELista RSet = new StdBELista();
+                    docNovo = new CmpBEDocumentoCompra();
+                    RSet = new StdBELista();
 
                     // Verificar existência do documento de destino
                     localstr = FilialDest + SerieDest;
 
-                    if (!string.IsNullOrEmpty(localstr) && NumDocDest != null) {
+                    if (!string.IsNullOrEmpty(localstr) && NumDocDest != 0) {
 
                         // Documento já existente, verificar a existência e editar se existir
-                        if (_BSO.Compras.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest)) {
-
-                            docNovo = _BSO.Compras.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, (int)NumDocDest);
+                        if (_BSO.Compras.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, NumDocDest)) {
+                            docNovo = _BSO.Compras.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
 
                             RSet = _BSO.Consulta(QueriesSQL.GetQuery04(Filial, TipoDoc, Serie, NumDoc.ToString()));
                             docNovo.DataDoc = DataDoc;
                             docNovo.Entidade = EntLocal;
-                            docNovo.DescFornecedor = RSet.Valor("DescEntidade");
-                            docNovo.DescFinanceiro = RSet.Valor("DescPag");
+                            docNovo.DescFornecedor = RSet.Valor("DescEntidade") == null ? 0 : RSet.Valor("DescEntidade");
+                            docNovo.DescFinanceiro = RSet.Valor("DescPag") == null ? 0 : RSet.Valor("DescPag");
 
                             RSet.Termina();
                             if (docNovo.Linhas.NumItens > 0) { docNovo.Linhas.RemoveTodos(); }
+
                         } else { return; }
                     } else {
 
+                        docNovo = new CmpBEDocumentoCompra();
                         RSet = _BSO.Consulta(QueriesSQL.GetQuery04(Filial, TipoDoc, Serie, NumDoc.ToString()));
+                        
                         docNovo.Filial = Filial;
                         docNovo.Serie = Serie;
-                        docNovo.Tipodoc = TipoDoc;
+                        docNovo.Tipodoc = TipoDocDest;
                         docNovo.TipoEntidade = TipoEntidade;
                         docNovo.Entidade = EntLocal;
                         docNovo.CamposUtil["CDU_FilialOrig"].Valor = Filial;
                         docNovo.CamposUtil["CDU_TipoDocOrig"].Valor = TipoDoc;
                         docNovo.CamposUtil["CDU_SerieOrig"].Valor = Serie;
                         docNovo.CamposUtil["CDU_NumDocOrig"].Valor = NumDoc;
-
                         
                         _BSO.Compras.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
 
@@ -134,8 +140,8 @@ namespace PP_PPCS
                         if (docNovo.DataIntroducao < DataDoc) { docNovo.DataIntroducao = DataDoc; }
                         if (docNovo.DataVenc < DataDoc) { docNovo.DataVenc = DataDoc; }
 
-                        docNovo.DescFornecedor = RSet.Valor("DescEntidade");
-                        docNovo.DescFinanceiro = RSet.Valor("DescPag");
+                        docNovo.DescFornecedor = RSet.Valor("DescEntidade") == null ? 0 : RSet.Valor("DescEntidade");
+                        docNovo.DescFinanceiro = RSet.Valor("DescPag") == null ? 0 : RSet.Valor("DescPag");
                         docNovo.TrataIvaCaixa = false;
 
                         RSet.Termina();
@@ -148,7 +154,6 @@ namespace PP_PPCS
 
                     while (!RSet.NoFim()) {
 
-                        int numLinhas = docNovo.Linhas.NumItens;
                         CmpBELinhaDocumentoCompra ultimaLinha;
                         double quant = Math.Abs((double)RSet.Valor("Quantidade"));
 
@@ -163,11 +168,11 @@ namespace PP_PPCS
                                 RSet.Valor("Armazem"),
                                 RSet.Valor("Localizacao"),
                                 RSet.Valor("PrecUnit") * 0,
-                                RSet.Valor("Descontro1"),
+                                RSet.Valor("Desconto1"),
                                 RSet.Valor("Lote"),
-                                1, 1, 1,
-                                RSet.Valor("DescEntidade"),
-                                RSet.Valor("DescPag"),
+                                0, 0, 0,
+                                RSet.Valor("DescEntidade") == null ? 0 : RSet.Valor("DescEntidade"),
+                                RSet.Valor("DescPag") == null ? 0 : RSet.Valor("DescPag"),
                                 0, 0,
                                 false,
                                 false,
@@ -186,9 +191,8 @@ namespace PP_PPCS
                             ultimaLinha.CamposUtil["CDU_KilosPorCaixa"] = RSet.Valor("CDU_KilosPorCaixa");
                             ultimaLinha.CamposUtil["CDU_Fornecedor"] = RSet.Valor("CDU_Fornecedor");
 
-                            dynamic kilosPorCaixa = RSet.Valor("CDU_KilosPorCaixa");
-
                             if (ultimaLinha.Unidade != RSet.Valor("Unidade")) {
+                                dynamic kilosPorCaixa = RSet.Valor("CDU_KilosPorCaixa");
 
                                 if (ultimaLinha.Unidade == "KG" && RSet.Valor("Unidade") == "CX" && kilosPorCaixa != 0) {
                                     ultimaLinha.Quantidade = ultimaLinha.Quantidade * kilosPorCaixa;
@@ -211,9 +215,9 @@ namespace PP_PPCS
                                 RSet.Valor("PrecUnit") * 0,
                                 RSet.Valor("Descontro1"),
                                 RSet.Valor("Lote"),
-                                1, 1, 1,
-                                RSet.Valor("DescEntidade"),
-                                RSet.Valor("DescPag"),
+                                0, 0, 0,
+                                RSet.Valor("DescEntidade") == null ? 0 : RSet.Valor("DescEntidade"),
+                                RSet.Valor("DescPag") == null ? 0 : RSet.Valor("DescPag"),
                                 0, 0,
                                 false,
                                 false,
@@ -277,9 +281,8 @@ namespace PP_PPCS
 
         public void CriarDocumentoVenda(ref DataRow linha, bool Cancel)
         {
-
-            VndBEDocumentoVenda docNovo = new VndBEDocumentoVenda();
-            CctBEDocumentoLiq docLiq = new CctBEDocumentoLiq();
+            VndBEDocumentoVenda docNovo;
+            CctBEDocumentoLiq docLiq;
             StdBELista RSet = new StdBELista();
             int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoCompras.compDadosTodos;
 
@@ -469,11 +472,11 @@ namespace PP_PPCS
                             while (!RSet.NoFim() && !Cancelar) {
                                 if (!string.IsNullOrEmpty(RSet.Valor("ArtigoDestino")) && _BSO.Base.Artigos.Existe(RSet.Valor("ArtigoDestino"))) {
 
-                                    AdicionaLinha(RSet, docNovo, ivaIncluido, "ArtigoDestino");
+                                    AdicionaLinhaVenda(RSet, docNovo, ivaIncluido, "ArtigoDestino");
 
                                 } else if (!string.IsNullOrEmpty(RSet.Valor("Artigo")) && _BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
 
-                                    AdicionaLinha(RSet, docNovo, ivaIncluido, "Artigo");
+                                    AdicionaLinhaVenda(RSet, docNovo, ivaIncluido, "Artigo");
 
                                 } else if (string.IsNullOrEmpty(RSet.Valor("Artigo"))) {
 
@@ -611,7 +614,7 @@ namespace PP_PPCS
             }
         }
 
-        private void AdicionaLinha(StdBELista RSet, VndBEDocumentoVenda docNovo, bool ivaIncluido, string tipoArtigo)
+        private void AdicionaLinhaVenda(StdBELista RSet, VndBEDocumentoVenda docNovo, bool ivaIncluido, string tipoArtigo)
         {
             // Verificar se o documento original é com iva incluido + outras variáveis necessárias para passar por ref
             double quantidade = Math.Abs((double)RSet.Valor("Quantidade"));
@@ -642,6 +645,89 @@ namespace PP_PPCS
             ultimaLinha.CamposUtil["CDU_KilosPorCaixa"].Valor = RSet.Valor("CDU_KilosPorCaixa");
             ultimaLinha.CamposUtil["CDU_Fornecedor"].Valor = RSet.Valor("CDU_Fornecedor");
         }
+
+        private void AdicionaLinhaCompra(StdBELista RSet, CmpBEDocumentoCompra docNovo, string tipoArtigo)
+        {
+            double quantidade = Math.Abs((double)RSet.Valor("Quantidade"));
+            string armazem = RSet.Valor("Armazem");
+            string localizacao = RSet.Valor("Localizacao");
+
+            _BSO.Compras.Documentos.AdicionaLinha(
+                docNovo,
+                RSet.Valor("ArtigoDestino"),
+                ref quantidade,
+                ref armazem,
+                ref localizacao,
+                RSet.Valor("Armazem"),
+                RSet.Valor("Localizacao"),
+                RSet.Valor("PrecUnit") * 0,
+                RSet.Valor("Desconto1"),
+                RSet.Valor("Lote"),
+                0, 0, 0,
+                RSet.Valor("DescEntidade") == null ? 0 : RSet.Valor("DescEntidade"),
+                RSet.Valor("DescPag") == null ? 0 : RSet.Valor("DescPag"),
+                0, 0,
+                false,
+                false,
+                _BSO.Base.Iva.DaValorAtributo("6", "Taxa")
+                );
+
+                ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
+
+                ultimaLinha.CamposUtil["CDU_Pescado"] = RSet.Valor("CDU_Pescado");
+                ultimaLinha.CamposUtil["CDU_NomeCientifico"] = RSet.Valor("CDU_NomeCientfico");
+                ultimaLinha.CamposUtil["CDU_Origem"] = RSet.Valor("CDU_Origem");
+                ultimaLinha.CamposUtil["CDU_FormaObtencao"] = RSet.Valor("CDU_FormaObtencao");
+                ultimaLinha.CamposUtil["CDU_ZonaFAO"] = RSet.Valor("CDU_ZonaFAO");
+                ultimaLinha.CamposUtil["CDU_Caixas"] = RSet.Valor("CDU_Caixas");
+                ultimaLinha.CamposUtil["CDU_VendaEmCaixa"] = RSet.Valor("CDU_VendaEmCaixa");
+                ultimaLinha.CamposUtil["CDU_KilosPorCaixa"] = RSet.Valor("CDU_KilosPorCaixa");
+                ultimaLinha.CamposUtil["CDU_Fornecedor"] = RSet.Valor("CDU_Fornecedor");
+
+                if (ultimaLinha.Unidade != RSet.Valor("Unidade")) {
+                    dynamic kilosPorCaixa = RSet.Valor("CDU_KilosPorCaixa");
+
+                    if (ultimaLinha.Unidade == "KG" && RSet.Valor("Unidade") == "CX" && kilosPorCaixa != 0) {
+                        ultimaLinha.Quantidade = ultimaLinha.Quantidade * kilosPorCaixa;
+                        ultimaLinha.PrecUnit = ultimaLinha.PrecUnit / kilosPorCaixa;
+                        ultimaLinha.CamposUtil["CDU_vendaEmCaixa"].Valor = 0;
+                    } else {
+                        if (!Cancelar) {
+                            _PSO.MensagensDialogos.MostraAviso($"Não é possível converter o artigo {RSet.Valor("Artigo")} em {RSet.Valor("ArtigoDestino")}.\nO documento não será importado.", StdBSTipos.IconId.PRI_Exclama);
+                        }
+                        Cancelar = true;
+                    }
+                }
+            } else if (_BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
+                _BSO.Compras.Documentos.AdicionaLinha(
+                    docNovo,
+                    RSet.Valor("Artigo"),
+                    ref quant,
+                    RSet.Valor("Armazem"),
+                    RSet.Valor("Localizacao"),
+                    RSet.Valor("PrecUnit") * 0,
+                    RSet.Valor("Descontro1"),
+                    RSet.Valor("Lote"),
+                    0, 0, 0,
+                    RSet.Valor("DescEntidade") == null ? 0 : RSet.Valor("DescEntidade"),
+                    RSet.Valor("DescPag") == null ? 0 : RSet.Valor("DescPag"),
+                    0, 0,
+                    false,
+                    false,
+                    _BSO.Base.Iva.DaValorAtributo("6", "Taxa")
+                    );
+
+                ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
+
+                ultimaLinha.CamposUtil["CDU_Caixas"] = RSet.Valor("CDU_Caixas");
+                ultimaLinha.CamposUtil["CDU_Pescado"] = RSet.Valor("CDU_Pescado");
+                ultimaLinha.CamposUtil["CDU_NomeCientifico"] = RSet.Valor("CDU_NomeCientifico");
+                ultimaLinha.CamposUtil["CDU_Origem"] = RSet.Valor("CDU_Origem");
+                ultimaLinha.CamposUtil["CDU_FormaObtencao"] = RSet.Valor("CDU_FormaObtencao");
+                ultimaLinha.CamposUtil["CDU_ZonaFAO"] = RSet.Valor("CDU_ZonaFAO");
+                ultimaLinha.CamposUtil["CDU_VendaEmCaixa"] = RSet.Valor("CDU_VendaEmCaixa");
+                ultimaLinha.CamposUtil["CDU_KilosPorCAixa"] = RSet.Valor("CDU_KilosPorCaixa");
+            }
     }
 }
 
