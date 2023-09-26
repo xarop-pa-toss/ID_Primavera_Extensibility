@@ -470,20 +470,6 @@ namespace PP_PPCS
 
                                     AdicionaLinha(RSet, docNovo, ivaIncluido, "ArtigoDestino");
 
-                                    if (ultimaLinha.Unidade != RSet.Valor("Unidade")) {
-                                        double kilosPorCaixa = (double)RSet.Valor("CDU_KilosPorCaixa");
-
-                                        if (ultimaLinha.Unidade == "KG" && RSet.Valor("Unidade") == "CX" && kilosPorCaixa != 0) {
-                                            ultimaLinha.Quantidade = ultimaLinha.Quantidade * kilosPorCaixa;
-                                            ultimaLinha.PrecUnit = ultimaLinha.PrecUnit / kilosPorCaixa;
-                                            ultimaLinha.CamposUtil["CDU_VendaEmCaixa"].Valor = 0;
-                                        } else
-                                            if (!Cancelar) {
-                                                _PSO.MensagensDialogos.MostraAviso($"Não é possível converter o artigo {RSet.Valor("Artigo")} em {RSet.Valor("ArtigoDestino")}. \n\nO documento não será importado!", StdBSTipos.IconId.PRI_Critico);
-                                            }
-                                            Cancelar = true;
-                                        }
-                                        //docNovo.Linhas.Insere(ultimaLinha);
                                 } else if (!string.IsNullOrEmpty(RSet.Valor("Artigo")) && _BSO.Base.Artigos.Existe(RSet.Valor("Artigo"))) {
 
                                     AdicionaLinha(RSet, docNovo, ivaIncluido, "Artigo");
@@ -607,7 +593,7 @@ namespace PP_PPCS
 
             _BSO.Vendas.Documentos.AdicionaLinha(
             docNovo,
-            RSet.Valor("Artigo"),
+            RSet.Valor(tipoArtigo),
             ref quantidade,
             ref armazem,
             ref localizacao,
