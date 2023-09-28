@@ -26,7 +26,7 @@ namespace PP_PPCS
         {
         }
 
-        public void CriarDocumentoCompra(ref DataRow linha, bool Cancel)
+        public void CriarDocumentoCompra(ref DataRow linha, DateTime datepickerDocNovoValue, bool Cancel)
         {
             string localstr = "", SQLErrors = "";
             bool Cancelar;
@@ -225,7 +225,7 @@ namespace PP_PPCS
             return;
         }
 
-        public void CriarDocumentoVenda(ref DataRow linha, bool Cancel)
+        public void CriarDocumentoVenda(ref DataRow linha, DateTime datepickerDocNovoValue, bool Cancel)
         {
             VndBEDocumentoVenda docNovo;
             CctBEDocumentoLiq docLiq;
@@ -242,7 +242,7 @@ namespace PP_PPCS
             string TipoDoc = linha["TipoDoc"].ToString();
             string Serie = linha["Serie"].ToString();
             int NumDoc = (int)linha["NumDoc"];
-            DateTime DataDoc = Convert.ToDateTime(linha["Data"]);
+            DateTime DataDoc = Convert.ToDateTime(linha["Data"] == null ? datepickerDocNovoValue : Convert.ToDateTime(linha["Data"]));
             string EntLocal = linha["EntLocal"].ToString();
             string FilialDest = linha["FilialLoc"].ToString();
             string TipoDocDest = linha["TipoDocLoc"].ToString();

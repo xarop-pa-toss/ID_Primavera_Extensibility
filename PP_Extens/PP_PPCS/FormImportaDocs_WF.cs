@@ -266,6 +266,7 @@ namespace PP_PPCS
             string entLoc, filialLoc, tipoDocLoc, serieLoc;
             long numDocLoc;
             bool Cancel = false;
+            DateTime dataNovo = datepicker_DataDocNovo_WF.Value;
 
             _dataDestino = datepicker_DataDocNovo_WF.Value;
 
@@ -284,9 +285,9 @@ namespace PP_PPCS
 
                     ImportaDocs importaDocs = new ImportaDocs();
                     if (TE.Equals("C")) {
-                        importaDocs.CriarDocumentoVenda(ref linha, Cancel);
+                        importaDocs.CriarDocumentoVenda(ref linha, dataNovo, Cancel);
                     } else if (TE.Equals("F")) {
-                        importaDocs.CriarDocumentoCompra(ref linha, Cancel);
+                        importaDocs.CriarDocumentoCompra(ref linha, dataNovo, Cancel);
                     }
                 }
             }
