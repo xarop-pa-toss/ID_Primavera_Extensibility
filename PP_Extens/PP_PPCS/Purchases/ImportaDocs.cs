@@ -41,11 +41,11 @@ namespace PP_PPCS
             string Serie = linha["Serie"].ToString();
             int? NumDoc = (int)linha["NumDoc"];
             DateTime DataDoc = Convert.ToDateTime(linha["Data"]);
-            string EntLocal = linha["EntLocal"].ToString() == null ? null : linha["EntLocal"].ToString();
-            string FilialDest = linha["FilialLoc"].ToString();
-            string TipoDocDest = linha["TipoDocLoc"].ToString();
-            string SerieDest = linha["SerieLoc"].ToString();
-            int NumDocDest = (int)linha["NumDocLocal"];
+            string EntLocal = linha["EntLocal"].ToString() == null ? "" : linha["EntLocal"].ToString();
+            string FilialDest = linha["FilialLoc"].ToString() == null ? "" : linha["FilialLoc"].ToString();
+            string TipoDocDest = linha["TipoDocLoc"].ToString() == null ? "" : linha["TipoDocLoc"].ToString();
+            string SerieDest = linha["SerieLoc"].ToString() == null ? "" : linha["SerieLoc"].ToString();
+            int NumDocDest = (int)linha["NumDocLocal"] == null ? 0 : (int)linha["NumDocLocal"];
             string Importa = linha["Importa"].ToString();
 
             Cancelar = false;
@@ -557,6 +557,7 @@ namespace PP_PPCS
                     break;
             }
         }
+
 
         private void AdicionaLinhaVenda(StdBELista RSet, VndBEDocumentoVenda docNovo, bool ivaIncluido, string tipoArtigo)
         {

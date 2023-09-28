@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms; using ErpBS100; using StdPlatBS100; using StdBE100; using VndBE100;
+using System.Security.Cryptography;
 
 namespace PP_PPCS
 {
@@ -281,12 +282,12 @@ namespace PP_PPCS
 
                 if (importa == "S" || importa == "A") {
 
-                    string TE = linha["TipoEntidade"].ToString().ToUpper();
+                    string tipoEntidade = linha["TipoEntidade"].ToString().ToUpper();
 
                     ImportaDocs importaDocs = new ImportaDocs();
-                    if (TE.Equals("C")) {
+                    if (tipoEntidade.Equals("C")) {
                         importaDocs.CriarDocumentoVenda(ref linha, dataNovo, Cancel);
-                    } else if (TE.Equals("F")) {
+                    } else if (tipoEntidade.Equals("F")) {
                         importaDocs.CriarDocumentoCompra(ref linha, dataNovo, Cancel);
                     }
                 }
