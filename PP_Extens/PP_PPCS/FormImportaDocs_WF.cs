@@ -300,6 +300,11 @@ namespace PP_PPCS
             this.Dispose();
         }
 
+        private void datepicker_DataDocImportar_WF_Leave(object sender, EventArgs e)
+        {
+            datepicker_DataDocNovo_WF.Text = datepicker_DataDocImportar_WF.Text;
+        }
+
         private void btn_Actualizar_WF_Click(object sender, EventArgs e)
         {
             QueriesSQL.AbrirSQL();
