@@ -304,7 +304,7 @@ namespace PP_PPCS
 
         private void datepicker_DataDocImportar_WF_Leave(object sender, EventArgs e)
         {
-            datepicker_DataDocNovo_WF.Text = datepicker_DataDocImportar_WF.Text;
+            datepicker_DataDocNovo_WF.Value = datepicker_DataDocImportar_WF.Value;
         }
 
         private void btn_Actualizar_WF_Click(object sender, EventArgs e)
