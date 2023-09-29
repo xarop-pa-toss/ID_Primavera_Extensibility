@@ -242,12 +242,12 @@ namespace PP_PPCS
             string TipoDoc = linha["TipoDoc"].ToString();
             string Serie = linha["Serie"].ToString();
             int NumDoc = (int)linha["NumDoc"];
-            DateTime DataDoc = Convert.ToDateTime(linha["Data"] == null ? datepickerDocNovoValue : Convert.ToDateTime(linha["Data"]));
-            string EntLocal = linha["EntLocal"].ToString();
-            string FilialDest = linha["FilialLoc"].ToString();
-            string TipoDocDest = linha["TipoDocLoc"].ToString();
-            string SerieDest = linha["SerieLoc"].ToString();
-            int NumDocDest = (int)linha["NumDocLocal"];
+            DateTime DataDoc = Convert.ToDateTime(linha["Data"] ?? datepickerDocNovoValue);
+            string EntLocal = linha["EntLocal"]?.ToString() ?? "";
+            string FilialDest = linha["FilialLoc"]?.ToString() ?? "";
+            string TipoDocDest = linha["TipoDocLoc"]?.ToString() ?? "";
+            string SerieDest = linha["SerieLoc"]?.ToString() ?? "";
+            int NumDocDest = linha["NumDocLocal"] as int? ?? 0;
             string Importa = linha["Importa"].ToString();
 
             docNovo = _BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
@@ -518,7 +518,7 @@ namespace PP_PPCS
 
                                 docLiq.DataDoc = DataDoc;
 
-                                double x = 0;
+                                double valorDescMLiq = 0, valorRecMLiq = _BSO.PagamentosRecebimentos.Pendentes.DaValorAtributo("V", TipoDocDest, NumDocDest, 1, SerieDest, FilialDest, "PEN", 0, "ValorPendente");
                                 _BSO.PagamentosRecebimentos.Liquidacoes.AdicionaLinha(
                                     docLiq,
                                     FilialDest,
@@ -527,8 +527,8 @@ namespace PP_PPCS
                                     SerieDest,
                                     NumDocDest,
                                     1, "PEN", 0,
-                                    _BSO.PagamentosRecebimentos.Pendentes.DaValorAtributo("V", TipoDocDest, NumDocDest, 1, SerieDest, FilialDest, "PEN", 0, "ValorPendente"),
-                                    ref x, 0);
+                                    ref valorRecMLiq,
+                                    ref valorDescMLiq, 0);
 
                                 _BSO.PagamentosRecebimentos.Liquidacoes.Actualiza(docLiq);
 
