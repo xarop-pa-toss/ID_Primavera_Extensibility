@@ -264,8 +264,6 @@ namespace PP_PPCS
 
         private void btn_Processar_WF_Click(object sender, EventArgs e)
         {
-            string entLoc, filialLoc, tipoDocLoc, serieLoc;
-            long numDocLoc;
             bool Cancel = false;
             DateTime dataNovo = datepicker_DataDocNovo_WF.Value;
 

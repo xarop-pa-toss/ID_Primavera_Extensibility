@@ -376,13 +376,14 @@ namespace PP_PPCS
                                 docNovo.DescFinanceiro = RSet.Valor("DescPag");
                                 docNovo.Responsavel = RSet.Valor("RespCobranca");
 
-                                RSet.Dispose();
-
                                 if (docNovo.Linhas.NumItens > 0) { docNovo.Linhas.RemoveTodos(); }
+                                RSet.Termina();
                             } else {
 
                                 docDestinoJaExiste = false;
                                 docNovo = new VndBEDocumentoVenda();
+
+                                RSet = _BSO.Consulta(QueriesSQL.GetQuery07(Filial, TipoDoc, Serie, NumDoc.ToString()));
 
                                 docNovo.Tipodoc = TipoDocDest;
                                 docNovo.Filial = Filial;
@@ -405,15 +406,16 @@ namespace PP_PPCS
                                 docNovo.TrataIvaCaixa = false;
 
                                 if (docNovo.DataVenc < docNovo.DataDoc) { docNovo.DataVenc = docNovo.DataDoc; }
-
                                 RSet.Termina();
                             }
 
                             // LINHAS DOC
-                            RSet = _BSO.Consulta(QueriesSQL.GetQuery09(Filial, TipoDoc, Serie, NumDoc.ToString()));
-                            VndBELinhaDocumentoVenda ultimaLinha = new VndBELinhaDocumentoVenda();
+
                             // Ver se série de documento tem IVA incluido por defeito
                             bool ivaIncluido = _BSO.Consulta(QueriesSQL.GetQuery08(TipoDoc, Serie)).Valor("IvaIncluido") ? true : false;
+
+                            RSet = _BSO.Consulta(QueriesSQL.GetQuery09(Filial, TipoDoc, Serie, NumDoc.ToString()));
+                            VndBELinhaDocumentoVenda ultimaLinha = new VndBELinhaDocumentoVenda();
 
                             while (!RSet.NoFim() && !Cancelar) {
                                 if (!string.IsNullOrEmpty(RSet.Valor("ArtigoDestino")) && _BSO.Base.Artigos.Existe(RSet.Valor("ArtigoDestino"))) {

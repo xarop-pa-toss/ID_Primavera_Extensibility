@@ -16,8 +16,6 @@ namespace PP_PPCS.Sales
         {
             var DocVenda = this.DocumentoVenda;
             string matricula = "";
-            double cx, kg;
-            long i;
             StdBELista serie = BSO.Consulta(String.Format("SELECT CDU_PedeMatricula FROM SeriesVendas WHERE TipoDoc = '{0}' AND Serie = '{1}';", DocVenda.Tipodoc, DocVenda.Serie));
 
             if (!serie.Vazia()) {
