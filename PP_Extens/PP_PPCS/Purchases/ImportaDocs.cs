@@ -242,7 +242,7 @@ namespace PP_PPCS
             string TipoDoc = linha["TipoDoc"].ToString();
             string Serie = linha["Serie"].ToString();
             int NumDoc = (int)linha["NumDoc"];
-            DateTime DataDoc = Convert.ToDateTime(linha["Data"] ?? datepickerDocNovoValue);
+            DateTime DataDoc = (linha["data"] != DBNull.Value )? Convert.ToDateTime(linha["Data"]) : datepickerDocNovoValue;
             string EntLocal = linha["EntLocal"]?.ToString() ?? "";
             string FilialDest = linha["FilialLoc"]?.ToString() ?? "";
             string TipoDocDest = linha["TipoDocLoc"]?.ToString() ?? "";
