@@ -32,7 +32,7 @@ namespace PP_PPCS
             bool Cancelar;
             int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoCompras.compDadosTodos;
             CmpBEDocumentoCompra docNovo;
-            StdBELista RSet = new StdBELista();
+            StdBELista RSet;
 
             string TipoEntidade = linha["TipoEntidade"].ToString();
             string Entidade = linha["Entidade"].ToString();
@@ -40,12 +40,12 @@ namespace PP_PPCS
             string TipoDoc = linha["TipoDoc"].ToString();
             string Serie = linha["Serie"].ToString();
             int? NumDoc = (int)linha["NumDoc"];
-            DateTime DataDoc = Convert.ToDateTime(linha["Data"]);
-            string EntLocal = linha["EntLocal"].ToString() == null ? "" : linha["EntLocal"].ToString();
-            string FilialDest = linha["FilialLoc"].ToString() == null ? "" : linha["FilialLoc"].ToString();
-            string TipoDocDest = linha["TipoDocLoc"].ToString() == null ? "" : linha["TipoDocLoc"].ToString();
-            string SerieDest = linha["SerieLoc"].ToString() == null ? "" : linha["SerieLoc"].ToString();
-            int NumDocDest = (int)linha["NumDocLocal"] == null ? 0 : (int)linha["NumDocLocal"];
+            DateTime DataDoc = Convert.ToDateTime(linha["Data"] ?? datepickerDocNovoValue);
+            string EntLocal = linha["EntLocal"]?.ToString() ?? "";
+            string FilialDest = linha["FilialLoc"]?.ToString() ?? ""; 
+            string TipoDocDest = linha["TipoDocLoc"]?.ToString() ?? "";
+            string SerieDest = linha["SerieLoc"]?.ToString() ?? "";
+            int NumDocDest = linha["NumDocLocal"] as int? ?? 0; 
             string Importa = linha["Importa"].ToString();
 
             Cancelar = false;
