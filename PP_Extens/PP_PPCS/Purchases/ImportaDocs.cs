@@ -49,6 +49,7 @@ namespace PP_PPCS
             string Importa = linha["Importa"].ToString();
 
             Cancelar = false;
+            _BSO.IniciaTransaccao();
 
             // Preenchimento do novo documento de compra
             if (Importa == "A" && _BSO.Compras.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, NumDocDest) == true) {
@@ -222,7 +223,7 @@ namespace PP_PPCS
                 }
             }
             // Fim de CriarDocumentoCompra
-            return;
+            if(_BSO.EmTransaccao()) { _BSO.TerminaTransaccao(); }
         }
 
         public void CriarDocumentoVenda(ref DataRow linha, DateTime datepickerDocNovoValue, bool Cancel)
@@ -252,6 +253,7 @@ namespace PP_PPCS
 
             docNovo = _BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
             Cancelar = false;
+            _BSO.IniciaTransaccao();
 
             switch (Importa) {
                 case "A": // Anular o documento de destino
@@ -330,7 +332,6 @@ namespace PP_PPCS
                             $"Este documento não vai ser importado!", StdBSTipos.IconId.PRI_Critico);
                         Cancel = true;
                     } else {
-
                         if (!_BSO.Base.Series.Existe("V", TipoDocDest, Serie)) {
                             _PSO.MensagensDialogos.MostraAviso($"A série do documento {TipoDoc} N.º{NumDoc}/{Serie} não está criada localmente." +
                             $"Este documento não vai ser importado!", StdBSTipos.IconId.PRI_Critico);
@@ -558,6 +559,8 @@ namespace PP_PPCS
                     }
                     break;
             }
+            // Fim de DocumentoVenda
+            if (_BSO.EmTransaccao()) { _BSO.TerminaTransaccao(); }
         }
 
 
