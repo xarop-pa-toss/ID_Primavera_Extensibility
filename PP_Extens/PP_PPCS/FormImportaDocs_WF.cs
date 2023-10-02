@@ -285,8 +285,10 @@ namespace PP_PPCS
                     ImportaDocs importaDocs = new ImportaDocs();
                     if (tipoEntidade.Equals("C")) {
                         importaDocs.CriarDocumentoVenda(ref linha, dataNovo, Cancel);
+                        if (_BSO.EmTransaccao()) { _BSO.TerminaTransaccao(); }
                     } else if (tipoEntidade.Equals("F")) {
                         importaDocs.CriarDocumentoCompra(ref linha, dataNovo, Cancel);
+                        if (_BSO.EmTransaccao()) { _BSO.TerminaTransaccao(); }
                     }
                 }
             }

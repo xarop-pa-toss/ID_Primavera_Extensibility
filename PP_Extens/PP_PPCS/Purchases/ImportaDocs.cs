@@ -70,8 +70,6 @@ namespace PP_PPCS
                 _BSO.Compras.Documentos.PreencheDadosRelacionados(docNovo);
                 _BSO.Compras.Documentos.Actualiza(docNovo);
 
-                docNovo.Dispose();
-
             } else if (Importa == "S") {
                 // Verificar se a entidade fornecedor existe
                 if (!_BSO.Base.Fornecedores.Existe(EntLocal)) {
@@ -471,7 +469,7 @@ namespace PP_PPCS
                                     Descricao: "Cópia do documento original");
 
                                 #region GRAVAR DOCUMENTO VENDA
-                                if (BSO.Vendas.Documentos.ValidaActualizacao(docNovo, BSO.Vendas.TabVendas.Edita(docNovo.Tipodoc), ref SerieDest, ref strErro))
+                                if (_BSO.Vendas.Documentos.ValidaActualizacao(docNovo, _BSO.Vendas.TabVendas.Edita(docNovo.Tipodoc), ref SerieDest, ref strErro))
                                 _BSO.Vendas.Documentos.Actualiza(docNovo);
 
                                 EntLocal = docNovo.Entidade;
