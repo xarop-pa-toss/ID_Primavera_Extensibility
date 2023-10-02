@@ -234,7 +234,7 @@ namespace PP_PPCS
             int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoCompras.compDadosTodos;
 
             bool Cancelar, docDestinoJaExiste, liqDocAnulada, fazerLiquidacao;
-            string fl = "", tdl = "", sl = "";
+            string fl = "", tdl = "", sl = "", strErro = "";
             int ndl = 0;
 
             string TipoEntidade = linha["TipoEntidade"].ToString();
@@ -257,12 +257,12 @@ namespace PP_PPCS
 
             switch (Importa) {
                 case "A": // Anular o documento de destino
-                    if (_BSO.Vendas.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, NumDocDest)) {
+                    if (BSO.Vendas.Documentos.Existe(FilialDest, TipoDocDest, SerieDest, NumDocDest)) {
                         // A próxima linha preenche as quatro variáveis dadas por referência. Usadas logo a seguir para anular a liquidação.
-                        if (_BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)) {
+                        if (BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)) {
 
                             // Anular a liquidação do documento
-                            _BSO.PagamentosRecebimentos.Liquidacoes.Remove(fl, tdl, sl, ndl);
+                            BSO.PagamentosRecebimentos.Liquidacoes.Remove(fl, tdl, sl, ndl);
 
                             #region PossivelBugFix
                             // No código da V9 existe um bloco aqui que corrige um suposto bug que não actualiza o numerador dos documentos.
@@ -283,7 +283,7 @@ namespace PP_PPCS
                             #endregion
                         }
 
-                        docNovo = _BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
+                        docNovo = BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
                         docNovo.HoraDefinida = false;
                         docNovo.Entidade = EntLocal;
                         docNovo.DataDoc = DataDoc;
@@ -291,14 +291,15 @@ namespace PP_PPCS
                         if (docNovo.Linhas.NumItens > 0) { docNovo.Linhas.RemoveTodos(); }
 
                         // Linhas de comentário adicionadas ao novo documento de compra
-                        _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: @"
+                        BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: @"
                             Este documento é replicação do documento físico " + TipoDoc + " Nº " + NumDoc.ToString() + "/" + Serie + ".");
-                        _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "Cópia do documento original.");
-                        _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "Documento original anulado!");
+                        BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "Cópia do documento original.");
+                        BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: "Documento original anulado!");
 
-                        _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
-                        _BSO.Vendas.Documentos.Actualiza(docNovo);
-                        docNovo.Dispose();
+                        BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
+
+                        if (BSO.Vendas.Documentos.ValidaActualizacao(docNovo, BSO.Vendas.TabVendas.Edita(docNovo.Tipodoc), ref SerieDest, ref strErro))
+                        BSO.Vendas.Documentos.Actualiza(docNovo);
 
                         if (_BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)) {
                             //' O doc. venda acabado de gravar fez liquidação automática.
@@ -470,6 +471,7 @@ namespace PP_PPCS
                                     Descricao: "Cópia do documento original");
 
                                 #region GRAVAR DOCUMENTO VENDA
+                                if (BSO.Vendas.Documentos.ValidaActualizacao(docNovo, BSO.Vendas.TabVendas.Edita(docNovo.Tipodoc), ref SerieDest, ref strErro))
                                 _BSO.Vendas.Documentos.Actualiza(docNovo);
 
                                 EntLocal = docNovo.Entidade;
@@ -503,7 +505,6 @@ namespace PP_PPCS
                                     fazerLiquidacao = true;
                                 }
                             }
-                            docNovo.Dispose();
                             #endregion
 
 
@@ -561,6 +562,7 @@ namespace PP_PPCS
             }
             // Fim de DocumentoVenda
             if (_BSO.EmTransaccao()) { _BSO.TerminaTransaccao(); }
+            docNovo.Dispose();
         }
 
 

@@ -11,8 +11,6 @@ namespace PP_PPCS
 {
     public partial class FormPropDocVenda : CustomForm
     {
-        string _tDoc;
-
         public FormPropDocVenda()
         {
             InitializeComponent();
