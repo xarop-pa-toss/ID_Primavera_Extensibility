@@ -26,7 +26,7 @@ namespace PP_PPCS
         {
         }
 
-        public void CriarDocumentoCompra(ref DataRow linha, DateTime datepickerDocNovoValue, bool Cancel)
+        public void CriarDocumentoCompra(ref DataRow linha, DateTime datepickerDocNovoValue, out bool Cancel)
         {
             string localstr = "", SQLErrors = "";
             bool Cancelar;
@@ -49,6 +49,7 @@ namespace PP_PPCS
             string Importa = linha["Importa"].ToString();
 
             Cancelar = false;
+            Cancel = false;
             _BSO.IniciaTransaccao();
 
             // Preenchimento do novo documento de compra
@@ -224,7 +225,7 @@ namespace PP_PPCS
             if(_BSO.EmTransaccao()) { _BSO.TerminaTransaccao(); }
         }
 
-        public void CriarDocumentoVenda(ref DataRow linha, DateTime datepickerDocNovoValue, bool Cancel)
+        public void CriarDocumentoVenda(ref DataRow linha, DateTime datepickerDocNovoValue, out bool Cancel)
         {
             VndBEDocumentoVenda docNovo;
             CctBEDocumentoLiq docLiq;
@@ -251,6 +252,7 @@ namespace PP_PPCS
 
             docNovo = _BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
             Cancelar = false;
+            Cancel = false;
             _BSO.IniciaTransaccao();
 
             switch (Importa) {
