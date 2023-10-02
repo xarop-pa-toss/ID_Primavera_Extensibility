@@ -284,12 +284,13 @@ namespace PP_PPCS
 
                     ImportaDocs importaDocs = new ImportaDocs();
                     if (tipoEntidade.Equals("C")) {
-                        importaDocs.CriarDocumentoVenda(ref linha, dataNovo, out Cancel); 
+                        importaDocs.CriarDocumentoVenda(ref linha, dataNovo); 
                     } else if (tipoEntidade.Equals("F")) {
-                        importaDocs.CriarDocumentoCompra(ref linha, dataNovo, out Cancel);
+                        importaDocs.CriarDocumentoCompra(ref linha, dataNovo);
                     }
 
                     // CHECK CANCEL
+                    bool trans = _BSO.EmTransaccao();
                     if (_BSO.EmTransaccao()) {
                         if (Cancel) { _BSO.DesfazTransaccao(); } else { _BSO.TerminaTransaccao(); }
                     }
