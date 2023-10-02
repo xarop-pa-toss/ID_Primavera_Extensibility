@@ -469,7 +469,6 @@ namespace PP_PPCS
                                 _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docNovo, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario,
                                     Descricao: "Cópia do documento original");
 
-
                                 #region GRAVAR DOCUMENTO VENDA
                                 _BSO.Vendas.Documentos.Actualiza(docNovo);
 
@@ -506,6 +505,7 @@ namespace PP_PPCS
                             }
                             docNovo.Dispose();
                             #endregion
+
 
                             if (fazerLiquidacao && _BSO.PagamentosRecebimentos.Pendentes.Existe(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest)) {
                                 // Liquidar o documento acabado de criar/alterar
