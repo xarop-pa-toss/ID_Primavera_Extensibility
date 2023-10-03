@@ -594,11 +594,11 @@ namespace PP_PPCS
                 ref quantidade,
                 ref armazem,
                 ref localizacao,
-                RSet.Valor("PrecUnit"),
-                RSet.Valor("Desconto1"),
+                InverterSeNegativo(RSet.Valor("PrecUnit")),
+                InverterSeNegativo(RSet.Valor("Desconto1")),
                 "", 0, 0, 0,
-                RSet.Valor("DescEntidade"),
-                RSet.Valor("DescPag"),
+                InverterSeNegativo(RSet.Valor("DescEntidade")),
+                InverterSeNegativo(RSet.Valor("DescPag")),
                 0, 0, false, ivaIncluido
             );
 
@@ -627,11 +627,11 @@ namespace PP_PPCS
                 ref armazem,
                 ref localizacao,
                 RSet.Valor("PrecUnit") * 0,
-                RSet.Valor("Desconto1"),
+                InverterSeNegativo(RSet.Valor("Desconto1")),
                 RSet.Valor("Lote"),
                 0, 0, 0,
-                RSet.Valor("DescEntidade") == null ? 0 : RSet.Valor("DescEntidade"),
-                RSet.Valor("DescPag") == null ? 0 : RSet.Valor("DescPag"),
+                InverterSeNegativo(RSet.Valor("DescEntidade") == null ? 0 : RSet.Valor("DescEntidade")),
+                InverterSeNegativo(RSet.Valor("DescPag") == null ? 0 : RSet.Valor("DescPag")),
                 0, 0, false, false,
                 _BSO.Base.Iva.DaValorAtributo("6", "Taxa")
             );
@@ -661,6 +661,24 @@ namespace PP_PPCS
                     _BSO.TerminaTransaccao();
                 }
             }
+        }
+
+        private T InverterSeNegativo<T>(T num) where T: struct, IComparable, IConvertible, IComparable<T>, IEquatable<T>
+        {
+            // Check se input é numérico
+            if (typeof(T) == typeof(int) || typeof(T) == typeof(double) || typeof(T) == typeof(float) || typeof(T) == typeof(decimal))
+            {
+                dynamic numDinamico = num;
+
+                // Check se negativo e inverter
+                if (numDinamico < 0)
+                {
+                    numDinamico *= -1;
+                    return numDinamico;
+                }
+            }
+            // Return valor original se não for numérico
+            return num;
         }
     }
 }
