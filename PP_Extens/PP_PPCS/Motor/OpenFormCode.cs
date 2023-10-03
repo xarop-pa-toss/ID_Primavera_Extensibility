@@ -12,9 +12,11 @@ namespace PP_PPCS
     {
         public void Abrir_formImportaDocs_WF()
         {
-            FormImportaDocs_WF form = new FormImportaDocs_WF();
-            form.ShowDialog();
-            PSO.UI.AdicionaFormMDI(form);
+            FormImportaDocs_WF formImportaDocs = new FormImportaDocs_WF();
+            FormQueryStatus_WF formQueryStatus = new FormQueryStatus_WF();
+            formImportaDocs.ShowDialog();
+            PSO.UI.AdicionaFormMDI(formImportaDocs);
+            PSO.UI.AdicionaFormMDI(formQueryStatus);
         }
     }
 }

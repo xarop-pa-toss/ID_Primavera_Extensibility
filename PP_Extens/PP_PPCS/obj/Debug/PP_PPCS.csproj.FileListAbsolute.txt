@@ -46,3 +46,4 @@ C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\es\CctBS100.resources.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\fr\CctBS100.resources.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\pt-cl\CctBS100.resources.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\obj\Debug\PP_PPCS.FormQueryStatus_WF.resources

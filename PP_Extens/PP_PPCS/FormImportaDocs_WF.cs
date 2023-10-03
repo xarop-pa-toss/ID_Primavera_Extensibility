@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms; using ErpBS100; using StdPlatBS100; using StdBE100; using VndBE100;
 using System.Security.Cryptography;
 
@@ -251,8 +251,7 @@ namespace PP_PPCS
         private void ActualizarDataGrid(DateTime dataImport)
         {
             // Ver QueriesSQL.cs
-            QueriesSQL.CreateTabela(_tabela, dataImport.ToString());
-            QueriesSQL.InsertTabela(_tabela, dataImport.ToString());
+            QueriesSQL.GerarTabela(_tabela, dataImport.ToString());
 
             _RSet = _BSO.ConsultaDataTable(QueriesSQL.GetQuery03(_tabela));
             DataGrid1.DataSource = _RSet;
