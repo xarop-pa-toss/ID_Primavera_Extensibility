@@ -31,13 +31,13 @@ namespace PP_PPCS
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btn_Actualizar_WF = new System.Windows.Forms.Button();
-            this.datepicker_DataDocNovo_WF = new System.Windows.Forms.DateTimePicker();
             this.datepicker_DataDocImportar_WF = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btn_Sair_WF = new System.Windows.Forms.Button();
             this.btn_Processar_WF = new System.Windows.Forms.Button();
             this.DataGrid1 = new System.Windows.Forms.DataGridView();
+            this.datepicker_DataDocNovo = new System.Windows.Forms.DateTimePicker();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGrid1)).BeginInit();
             this.SuspendLayout();
@@ -63,7 +63,7 @@ namespace PP_PPCS
             // 
             // btn_Actualizar_WF
             // 
-            this.btn_Actualizar_WF.Location = new System.Drawing.Point(262, 420);
+            this.btn_Actualizar_WF.Location = new System.Drawing.Point(262, 418);
             this.btn_Actualizar_WF.Name = "btn_Actualizar_WF";
             this.btn_Actualizar_WF.Size = new System.Drawing.Size(75, 33);
             this.btn_Actualizar_WF.TabIndex = 2;
@@ -71,22 +71,14 @@ namespace PP_PPCS
             this.btn_Actualizar_WF.UseVisualStyleBackColor = true;
             this.btn_Actualizar_WF.Click += new System.EventHandler(this.btn_Actualizar_WF_Click);
             // 
-            // datepicker_DataDocNovo_WF
-            // 
-            this.datepicker_DataDocNovo_WF.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.datepicker_DataDocNovo_WF.Location = new System.Drawing.Point(540, 428);
-            this.datepicker_DataDocNovo_WF.Name = "datepicker_DataDocNovo_WF";
-            this.datepicker_DataDocNovo_WF.Size = new System.Drawing.Size(107, 20);
-            this.datepicker_DataDocNovo_WF.TabIndex = 36;
-            // 
             // datepicker_DataDocImportar_WF
             // 
             this.datepicker_DataDocImportar_WF.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.datepicker_DataDocImportar_WF.Location = new System.Drawing.Point(142, 428);
+            this.datepicker_DataDocImportar_WF.Location = new System.Drawing.Point(135, 424);
             this.datepicker_DataDocImportar_WF.Name = "datepicker_DataDocImportar_WF";
             this.datepicker_DataDocImportar_WF.Size = new System.Drawing.Size(105, 20);
             this.datepicker_DataDocImportar_WF.TabIndex = 1;
-            this.datepicker_DataDocImportar_WF.Leave += new System.EventHandler(this.datepicker_DataDocImportar_WF_Leave);
+            this.datepicker_DataDocImportar_WF.ValueChanged += new System.EventHandler(this.datepicker_DataDocImportar_WF_ValueChanged);
             // 
             // label2
             // 
@@ -135,15 +127,23 @@ namespace PP_PPCS
             this.DataGrid1.Size = new System.Drawing.Size(885, 372);
             this.DataGrid1.TabIndex = 41;
             // 
+            // datepicker_DataDocNovo
+            // 
+            this.datepicker_DataDocNovo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.datepicker_DataDocNovo.Location = new System.Drawing.Point(533, 424);
+            this.datepicker_DataDocNovo.Name = "datepicker_DataDocNovo";
+            this.datepicker_DataDocNovo.Size = new System.Drawing.Size(100, 20);
+            this.datepicker_DataDocNovo.TabIndex = 42;
+            // 
             // FormImportaDocs_WF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(909, 518);
+            this.Controls.Add(this.datepicker_DataDocNovo);
             this.Controls.Add(this.DataGrid1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_Actualizar_WF);
-            this.Controls.Add(this.datepicker_DataDocNovo_WF);
             this.Controls.Add(this.datepicker_DataDocImportar_WF);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -166,12 +166,12 @@ namespace PP_PPCS
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btn_Actualizar_WF;
-        private System.Windows.Forms.DateTimePicker datepicker_DataDocNovo_WF;
         private System.Windows.Forms.DateTimePicker datepicker_DataDocImportar_WF;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btn_Sair_WF;
         private System.Windows.Forms.Button btn_Processar_WF;
         private System.Windows.Forms.DataGridView DataGrid1;
+        private System.Windows.Forms.DateTimePicker datepicker_DataDocNovo;
     }
 }

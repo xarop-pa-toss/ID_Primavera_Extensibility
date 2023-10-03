@@ -37,7 +37,7 @@ namespace PP_PPCS
             //prigrelha_Docs_WF.Inicializa(Motor.PriEngine.PriSDKContexto);
 
             datepicker_DataDocImportar_WF.Value = DateTime.Now;
-            datepicker_DataDocNovo_WF.Value = DateTime.Now;
+            datepicker_DataDocNovo.Value = DateTime.Now;
 
             QueriesSQL.AbrirSQL();
             //InicializarPriGrelhaDocs();
@@ -265,9 +265,10 @@ namespace PP_PPCS
         private void btn_Processar_WF_Click(object sender, EventArgs e)
         {
             bool Cancel = false;
-            DateTime dataNovo = datepicker_DataDocNovo_WF.Value;
+            string datanova = datepicker_DataDocNovo.Text;
+            DateTime dataNovo = datepicker_DataDocNovo.Value;
 
-            _dataDestino = datepicker_DataDocNovo_WF.Value;
+            _dataDestino = datepicker_DataDocNovo.Value;
 
             for (int i = 0; i < _RSet.Rows.Count; i++) {
                 if (Cancel == true) { return; }
@@ -306,9 +307,9 @@ namespace PP_PPCS
             this.Dispose();
         }
 
-        private void datepicker_DataDocImportar_WF_Leave(object sender, EventArgs e)
+        private void datepicker_DataDocImportar_WF_ValueChanged(object sender, EventArgs e)
         {
-            datepicker_DataDocNovo_WF.Value = datepicker_DataDocImportar_WF.Value;
+            datepicker_DataDocNovo.Value = datepicker_DataDocImportar_WF.Value;
         }
 
         private void btn_Actualizar_WF_Click(object sender, EventArgs e)
@@ -318,7 +319,7 @@ namespace PP_PPCS
             QueriesSQL.FecharSQL();
 
             _dataDestino = _dataOrigem;
-            datepicker_DataDocNovo_WF = datepicker_DataDocImportar_WF;
+            datepicker_DataDocNovo = datepicker_DataDocImportar_WF;
 
             btn_Processar_WF.Focus();
         }

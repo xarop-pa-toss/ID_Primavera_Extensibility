@@ -252,7 +252,7 @@ namespace PP_PPCS
             string Importa = linha["Importa"].ToString();
 
             docNovo = _BSO.Vendas.Documentos.Edita(FilialDest, TipoDocDest, SerieDest, NumDocDest);
-            Cancelar = false;
+            Cancelar = false; 
             Cancel = false;
             _BSO.IniciaTransaccao();
 
@@ -333,11 +333,13 @@ namespace PP_PPCS
                         _PSO.MensagensDialogos.MostraAviso($"A entidade {Entidade} no documento {TipoDoc} N.º{NumDoc}/{Serie} não possui entidade local correspondente." +
                             $"Este documento não vai ser importado!", StdBSTipos.IconId.PRI_Critico);
                         Cancel = true;
+                        TransaccaoHandler(Cancel);
                     } else {
                         if (!_BSO.Base.Series.Existe("V", TipoDocDest, Serie)) {
                             _PSO.MensagensDialogos.MostraAviso($"A série do documento {TipoDoc} N.º{NumDoc}/{Serie} não está criada localmente." +
                             $"Este documento não vai ser importado!", StdBSTipos.IconId.PRI_Critico);
                             Cancel = true;
+                            TransaccaoHandler(Cancel);
                         } else {
                             // Verificar se documento de destino existe.
                             // Se sim, anula liquidação e abre documento para ser editado. Se não, cria um novo.
