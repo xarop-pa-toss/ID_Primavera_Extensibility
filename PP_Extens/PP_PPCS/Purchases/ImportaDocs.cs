@@ -512,6 +512,12 @@ namespace PP_PPCS
 
                                     TransaccaoHandler(Cancel);
                                 }
+                                else
+                                {
+                                    _PSO.MensagensDialogos.MostraAviso("Erro ao introduzir linhas no ficheiro " + docNovo.Tipodoc + " "+ docNovo.Serie + "/" + docNovo.NumDoc, StdBSTipos.IconId.PRI_Exclama, strErro);
+                                    TransaccaoHandler(true);
+                                    return;
+                                }
                                 #endregion
                             }
 
