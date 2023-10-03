@@ -267,6 +267,7 @@ namespace PP_PPCS
             bool Cancel = false;
             string datanova = datepicker_DataDocNovo.Text;
             DateTime dataNovo = datepicker_DataDocNovo.Value;
+            DateTime data3 = dateTimePicker1.Value;
 
             _dataDestino = datepicker_DataDocNovo.Value;
 
@@ -319,7 +320,6 @@ namespace PP_PPCS
             QueriesSQL.FecharSQL();
 
             _dataDestino = _dataOrigem;
-            datepicker_DataDocNovo = datepicker_DataDocImportar_WF;
 
             btn_Processar_WF.Focus();
         }

@@ -38,6 +38,7 @@ namespace PP_PPCS
             this.btn_Processar_WF = new System.Windows.Forms.Button();
             this.DataGrid1 = new System.Windows.Forms.DataGridView();
             this.datepicker_DataDocNovo = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGrid1)).BeginInit();
             this.SuspendLayout();
@@ -135,11 +136,19 @@ namespace PP_PPCS
             this.datepicker_DataDocNovo.Size = new System.Drawing.Size(100, 20);
             this.datepicker_DataDocNovo.TabIndex = 42;
             // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(533, 450);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker1.TabIndex = 43;
+            // 
             // FormImportaDocs_WF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(909, 518);
+            this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.datepicker_DataDocNovo);
             this.Controls.Add(this.DataGrid1);
             this.Controls.Add(this.groupBox1);
@@ -173,5 +182,6 @@ namespace PP_PPCS
         private System.Windows.Forms.Button btn_Processar_WF;
         private System.Windows.Forms.DataGridView DataGrid1;
         private System.Windows.Forms.DateTimePicker datepicker_DataDocNovo;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
     }
 }
