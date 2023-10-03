@@ -552,7 +552,7 @@ namespace PP_PPCS
                                 TransaccaoHandler(Cancel);
 
                                 docLiq.Dispose();
-
+                                
                                 #region PossivelBugFix
                                 // No código da V9 existe um bloco aqui que corrige um suposto bug que não actualiza o numerador dos documentos.
                                 // Query original traduzida: $"UPDATE SeriesCCT SET Numerador = (SELECT Max(NumDoc) FROM CabLiq WHERE Filial = N'{fl}' AND TipoDoc = N'{tdl}' AND Serie = N'{sl})'";
