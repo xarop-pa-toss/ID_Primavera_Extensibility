@@ -118,7 +118,7 @@ namespace PP_PPCS.Sales
                             DocVenda.Matricula = cli.CamposUtil["CDU_MatriculaHabitual"].Valor.ToString();
                         }
 
-                        PSO.Dialogos.MostraDialogoInput(ref matricula, "Matricula", "Matricula da Viatura", strValorDefeito: DocVenda.Matricula);
+                        PSO.MensagensDialogos.MostraDialogoInput(ref matricula, "Matricula", "Matricula da Viatura", strValorDefeito: DocVenda.Matricula);
                         DocVenda.Matricula = matricula;
 
                         cli.Dispose();

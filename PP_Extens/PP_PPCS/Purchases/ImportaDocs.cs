@@ -404,7 +404,7 @@ namespace PP_PPCS
 
                                 docNovo.HoraDefinida = true;
                                 docNovo.DataDoc = DataDoc;
-                                docNovo.DataHoraCarga = DataDoc.AddSeconds(1);
+                                docNovo.DataHoraCarga = DataDoc.AddMinutes(1);
                                 docNovo.DescEntidade = RSet.Valor("DescEntidade");
                                 docNovo.DescFinanceiro = RSet.Valor("DescPag");
                                 docNovo.Responsavel = RSet.Valor("RespCobranca");
