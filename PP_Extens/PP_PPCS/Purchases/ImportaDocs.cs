@@ -189,7 +189,8 @@ namespace PP_PPCS
                                 StdBSTipos.IconId.PRI_Exclama,
                                 $"Artigo: {RSet.Valor("Artigo")} - {RSet.Valor("Descricao")}");
                             Cancel = true;
-                            return;
+
+                            TransaccaoHandler(Cancel);
                         }
 
                         RSet.Seguinte();
@@ -646,6 +647,7 @@ namespace PP_PPCS
                 if (Cancel)
                 {
                     _BSO.DesfazTransaccao();
+                    return;
                 } else
                 {
                     _BSO.TerminaTransaccao();
