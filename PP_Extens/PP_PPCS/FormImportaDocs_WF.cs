@@ -251,8 +251,8 @@ namespace PP_PPCS
 
         private void ActualizarDataGrid(DateTime dataImport)
         {
-            // Ver QueriesSQL.cs
-            QueriesSQL.GerarTabela(_tabela, dataImport.ToString());
+            // Se o programa não conseguir criar e popular a tabela temporária, termina programa com uma mensagem de erro.
+            if (!QueriesSQL.GerarTabela(_tabela, dataImport.ToString())) { QueriesSQL.FecharSQL(); return; }
 
             _RSet = _BSO.ConsultaDataTable(QueriesSQL.GetQuery03(_tabela));
             DataGrid1.DataSource = _RSet;

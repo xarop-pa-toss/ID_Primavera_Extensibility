@@ -34,7 +34,7 @@
             // lbl_QueryStatus
             // 
             this.lbl_QueryStatus.AutoSize = true;
-            this.lbl_QueryStatus.Location = new System.Drawing.Point(26, 31);
+            this.lbl_QueryStatus.Location = new System.Drawing.Point(26, 35);
             this.lbl_QueryStatus.Name = "lbl_QueryStatus";
             this.lbl_QueryStatus.Size = new System.Drawing.Size(35, 13);
             this.lbl_QueryStatus.TabIndex = 0;
@@ -44,10 +44,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(269, 124);
+            this.ClientSize = new System.Drawing.Size(389, 82);
             this.Controls.Add(this.lbl_QueryStatus);
             this.Name = "FormQueryStatus_WF";
-            this.Text = "QueryStatusForm";
+            this.Text = "A ler base de dados...";
             this.Load += new System.EventHandler(this.FormQueryStatus_WF_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
