@@ -16,5 +16,15 @@ namespace PP_PPCS
         {
             InitializeComponent();
         }
+
+        private void FormQueryStatus_WF_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        public void SetStatus(string status) 
+        {
+            lbl_QueryStatus.Text = status;
+        }
     }
 }

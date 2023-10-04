@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms; using ErpBS100; using StdPlatBS100; using StdBE100; using VndBE100;
 using System.Security.Cryptography;
+using BasBE100;
 
 namespace PP_PPCS
 {
