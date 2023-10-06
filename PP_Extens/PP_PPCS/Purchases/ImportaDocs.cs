@@ -617,7 +617,7 @@ namespace PP_PPCS
         private void AdicionaLinhaCompra(StdBELista RSet, CmpBEDocumentoCompra docNovo, string tipoArtigo)
         {
             double quantidade = Math.Abs((double)RSet.Valor("Quantidade"));
-            double taxa = _BSO.Base.Iva.DaValorAtributo("6", "Taxa");
+            double taxa = _BSO.Base.Iva.DaValorAtributo("6", "Taxa") == null ? 0 : taxa;
             string armazem = RSet.Valor("Armazem");
             string localizacao = RSet.Valor("Localizacao");
 
