@@ -617,12 +617,13 @@ namespace PP_PPCS
         private void AdicionaLinhaCompra(StdBELista RSet, CmpBEDocumentoCompra docNovo, string tipoArtigo)
         {
             double quantidade = Math.Abs((double)RSet.Valor("Quantidade"));
+            double taxa = _BSO.Base.Iva.DaValorAtributo("6", "Taxa");
             string armazem = RSet.Valor("Armazem");
             string localizacao = RSet.Valor("Localizacao");
 
             _BSO.Compras.Documentos.AdicionaLinha(
                 docNovo,
-                RSet.Valor(tipoArtigo),
+                RSet.Valor(tipoArtigo).ToString(),
                 ref quantidade,
                 ref armazem,
                 ref localizacao,
@@ -633,7 +634,7 @@ namespace PP_PPCS
                 InverterSeNegativo(RSet.Valor("DescEntidade") == null ? 0 : RSet.Valor("DescEntidade")),
                 InverterSeNegativo(RSet.Valor("DescPag") == null ? 0 : RSet.Valor("DescPag")),
                 0, 0, false, false,
-                _BSO.Base.Iva.DaValorAtributo("6", "Taxa")
+                ref taxa
             );
 
             CmpBELinhaDocumentoCompra ultimaLinha = docNovo.Linhas.GetEdita(docNovo.Linhas.NumItens);
