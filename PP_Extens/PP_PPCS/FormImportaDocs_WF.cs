@@ -19,6 +19,7 @@ namespace PP_PPCS
         private DateTime _dataOrigem, _dataDestino;
         private DataTable _RSet;
         private string _tabela = "A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
+        private QueriesSQL queriesSQL;
 
         public FormImportaDocs_WF()
         {
@@ -27,11 +28,6 @@ namespace PP_PPCS
 
         private void FormImportaDocs_WF_Load(object sender, EventArgs e)
         {
-            // ALTERAR AQUI AMBIENTE A USAR
-            // 'teste' ou 'prod'
-            string ambiente = "teste";
-            new QueriesSQL(ambiente);
-
             Motor.PriEngine.CreateContext("PRIPPCS", "id", "*Pelicano*");
             _BSO = Motor.PriEngine.Engine;
             _PSO = Motor.PriEngine.Platform;
@@ -40,14 +36,13 @@ namespace PP_PPCS
             datepicker_DataDocImportar_WF.Value = DateTime.Now;
             datepicker_DataDocNovo.Value = DateTime.Now;
 
-            QueriesSQL.AbrirSQL();
             //InicializarPriGrelhaDocs();
             InicializarDataGrid(datepicker_DataDocImportar_WF.Value);
         }
         
         private void FormImportaDocs_WF_FormClosing(object sender, FormClosingEventArgs e)
         {
-            QueriesSQL.FecharSQL();
+            queriesSQL.FecharSQL();
         }
 
 
@@ -251,15 +246,21 @@ namespace PP_PPCS
 
         private void ActualizarDataGrid(DateTime dataImport)
         {
-            QueriesSQL queriesSQL = new QueriesSQL("teste");
+            // ALTERAR AQUI AMBIENTE A USAR
+            // 'teste' ou 'prod'
+            string ambiente = "teste";
+            queriesSQL = new QueriesSQL(ambiente);
+
+            queriesSQL.AbrirSQL();
+
             // Se o programa não conseguir criar e popular a tabela temporária, termina programa com uma mensagem de erro.
-            if (!queriesSQL.GerarTabela(_tabela, dataImport.ToString())) { QueriesSQL.FecharSQL(); return; }
+            if (!queriesSQL.GerarTabela(_tabela, dataImport.ToString())) { queriesSQL.FecharSQL(); return; }
 
             _RSet = _BSO.ConsultaDataTable(QueriesSQL.GetQuery03(_tabela));
             DataGrid1.DataSource = _RSet;
 
             queriesSQL.OperacoesTabela("DROP", _tabela);
-            QueriesSQL.FecharSQL();
+            queriesSQL.FecharSQL();
         }
 
 
@@ -304,7 +305,7 @@ namespace PP_PPCS
 
         private void btn_Sair_WF_Click(object sender, EventArgs e)
         {
-            QueriesSQL.FecharSQL();
+            queriesSQL.FecharSQL();
             this.Close();
             this.Dispose();
         }
@@ -316,9 +317,7 @@ namespace PP_PPCS
 
         private void btn_Actualizar_WF_Click(object sender, EventArgs e)
         {
-            QueriesSQL.AbrirSQL();
             ActualizarDataGrid(datepicker_DataDocImportar_WF.Value);
-            QueriesSQL.FecharSQL();
 
             _dataDestino = _dataOrigem;
 
