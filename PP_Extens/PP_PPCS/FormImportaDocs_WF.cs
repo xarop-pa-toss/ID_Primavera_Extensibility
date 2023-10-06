@@ -251,13 +251,14 @@ namespace PP_PPCS
 
         private void ActualizarDataGrid(DateTime dataImport)
         {
+            QueriesSQL queriesSQL = new QueriesSQL("teste");
             // Se o programa não conseguir criar e popular a tabela temporária, termina programa com uma mensagem de erro.
-            if (!QueriesSQL.GerarTabela(_tabela, dataImport.ToString())) { QueriesSQL.FecharSQL(); return; }
+            if (!queriesSQL.GerarTabela(_tabela, dataImport.ToString())) { QueriesSQL.FecharSQL(); return; }
 
             _RSet = _BSO.ConsultaDataTable(QueriesSQL.GetQuery03(_tabela));
             DataGrid1.DataSource = _RSet;
 
-            QueriesSQL.OperacoesTabela("DROP", _tabela);
+            queriesSQL.OperacoesTabela("DROP", _tabela);
             QueriesSQL.FecharSQL();
         }
 
