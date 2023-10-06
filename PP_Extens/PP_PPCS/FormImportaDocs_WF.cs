@@ -257,7 +257,7 @@ namespace PP_PPCS
             _RSet = _BSO.ConsultaDataTable(QueriesSQL.GetQuery03(_tabela));
             DataGrid1.DataSource = _RSet;
 
-            QueriesSQL.OperacoesTabela(_tabela, "DROP");
+            QueriesSQL.OperacoesTabela("DROP", _tabela);
             QueriesSQL.FecharSQL();
         }
 
