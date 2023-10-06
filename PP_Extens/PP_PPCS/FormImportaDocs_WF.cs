@@ -18,7 +18,6 @@ namespace PP_PPCS
         private StdPlatBS _PSO;
         private DateTime _dataOrigem, _dataDestino;
         private DataTable _RSet;
-        private string _tabela = "A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
         private QueriesSQL queriesSQL;
 
         public FormImportaDocs_WF()
@@ -246,12 +245,14 @@ namespace PP_PPCS
 
         private void ActualizarDataGrid(DateTime dataImport)
         {
+            string _tabela = "A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
+
             // ALTERAR AQUI AMBIENTE A USAR
             // 'teste' ou 'prod'
             string ambiente = "teste";
             queriesSQL = new QueriesSQL(ambiente);
 
-            queriesSQL.AbrirSQL();
+            queriesSQL.AbrirSQL(); 
 
             // Se o programa não conseguir criar e popular a tabela temporária, termina programa com uma mensagem de erro.
             if (!queriesSQL.GerarTabela(_tabela, dataImport.ToString())) { queriesSQL.FecharSQL(); return; }
