@@ -577,7 +577,7 @@ namespace PP_PPCS
             }
             // Fim de DocumentoVenda
             TransaccaoHandler(Cancel);
-            docNovo.Dispose();
+            if (docNovo != null) { docNovo.Dispose(); }
         }
 
 

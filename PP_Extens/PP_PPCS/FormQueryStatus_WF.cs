@@ -25,6 +25,7 @@ namespace PP_PPCS
         public void SetStatus(string status) 
         {
             lbl_QueryStatus.Text = status;
+            lbl_QueryStatus.Refresh();
         }
     }
 }
