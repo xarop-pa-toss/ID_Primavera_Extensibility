@@ -548,9 +548,12 @@ namespace PP_PPCS
                                     ref valorRecMLiq,
                                     ref valorDescMLiq, 0);
 
-                                _BSO.PagamentosRecebimentos.Liquidacoes.Actualiza(docLiq);
-                                TransaccaoHandler(Cancel);
+                                if (_BSO.PagamentosRecebimentos.Liquidacoes.ValidaActualizacao(docLiq, ref strErro))
+                                {
+                                    _BSO.PagamentosRecebimentos.Liquidacoes.Actualiza(docLiq);
+                                }
 
+                                TransaccaoHandler(Cancel);
                                 docLiq.Dispose();
                                 
                                 #region PossivelBugFix
