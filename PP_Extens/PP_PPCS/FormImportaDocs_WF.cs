@@ -268,10 +268,7 @@ namespace PP_PPCS
         private void btn_Processar_WF_Click(object sender, EventArgs e)
         {
             bool Cancel = false;
-            string datanova = datepicker_DataDocNovo.Text;
             DateTime dataNovo = datepicker_DataDocNovo.Value;
-            DateTime data3 = dateTimePicker1.Value;
-
             _dataDestino = datepicker_DataDocNovo.Value;
 
             for (int i = 0; i < _RSet.Rows.Count; i++) {
