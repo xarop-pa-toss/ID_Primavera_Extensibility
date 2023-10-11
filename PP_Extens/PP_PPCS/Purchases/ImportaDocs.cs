@@ -473,7 +473,10 @@ namespace PP_PPCS
                                     Descricao: "Cópia do documento original");
 
                                 #region GRAVAR DOCUMENTO VENDA
-                                if (_BSO.Vendas.Documentos.ValidaActualizacao(docNovo, _BSO.Vendas.TabVendas.Edita(docNovo.Tipodoc), ref SerieDest, ref strErro))
+                                strErro = "";
+                                _BSO.Vendas.Documentos.ValidaActualizacao(docNovo, _BSO.Vendas.TabVendas.Edita(docNovo.Tipodoc), ref SerieDest, ref strErro);
+
+                                if (strErro == "")
                                 {
                                     _BSO.Vendas.Documentos.Actualiza(docNovo);
 
@@ -514,7 +517,7 @@ namespace PP_PPCS
                                 }
                                 else
                                 {
-                                    _PSO.MensagensDialogos.MostraAviso("Erro ao introduzir linhas no ficheiro " + docNovo.Tipodoc + " "+ docNovo.Serie + "/" + docNovo.NumDoc, StdBSTipos.IconId.PRI_Exclama, strErro);
+                                    _PSO.MensagensDialogos.MostraAviso("Erro ao gravar documento " + docNovo.Tipodoc + " "+ docNovo.Serie + "/" + docNovo.NumDoc, StdBSTipos.IconId.PRI_Exclama, strErro);
                                     TransaccaoHandler(true);
                                     return;
                                 }
