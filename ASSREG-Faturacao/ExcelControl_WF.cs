@@ -164,7 +164,7 @@ namespace ASRLB_ImportacaoFatura
 
                     // *** FIX ***
                     // Pela logica do programa, ele nunca irá processar a última linha. Por isso duplica-se a última linha para ficar certo
-                    DtTableBuffer.Rows.Add(DtTableBuffer.Rows[DtTableBuffer.Rows.Count]);
+                    DtTableBuffer.Rows.Add(DtTableBuffer.Rows[DtTableBuffer.Rows.Count - 1]);
 
                     DataSet DtSetFinal = new DataSet();
                     DtSetFinal.Tables.Add(DtTableBuffer);

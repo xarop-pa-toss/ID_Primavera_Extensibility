@@ -86,7 +86,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // Carrega TDUs das Taxas Penalizadoras no arranque
             StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
             StdBELista listaTaxa_PP = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP';");
-            StdBELista listaTaxa_ANA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora W<HERE CDU_Cultura = 'ANA';");
+            StdBELista listaTaxa_ANA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'ANA';");
             StdBELista listaTaxa_CA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'CA';");
             //StdBELista listaTaxa_PD_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD_Be';");
             //StdBELista listaTaxa_PP_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP_Be';");
@@ -272,12 +272,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
         private void formFaturasExploracao_WF_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (BSO.EmTransaccao()) { BSO.DesfazTransaccao(); }
 
-            BSO.Dispose();
-            linhaDict.Clear();
-            _escaloes.Clear();
-            _escaloesArroz.Clear();
         }
 
         private void ProcessarLinha(VndBEDocumentoVenda DocVenda, string comPenalizacao)
