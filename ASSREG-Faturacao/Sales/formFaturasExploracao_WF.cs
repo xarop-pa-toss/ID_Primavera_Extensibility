@@ -86,7 +86,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // Carrega TDUs das Taxas Penalizadoras no arranque
             StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
             StdBELista listaTaxa_PP = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP';");
-            StdBELista listaTaxa_ANA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'ANA';");
+            StdBELista listaTaxa_ANA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora W<HERE CDU_Cultura = 'ANA';");
             StdBELista listaTaxa_CA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'CA';");
             //StdBELista listaTaxa_PD_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD_Be';");
             //StdBELista listaTaxa_PP_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP_Be';");
@@ -355,7 +355,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 {
                     BSO.Vendas.Documentos.Actualiza(DocVenda, ref strAvisos, ref strErro);
                     if (strErro != "") { _comErro = true; return strErro; }
-                    listBoxErros_WF.Items.Add(String.Format("Benef {0} - {1} contador(es) na Fatura {2}.", DocVenda.Entidade, _countContador + 1, DocVenda.NumDoc));
+                    listBoxErros_WF.Items.Add(String.Format("Benef {0} - {1} contador(es) no documento {2}/{3}.", DocVenda.Entidade, _countContador + 1, DocVenda.Serie, DocVenda.NumDoc));
                     listBoxErros_WF.SelectedIndex = listBoxErros_WF.Items.Count - 1;
                     return "";
                 }
