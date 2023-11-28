@@ -502,20 +502,24 @@ namespace ASRLB_ImportacaoFatura.Sales
         private void CalcRegantes_TaxaRecursosHidricos(string cultura)
         {
             double reducao25 = 0.25;
-            double agravamento = 1.2;
             double reducao90 = 0.9;
+            double agravamento = 1.2;
             double TRH_U, TRH_A;
 
+            // ** TDU_TRH NÃO ESTÁ CRIADA **
             // TRH de base está na TDU_TRH para que cliente a possa alterar
             double baseTRH_U = 0, baseTRH_A = 0;
 
-            using (StdBELista trh = BSO.Consulta("SELECT MAX(CDU_TRH_U) FROM TDU_TRH")) {
-                baseTRH_U = Convert.ToDouble(trh.Valor(0));
-            }
+            //using (StdBELista trh = BSO.Consulta("SELECT MAX(CDU_TRH_U) FROM TDU_TRH")) {
+            //    baseTRH_U = Convert.ToDouble(trh.Valor(0));
+            //}
 
-            using (StdBELista trh = BSO.Consulta("SELECT MAX(CDU_TRH_A) FROM TDU_TRH")) {
-                baseTRH_A = Convert.ToDouble(trh.Valor(0));
-            }
+            //using (StdBELista trh = BSO.Consulta("SELECT MAX(CDU_TRH_A) FROM TDU_TRH")) {
+            //    baseTRH_A = Convert.ToDouble(trh.Valor(0));
+            //}
+
+            baseTRH_U = 0.000774;
+            baseTRH_A = 0.0038;
 
             double consumoTotal = Convert.ToDouble(_consumoTotal);
             if (_consumo2022 != 0) { consumoTotal += _consumo2022; }

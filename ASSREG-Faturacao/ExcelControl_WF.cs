@@ -163,8 +163,10 @@ namespace ASRLB_ImportacaoFatura
                     }
 
                     // *** FIX ***
-                    // Pela logica do programa, ele nunca irá processar a última linha. Por isso duplica-se a última linha para ficar certo
-                    DtTableBuffer.Rows.Add(DtTableBuffer.Rows[DtTableBuffer.Rows.Count - 1]);
+                    // Pela logica do programa, ele nunca irá processar a última linha. Como solução duplica-se a última linha para ficar certo
+                    DataRow ultimaLinhaDuplicada = DtTableBuffer.NewRow();
+                    ultimaLinhaDuplicada.ItemArray = DtTableBuffer.Rows[DtTableBuffer.Rows.Count - 1].ItemArray;
+                    DtTableBuffer.Rows.Add(ultimaLinhaDuplicada);
 
                     DataSet DtSetFinal = new DataSet();
                     DtSetFinal.Tables.Add(DtTableBuffer);
