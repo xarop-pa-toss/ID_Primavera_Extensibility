@@ -350,7 +350,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 {
                     BSO.Vendas.Documentos.Actualiza(DocVenda, ref strAvisos, ref strErro);
                     if (strErro != "") { _comErro = true; return strErro; }
-                    listBoxErros_WF.Items.Add(String.Format("Benef {0} - {1} contador(es) no documento {2}/{3}.", DocVenda.Entidade, _countContador + 1, DocVenda.Serie, DocVenda.NumDoc));
+                    listBoxErros_WF.Items.Add(String.Format("Benef {0} - {1} contador(es) no documento {2} {3}/{4}.", DocVenda.Entidade, _countContador + 1, DocVenda.Tipodoc, DocVenda.Serie, DocVenda.NumDoc));
                     listBoxErros_WF.SelectedIndex = listBoxErros_WF.Items.Count - 1;
                     return "";
                 }
