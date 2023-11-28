@@ -299,7 +299,7 @@ namespace PP_PPCS
 
                        _BSO.Vendas.Documentos.PreencheDadosRelacionados(docNovo, ref vdDadosTodos);
 
-                        if (_BSO.Vendas.Documentos.ValidaActualizacao(docNovo, BSO.Vendas.TabVendas.Edita(docNovo.Tipodoc), ref SerieDest, ref strErro))
+                        if (_BSO.Vendas.Documentos.ValidaActualizacao(docNovo, _BSO.Vendas.TabVendas.Edita(docNovo.Tipodoc), ref SerieDest, ref strErro))
                         _BSO.Vendas.Documentos.Actualiza(docNovo);
 
                         if (_BSO.PagamentosRecebimentos.Liquidacoes.DaDocLiquidacao(FilialDest, "V", TipoDocDest, SerieDest, NumDocDest, ref fl, ref tdl, ref sl, ref ndl)) {
@@ -327,7 +327,6 @@ namespace PP_PPCS
                     break;
 
                 case "S": // Importar o documento
-
                     // Verificar se a entidade já existe
                     if (!_BSO.Base.Clientes.Existe(EntLocal)) {
                         _PSO.MensagensDialogos.MostraAviso($"A entidade {Entidade} no documento {TipoDoc} N.º{NumDoc}/{Serie} não possui entidade local correspondente." +
