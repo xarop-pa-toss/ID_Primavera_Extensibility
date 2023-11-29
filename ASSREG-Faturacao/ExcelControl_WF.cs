@@ -121,7 +121,7 @@ namespace ASRLB_ImportacaoFatura
                         cmdTotalLinhas.Dispose();
 
                         // Get linhas da folha. Preenche adapter
-                        string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + nomeFolha + "A6:R" + (linhasTotal + 5) + "];";
+                        string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + nomeFolha + "A6:R" + (linhasTotal-4) + "];";
                         cmdConteudoLinha = new OleDb.OleDbCommand(query, Ligacao);
                         Adapter = new OleDb.OleDbDataAdapter();
 

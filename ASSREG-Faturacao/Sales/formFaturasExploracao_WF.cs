@@ -81,8 +81,9 @@ namespace ASRLB_ImportacaoFatura.Sales
             //}
 
             // *** ABRIR EMPRESA ***
-            // *** ASS REG SERVIDOR *** GetEmpresa.codEmpresa
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, "0012004", "faturacao", "*Pelicano*");
+            // *** ASS REG SERVIDOR ***
+            string empresa = GetEmpresa.codEmpresa;
+            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, empresa, "faturacao", "*Pelicano*");
             // Carrega TDUs das Taxas Penalizadoras no arranque
             StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
             StdBELista listaTaxa_PP = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP';");
@@ -359,8 +360,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             catch (Exception e) { _comErro = true; return e.ToString(); }
         }
 
-
-        // CALCULOS 
+        // CALCULOS
         private void CalcRegantes(string comPenalizacao)
         {
             _cultura = linhaDict["Cultura"];
@@ -504,11 +504,11 @@ namespace ASRLB_ImportacaoFatura.Sales
             double reducao25 = 0.25;
             double reducao90 = 0.9;
             double agravamento = 1.2;
-            double TRH_U, TRH_A;
+            double TRH_U, TRH_A, baseTRH_U, baseTRH_A;
 
             // ** TDU_TRH NÃO ESTÁ CRIADA **
             // TRH de base está na TDU_TRH para que cliente a possa alterar
-            double baseTRH_U = 0, baseTRH_A = 0;
+            //double baseTRH_U = 0, baseTRH_A = 0;
 
             //using (StdBELista trh = BSO.Consulta("SELECT MAX(CDU_TRH_U) FROM TDU_TRH")) {
             //    baseTRH_U = Convert.ToDouble(trh.Valor(0));
@@ -544,7 +544,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             // Adição de TRH_A e TRH_U
             linhaDict["TRHValor"] = (TRH_U + TRH_A).ToString();
         }
-
 
         // SUPORTE
         private int MesmoContadorBenef(DataTable DtTable, int i)

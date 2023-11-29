@@ -7,6 +7,10 @@ namespace ASRLB_ImportacaoFatura.Sales
     {
         public static string codEmpresa { get; private set; }
 
+        public GetEmpresa()
+        {
+        }
+
         public override void DepoisDeAbrirEmpresa(ExtensibilityEventArgs e)
         {
             base.DepoisDeAbrirEmpresa(e);
