@@ -35,15 +35,15 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.listBoxFicheiros_WF = new System.Windows.Forms.ListBox();
             this.btnRemover_WF = new System.Windows.Forms.Button();
             this.btnLimparLista_WF = new System.Windows.Forms.Button();
-            this.cBoxPenalizacao = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.cBoxTipoFatura = new System.Windows.Forms.ComboBox();
+            this.checkBox_Benaciate = new System.Windows.Forms.CheckBox();
+            this.checkBox_Penalizacao = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnEscolherFicheiro_WF
             // 
-            this.btnEscolherFicheiro_WF.Location = new System.Drawing.Point(622, 12);
+            this.btnEscolherFicheiro_WF.Location = new System.Drawing.Point(621, 27);
             this.btnEscolherFicheiro_WF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEscolherFicheiro_WF.Name = "btnEscolherFicheiro_WF";
             this.btnEscolherFicheiro_WF.Size = new System.Drawing.Size(133, 36);
@@ -54,7 +54,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // 
             // btnConfirmar_WF
             // 
-            this.btnConfirmar_WF.Location = new System.Drawing.Point(656, 542);
+            this.btnConfirmar_WF.Location = new System.Drawing.Point(656, 563);
             this.btnConfirmar_WF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnConfirmar_WF.Name = "btnConfirmar_WF";
             this.btnConfirmar_WF.Size = new System.Drawing.Size(99, 31);
@@ -68,7 +68,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.listBoxErros_WF.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxErros_WF.FormattingEnabled = true;
             this.listBoxErros_WF.ItemHeight = 17;
-            this.listBoxErros_WF.Location = new System.Drawing.Point(13, 192);
+            this.listBoxErros_WF.Location = new System.Drawing.Point(13, 213);
             this.listBoxErros_WF.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxErros_WF.Name = "listBoxErros_WF";
             this.listBoxErros_WF.Size = new System.Drawing.Size(741, 344);
@@ -80,7 +80,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.listBoxFicheiros_WF.FormattingEnabled = true;
             this.listBoxFicheiros_WF.HorizontalScrollbar = true;
             this.listBoxFicheiros_WF.ItemHeight = 17;
-            this.listBoxFicheiros_WF.Location = new System.Drawing.Point(13, 56);
+            this.listBoxFicheiros_WF.Location = new System.Drawing.Point(13, 77);
             this.listBoxFicheiros_WF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBoxFicheiros_WF.Name = "listBoxFicheiros_WF";
             this.listBoxFicheiros_WF.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
@@ -89,7 +89,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // 
             // btnRemover_WF
             // 
-            this.btnRemover_WF.Location = new System.Drawing.Point(667, 139);
+            this.btnRemover_WF.Location = new System.Drawing.Point(667, 160);
             this.btnRemover_WF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnRemover_WF.Name = "btnRemover_WF";
             this.btnRemover_WF.Size = new System.Drawing.Size(87, 31);
@@ -100,7 +100,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // 
             // btnLimparLista_WF
             // 
-            this.btnLimparLista_WF.Location = new System.Drawing.Point(553, 139);
+            this.btnLimparLista_WF.Location = new System.Drawing.Point(553, 160);
             this.btnLimparLista_WF.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnLimparLista_WF.Name = "btnLimparLista_WF";
             this.btnLimparLista_WF.Size = new System.Drawing.Size(108, 31);
@@ -109,30 +109,10 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.btnLimparLista_WF.UseVisualStyleBackColor = true;
             this.btnLimparLista_WF.Click += new System.EventHandler(this.btnLimparLista_WF_Click);
             // 
-            // cBoxPenalizacao
-            // 
-            this.cBoxPenalizacao.FormattingEnabled = true;
-            this.cBoxPenalizacao.Items.AddRange(new object[] {
-            "Sim",
-            "Não"});
-            this.cBoxPenalizacao.Location = new System.Drawing.Point(533, 17);
-            this.cBoxPenalizacao.Name = "cBoxPenalizacao";
-            this.cBoxPenalizacao.Size = new System.Drawing.Size(69, 21);
-            this.cBoxPenalizacao.TabIndex = 7;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(450, 20);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(68, 13);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "Penalização:";
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(260, 20);
+            this.label3.Location = new System.Drawing.Point(334, 23);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 13);
             this.label3.TabIndex = 11;
@@ -144,18 +124,41 @@ namespace ASRLB_ImportacaoFatura.Sales
             this.cBoxTipoFatura.Items.AddRange(new object[] {
             "FTE",
             "FTEVB"});
-            this.cBoxTipoFatura.Location = new System.Drawing.Point(339, 17);
+            this.cBoxTipoFatura.Location = new System.Drawing.Point(418, 20);
             this.cBoxTipoFatura.Name = "cBoxTipoFatura";
             this.cBoxTipoFatura.Size = new System.Drawing.Size(87, 21);
             this.cBoxTipoFatura.TabIndex = 12;
             // 
+            // checkBox_Benaciate
+            // 
+            this.checkBox_Benaciate.AutoSize = true;
+            this.checkBox_Benaciate.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox_Benaciate.Location = new System.Drawing.Point(534, 46);
+            this.checkBox_Benaciate.Name = "checkBox_Benaciate";
+            this.checkBox_Benaciate.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.checkBox_Benaciate.Size = new System.Drawing.Size(74, 17);
+            this.checkBox_Benaciate.TabIndex = 15;
+            this.checkBox_Benaciate.Text = "Benaciate";
+            this.checkBox_Benaciate.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_Penalizacao
+            // 
+            this.checkBox_Penalizacao.AutoSize = true;
+            this.checkBox_Penalizacao.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox_Penalizacao.Location = new System.Drawing.Point(524, 19);
+            this.checkBox_Penalizacao.Name = "checkBox_Penalizacao";
+            this.checkBox_Penalizacao.Size = new System.Drawing.Size(84, 17);
+            this.checkBox_Penalizacao.TabIndex = 16;
+            this.checkBox_Penalizacao.Text = "Penalização";
+            this.checkBox_Penalizacao.UseVisualStyleBackColor = true;
+            // 
             // formFaturasExploracao_WF
             // 
-            this.ClientSize = new System.Drawing.Size(767, 582);
+            this.ClientSize = new System.Drawing.Size(767, 601);
+            this.Controls.Add(this.checkBox_Penalizacao);
+            this.Controls.Add(this.checkBox_Benaciate);
             this.Controls.Add(this.cBoxTipoFatura);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.cBoxPenalizacao);
             this.Controls.Add(this.btnEscolherFicheiro_WF);
             this.Controls.Add(this.btnLimparLista_WF);
             this.Controls.Add(this.btnConfirmar_WF);
@@ -186,9 +189,9 @@ namespace ASRLB_ImportacaoFatura.Sales
         private System.Windows.Forms.ListBox listBoxFicheiros_WF;
         private System.Windows.Forms.Button btnRemover_WF;
         private System.Windows.Forms.Button btnLimparLista_WF;
-        private System.Windows.Forms.ComboBox cBoxPenalizacao;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cBoxTipoFatura;
+        private System.Windows.Forms.CheckBox checkBox_Benaciate;
+        private System.Windows.Forms.CheckBox checkBox_Penalizacao;
     }
 }

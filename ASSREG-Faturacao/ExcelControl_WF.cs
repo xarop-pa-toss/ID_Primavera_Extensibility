@@ -121,7 +121,7 @@ namespace ASRLB_ImportacaoFatura
                         cmdTotalLinhas.Dispose();
 
                         // Get linhas da folha. Preenche adapter
-                        string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + nomeFolha + "A6:R" + (linhasTotal-4) + "];";
+                        string query = "SELECT F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18 FROM [" + nomeFolha + "A6:R" + (linhasTotal + 5) + "];";
                         cmdConteudoLinha = new OleDb.OleDbCommand(query, Ligacao);
                         Adapter = new OleDb.OleDbDataAdapter();
 
@@ -196,7 +196,7 @@ namespace ASRLB_ImportacaoFatura
                         else if (!valoresValidos.Contains(processar) || !valoresValidos.Contains(TRH) || !valoresValidos.Contains(taxaPen))
                         { 
                             errosExcel.Add("Valor numa das colunas 'Processar', 'TRH', ou 'Taxa Penalizadora' no contador " + DtTable.Rows[lin].Field<string>("Nº Contador") + " não é valido.");
-                            continue; 
+                            continue;
                         }
 
                         if (DtTable.Rows[lin].Field<string>("Nº Contador") == null

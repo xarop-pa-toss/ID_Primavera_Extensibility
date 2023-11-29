@@ -84,11 +84,26 @@ namespace ASRLB_ImportacaoFatura.Sales
             // *** ASS REG SERVIDOR ***
             string empresa = GetEmpresa.codEmpresa;
             BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, empresa, "faturacao", "*Pelicano*");
+
+            // Get valores dos controlos do Form
+            var ficheiros = listBoxFicheiros_WF.Items;
+            bool comPenalizacao = checkBox_Penalizacao.Checked;
+            bool comBenaciate = checkBox_Benaciate.Checked;
+            string tipoFatura = cBoxTipoFatura.SelectedItem.ToString();
+
             // Carrega TDUs das Taxas Penalizadoras no arranque
-            StdBELista listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
-            StdBELista listaTaxa_PP = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP';");
-            StdBELista listaTaxa_ANA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'ANA';");
-            StdBELista listaTaxa_CA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'CA';");
+            StdBELista listaTaxa_PD, listaTaxa_PP, listaTaxa_ANA, listaTaxa_CA;
+            if (comBenaciate)
+            {
+                listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD_Be';");
+                listaTaxa_PP = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP_Be';");
+            } else
+            {
+                listaTaxa_PD = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD';");
+                listaTaxa_PP = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP';");
+            }
+            listaTaxa_ANA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'ANA';");
+            listaTaxa_CA = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'CA';");
             //StdBELista listaTaxa_PD_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PD_Be';");
             //StdBELista listaTaxa_PP_Benaciate = BSO.Consulta("SELECT * FROM TDU_TaxaPenalizadora WHERE CDU_Cultura = 'PP_Be';");
 
@@ -99,11 +114,6 @@ namespace ASRLB_ImportacaoFatura.Sales
             DictTaxa.Add("CA", listaTaxa_CA);
             //DictTaxa.Add("PD_Be", listaTaxa_PD_Benaciate);
             //DictTaxa.Add("PP_Be", listaTaxa_PP_Benaciate);
-
-            // Check se tipo de ficheiro (checkbox) é válido
-            var ficheiros = listBoxFicheiros_WF.Items;
-            string comPenalizacao = cBoxPenalizacao.SelectedItem.ToString();
-            string tipoFatura = cBoxTipoFatura.SelectedItem.ToString();
 
             foreach (string path in ficheiros)
             {
@@ -249,21 +259,30 @@ namespace ASRLB_ImportacaoFatura.Sales
 
         private void ProcessarCabecDoc(VndBEDocumentoVenda DocVenda, string tipoFatura)
         {
-            int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosTodos;
-            int vdDadosCondPag = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosCondPag;
+            try
+            {
+                int vdDadosTodos = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosTodos;
+                int vdDadosCondPag = (int)BasBETiposGcp.PreencheRelacaoVendas.vdDadosCondPag;
 
-            // Definir TipoDoc
-            DocVenda.Tipodoc = tipoFatura;
+                // Definir TipoDoc
+                DocVenda.Tipodoc = tipoFatura;
 
-            DocVenda.Serie = BSO.Base.Series.DaSerieDefeito("V", DocVenda.Tipodoc);
-            DocVenda.Entidade = linhaDict["Benef"];
-            DocVenda.TipoEntidade = "C";
-            BSO.Vendas.Documentos.PreencheDadosRelacionados(DocVenda, ref vdDadosTodos);
+                DocVenda.Serie = BSO.Base.Series.DaSerieDefeito("V", DocVenda.Tipodoc);
+                DocVenda.Entidade = linhaDict["Benef"];
+                DocVenda.TipoEntidade = "C";
+                BSO.Vendas.Documentos.PreencheDadosRelacionados(DocVenda, ref vdDadosTodos);
 
-            DocVenda.DataDoc = DateTime.Now;
-            DocVenda.HoraDefinida = false;
-            DocVenda.CondPag = "4";
-            BSO.Vendas.Documentos.PreencheDadosRelacionados(DocVenda, ref vdDadosCondPag);
+                DocVenda.DataDoc = DateTime.Now;
+                DocVenda.HoraDefinida = false;
+                DocVenda.CondPag = "4";
+                BSO.Vendas.Documentos.PreencheDadosRelacionados(DocVenda, ref vdDadosCondPag);
+            }
+            catch(Exception e)
+            {
+                if (BSO.EmTransaccao()) { BSO.DesfazTransaccao();}
+                ErroAoEmitir(e.ToString());
+            }
+
         }
 
         private void formFaturasExploracao_WF_Load(object sender, EventArgs e)
@@ -276,7 +295,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
         }
 
-        private void ProcessarLinha(VndBEDocumentoVenda DocVenda, string comPenalizacao)
+        private void ProcessarLinha(VndBEDocumentoVenda DocVenda, bool comPenalizacao)
         {
             // Linha 1 - Descrição com NºContador + Consumo Total
             // Linha 2 - Última leitura do ano passado + úlitma leitura feita este ano.
@@ -317,7 +336,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             }
         }
 
-        private void CriarLinhaConsumo(VndBEDocumentoVenda DocVenda, int escalao, string comPenalizacao)
+        private void CriarLinhaConsumo(VndBEDocumentoVenda DocVenda, int escalao, bool comPenalizacao)
         {
             double quantidade = Convert.ToDouble(linhaDict["Consumo" + escalao]);
             double precUnit = Convert.ToDouble(linhaDict["Taxa" + escalao]);
@@ -326,14 +345,12 @@ namespace ASRLB_ImportacaoFatura.Sales
             BSO.Vendas.Documentos.AdicionaLinha(DocVenda, "TE", ref quantidade, ref armazem, ref localizacao, precUnit);
 
             VndBELinhaDocumentoVenda linha = DocVenda.Linhas.GetEdita(_counterLinha);
-            if (comPenalizacao == "Sim")
+            if (comPenalizacao)
             {
                 linha.Quantidade = _consumoTotal;
             }
-            else if (comPenalizacao == "Não")
-            {
-                linha.Descricao = _escaloes[escalao];
-            }
+            
+            linha.Descricao = _escaloes[escalao];
             linha.Quantidade = Convert.ToDouble(linhaDict["Consumo" + escalao]);
             linha.PrecUnit = Convert.ToDouble(linhaDict["Taxa" + escalao]);
         }
@@ -360,8 +377,8 @@ namespace ASRLB_ImportacaoFatura.Sales
             catch (Exception e) { _comErro = true; return e.ToString(); }
         }
 
-        // CALCULOS
-        private void CalcRegantes(string comPenalizacao)
+        // CALCULOS 
+        private void CalcRegantes(bool comPenalizacao)
         {
             _cultura = linhaDict["Cultura"];
             if (linhaDict["Data1"] != null && linhaDict["Leitura1"] != null)
@@ -426,7 +443,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             }
         }
 
-        private void CalcRegantes_Consumos(string comPenalizacao)
+        private void CalcRegantes_Consumos(bool comPenalizacao)
         {
             // Separação do consumo total pelos três escalões. Preenche o 1º escalão até ao seu limite antes de ir pro 2º. Será ignorado se for zero.
             // Se houver mais que 7000 de consumo, 5000 ficam no primeiro escalão, 2000 (diferença entre 5000 e 7000) ficam no segundo e o restante no terceiro.
@@ -449,7 +466,7 @@ namespace ASRLB_ImportacaoFatura.Sales
 
             // SEM PENALIZAÇÃO
             // Só usamos o consumo total. Definimos _consumo1 = _consumoTotal para utilizar a mesma lógica que o outro tipo de faturação sem reescrever nada.
-            if (comPenalizacao.Equals("Não"))
+            if (!comPenalizacao)
             {
                 _consumo1 = _consumoTotal;
                 return;
@@ -460,7 +477,7 @@ namespace ASRLB_ImportacaoFatura.Sales
             // Cada hectare "dá direito" ao valor base de um escalão. Ou seja, se um benef tiver 2 hectares, tem direito a 10000 m3 taxados no primeiro escalão em vez de 5000.
             // e.g. Um consumo total de 11000 m3 em 1 hectare tería os escalões calculados a 5000 -> 2000 -> 4000. Para 3 hectares sería a 15000 -> 6000 -> 12000 (efectivamente o triplo).
 
-            if (comPenalizacao.Equals("Sim"))
+            if (comPenalizacao)
             {
                 if (_consumoTotal >= escalao1e2)
                 {
@@ -477,19 +494,16 @@ namespace ASRLB_ImportacaoFatura.Sales
             }
         }
 
-        private void CalcRegantes_TaxasPenalizadoras(string comPenalizacao)
+        private void CalcRegantes_TaxasPenalizadoras(bool comPenalizacao)
         {
             _taxa1 = 0; _taxa2 = 0; _taxa3 = 0;
 
-            // Parece inútil ter um if/else if para uma operação supostamente binária
-            // mas no futuro podem ser introduzidas novas penalizações e assim é fácil escalar.
-            // Mesma razão pela qual comPenalizacao não é bool mas string.
-            if (comPenalizacao.Equals("Não"))
+            if (!comPenalizacao)
             {
                 _taxa1 = DictTaxa[_cultura].Valor("CDU_EscalaoUm");
                 return;
             }
-            else if (comPenalizacao.Equals("Sim"))
+            else if (comPenalizacao)
             {
                 _taxa1 = DictTaxa[_cultura].Valor("CDU_EscalaoUm");
                 _taxa2 = DictTaxa[_cultura].Valor("CDU_EscalaoDois");
