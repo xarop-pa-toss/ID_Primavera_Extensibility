@@ -53,7 +53,6 @@ namespace ASRLB_ImportacaoFatura
             _Excel.Application App = new _Excel.Application();
             _Excel.Workbook wb = App.Workbooks.Open(path, 0, false, 5, "", "", true, _Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
 
-            // Corre apenas folhas com "Cantão" no nome para reduzir impacto na performance.
             // https://stackoverflow.com/questions/60493386/unmerging-excel-rows-and-duplicate-data-c-sharp
             foreach (_Excel.Worksheet folha in App.Worksheets)
             {
@@ -217,7 +216,7 @@ namespace ASRLB_ImportacaoFatura
                         
                     // Uso de tabela de buffer para dar sort às linhas por Benef. Necessário para faturar vários contadores por fatura mesmo que não estejam logo na linha abaixo.
                     DataTable sortBuffer = new DataTable();
-                    DtTable.DefaultView.Sort = "Benef ASC";
+                    DtTable.DefaultView.Sort = "Benef ASC, [Nº Contador] ASC";
                     sortBuffer = DtTable.DefaultView.ToTable();
 
                     DtTable.Rows.Clear();
@@ -226,6 +225,30 @@ namespace ASRLB_ImportacaoFatura
                         DtTable.Rows.Add(row.ItemArray);
                     }
                     DtTable.AcceptChanges();
+
+
+                    // Sorting dos benefs e contadores com Dicionário e soma dos valores das contagens
+                    // Se houver a mesma combinação de benef+contador em várias folhas, é necessário juntar tudo
+                    //Dictionary<string, int> benefContadorDict = new Dictionary<string, int>();
+
+                    //foreach (DataRow row in DtTable.Rows)
+                    //{
+                    //    string benefValue = row["Benef"].ToString();
+                    //    string contadorValue = row["Contador"].ToString();
+                    //    int contagemValue = Convert.ToInt32(row["Contagem"]);
+
+                    //    string key = $"{benefValue}_{contadorValue}";
+
+                    //    if (benefContadorDict.ContainsKey(key))
+                    //    {
+                    //        // If the combination exists, add the Contagem value
+                    //        benefContadorDict[key] += contagemValue;
+                    //    } else
+                    //    {
+                    //        // If the combination doesn't exist, add it to the dictionary
+                    //        benefContadorDict.Add(key, contagemValue);
+                    //    }
+                    //}
 
                     Ligacao.Close();
                     return DtSetFinal;

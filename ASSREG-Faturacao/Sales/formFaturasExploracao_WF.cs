@@ -573,7 +573,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 bool subContadorIgual = DtTable.Rows[i + 1].Field<string>("Nº Contador").Equals(linhaDict["Contador"]);
                 bool subBenefIgual = DtTable.Rows[i + 1].Field<double>("Benef").ToString().PadLeft(5, '0').Equals(linhaDict["Benef"]);
 
-                if (subContadorIgual && subBenefIgual && i > 0)
+                if (subContadorIgual && subBenefIgual)
                 {
                     area += DtTable.Rows[i + 1].Field<double>("Área");
                     i++;
