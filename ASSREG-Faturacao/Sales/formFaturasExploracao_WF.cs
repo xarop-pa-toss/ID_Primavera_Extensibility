@@ -142,7 +142,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 DataTable DtTable = DtSet.Tables["Tabela"];
                 VndBEDocumentoVenda DocVenda = new VndBEDocumentoVenda();
 
-                listBoxErros_WF.Items.Add("FOLHA: " + folhasList[nomeFolhaInd]);
+                //listBoxErros_WF.Items.Add("FOLHA: " + folhasList[nomeFolhaInd]);
                 nomeFolhaInd++;
 
                 if (!BSO.EmTransaccao()) { BSO.IniciaTransaccao(); }
