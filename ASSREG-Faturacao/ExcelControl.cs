@@ -179,7 +179,7 @@ namespace ASRLB_ImportacaoFatura
                                 continue;
                             }
 
-                            processar = DtTable.Rows[lin].Field<string>("Processar");
+                            processar = DtTable.Rows[lin].Field<string>("Processar").Trim();
                             if (processar == "N" || processar == null || processar == "") { DtTable.Rows[lin].Delete(); continue; }
                             else if (processar != "S") { throw new Exception("Valor da coluna 'Processar' ( " + processar + " ) na linha " + (lin - 5).ToString() + " da folha " + nomeFolha + " não é valido.\n\n DtTable.Rows.Count: " + DtTable.Rows.Count+"\nLinhasTotal : " + (linhasTotal) + "\nlin: " + lin); return DtSet; }
 

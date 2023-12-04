@@ -131,6 +131,7 @@ namespace ASRLB_ImportacaoFatura.Sales
                 // Se houver linhas com dados inválidos no Excel, errosExcel é preenchido com cada um.
                 if (errosExcelList.Count > 0) {
                     ErrosExcel(errosExcelList, path);
+                    Excel.EliminarCopia(@"" + path);
                     break;
                 }
 
