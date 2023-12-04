@@ -10,6 +10,7 @@ using StdPlatBS100;
 using VndBE100;
 using PRISDK100;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace PP_Extens
 {
@@ -24,37 +25,37 @@ namespace PP_Extens
         public void ProcessarCaixas()
         {
             // As linhas são introduzidas na TDU da mesma forma, só muda a quantidade das caixas (positivo ou negativo) dependendo de se vão pra JM ou vêm do Fornecedor
-            List<string> docsJM = new List<string> { };
-            List<string> docsFornecedor = new List<string> { };
+            List<string> docsJM_Faturacao = new List<string> {"GRP", "FP", "FM"};
+            List<string> docsJM_NotaCredito = new List<string> {"NC", "NCD", "NDI"};
+            List<string> docsFornecedor_Faturacao = new List<string> {""};
+            List<string> docsFornecedor_NotaCredito = new List<string> {"VFS", "VNS"};
 
             // Entidades JM começam com 603
-            if (_docVenda.Entidade.StartsWith("603") && docsJM.Contains(_docVenda.Tipodoc)) {
+            if (_docVenda.Entidade.StartsWith("306") && (docsJM_Faturacao.Contains(_docVenda.Tipodoc) || docsJM_NotaCredito.Contains(_docVenda.Tipodoc))) {
                 Dictionary<string, double> caixasNoDocumento = GetCaixasNoDocumento();
 
                 foreach (var kvp in caixasNoDocumento)
                 {
                     NovaLinhaEmTDU(kvp);
                 }
-                
                 return; 
             }
             
             // Entidades Fornecedor de caixas
-            if (_docVenda.Entidade.StartsWith("") && docsFornecedor.Contains(_docVenda.Tipodoc)) {
+            if (_docVenda.Entidade.StartsWith("086") && (docsFornecedor_Faturacao.Contains(_docVenda.Tipodoc) || docsFornecedor_NotaCredito.Contains(_docVenda.Tipodoc))) {
                 Dictionary<string,double> caixasNoDocumento = GetCaixasNoDocumento();
                 
                 foreach (var kvp in caixasNoDocumento)
                 {
                     NovaLinhaEmTDU(kvp);
                 }
-
                 return;
             }
         }
 
         private Dictionary<string,double> GetCaixasNoDocumento()
         {
-            List<string> artigosCaixaList = new List<string> { "ARTIGOS CAIXA " };
+            List<string> artigosCaixaList = new List<string> { " *** PLACEHOLDER *** " };
 
             var caixasNoDocumento = _docVenda.Linhas
                 .Where(linha => artigosCaixaList.Contains(linha.Artigo))
@@ -73,6 +74,14 @@ namespace PP_Extens
 
             StdBERegistoUtil registoUtil = new StdBERegistoUtil();
             StdBECampos linha = new StdBECampos();
+            
+            // Perguntar origem das caixas
+            string armazemOrigem = "";
+            string armazemInputBoxDescricao = $"Vazio - Portipesca" +
+                $"1 - Sesimbra" +
+                $"2 - Algoz";
+            PSO.MensagensDialogos.MostraDialogoInput(ref armazemOrigem, "Armazém de origem das caixas", armazemInputBoxDescricao, 1);
+
 
             Dictionary<string, string> campos = new Dictionary<string, string>
             {
@@ -81,7 +90,8 @@ namespace PP_Extens
                 {"CDU_NumEncomenda", _docVenda.Referencia},
                 {"CDU_TipoCaixa",  caixas.Key},
                 {"CDU_Quantidade", ((int)caixas.Value).ToString()},
-                {"CDU_Data", DateTime.Now.ToString()}
+                {"CDU_Data", DateTime.Now.ToString()},
+                {"CDU_ArmazemOrigem", armazemOrigem}
             };
 
             foreach (var kvp in campos)
