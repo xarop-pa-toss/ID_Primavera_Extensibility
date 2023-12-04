@@ -119,6 +119,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PP_CaixasJM.cs" />
     <Compile Include="Motor\PriEngine.cs" />
     <Compile Include="MSS_Gerais.cs" />
     <Compile Include="PP_Geral.cs" />

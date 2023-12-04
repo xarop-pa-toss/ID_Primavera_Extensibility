@@ -2,7 +2,7 @@ using Primavera.Extensibility.Sales.Editors; using Primavera.Extensibility.Busin
 using System; using System.Collections.Generic; using System.Linq; using System.Text; using System.Threading.Tasks; using System.Windows; using System.Runtime.InteropServices;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using BasBE100; using StdBE100; using VndBE100;
-
+using System.Net;
 
 /// <summary>
 /// Conversão de PORTIPESCA/Forms/EditorVendas
@@ -327,6 +327,9 @@ namespace PP_Extens.Sales
             
             if (s.Trim() != "") {  }
 
+
+            PP_CaixasJM CaixasJM = new PP_CaixasJM(DocumentoVenda);
+            CaixasJM.ProcessarCaixas();
         }
 
         internal void PreVisualizarSemGravarNovo()
@@ -427,7 +430,6 @@ namespace PP_Extens.Sales
             BSO.Consulta("DELETE FROM PSI_TempCabecDoc WHERE Id = '" + tempGUID + "'");
             sql = null; sql2 = null;
         }
-
     }
 }
 
