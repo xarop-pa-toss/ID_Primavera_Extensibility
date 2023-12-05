@@ -69,20 +69,35 @@ namespace PP_Extens
             return s;
         }
 
-        public string Avaliar (string formula)
+        //public string Avaliar (string formula)
+        //{
+        //    #region deprecated
+        //    /* Código original convertido para .NET. MSScriptControl não estva a funcioonar por isso vai ser convertido
+        //    MSScriptControl.ScriptControl sc = new MSScriptControl.ScriptControl();
+        //    try
+        //    {
+        //        // Check espaço que a variável ocupa em memória. 0 = vazia. Talvez desnecessário em .NET?
+        //        if (Marshal.SizeOf(formula) == 0 || formula == null) { sc = null; return null; }
+        //        sc.Language = "VBSCRIPT";
+        //        return Convert.ToString(sc.Eval(formula));
+        //    }
+        //    catch
+        //    {
+        //        sc = null; return null;
+        //    }
+        //    */
+        //    #endregion
+        //}
+
+        public string ConstructorDescricaoEmLista(Dictionary<string, string> armazemDict)
         {
-            MSScriptControl.ScriptControl sc = new MSScriptControl.ScriptControl();
-            try
+            StringBuilder descricaoBuilder = new StringBuilder();
+
+            foreach (var kvp in armazemDict)
             {
-                // Check espaço que a variável ocupa em memória. 0 = vazia. Talvez desnecessário em .NET?
-                if (Marshal.SizeOf(formula) == 0 || formula == null) { sc = null; return null; }
-                sc.Language = "VBSCRIPT";
-                return Convert.ToString(sc.Eval(formula));
+                descricaoBuilder.AppendLine($"{kvp.Key} - {kvp.Value}");
             }
-            catch
-            {
-                sc = null; return null;
-            }
+            return descricaoBuilder.ToString();
         }
 
         public bool UnidadeCaixa(string unidade)

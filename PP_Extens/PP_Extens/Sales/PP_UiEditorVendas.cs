@@ -3,6 +3,7 @@ using System; using System.Collections.Generic; using System.Linq; using System.
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using BasBE100; using StdBE100; using VndBE100;
 using System.Net;
+using StdPlatBS100;
 
 /// <summary>
 /// Conversão de PORTIPESCA/Forms/EditorVendas
@@ -133,7 +134,7 @@ namespace PP_Extens.Sales
         public override void ArtigoIdentificado(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.ArtigoIdentificado(Artigo, NumLinha, ref Cancel, e);
-            PP_Geral geral = new PP_Geral();
+            PP_Geral Geral = new PP_Geral();
             string s = null;
             string[] artArr = { "147", "147C", "147T" };
 
@@ -143,15 +144,15 @@ namespace PP_Extens.Sales
             if (Convert.ToBoolean(BSO.Base.Series.DaValorAtributo("V", DocumentoVenda.Tipodoc, DocumentoVenda.Serie, "CDU_PedeFornecedor")))
             {
                 string cdu = linha.CamposUtil["CDU_Fornecedor"].Valor.ToString();
-                PSO.MensagensDialogos.MostraDialogoInput(ref s, "", "Fornecedor:", strValorDefeito: geral.nz(ref cdu));
-                linha.CamposUtil["CDU_Fornecedor"].Valor = geral.nz(ref s).Trim();
+                PSO.MensagensDialogos.MostraDialogoInput(ref s, "", "Fornecedor:", strValorDefeito: Geral.nz(ref cdu));
+                linha.CamposUtil["CDU_Fornecedor"].Valor = Geral.nz(ref s).Trim();
             }
 
             bool memUltLote = BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_MemorizaLote");
             if (memUltLote) { s = BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_UltimoLote"); }
 
             PSO.MensagensDialogos.MostraDialogoInput(ref s, "","Introduza o lote do artigo: " + Environment.NewLine + Environment.NewLine + "         **** ATENÇÃO ****" + Environment.NewLine + Environment.NewLine + "         FornecedorMêsDia" + Environment.NewLine + "         Exemplo: 0010718", strValorDefeito: s);
-            s = geral.nz(ref s).ToUpper().Trim();
+            s = Geral.nz(ref s).ToUpper().Trim();
             linha.CamposUtil["CDU_LoteAux"].Valor = s;
 
             if (memUltLote)
@@ -166,34 +167,42 @@ namespace PP_Extens.Sales
                 sql = null;
             }
 
-            bool loop = true;
-            string id1 = null;
-
-            while (loop && Convert.ToBoolean(linha.CamposUtil["CDU_Pescado"].Valor))
+            // Pergunta FORMA DE OBTENÇÃO do pescado
+            Dictionary<string, string> obtencaoDict = new Dictionary<string, string>
             {
-                PSO.MensagensDialogos.MostraDialogoInput(ref id1, "Forma de Obtenção",
-                    "Introduza a Forma de Obtenção:" + Environment.NewLine +
-                    "1 - Aquicultura" + Environment.NewLine +
-                    "2 - Capturado, Anzóis e aparelhos de anzol" + Environment.NewLine +
-                    "3 - Capturado, Dragas" + Environment.NewLine +
-                    "4 - Capturado, Nassas e armadilhas" + Environment.NewLine +
-                    "5 - Capturado, Redes de arrastar" + Environment.NewLine +
-                    "6 - Capturado, Redes de cercar e redes de sacada" + Environment.NewLine +
-                    "7 - Capturado, Redes de emalhar e redes semelhantes" + Environment.NewLine +
-                    "8 - Capturado, Redes envolventes-arrastantes" + Environment.NewLine +
-                    "9 - Apanha", strValorDefeito: id1);
+                {"1", "Aquicultura" },
+                {"2", "Capturado, Anzóis e aparelhos de anzol" },
+                {"3", "Capturado, Dragas" },
+                {"4", "Capturado, Nassas e armadilhas" },
+                {"5", "Capturado, Redes de arrastar" },
+                {"6", "Capturado, Redes de cercar e redes de sacada" },
+                {"7", "Capturado, Redes de emalhar e redes semelhantes" },
+                {"8", "Capturado, Redes envolventes-arrastantes" },
+                {"9", "Apanha" }
+            };
 
-                // DIcionário com as escolhas possíveis para a InputBox
-                var obt = new Dictionary<byte, string>() {
-                { 1, "Aquicultura" }, { 2, "Capturado, Anzóis e aparelhos de anzol" }, { 3, "Capturado, Dragas" },
-                { 4, "Capturado, Nassas e armadilhas" }, { 5, "Capturado, Redes de arrastar" }, { 6, "Capturado, Redes de cercar e redes de sacada" },
-                { 7, "Capturado, Redes de emalhar e redes semelhantes" }, { 8, "Capturado, Redes envolventes-arrastantes" }, {9, "Apanha"} };
+            string descricao = Geral.ConstructorDescricaoEmLista(obtencaoDict);
+            string resposta = "", obtencao = "";
 
-                // Vai buscar ao dicionário acima qual o valor a inserir no campo CDU_FormaObtencao
-                id1 = geral.Avaliar(id1);
-                if (id1 == null) { loop = false; }
-                else if (obt.ContainsKey(Convert.ToByte(id1))) { linha.CamposUtil["CDU_FormaObtencao"].Valor = obt[Convert.ToByte(id1)]; loop = false; }
-                else { PSO.MensagensDialogos.MostraAviso("Valor desconhecido, inserir valor correcto!!"); }
+            if (Convert.ToBoolean(linha.CamposUtil["CDU_Pescado"].Valor))
+            {
+                while (string.IsNullOrEmpty(obtencao))
+                {
+                    try
+                    {
+                        PSO.MensagensDialogos.MostraDialogoInput(ref resposta, "Forma de Obtenção", descricao, 1, strValorDefeito: resposta);
+                        
+                        if (string.IsNullOrEmpty(resposta)) { break; }
+                        
+                        obtencao = obtencaoDict[resposta];
+                        linha.CamposUtil["CDU_FormaObtencao"].Valor = obtencao;
+                        break;
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        PSO.MensagensDialogos.MostraAviso("Valor inválido no modo de obtenção.", StdBSTipos.IconId.PRI_Exclama);
+                    }
+                }
             }
         }
 

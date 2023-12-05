@@ -74,19 +74,20 @@ namespace PP_Extens
 
             StdBERegistoUtil registoUtil = new StdBERegistoUtil();
             StdBECampos linha = new StdBECampos();
+            PP_Geral Geral = new PP_Geral();
             
             Dictionary<string, string> armazemDict = new Dictionary<string, string>
             {
-                {null, "Portipesca"},
+                {"", "Portipesca"},
                 {"1", "Alcobaça"},
                 {"2", "Algoz" }
             };
 
             // Pergunta ORIGEM das caixas
             string resposta = "", armazemOrigem = "";
-            string armazemInputBoxDescricao = constructorDescricao(armazemDict);
+            string armazemInputBoxDescricao = Geral.ConstructorDescricaoEmLista(armazemDict);
 
-            while (string.IsNullOrEmpty(resposta))
+            while (string.IsNullOrEmpty(armazemOrigem))
             {
                 try {
                     PSO.MensagensDialogos.MostraDialogoInput(ref resposta, "Armazém de origem das caixas", armazemInputBoxDescricao, 1);
@@ -124,17 +125,15 @@ namespace PP_Extens
             BSO.TabelasUtilizador.Actualiza("TDU_CaixasJM", registoUtil);
         }
 
-        private string constructorDescricao(Dictionary<string,string> armazemDict)
+        private string constructorDescricao(Dictionary<string,string> descricaoDict)
         {
             StringBuilder descricaoBuilder = new StringBuilder();
 
-            foreach (var kvp in armazemDict)
+            foreach (var kvp in descricaoDict)
             {
                 descricaoBuilder.AppendLine($"{kvp.Key} - {kvp.Value}");
             }
-
             return descricaoBuilder.ToString();
-            
         }
     }
 }
