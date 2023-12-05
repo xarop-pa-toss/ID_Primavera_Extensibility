@@ -209,21 +209,21 @@ namespace PP_Extens.Sales
         public override void ValidaLinha(int NumLinha, ExtensibilityEventArgs e)
         {
             base.ValidaLinha(NumLinha, e);
-            PP_Geral geral = new PP_Geral();
+            PP_Geral Geral = new PP_Geral();
             VndBELinhaDocumentoVenda linha = DocumentoVenda.Linhas.GetEdita(NumLinha);
 
             double precUnit = linha.PrecUnit;
 
             if (Convert.ToBoolean(linha.CamposUtil["CDU_Pescado"].Valor))
             {
-                if (geral.UnidadeCaixa(linha.Unidade))
+                if (Geral.UnidadeCaixa(linha.Unidade))
                 {
                     linha.CamposUtil["CDU_Caixas"].Valor = linha.Quantidade;
                     linha.Descricao = linha.CamposUtil["CDU_DescricaoBase"].Valor + " (" + BSO.Base.Unidades.DaValorAtributo(linha.Unidade, "Descricao") + ")";
                 } else
                 {
                     double caixas = Convert.ToDouble(linha.CamposUtil["CDU_Caixas"].Valor);
-                    if (geral.nzn(ref caixas) <= 0) { linha.CamposUtil["CDU_Caixas"].Valor = 0; }
+                    if (Geral.nzn(ref caixas) <= 0) { linha.CamposUtil["CDU_Caixas"].Valor = 0; }
                 }
             }
 

@@ -36,18 +36,29 @@ namespace PP_Extens
 
                 foreach (var kvp in caixasNoDocumento)
                 {
-                    NovaLinhaEmTDU(kvp);
+                    if (docsJM_Faturacao.Contains(_docVenda.Tipodoc)) {
+                        KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value * -1);
+                        NovaLinhaEmTDU(bufferKvp, "remover"); 
+                    } else {
+                        KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value);
+                        NovaLinhaEmTDU(bufferKvp, "adicionar"); };
                 }
-                return; 
+                return;
             }
             
-            // Entidades Fornecedor de caixas
+            // Entidade Fornecedor de caixas (EUROPOOL)
             if (_docVenda.Entidade.StartsWith("086") && (docsFornecedor_Faturacao.Contains(_docVenda.Tipodoc) || docsFornecedor_NotaCredito.Contains(_docVenda.Tipodoc))) {
                 Dictionary<string,double> caixasNoDocumento = GetCaixasNoDocumento();
-                
+
                 foreach (var kvp in caixasNoDocumento)
                 {
-                    NovaLinhaEmTDU(kvp);
+                    if (docsJM_Faturacao.Contains(_docVenda.Tipodoc)) {
+                        KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value * -1);
+                        NovaLinhaEmTDU(bufferKvp, "remover");
+                    } else {
+                        KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value);
+                        NovaLinhaEmTDU(bufferKvp, "adicionar");
+                    };
                 }
                 return;
             }
@@ -67,7 +78,7 @@ namespace PP_Extens
             return caixasNoDocumento;
         }
 
-        internal void NovaLinhaEmTDU(KeyValuePair<string,double> caixas)
+        internal void NovaLinhaEmTDU(KeyValuePair<string,double> caixas, string operacao)
         {
             // Criar Campos para RegistoUtil para então inserir na TDU
             // https://v10api.primaverabss.com/html/api/plataforma/StdBE100.StdBETipos.EnumTipoCampo.html

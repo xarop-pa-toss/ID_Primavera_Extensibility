@@ -102,10 +102,7 @@ namespace PP_Extens
 
         public bool UnidadeCaixa(string unidade)
         {
-            // Devolve True se os dois caractéres do centro da string forem numeros. Usado abaixo.
-            bool isNumeric = int.TryParse(unidade.Substring(unidade[unidade.Length / 2], 2), out _);
-            // Devolve True se a primeira letra for C e isNumeric for true (verifica a integridade da UnidadeCaixa)
-            return (unidade.Substring(0, 1) == "C" && isNumeric);
+            return unidade.StartsWith("C");
         }
 
         public double ObterKgDaUnidade (string unidade)
