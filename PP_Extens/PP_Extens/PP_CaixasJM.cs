@@ -75,13 +75,27 @@ namespace PP_Extens
             StdBERegistoUtil registoUtil = new StdBERegistoUtil();
             StdBECampos linha = new StdBECampos();
             
-            // Perguntar origem das caixas
-            string armazemOrigem = "";
-            string armazemInputBoxDescricao = $"Vazio - Portipesca" +
-                $"1 - Sesimbra" +
-                $"2 - Algoz";
-            PSO.MensagensDialogos.MostraDialogoInput(ref armazemOrigem, "Armazém de origem das caixas", armazemInputBoxDescricao, 1);
+            Dictionary<string, string> armazemDict = new Dictionary<string, string>
+            {
+                {null, "Portipesca"},
+                {"1", "Alcobaça"},
+                {"2", "Algoz" }
+            };
 
+            // Pergunta ORIGEM das caixas
+            string resposta = "", armazemOrigem = "";
+            string armazemInputBoxDescricao = constructorDescricao(armazemDict);
+
+            while (string.IsNullOrEmpty(resposta))
+            {
+                try {
+                    PSO.MensagensDialogos.MostraDialogoInput(ref resposta, "Armazém de origem das caixas", armazemInputBoxDescricao, 1);
+                    armazemOrigem = armazemDict[resposta];
+                }
+                catch (KeyNotFoundException e) {
+                    PSO.MensagensDialogos.MostraAviso("Valor inválido no armazem de origem das caixas.", StdBSTipos.IconId.PRI_Exclama);
+                }
+            }
 
             Dictionary<string, string> campos = new Dictionary<string, string>
             {
@@ -108,6 +122,19 @@ namespace PP_Extens
             registoUtil.EmModoEdicao = false;
 
             BSO.TabelasUtilizador.Actualiza("TDU_CaixasJM", registoUtil);
+        }
+
+        private string constructorDescricao(Dictionary<string,string> armazemDict)
+        {
+            StringBuilder descricaoBuilder = new StringBuilder();
+
+            foreach (var kvp in armazemDict)
+            {
+                descricaoBuilder.AppendLine($"{kvp.Key} - {kvp.Value}");
+            }
+
+            return descricaoBuilder.ToString();
+            
         }
     }
 }
