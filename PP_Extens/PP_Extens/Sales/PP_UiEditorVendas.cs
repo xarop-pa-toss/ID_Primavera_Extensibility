@@ -339,7 +339,7 @@ namespace PP_Extens.Sales
         public override void DepoisDeGravar(string Filial, string Tipo, string Serie, int NumDoc, ExtensibilityEventArgs e)
         {
 
-            PP_CaixasJM CaixasJM = new PP_CaixasJM(PSO, DocumentoVenda);
+            PP_CaixasJM CaixasJM = new PP_CaixasJM(PSO, BSO, DocumentoVenda);
             CaixasJM.ProcessarCaixas();
 
             base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);

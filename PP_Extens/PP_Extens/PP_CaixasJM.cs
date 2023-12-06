@@ -11,6 +11,7 @@ using VndBE100;
 using PRISDK100;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using ErpBS100;
 
 namespace PP_Extens
 {
@@ -18,8 +19,9 @@ namespace PP_Extens
     {
         private readonly VndBEDocumentoVenda _docVenda;
         private StdPlatBS100.StdBSInterfPub _PSO;
+        private StdPlatBS100.StdBSInterfPub _BSO;
 
-        public PP_CaixasJM(StdBSInterfPub PSO, VndBEDocumentoVenda docVenda)
+        public PP_CaixasJM(StdBSInterfPub PSO, ErpBS BSO, VndBEDocumentoVenda docVenda)
         {
             _docVenda = docVenda;
             _PSO = PSO;
@@ -92,7 +94,7 @@ namespace PP_Extens
             
             Dictionary<string, string> armazemDict = new Dictionary<string, string>
             {
-                {"", "Portipesca"},
+                {"Vazio", "Portipesca"},
                 {"1", "Alcobaça"},
                 {"2", "Algoz" }
             };
@@ -109,11 +111,6 @@ namespace PP_Extens
                 }
                 catch (KeyNotFoundException e) {
                     _PSO.MensagensDialogos.MostraAviso("Valor inválido no armazem de origem das caixas.", StdBSTipos.IconId.PRI_Exclama);
-                }
-                catch (NullReferenceException e)
-                {
-                    MessageBox.Show(e.ToString());
-                    _PSO.MensagensDialogos.MostraAviso("", sDetalhe: e.ToString());
                 }
             }
 
