@@ -66,7 +66,7 @@ namespace PP_Extens
 
         private Dictionary<string,double> GetCaixasNoDocumento()
         {
-            List<string> artigosCaixaList = new List<string> { " *** PLACEHOLDER *** " };
+            List<string> artigosCaixaList = new List<string> { "F02" };
 
             var caixasNoDocumento = _docVenda.Linhas
                 .Where(linha => artigosCaixaList.Contains(linha.Artigo))
@@ -134,17 +134,6 @@ namespace PP_Extens
             registoUtil.EmModoEdicao = false;
 
             BSO.TabelasUtilizador.Actualiza("TDU_CaixasJM", registoUtil);
-        }
-
-        private string constructorDescricao(Dictionary<string,string> descricaoDict)
-        {
-            StringBuilder descricaoBuilder = new StringBuilder();
-
-            foreach (var kvp in descricaoDict)
-            {
-                descricaoBuilder.AppendLine($"{kvp.Key} - {kvp.Value}");
-            }
-            return descricaoBuilder.ToString();
         }
     }
 }

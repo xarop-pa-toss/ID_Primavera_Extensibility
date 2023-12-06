@@ -151,7 +151,7 @@ namespace PP_Extens.Sales
             bool memUltLote = BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_MemorizaLote");
             if (memUltLote) { s = BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_UltimoLote"); }
 
-            PSO.MensagensDialogos.MostraDialogoInput(ref s, "","Introduza o lote do artigo: " + Environment.NewLine + Environment.NewLine + "         **** ATENÇÃO ****" + Environment.NewLine + Environment.NewLine + "         FornecedorMêsDia" + Environment.NewLine + "         Exemplo: 0010718", strValorDefeito: s);
+            PSO.MensagensDialogos.MostraDialogoInput(ref s, "", "Introduza o lote do artigo: \n\n         **** ATENÇÃO **** \n\n         FornecedorMêsDia\n         Exemplo: 0010718", strValorDefeito: s);
             s = Geral.nz(ref s).ToUpper().Trim();
             linha.CamposUtil["CDU_LoteAux"].Valor = s;
 
@@ -281,7 +281,7 @@ namespace PP_Extens.Sales
             for (int i = 1; i < linhas.NumItens; i++)
             {
                 string artigo = DocumentoVenda.Linhas.GetEdita(i).Artigo;
-                if (Marshal.SizeOf(geral.nz(ref artigo)) != 0)
+                if (!string.IsNullOrEmpty(geral.nz(ref artigo)))
                 {
                     if (linhas.GetEdita(i).Unidade == "CX")
                     {
@@ -327,18 +327,22 @@ namespace PP_Extens.Sales
             string s = "";
             if (linhas.NumItens > 0)
             {
-                for (int i = 0; i < linhas.NumItens; i++)
+                for (int i = 1; i < linhas.NumItens + 1; i++)
                 {
                     string artigo = linhas.GetEdita(i).Artigo;
                     if (geral.nz(ref artigo) != "" && (linhas.GetEdita(i).Quantidade == 0 || linhas.GetEdita(i).PrecUnit == 0)) { s = s + " " + i.ToString(); }
                 }
             }//
-            
             if (s.Trim() != "") {  }
+        }
 
+        public override void DepoisDeGravar(string Filial, string Tipo, string Serie, int NumDoc, ExtensibilityEventArgs e)
+        {
 
             PP_CaixasJM CaixasJM = new PP_CaixasJM(DocumentoVenda);
             CaixasJM.ProcessarCaixas();
+
+            base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
         }
 
         internal void PreVisualizarSemGravarNovo()
