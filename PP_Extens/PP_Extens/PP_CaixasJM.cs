@@ -19,7 +19,7 @@ namespace PP_Extens
     {
         private readonly VndBEDocumentoVenda _docVenda;
         private StdPlatBS100.StdBSInterfPub _PSO;
-        private StdPlatBS100.StdBSInterfPub _BSO;
+        private ErpBS _BSO;
 
         public PP_CaixasJM(StdBSInterfPub PSO, ErpBS BSO, VndBEDocumentoVenda docVenda)
         {
@@ -138,7 +138,7 @@ namespace PP_Extens
             registoUtil.Campos = linha;
             registoUtil.EmModoEdicao = false;
 
-            BSO.TabelasUtilizador.Actualiza("TDU_CaixasJM", registoUtil);
+            _BSO.TabelasUtilizador.Actualiza("TDU_CaixasJM", registoUtil);
         }
     }
 }
