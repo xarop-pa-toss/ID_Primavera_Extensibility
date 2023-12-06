@@ -332,14 +332,14 @@ namespace PP_Extens.Sales
                     string artigo = linhas.GetEdita(i).Artigo;
                     if (geral.nz(ref artigo) != "" && (linhas.GetEdita(i).Quantidade == 0 || linhas.GetEdita(i).PrecUnit == 0)) { s = s + " " + i.ToString(); }
                 }
-            }//
+            }
             if (s.Trim() != "") {  }
         }
 
         public override void DepoisDeGravar(string Filial, string Tipo, string Serie, int NumDoc, ExtensibilityEventArgs e)
         {
 
-            PP_CaixasJM CaixasJM = new PP_CaixasJM(DocumentoVenda);
+            PP_CaixasJM CaixasJM = new PP_CaixasJM(PSO, DocumentoVenda);
             CaixasJM.ProcessarCaixas();
 
             base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);

@@ -17,9 +17,12 @@ namespace PP_Extens
     internal class PP_CaixasJM : CustomCode
     {
         private readonly VndBEDocumentoVenda _docVenda;
-        public PP_CaixasJM(VndBEDocumentoVenda docVenda)
+        private StdPlatBS100.StdBSInterfPub _PSO;
+
+        public PP_CaixasJM(StdBSInterfPub PSO, VndBEDocumentoVenda docVenda)
         {
             _docVenda = docVenda;
+            _PSO = PSO;
         }
 
         public void ProcessarCaixas()
@@ -101,11 +104,16 @@ namespace PP_Extens
             while (string.IsNullOrEmpty(armazemOrigem))
             {
                 try {
-                    PSO.MensagensDialogos.MostraDialogoInput(ref resposta, "Armazém de origem das caixas", armazemInputBoxDescricao, 1);
+                    _PSO.MensagensDialogos.MostraDialogoInput(ref resposta, "Armazém de origem das caixas", armazemInputBoxDescricao, 1);
                     armazemOrigem = armazemDict[resposta];
                 }
                 catch (KeyNotFoundException e) {
-                    PSO.MensagensDialogos.MostraAviso("Valor inválido no armazem de origem das caixas.", StdBSTipos.IconId.PRI_Exclama);
+                    _PSO.MensagensDialogos.MostraAviso("Valor inválido no armazem de origem das caixas.", StdBSTipos.IconId.PRI_Exclama);
+                }
+                catch (NullReferenceException e)
+                {
+                    MessageBox.Show(e.ToString());
+                    _PSO.MensagensDialogos.MostraAviso("", sDetalhe: e.ToString());
                 }
             }
 
