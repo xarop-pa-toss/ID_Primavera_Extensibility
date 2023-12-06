@@ -95,7 +95,7 @@ namespace PP_Extens
             
             Dictionary<string, string> armazemDict = new Dictionary<string, string>
             {
-                {"Vazio", "Portipesca"},
+                {"0", "Portipesca"},
                 {"1", "Alcobaça"},
                 {"2", "Algoz" }
             };
@@ -107,7 +107,7 @@ namespace PP_Extens
             while (string.IsNullOrEmpty(armazemOrigem))
             {
                 try {
-                    _PSO.MensagensDialogos.MostraDialogoInput(ref resposta, "Armazém de origem das caixas", armazemInputBoxDescricao, 1);
+                    _PSO.MensagensDialogos.MostraDialogoInput(ref resposta, "Armazém de origem das caixas", armazemInputBoxDescricao, 1, strValorDefeito:                                                                                                                                                                                                                         "0");
                     armazemOrigem = armazemDict[resposta];
                 }
                 catch (KeyNotFoundException e) {
@@ -119,10 +119,12 @@ namespace PP_Extens
             {
                 {"CDU_ID", PP_Geral.GetGUID()},
                 {"CDU_CabecDocID", _docVenda.ID},
+                {"CDU_Data", DateTime.Now.ToString()},
+                {"CDU_TipoDoc", _docVenda.Tipodoc },
+                {"CDU_NumDoc", _docVenda.NumDoc.ToString() },
                 {"CDU_NumEncomenda", _docVenda.Referencia},
                 {"CDU_TipoCaixa",  caixas.Key},
-                {"CDU_Quantidade", ((int)caixas.Value).ToString()},
-                {"CDU_Data", DateTime.Now.ToString()},
+                {"CDU_Quantidade", caixas.Value.ToString()},
                 {"CDU_ArmazemOrigem", armazemOrigem}
             };
 

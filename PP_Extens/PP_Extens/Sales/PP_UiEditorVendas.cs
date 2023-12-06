@@ -92,9 +92,15 @@ namespace PP_Extens.Sales
                 {
                     string nrDoc = null;
                     PSO.MensagensDialogos.MostraDialogoInput(ref nrDoc, "Nº de documento manual:", "Documento");
-                    DocumentoVenda.CamposUtil["CDU_NroManual"].Valor = nrDoc.Substring(0, 10);
-                    DocumentoVenda.DocsOriginais = nrDoc.Substring(0, 10);
-                }//
+
+                    // Queremos os caracteres de 0 a 10. Substring dá erro se fizermos isso e a string de entrada for mais curta que 10 caracteres
+                    // Math.Min devolve o menor dos dois valores.
+                    int indexFim = Math.Min(10, nrDoc.Length);
+                    string nrDocSubstring = nrDoc.Substring(0, indexFim);
+
+                    DocumentoVenda.CamposUtil["CDU_NroManual"].Valor = nrDocSubstring;
+                    DocumentoVenda.DocsOriginais = nrDocSubstring;
+                }
 
                 // Pede Matricula se o TipoEntidade for 'C'
                 if (serie.Valor("CDU_PedeMatricula").Equals(true))
