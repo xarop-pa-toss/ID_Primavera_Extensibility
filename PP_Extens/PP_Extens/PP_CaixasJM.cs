@@ -25,6 +25,7 @@ namespace PP_Extens
         {
             _docVenda = docVenda;
             _PSO = PSO;
+            _BSO = BSO;
         }
 
         public void ProcessarCaixas()
