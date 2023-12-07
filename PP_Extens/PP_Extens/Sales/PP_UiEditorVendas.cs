@@ -1,6 +1,6 @@
 using Primavera.Extensibility.Sales.Editors; using Primavera.Extensibility.BusinessEntities;
 using System; using System.Collections.Generic; using System.Linq; using System.Text; using System.Threading.Tasks; using System.Windows; using System.Runtime.InteropServices;
-using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
+using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs; using System.Windows.Forms;
 using BasBE100; using StdBE100; using VndBE100;
 using System.Net;
 using StdPlatBS100;
@@ -50,7 +50,13 @@ namespace PP_Extens.Sales
                 if (!morada.Vazia())
                 {
                     string mor = null;
-                    PSO.MensagensDialogos.MostraDialogoInput(ref mor, "Código da Morada", "Morada do documento:", strValorDefeito: morada.Valor("moradaalternativa"));
+
+                    InputForm inputForm = new InputForm("Morada do documento:", morada.Valor("moradaalternativa"));
+                    DialogResult resultado = inputForm.ShowDialog();
+                    if ( resultado == DialogResult.OK) { mor = inputForm.Resultado; }
+                    else if (resultado == DialogResult.Cancel) { mor = ""; }
+
+                    //PSO.MensagensDialogos.MostraDialogoInput(ref mor, "Código da Morada", "Morada do documento:", strValorDefeito: morada.Valor("moradaalternativa"));
                     morada = BSO.Consulta("SELECT MoradaAlternativa, Morada, Morada2, Localidade, CP, CPLocalidade, Distrito FROM MoradasAlternativasClientes WHERE (Cliente = N'" + DocumentoVenda.Entidade + "') AND (MoradaAlternativa = N'" + mor + "');");
 
                     if (!morada.Vazia())

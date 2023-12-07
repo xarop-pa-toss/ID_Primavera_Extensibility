@@ -11,41 +11,36 @@ namespace PP_Extens
 {
     public partial class InputForm : CustomForm
     {
-        private string _descricao, _txtBoxValorDefault;
+        private string _strDescricao, _strValorDefeito, _resultado;
+        public string Resultado { get { return _resultado; } }
 
-        public InputForm(string descricao, string txtBoxValorDefault)
+        public InputForm(string strDescricao, string strValorDefeito)
         {
-            _descricao = descricao;
-            _txtBoxValorDefault = txtBoxValorDefault;
+            _strDescricao = strDescricao;
+            _strValorDefeito = strValorDefeito;
             InitializeComponent();
         }
 
         private void InputForm_Load(object sender, EventArgs e)
         {
-            lbl_Descricao.Text = _descricao;
-            txtBox_Resposta.Text = _txtBoxValorDefault;
+            lbl_Descricao.Text = _strDescricao;
+            txtBox_Resposta.Text = _strValorDefeito;
+
             // Ajustar as altura do form à altura da descrição
             this.Height += lbl_Descricao.Height;
         }
         #region Botões
         private void btn_OK_Click(object sender, EventArgs e)
         {
-            OnOKButtonClick();
+            _resultado = txtBox_Resposta.Text;
+            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.Close();
         }
 
         private void btn_Cancelar_Click(object sender, EventArgs e)
         {
-            OnCancelButtonClick();
-        }
-
-        private string OnOKButtonClick()
-        {
-            return txtBox_Resposta.Text;
-        }
-
-        private string OnCancelButtonClick()
-        {
-            return null;
+            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.Close();
         }
         #endregion
     }
