@@ -69,7 +69,6 @@ namespace PP_Extens.Sales
 
             // Se data/hora de descarga estiver vazia, fica igual à data/hora de carga
             string descarga = DocumentoVenda.DataHoraDescarga.ToString();
-            //
 
             // Pede Vendedor se a série o exigir
             StdBELista serie = BSO.Consulta("SELECT CDU_PedeVendedor, CDU_PedeDocumento, CDU_PedeMatricula FROM SeriesVendas WHERE TipoDoc = '" + DocumentoVenda.Tipodoc + "' AND Serie = '" + DocumentoVenda.Serie + "';");

@@ -35,36 +35,43 @@ namespace PP_Extens
             List<string> docsJM_NotaCredito = new List<string> {"NC", "NCD", "NDI"};
             List<string> docsFornecedor_Faturacao = new List<string> {""};
             List<string> docsFornecedor_NotaCredito = new List<string> {"VFS", "VNS"};
+            Dictionary<string, double> caixasNoDocumento = GetCaixasNoDocumento();
 
             // Entidades JM começam com 603
-            if (_docVenda.Entidade.StartsWith("306") && (docsJM_Faturacao.Contains(_docVenda.Tipodoc) || docsJM_NotaCredito.Contains(_docVenda.Tipodoc))) {
-                Dictionary<string, double> caixasNoDocumento = GetCaixasNoDocumento();
-
+            if (_docVenda.Entidade.StartsWith("306")) {
+                
                 foreach (var kvp in caixasNoDocumento)
                 {
-                    if (docsJM_Faturacao.Contains(_docVenda.Tipodoc)) {
+                    if (docsJM_Faturacao.Contains(_docVenda.Tipodoc))
+                    {
                         KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value * -1);
-                        NovaLinhaEmTDU(bufferKvp, "remover"); 
-                    } else {
-                        KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value);
-                        NovaLinhaEmTDU(bufferKvp, "adicionar"); };
+                        NovaLinhaEmTDU(bufferKvp);
+                    }
+
+                    if (docsJM_NotaCredito.Contains(_docVenda.Tipodoc))
+                    {
+                        KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value * -1);
+                        NovaLinhaEmTDU(bufferKvp);
+                    };
                 }
                 return;
             }
             
             // Entidade Fornecedor de caixas (EUROPOOL)
-            if (_docVenda.Entidade.StartsWith("086") && (docsFornecedor_Faturacao.Contains(_docVenda.Tipodoc) || docsFornecedor_NotaCredito.Contains(_docVenda.Tipodoc))) {
-                Dictionary<string,double> caixasNoDocumento = GetCaixasNoDocumento();
+            if (_docVenda.Entidade.Equals("086")) {
 
                 foreach (var kvp in caixasNoDocumento)
                 {
-                    if (docsJM_Faturacao.Contains(_docVenda.Tipodoc)) {
+                    if (docsFornecedor_NotaCredito.Contains(_docVenda.Tipodoc)) {
                         KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value * -1);
-                        NovaLinhaEmTDU(bufferKvp, "remover");
-                    } else {
+                        NovaLinhaEmTDU(bufferKvp);
+                    }
+
+                    if (docsFornecedor_Faturacao.Contains(_docVenda.Tipodoc))
+                    {
                         KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value);
-                        NovaLinhaEmTDU(bufferKvp, "adicionar");
-                    };
+                        NovaLinhaEmTDU(bufferKvp);
+                    }
                 }
                 return;
             }
@@ -84,7 +91,7 @@ namespace PP_Extens
             return caixasNoDocumento;
         }
 
-        internal void NovaLinhaEmTDU(KeyValuePair<string,double> caixas, string operacao)
+        internal void NovaLinhaEmTDU(KeyValuePair<string,double> caixas)
         {
             // Criar Campos para RegistoUtil para então inserir na TDU
             // https://v10api.primaverabss.com/html/api/plataforma/StdBE100.StdBETipos.EnumTipoCampo.html
@@ -119,7 +126,7 @@ namespace PP_Extens
             {
                 {"CDU_ID", PP_Geral.GetGUID()},
                 {"CDU_CabecDocID", _docVenda.ID},
-                {"CDU_Data", DateTime.Now.ToString()},
+                {"CDU_Data", _docVenda.DataGravacao.ToString()},
                 {"CDU_TipoDoc", _docVenda.Tipodoc },
                 {"CDU_NumDoc", _docVenda.NumDoc.ToString() },
                 {"CDU_NumEncomenda", _docVenda.Referencia},
