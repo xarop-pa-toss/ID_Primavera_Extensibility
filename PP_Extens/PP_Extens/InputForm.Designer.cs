@@ -88,6 +88,7 @@
             this.Name = "InputForm";
             this.Size = new System.Drawing.Size(295, 141);
             this.Text = "InputForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InputForm_FormClosing);
             this.Load += new System.EventHandler(this.InputForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

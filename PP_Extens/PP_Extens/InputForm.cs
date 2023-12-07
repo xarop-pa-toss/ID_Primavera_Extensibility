@@ -29,6 +29,7 @@ namespace PP_Extens
             // Ajustar as altura do form à altura da descrição
             this.Height += lbl_Descricao.Height;
         }
+
         #region Botões
         private void btn_OK_Click(object sender, EventArgs e)
         {
@@ -39,9 +40,14 @@ namespace PP_Extens
 
         private void btn_Cancelar_Click(object sender, EventArgs e)
         {
-            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Close();
         }
         #endregion
+
+        private void InputForm_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
+        {
+            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+        }
     }
 }
