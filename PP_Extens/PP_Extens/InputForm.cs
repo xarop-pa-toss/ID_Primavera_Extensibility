@@ -2,6 +2,7 @@
 using Primavera.Extensibility.CustomForm;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
@@ -47,6 +48,7 @@ namespace PP_Extens
 
         private void InputForm_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
         {
+            
             this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
         }
     }

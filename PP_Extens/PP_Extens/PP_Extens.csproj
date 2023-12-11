@@ -60,8 +60,16 @@
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\IintBS100.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="IInvBS100">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\IInvBS100.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="IntBE100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\IntBE100.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="InvBE100">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\InvBE100.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="IVndBS100">
@@ -90,6 +98,10 @@
     </Reference>
     <Reference Include="Primavera.Extensibility.Internal">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Internal.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Primavera.Extensibility.Inventory">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Inventory.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Primavera.Extensibility.Sales">
