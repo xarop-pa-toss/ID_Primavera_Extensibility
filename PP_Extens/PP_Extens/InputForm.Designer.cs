@@ -47,9 +47,9 @@
             // 
             // txtBox_Resposta
             // 
-            this.txtBox_Resposta.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtBox_Resposta.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtBox_Resposta.Location = new System.Drawing.Point(19, 65);
+            this.txtBox_Resposta.Location = new System.Drawing.Point(19, 66);
             this.txtBox_Resposta.Name = "txtBox_Resposta";
             this.txtBox_Resposta.Size = new System.Drawing.Size(260, 20);
             this.txtBox_Resposta.TabIndex = 1;
@@ -57,7 +57,7 @@
             // btn_OK
             // 
             this.btn_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_OK.Location = new System.Drawing.Point(108, 100);
+            this.btn_OK.Location = new System.Drawing.Point(108, 98);
             this.btn_OK.Name = "btn_OK";
             this.btn_OK.Size = new System.Drawing.Size(80, 30);
             this.btn_OK.TabIndex = 2;
@@ -68,7 +68,7 @@
             // btn_Cancelar
             // 
             this.btn_Cancelar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Cancelar.Location = new System.Drawing.Point(198, 100);
+            this.btn_Cancelar.Location = new System.Drawing.Point(198, 98);
             this.btn_Cancelar.Name = "btn_Cancelar";
             this.btn_Cancelar.Size = new System.Drawing.Size(80, 30);
             this.btn_Cancelar.TabIndex = 3;
@@ -86,7 +86,7 @@
             this.Controls.Add(this.lbl_Descricao);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "InputForm";
-            this.Size = new System.Drawing.Size(295, 141);
+            this.Size = new System.Drawing.Size(295, 139);
             this.Text = "InputForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InputForm_FormClosing);
             this.Load += new System.EventHandler(this.InputForm_Load);
