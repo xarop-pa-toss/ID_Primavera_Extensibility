@@ -51,7 +51,7 @@ namespace PP_Extens.Sales
                 {
                     string mor = null;
 
-                    InputForm inputForm_MoradaDoc = new InputForm("Morada do documento:", morada.Valor("moradaalternativa"));
+                    InputForm inputForm_MoradaDoc = new InputForm("Morada do documento:", morada.Valor("moradaalternativa"), PSO, BSO);
                     DialogResult resultado = inputForm_MoradaDoc.ShowDialog();
                     if ( resultado == DialogResult.OK) { mor = inputForm_MoradaDoc.Resultado; }
                     else if (resultado == DialogResult.Cancel) { mor = ""; }
@@ -84,11 +84,14 @@ namespace PP_Extens.Sales
                 if (serie.Valor("CDU_PedeVendedor").Equals(true))
                 {
                     string s = null;
-                    DialogResult resultado = new DialogResult();
 
-                    InputForm inputForm = new InputForm("Código do vendedor:", "0");
-                    resultado = inputForm.ShowDialog();
-                    if (resultado == DialogResult.OK) { s = inputForm.Resultado; } else if (resultado == DialogResult.Cancel) { s = ""; }
+                    using (var inputForm = BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
+                    {
+                        (inputForm.Result as InputForm).ShowDialog();
+                    }
+                    //InputForm inputForm = new InputForm("Código do vendedor:", "0", PSO, BSO);
+                    //resultado = inputForm.ShowDialog();
+                    //if (resultado == DialogResult.OK) { s = inputForm.Resultado; } else if (resultado == DialogResult.Cancel) { s = ""; }
 
                     //PSO.MensagensDialogos.MostraDialogoInput(ref s, "Vendedor", "Código de Vendedor:", strValorDefeito: "0");
                     StdBELista vend = BSO.Consulta("SELECT Vendedor FROM Vendedores WHERE Vendedor = '" + s + "';");

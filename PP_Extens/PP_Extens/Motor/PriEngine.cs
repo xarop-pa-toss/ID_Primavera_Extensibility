@@ -49,7 +49,7 @@ namespace FRU_AlterarTerceiros.Motor
                 Plataforma.AbrePlataformaEmpresa(Company, objStdTransac, objAplConf, objTipoPlataforma);
             }
             catch (Exception ex) {
-                System.Windows.Forms.MessageBox.Show("Bruh");
+                System.Windows.Forms.MessageBox.Show("Não foi possivel abrir Plataforma.");
                 throw (ex);
             }
 
