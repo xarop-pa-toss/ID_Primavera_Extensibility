@@ -84,9 +84,10 @@ namespace PP_Extens.Sales
                 if (serie.Valor("CDU_PedeVendedor").Equals(true))
                 {
                     string s = null;
+                    DialogResult resultado = new DialogResult();
 
                     InputForm inputForm = new InputForm("Código do vendedor:", "0");
-                    DialogResult resultado = inputForm.ShowDialog();
+                    resultado = inputForm.ShowDialog();
                     if (resultado == DialogResult.OK) { s = inputForm.Resultado; } else if (resultado == DialogResult.Cancel) { s = ""; }
 
                     //PSO.MensagensDialogos.MostraDialogoInput(ref s, "Vendedor", "Código de Vendedor:", strValorDefeito: "0");
