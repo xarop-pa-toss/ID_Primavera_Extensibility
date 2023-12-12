@@ -11,6 +11,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using PP_Extens.Sales;
+using System.Windows.Forms;
 
 namespace PP_Extens
 {
@@ -58,6 +59,16 @@ namespace PP_Extens
                 this.DialogResult = System.Windows.Forms.DialogResult.OK;
             }
             
+        }
+
+        // Quando textbox está em foco, carregar no Enter activa o botão OK
+        private void txtBox_Resposta_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                btn_OK.PerformClick();
+                e.Handled = true;
+            }
         }
     }
 }

@@ -53,6 +53,7 @@
             this.txtBox_Resposta.Name = "txtBox_Resposta";
             this.txtBox_Resposta.Size = new System.Drawing.Size(260, 20);
             this.txtBox_Resposta.TabIndex = 1;
+            this.txtBox_Resposta.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBox_Resposta_KeyPress);
             // 
             // btn_OK
             // 
