@@ -31,12 +31,19 @@ namespace PP_Extens
 
         private void InputForm_Load(object sender, EventArgs e)
         {
+           
+        }
+
+        private void InputForm_Shown(object sender, EventArgs e)
+        {
             lbl_Descricao.Text = _strDescricao;
             txtBox_Resposta.Text = _strValorDefeito;
 
             // Ajustar as altura do form à altura da descrição
             this.Height += lbl_Descricao.Height;
         }
+
+
 
         #region Botões
         private void btn_OK_Click(object sender, EventArgs e)

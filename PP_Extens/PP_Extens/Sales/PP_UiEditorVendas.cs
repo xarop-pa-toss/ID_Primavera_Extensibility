@@ -1,8 +1,8 @@
 using Primavera.Extensibility.Sales.Editors; using Primavera.Extensibility.BusinessEntities;
 using System; using System.Collections.Generic; using System.Linq; using System.Text; using System.Threading.Tasks; using System.Windows; using System.Runtime.InteropServices;
-using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs; using System.Windows.Forms;
+using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs; using PRISDK100;
+using System.Windows.Forms;
 using BasBE100; using StdBE100; using VndBE100;
-using System.Net;
 using StdPlatBS100;
 
 /// <summary>
@@ -51,10 +51,10 @@ namespace PP_Extens.Sales
                 {
                     string mor = null;
 
-                    InputForm inputForm_MoradaDoc = new InputForm("Morada do documento:", morada.Valor("moradaalternativa"), PSO, BSO);
-                    DialogResult resultado = inputForm_MoradaDoc.ShowDialog();
-                    if ( resultado == DialogResult.OK) { mor = inputForm_MoradaDoc.Resultado; }
-                    else if (resultado == DialogResult.Cancel) { mor = ""; }
+                    //InputForm inputForm_MoradaDoc = new InputForm("Morada do documento:", morada.Valor("moradaalternativa"), PSO, BSO);
+                    //DialogResult resultado = inputForm_MoradaDoc.ShowDialog();
+                    //if ( resultado == DialogResult.OK) { mor = inputForm_MoradaDoc.Resultado; }
+                    //else if (resultado == DialogResult.Cancel) { mor = ""; }
 
                     //PSO.MensagensDialogos.MostraDialogoInput(ref mor, "Código da Morada", "Morada do documento:", strValorDefeito: morada.Valor("moradaalternativa"));
                     morada = BSO.Consulta("SELECT MoradaAlternativa, Morada, Morada2, Localidade, CP, CPLocalidade, Distrito FROM MoradasAlternativasClientes WHERE (Cliente = N'" + DocumentoVenda.Entidade + "') AND (MoradaAlternativa = N'" + mor + "');");
@@ -84,10 +84,12 @@ namespace PP_Extens.Sales
                 if (serie.Valor("CDU_PedeVendedor").Equals(true))
                 {
                     string s = null;
+                    var customForm = new InputForm();
+                    customForm.BSO = 
 
-                    using (var inputForm = BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
+                    using (var inputForm2 = BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
                     {
-                        (inputForm.Result as InputForm).ShowDialog();
+                        (inputForm2.Result as InputForm).Show();
                     }
                     //InputForm inputForm = new InputForm("Código do vendedor:", "0", PSO, BSO);
                     //resultado = inputForm.ShowDialog();
@@ -96,7 +98,7 @@ namespace PP_Extens.Sales
                     //PSO.MensagensDialogos.MostraDialogoInput(ref s, "Vendedor", "Código de Vendedor:", strValorDefeito: "0");
                     StdBELista vend = BSO.Consulta("SELECT Vendedor FROM Vendedores WHERE Vendedor = '" + s + "';");
 
-                    if (vend.Vazia()) { PSO.MensagensDialogos.MostraAviso("Vendedor " + s + " inexistente!", StdPlatBS100.StdBSTipos.IconId.PRI_Exclama); }
+                    if (vend.Vazia()) { PSO.MensagensDialogos.MostraAviso("Vendedor " + s + " inexistente!", StdBSTipos.IconId.PRI_Exclama); }
                     else { DocumentoVenda.Responsavel = s; }
                     vend.Termina();
                 }//
