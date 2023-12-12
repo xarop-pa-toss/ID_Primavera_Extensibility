@@ -1,6 +1,9 @@
 ﻿using Primavera.Extensibility.BusinessEntities; using Primavera.Extensibility.CustomCode;
 using System; using System.Collections.Generic; using System.Linq; using System.Text; using System.Threading.Tasks; using System.Runtime.InteropServices;
 using StdBE100; using StdPlatBS100;
+using PP_Extens;
+using Primavera.Extensibility.Extensions;
+using ErpBS100;
 
 // Conversão de PORTIPESCA/Modules/Geral
 namespace PP_Extens
@@ -11,6 +14,30 @@ namespace PP_Extens
         {
             Guid x = Guid.NewGuid();
             return x.ToString();
+        }
+
+        // Como CreateCustomFormInstance() não deixa abrir Forms com parâmetros, e o resultado não é uma instância do form em si,
+        // temos de ter alternativa para enviar informação para dentro do form.
+        // Foi criada uma class FormServicoDados que serve como proxy com propriedades static. Não é limpo, mas não vi outra opção.
+        // Para evitar erro do user (dev), foi encapsulada em PP_Geral.cs para obrigar a preencher parâmetros
+        public static string CriarInputForm(string descricao, string valorDefeito, ErpBS BSO)
+        {
+            string resposta = null;
+
+            using (var formInstancia = BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
+            {
+                FormServicoDados.Descricao = descricao;
+                FormServicoDados.ValorDefeito = valorDefeito;
+
+                if (formInstancia.IsSuccess())
+                {
+                    (formInstancia.Result as InputForm).ShowDialog();
+                    resposta = FormServicoDados.Resposta;
+                }
+                
+                FormServicoDados.Limpar();
+                return resposta;
+            }
         }
 
         public string nz <T> (ref T s)

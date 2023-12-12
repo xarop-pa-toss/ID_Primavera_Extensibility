@@ -10,20 +10,25 @@ namespace PP_Extens
     {
         private static Dictionary<string, string> FormDados = new Dictionary<string, string>();
 
+        public static string Titulo
+        {
+            get => GetOuDefeito("Titulo", "Titulo_Defeito");
+            set => FormDados["Titulo"] = value;
+        }
         public static string Descricao
         {
             get => GetOuDefeito("Descricao", "Descricao_Defeito");
-                //LimparKey("Descricao");
-                //return valor;
             set => FormDados["Descricao"] = value;
         }
         public static string ValorDefeito
         {
             get => GetOuDefeito("ValorDefeito", "0");
-                //LimparKey("ValorDefeito");
-                //return valor;
-
             set => FormDados["ValorDefeito"] = value;
+        }
+        public static string Resposta 
+        {
+            get => GetOuDefeito("Resposta", "Resposta_Defeito");
+            set => FormDados["Resposta"] = value; 
         }
 
         // Custom method to get a value with a fallback

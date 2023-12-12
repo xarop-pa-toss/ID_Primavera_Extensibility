@@ -90,21 +90,7 @@ namespace PP_Extens.Sales
                 {
                     string s = null;
 
-                    // Como CreateCustomFormInstance() não deixa abrir Forms com parâmetros, e o resultado não é uma instância do form em si,
-                    // temos de ter alternativa para enviar dados para o form.
-                    // Foi criada uma class FormServicoDados que serve como proxy com propriedades static. Não é limpo, mas não vi outra opção.
-                    // A class tem um Dictionary<string,string> que deve ser populado de acordo com as regras nela escritas.
-                    // Como o dicionário é static, é importante 
-                    FormServicoDados.Descricao = "Código de vendedor:";
-                    FormServicoDados.ValorDefeito = "0";
-                    using (var formInstancia = this.BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
-                    {
-                        if (formInstancia.IsSuccess()) {
-                            (formInstancia.Result as InputForm).ShowDialog();
-                        }
-                        var form = (formInstancia.Result as InputForm);
-                        form.ShowDialog();
-                    }
+                    PP_Geral.CriarInputForm("Código de Vendedor")
                     //InputForm inputForm = new InputForm("Código do vendedor:", "0", PSO, BSO);
                     //resultado = inputForm.ShowDialog();
                     //if (resultado == DialogResult.OK) { s = inputForm.Resultado; } else if (resultado == DialogResult.Cancel) { s = ""; }
