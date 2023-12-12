@@ -20,7 +20,7 @@ namespace PP_Extens
         // temos de ter alternativa para enviar informação para dentro do form.
         // Foi criada uma class FormServicoDados que serve como proxy com propriedades static. Não é limpo, mas não vi outra opção.
         // Para evitar erro do user (dev), foi encapsulada em PP_Geral.cs para obrigar a preencher parâmetros
-        public static string CriarInputForm(string titulo, string descricao, string valorDefeito, ErpBS BSO)
+        public static string MostraInputForm(string titulo, string descricao, string valorDefeito, ErpBS BSO)
         {
             string resposta = null;
 

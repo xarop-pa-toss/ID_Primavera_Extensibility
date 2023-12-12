@@ -102,7 +102,7 @@ namespace PP_Extens
             while (string.IsNullOrEmpty(armazemOrigem))
             {
                 try {
-                    _PSO.MensagensDialogos.MostraDialogoInput(ref resposta, "Armazém de origem das caixas", armazemInputBoxDescricao, 1, strValorDefeito:                                                                                                                                                                                                                         "0");
+                    resposta = PP_Geral.MostraInputForm("Armazém de origem das caixas", armazemInputBoxDescricao, "1", _BSO);
                     armazemOrigem = armazemDict[resposta];
                 }
                 catch (KeyNotFoundException e) {
