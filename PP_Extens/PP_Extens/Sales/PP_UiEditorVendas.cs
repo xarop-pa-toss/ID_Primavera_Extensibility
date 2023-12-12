@@ -2,8 +2,9 @@ using Primavera.Extensibility.Sales.Editors; using Primavera.Extensibility.Busin
 using System; using System.Collections.Generic; using System.Linq; using System.Text; using System.Threading.Tasks; using System.Windows; using System.Runtime.InteropServices;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs; using PRISDK100;
 using System.Windows.Forms;
-using BasBE100; using StdBE100; using VndBE100;
+using BasBE100; using StdBE100; using VndBE100; using StdPlatBS100.UserForms;
 using StdPlatBS100;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Conversão de PORTIPESCA/Forms/EditorVendas
@@ -85,9 +86,9 @@ namespace PP_Extens.Sales
                 {
                     string s = null;
 
-                    using (var inputForm = BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
+                    using (var inputFormResultado = this.BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
                     {
-                        // Apresentar form
+                        (inputFormResultado.Result as InputForm).ShowDialog();
                     }
                     //InputForm inputForm = new InputForm("Código do vendedor:", "0", PSO, BSO);
                     //resultado = inputForm.ShowDialog();

@@ -142,6 +142,12 @@
     <Compile Include="InputForm.Designer.cs">
       <DependentUpon>InputForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="InputForm_old.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="InputForm_old.Designer.cs">
+      <DependentUpon>InputForm_old.cs</DependentUpon>
+    </Compile>
     <Compile Include="PP_CaixasJM.cs" />
     <Compile Include="Motor\PriEngine.cs" />
     <Compile Include="MSS_Gerais.cs" />
@@ -164,6 +170,9 @@
   <ItemGroup>
     <EmbeddedResource Include="InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputForm_old.resx">
+      <DependentUpon>InputForm_old.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
