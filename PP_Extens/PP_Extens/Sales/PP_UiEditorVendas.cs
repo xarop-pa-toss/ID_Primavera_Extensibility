@@ -37,6 +37,8 @@ namespace PP_Extens.Sales
 
                 BSO.Vendas.Documentos.PreencheDadosRelacionados(DocumentoVenda);
             }
+
+            FormServicoDados formServicoDados = new FormServicoDados();
         }
 
         public override void ClienteIdentificado(string Cliente, ref bool Cancel, ExtensibilityEventArgs e)

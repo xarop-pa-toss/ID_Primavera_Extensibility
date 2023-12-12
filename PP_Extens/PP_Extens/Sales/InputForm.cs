@@ -57,7 +57,12 @@ namespace PP_Extens
 
         private void InputForm_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
         {
-            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            FormServicoDados.Limpar();
+            if (DialogResult == null)
+            {
+                this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            }
+            
         }
     }
 }
