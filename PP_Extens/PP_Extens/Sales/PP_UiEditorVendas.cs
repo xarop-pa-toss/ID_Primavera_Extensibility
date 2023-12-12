@@ -1,7 +1,9 @@
 using Primavera.Extensibility.Sales.Editors; using Primavera.Extensibility.BusinessEntities;
+using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
+using Primavera.Extensibility.Extensions;
 using System; using System.Collections.Generic; using System.Linq; using System.Text; using System.Threading.Tasks; using System.Windows; using System.Runtime.InteropServices;
-using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs; using PRISDK100;
 using System.Windows.Forms;
+using PRISDK100;
 using BasBE100; using StdBE100; using VndBE100; using StdPlatBS100.UserForms;
 using StdPlatBS100;
 using System.Runtime.CompilerServices;
@@ -86,9 +88,10 @@ namespace PP_Extens.Sales
                 {
                     string s = null;
 
-                    using (var inputFormResultado = this.BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
+                    using (var formInstancia = this.BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
                     {
-                        (inputFormResultado.Result as InputForm).ShowDialog();
+                        var form = (formInstancia.Result as InputForm);
+                        form.ShowDialog();
                     }
                     //InputForm inputForm = new InputForm("Código do vendedor:", "0", PSO, BSO);
                     //resultado = inputForm.ShowDialog();

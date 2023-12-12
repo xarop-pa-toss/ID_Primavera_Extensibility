@@ -45,7 +45,6 @@ C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debu
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\Primavera.MicroServices.Base.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\Primavera.SGMF.Signatures100.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\Primavera.MicroServices.Platform.dll
-C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\Primavera.Extensibility.Extensions.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\Primavera.Signatures.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\Primavera.CoreLib.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\StdBase100.dll
@@ -72,6 +71,6 @@ C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debu
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\es\Primavera.Hydrogen.Core.resources.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\pt\Primavera.Hydrogen.Core.resources.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\obj\Debug\PP_Extens.csproj.CopyComplete
-C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\obj\Debug\PP_Extens.InputForm.resources
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\obj\Debug\PP_Extens.csproj.GenerateResource.cache
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\obj\Debug\PP_Extens.InputForm.resources
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\obj\Debug\PP_Extens.InputForm_old.resources

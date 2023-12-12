@@ -92,6 +92,10 @@
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.CustomForm.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Primavera.Extensibility.Extensions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=11cd844aca152173, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Primavera.Extensibility.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="Primavera.Extensibility.Integration">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Integration.dll</HintPath>
       <Private>False</Private>
@@ -136,16 +140,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InputForm.cs">
-      <SubType>UserControl</SubType>
+    <Compile Include="Sales\InputForm.cs">
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputForm.Designer.cs">
+    <Compile Include="Sales\InputForm.Designer.cs">
       <DependentUpon>InputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputForm_old.cs">
+    <Compile Include="Sales\InputForm_old.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="InputForm_old.Designer.cs">
+    <Compile Include="Sales\InputForm_old.Designer.cs">
       <DependentUpon>InputForm_old.cs</DependentUpon>
     </Compile>
     <Compile Include="PP_CaixasJM.cs" />
@@ -168,10 +172,10 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="InputForm.resx">
+    <EmbeddedResource Include="Sales\InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputForm_old.resx">
+    <EmbeddedResource Include="Sales\InputForm_old.resx">
       <DependentUpon>InputForm_old.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

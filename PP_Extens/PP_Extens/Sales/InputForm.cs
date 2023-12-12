@@ -13,26 +13,26 @@ using System.Windows.Forms;
 
 namespace PP_Extens
 {
-    public partial class InputForm : CustomForm
+    public partial class InputForm : Form
     {
         private string _strDescricao, _strValorDefeito, _resultado;
         public string Resultado { get { return _resultado; } }
         private static StdBSInterfPub _PSO;
         private static ErpBS _BSO;
 
-        public InputForm(string strDescricao, string strValorDefeito, StdBSInterfPub PSO, ErpBS BSO)
+        public InputForm()
         {
-            _strDescricao = strDescricao;
-            _strValorDefeito = strValorDefeito;
-            _PSO = PSO;
-            _BSO = BSO;
+            //_strDescricao = strDescricao;
+            //_strValorDefeito = strValorDefeito;
+            //_PSO = PSO;
+            //_BSO = BSO;
 
             InitializeComponent();
         }
 
         private void InputForm_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         private void InputForm_Shown(object sender, EventArgs e)
@@ -49,6 +49,11 @@ namespace PP_Extens
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void FDU_InputForm_Load(object sender, EventArgs e)
+        {
+
         }
 
         private void btn_OK_Click(object sender, EventArgs e)

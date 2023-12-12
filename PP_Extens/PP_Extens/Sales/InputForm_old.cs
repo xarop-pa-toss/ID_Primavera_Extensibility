@@ -1,5 +1,6 @@
 ﻿using Primavera.Extensibility.BusinessEntities;
 using Primavera.Extensibility.CustomForm;
+using Primavera.Extensibility.Extensions;
 using StdPlatBS100;
 using ErpBS100;
 using System;
@@ -19,14 +20,8 @@ namespace PP_Extens
         private static StdBSInterfPub _PSO;
         private static ErpBS _BSO;
 
-        public InputForm_old(string strDescricao, string strValorDefeito, StdBSInterfPub PSO, ErpBS BSO)
+        public InputForm_old()
         {
-            _strDescricao = strDescricao;
-            _strValorDefeito = strValorDefeito;
-            _PSO = PSO;
-            _BSO = BSO;
-
-
             InitializeComponent();
         }
 

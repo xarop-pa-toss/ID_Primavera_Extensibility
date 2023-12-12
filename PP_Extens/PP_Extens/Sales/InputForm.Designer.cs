@@ -76,17 +76,18 @@
             this.lbl_Descricao.TabIndex = 4;
             this.lbl_Descricao.Text = "label1";
             // 
-            // InputForm
+            // FDU_InputForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(287, 132);
             this.Controls.Add(this.btn_Cancelar);
             this.Controls.Add(this.btn_OK);
             this.Controls.Add(this.txtBox_Resposta);
             this.Controls.Add(this.lbl_Descricao);
-            this.Name = "InputForm";
+            this.Name = "FDU_InputForm";
+            this.Size = new System.Drawing.Size(287, 132);
             this.Text = "InputForm";
+            this.Load += new System.EventHandler(this.FDU_InputForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
