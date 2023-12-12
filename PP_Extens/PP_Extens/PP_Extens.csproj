@@ -140,17 +140,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormServicoDados.cs" />
     <Compile Include="Sales\InputForm.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Sales\InputForm.Designer.cs">
       <DependentUpon>InputForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Sales\InputForm_old.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Sales\InputForm_old.Designer.cs">
-      <DependentUpon>InputForm_old.cs</DependentUpon>
     </Compile>
     <Compile Include="PP_CaixasJM.cs" />
     <Compile Include="Motor\PriEngine.cs" />
@@ -174,9 +169,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Sales\InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Sales\InputForm_old.resx">
-      <DependentUpon>InputForm_old.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
