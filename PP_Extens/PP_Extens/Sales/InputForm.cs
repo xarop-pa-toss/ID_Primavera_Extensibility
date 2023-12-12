@@ -16,11 +16,13 @@ namespace PP_Extens
 {
     public partial class InputForm : CustomForm
     {
-        public string descricao, valorDefeito, _resultado;
+        public string _descricao, _valorDefeito, _resultado;
         public string Resultado { get { return _resultado; } }
 
         public InputForm()
         {
+            _descricao = FormServicoDados.Descricao;
+            _valorDefeito = FormServicoDados.ValorDefeito;
             InitializeComponent();
         }
 
@@ -31,13 +33,12 @@ namespace PP_Extens
 
         private void InputForm_Shown(object sender, EventArgs e)
         {
-            lbl_Descricao.Text = _strDescricao;
-            txtBox_Resposta.Text = _strValorDefeito;
+            lbl_Descricao.Text = _descricao;
+            txtBox_Resposta.Text = _valorDefeito;
 
             // Ajustar as altura do form à altura da descrição
             this.Height += lbl_Descricao.Height;
         }
-
 
         #region Botões
         private void btn_OK_Click(object sender, EventArgs e)
