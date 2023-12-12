@@ -26,6 +26,7 @@ namespace PP_Extens
             _PSO = PSO;
             _BSO = BSO;
 
+
             InitializeComponent();
         }
 
@@ -42,7 +43,6 @@ namespace PP_Extens
             // Ajustar as altura do form à altura da descrição
             this.Height += lbl_Descricao.Height;
         }
-
 
 
         #region Botões
@@ -62,7 +62,6 @@ namespace PP_Extens
 
         private void InputForm_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
         {
-            
             this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
         }
     }

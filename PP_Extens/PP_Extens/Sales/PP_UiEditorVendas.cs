@@ -84,12 +84,10 @@ namespace PP_Extens.Sales
                 if (serie.Valor("CDU_PedeVendedor").Equals(true))
                 {
                     string s = null;
-                    var customForm = new InputForm();
-                    customForm.BSO = 
 
-                    using (var inputForm2 = BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
+                    using (var inputForm = BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
                     {
-                        (inputForm2.Result as InputForm).Show();
+                        // Apresentar form
                     }
                     //InputForm inputForm = new InputForm("Código do vendedor:", "0", PSO, BSO);
                     //resultado = inputForm.ShowDialog();
