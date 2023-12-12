@@ -42,17 +42,11 @@ namespace PP_Extens
                 
                 foreach (var kvp in caixasNoDocumento)
                 {
-                    if (docsJM_Faturacao.Contains(_docVenda.Tipodoc))
+                    if (docsJM_Faturacao.Contains(_docVenda.Tipodoc) || docsJM_NotaCredito.Contains(_docVenda.Tipodoc))
                     {
                         KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value);
                         NovaLinhaEmTDU(bufferKvp);
                     }
-
-                    if (docsJM_NotaCredito.Contains(_docVenda.Tipodoc))
-                    {
-                        KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value);
-                        NovaLinhaEmTDU(bufferKvp);
-                    };
                 }
                 return;
             }
@@ -62,14 +56,8 @@ namespace PP_Extens
 
                 foreach (var kvp in caixasNoDocumento)
                 {
-                    if (docsFornecedor_NotaCredito.Contains(_docVenda.Tipodoc)) {
-                        KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value);
-                        NovaLinhaEmTDU(bufferKvp);
-                    }
-
-                    if (docsFornecedor_Faturacao.Contains(_docVenda.Tipodoc))
-                    {
-                        KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value);
+                    if (docsFornecedor_NotaCredito.Contains(_docVenda.Tipodoc) || docsFornecedor_Faturacao.Contains(_docVenda.Tipodoc)) {
+                        KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value * -1);
                         NovaLinhaEmTDU(bufferKvp);
                     }
                 }
