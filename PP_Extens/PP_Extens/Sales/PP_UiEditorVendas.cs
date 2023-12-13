@@ -371,13 +371,14 @@ namespace PP_Extens.Sales
             base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
         }
 
+
         internal void PreVisualizarSemGravarNovo()
         {
             long nLinhas = DocumentoVenda.Linhas.NumItens, i;
             string tempGUID;
 
             // Valida num de linhas no Doc
-            if (nLinhas == 0) { System.Windows.Forms.MessageBox.Show("Não há nenhum documento válido no Editor de Vendas!\n Certifique-se que o Editor de Vendas contém um documento com a Entidade preenchida e com pelo menos uma linha!"); return; }
+            if (nLinhas == 0) { MessageBox.Show("Não há nenhum documento válido no Editor de Vendas!\n Certifique-se que o Editor de Vendas contém um documento com a Entidade preenchida e com pelo menos uma linha!"); return; }
 
             // Preenchimento das tabelas de utilizador usadas para a PreVisualização. Mostra a PreVisualização e depois apaga os conteudos das tabelas.
             StdBEExecSql sql = new StdBEExecSql();
