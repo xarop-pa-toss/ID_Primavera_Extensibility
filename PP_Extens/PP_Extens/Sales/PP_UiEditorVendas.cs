@@ -88,7 +88,7 @@ namespace PP_Extens.Sales
                 serie.Inicio();
                 if (serie.Valor("CDU_PedeVendedor").Equals(true))
                 {
-                    string s = PP_Geral.MostraInputForm("Vendedor", "Código de Vendedor", "0", BSO);
+                    string s = PP_Geral.MostraInputForm("Vendedor", "Código de Vendedor", "", BSO);
 
                     //InputForm inputForm = new InputForm("Código do vendedor:", "0", PSO, BSO);
                     //resultado = inputForm.ShowDialog();

@@ -24,17 +24,19 @@ namespace PP_Extens
 
         private void InputForm_Load(object sender, EventArgs e)
         {
-
-        }
-
-        private void InputForm_Shown(object sender, EventArgs e)
-        {
             this.Text = FormServicoDados.Titulo;
             lbl_Descricao.Text = FormServicoDados.Descricao;
             txtBox_Resposta.Text = FormServicoDados.ValorDefeito;
 
             // Ajustar as altura do form à altura da descrição
+            this.FormBorderStyle = FormBorderStyle.Sizable;
             this.Height += lbl_Descricao.Height;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.PerformLayout();
+        }
+
+        private void InputForm_Shown(object sender, EventArgs e)
+        {
         }
 
         #region Botões
