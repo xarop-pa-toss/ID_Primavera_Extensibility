@@ -4,6 +4,7 @@ using StdBE100; using StdPlatBS100;
 using PP_Extens;
 using Primavera.Extensibility.Extensions;
 using ErpBS100;
+using System.Drawing.Printing;
 
 // Conversão de PORTIPESCA/Modules/Geral
 namespace PP_Extens
@@ -20,7 +21,7 @@ namespace PP_Extens
         // temos de ter alternativa para enviar informação para dentro do form.
         // Foi criada uma class FormServicoDados que serve como proxy com propriedades static. Não é limpo, mas não vi outra opção.
         // Para evitar erro do user (dev), foi encapsulada em PP_Geral.cs para obrigar a preencher parâmetros
-        public static string MostraInputForm(string titulo, string descricao, string valorDefeito, ErpBS BSO)
+        public static string MostraInputForm(string titulo, string descricao, string valorDefeito, bool permiteNull, ErpBS BSO)
         {
             string resposta = null;
 
@@ -37,6 +38,10 @@ namespace PP_Extens
                 }
                 
                 FormServicoDados.Limpar();
+                if (string.IsNullOrWhiteSpace(resposta) && !permiteNull) {
+                    System.Windows.Forms.MessageBox.Show("Campo não pode estar vazio.");
+                    MostraInputForm(titulo, descricao, valorDefeito, permiteNull, BSO); }
+
                 return resposta;
             }
         }

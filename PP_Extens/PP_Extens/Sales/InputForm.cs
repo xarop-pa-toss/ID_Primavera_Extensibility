@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PP_Extens.Sales;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace PP_Extens
 {
@@ -29,10 +30,9 @@ namespace PP_Extens
             txtBox_Resposta.Text = FormServicoDados.ValorDefeito;
 
             // Ajustar as altura do form à altura da descrição
-            this.FormBorderStyle = FormBorderStyle.Sizable;
-            this.Height += lbl_Descricao.Height;
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.PerformLayout();
+            this.SuspendLayout();
+            this.Size = new Size(this.Width, this.Height + lbl_Descricao.Height + 30);
+            this.ResumeLayout();
         }
 
         private void InputForm_Shown(object sender, EventArgs e)

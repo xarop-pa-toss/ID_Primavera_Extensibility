@@ -39,6 +39,7 @@ namespace PP_Extens.Sales
             }
 
             FormServicoDados formServicoDados = new FormServicoDados();
+            this.DocumentoVenda.Entidade = "306";
         }
 
         public override void ClienteIdentificado(string Cliente, ref bool Cancel, ExtensibilityEventArgs e)
@@ -88,7 +89,7 @@ namespace PP_Extens.Sales
                 serie.Inicio();
                 if (serie.Valor("CDU_PedeVendedor").Equals(true))
                 {
-                    string s = PP_Geral.MostraInputForm("Vendedor", "Código de Vendedor", "", BSO);
+                    string s = PP_Geral.MostraInputForm("Vendedor", "Código de Vendedor", "", true, BSO);
 
                     //InputForm inputForm = new InputForm("Código do vendedor:", "0", PSO, BSO);
                     //resultado = inputForm.ShowDialog();
@@ -105,7 +106,7 @@ namespace PP_Extens.Sales
                 // Pede Documento se a série o exigir
                 if (serie.Valor("CDU_PedeDocumento").Equals(true))
                 {
-                    string nrDoc = PP_Geral.MostraInputForm("Documento", "Nº de documento manual:", "", BSO);
+                    string nrDoc = PP_Geral.MostraInputForm("Documento", "Nº de documento manual:", "", true, BSO);
 
                     // Queremos os caracteres de 0 a 10. Substring dá erro se fizermos isso e a string de entrada for mais curta que 10 caracteres
                     // Math.Min devolve o menor dos dois valores.
@@ -127,7 +128,7 @@ namespace PP_Extens.Sales
 
                         if (geral.nz(ref matriculaHabitual).Length > 0 && geral.nz(ref matricula) == "") { DocumentoVenda.Matricula = geral.nz(ref matriculaHabitual); }
 
-                        matricula = PP_Geral.MostraInputForm("Matricula", "Matricula da viatura:", geral.nz(ref matricula), BSO);
+                        matricula = PP_Geral.MostraInputForm("Matricula", "Matricula da viatura:", geral.nz(ref matricula), true, BSO);
                         DocumentoVenda.Matricula = geral.nz(ref matricula);
 
                         cli = null;
@@ -144,7 +145,7 @@ namespace PP_Extens.Sales
                     string s = BSO.Base.Clientes.DaValorAtributo(DocumentoVenda.Entidade, "CDU_NotaFactura");
                     if (s.Length > 1)
                     {
-                        s = PP_Geral.MostraInputForm("Nota", "Nota na Fatura", "", BSO);
+                        s = PP_Geral.MostraInputForm("Nota", "Nota na Fatura", "", true, BSO);
                         DocumentoVenda.CamposUtil["CDU_NotaFactura"].Valor = geral.nz(ref s);
                     }
                 }
@@ -164,14 +165,14 @@ namespace PP_Extens.Sales
             if (Convert.ToBoolean(BSO.Base.Series.DaValorAtributo("V", DocumentoVenda.Tipodoc, DocumentoVenda.Serie, "CDU_PedeFornecedor")))
             {
                 string cdu = linha.CamposUtil["CDU_Fornecedor"].Valor.ToString();
-                s = PP_Geral.MostraInputForm("Fornecedor", "Fornecedor:", Geral.nz(ref cdu), BSO);
+                s = PP_Geral.MostraInputForm("Fornecedor", "Fornecedor:", Geral.nz(ref cdu), true, BSO);
                 linha.CamposUtil["CDU_Fornecedor"].Valor = Geral.nz(ref s).Trim();
             }
 
             bool memUltLote = BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_MemorizaLote");
             if (memUltLote) { s = BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_UltimoLote"); }
 
-            s = PP_Geral.MostraInputForm("Lote", " Introduza o lote do artigo:\n\n         **** ATENÇÃO ****\n\n FornecedorMêsDia\n Exemplo: 0010718",s, BSO);
+            s = PP_Geral.MostraInputForm("Lote", "Introduza o lote do artigo:\n\n**** ATENÇÃO ****\n\nFornecedorMêsDia\nExemplo: 0010718", s, false, BSO);
             s = Geral.nz(ref s).ToUpper().Trim();
             linha.CamposUtil["CDU_LoteAux"].Valor = s;
 
@@ -210,7 +211,7 @@ namespace PP_Extens.Sales
                 {
                     try
                     {
-                        resposta = PP_Geral.MostraInputForm("Forma de Obtenção", descricao, "", BSO);
+                        resposta = PP_Geral.MostraInputForm("Forma de Obtenção", descricao, "", false, BSO);
                         
                         if (string.IsNullOrEmpty(resposta)) { break; }
                         
@@ -292,7 +293,7 @@ namespace PP_Extens.Sales
             }
         }
 
-        public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
+        public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)   
         {
             base.AntesDeGravar(ref Cancel, e);
             PP_Geral geral = new PP_Geral();
@@ -336,7 +337,7 @@ namespace PP_Extens.Sales
                 if (!query.Vazia())
                 {
                     string m = DocumentoVenda.Matricula;
-                    string matricula = PP_Geral.MostraInputForm("Matrícula", "Matrícula da viatura:", geral.nz(ref m), BSO);
+                    string matricula = PP_Geral.MostraInputForm("Matrícula", "Matrícula da viatura:", geral.nz(ref m), true, BSO);
 
                     if (geral.nz(ref matricula) != DocumentoVenda.Matricula) { DocumentoVenda.Matricula = geral.nz(ref matricula); }
                 }

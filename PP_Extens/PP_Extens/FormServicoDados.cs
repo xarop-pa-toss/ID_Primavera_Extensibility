@@ -22,7 +22,7 @@ namespace PP_Extens
         }
         public static string ValorDefeito
         {
-            get => GetOuDefeito("ValorDefeito", "0");
+            get => GetOuDefeito("ValorDefeito", null);
             set => FormDados["ValorDefeito"] = value;
         }
         public static string Resposta 
