@@ -39,7 +39,6 @@ namespace PP_Extens.Sales
             }
 
             FormServicoDados formServicoDados = new FormServicoDados();
-            this.DocumentoVenda.Entidade = "306";
         }
 
         public override void ClienteIdentificado(string Cliente, ref bool Cancel, ExtensibilityEventArgs e)
@@ -332,17 +331,24 @@ namespace PP_Extens.Sales
             if (DocumentoVenda.Tipodoc == "ET") { cancelTTE = true; }
             else if (DocumentoVenda.EmModoEdicao == false && Cancel == false)
             {
-                StdBELista query = BSO.Consulta("Select CDU_PedeMatricula From SeriesVendas Where TipoDoc = '" + DocumentoVenda.Tipodoc + "' And Serie = '" + DocumentoVenda.Serie + "';");
-
-                if (!query.Vazia())
+                // Verifica se o campo CDU_SeloViatura está vazio
+                if (string.IsNullOrEmpty(DocumentoVenda.CamposUtil["CDU_SeloViatura"].Valor.ToString()) && DocumentoVenda.Tipodoc == "GRP")
                 {
-                    string m = DocumentoVenda.Matricula;
-                    string matricula = PP_Geral.MostraInputForm("Matrícula", "Matrícula da viatura:", geral.nz(ref m), true, BSO);
-
-                    if (geral.nz(ref matricula) != DocumentoVenda.Matricula) { DocumentoVenda.Matricula = geral.nz(ref matricula); }
+                    string selo = PP_Geral.MostraInputForm("Selo", "Selo da viatura de transporte:", "", false, BSO);
+                    DocumentoVenda.CamposUtil["CDU_SeloViatura"].Valor = selo;
+                    }
                 }
-                query.Termina();
-            }
+
+                //StdBELista query = BSO.Consulta("Select CDU_PedeMatricula From SeriesVendas Where TipoDoc = '" + DocumentoVenda.Tipodoc + "' And Serie = '" + DocumentoVenda.Serie + "';");
+
+                //if (!query.Vazia())
+                //{
+                //    string m = DocumentoVenda.Matricula;
+                //    string matricula = 
+
+                //    if (geral.nz(ref matricula) != DocumentoVenda.Matricula) { DocumentoVenda.Matricula = geral.nz(ref matricula); }
+                //}
+                //query.Termina();
 
             // Cria string com número de linhas em sequência
             string s = "";

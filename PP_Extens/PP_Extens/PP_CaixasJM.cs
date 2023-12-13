@@ -114,13 +114,14 @@ namespace PP_Extens
             {
                 {"CDU_ID", PP_Geral.GetGUID()},
                 {"CDU_CabecDocID", _docVenda.ID},
-                {"CDU_Data", _docVenda.DataGravacao.ToString()},
                 {"CDU_TipoDoc", _docVenda.Tipodoc },
                 {"CDU_NumDoc", _docVenda.NumDoc.ToString() },
+                {"CDU_Entidade", _docVenda.Entidade},
                 {"CDU_NumEncomenda", _docVenda.Referencia},
                 {"CDU_TipoCaixa",  caixas.Key},
                 {"CDU_Quantidade", caixas.Value.ToString()},
-                {"CDU_ArmazemOrigem", armazemOrigem}
+                {"CDU_ArmazemOrigem", armazemOrigem},
+                {"CDU_Data", _docVenda.DataGravacao.ToString()}
             };
 
             foreach (var kvp in campos)
