@@ -447,15 +447,15 @@ namespace PP_Extens.Sales
                 sql2.AddCampo("TotalDF", ldv.TotalDF);
                 sql2.AddCampo("TotalIva", ldv.TotalIva);
                 sql2.AddCampo("TotalEcotaxa", ldv.TotalEcotaxa);
-                sql2.AddCampo("CDU_Pescado", ldv.CamposUtil["CDU_Pescado"]);
-                sql2.AddCampo("CDU_NomeCientifico", ldv.CamposUtil["CDU_NomeCientifico"]);
-                sql2.AddCampo("CDU_Origem", ldv.CamposUtil["CDU_Origem"]);
-                sql2.AddCampo("CDU_FormaObtencao", ldv.CamposUtil["CDU_FormaObtencao"]);
-                sql2.AddCampo("CDU_ZonaFAO", ldv.CamposUtil["CDU_ZonaFAO"]);
-                sql2.AddCampo("CDU_Caixas", ldv.CamposUtil["CDU_Caixas"]);
-                sql2.AddCampo("CDU_VendaEmCaixa", ldv.CamposUtil["CDU_VendaEmCaixa"]);
-                sql2.AddCampo("CDU_KilosPorCaixa", ldv.CamposUtil["CDU_KilosPorCaixa"]);
-                sql2.AddCampo("CDU_LoteAux", ldv.CamposUtil["CDU_LoteAux"]);
+                sql2.AddCampo("CDU_Pescado", ldv.CamposUtil["CDU_Pescado"].Valor);
+                sql2.AddCampo("CDU_NomeCientifico", ldv.CamposUtil["CDU_NomeCientifico"].Valor);
+                sql2.AddCampo("CDU_Origem", ldv.CamposUtil["CDU_Origem"].Valor);
+                sql2.AddCampo("CDU_FormaObtencao", ldv.CamposUtil["CDU_FormaObtencao"].Valor);
+                sql2.AddCampo("CDU_ZonaFAO", ldv.CamposUtil["CDU_ZonaFAO"].Valor);
+                sql2.AddCampo("CDU_Caixas", ldv.CamposUtil["CDU_Caixas"].Valor);
+                sql2.AddCampo("CDU_VendaEmCaixa", ldv.CamposUtil["CDU_VendaEmCaixa"].Valor);
+                sql2.AddCampo("CDU_KilosPorCaixa", ldv.CamposUtil["CDU_KilosPorCaixa"].Valor);
+                sql2.AddCampo("CDU_LoteAux", ldv.CamposUtil["CDU_LoteAux"].Valor);
                 
                 sql2.AddQuery();
                 PSO.ExecSql.Executa(sql2);
