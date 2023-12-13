@@ -44,11 +44,10 @@ namespace PP_Extens
                 {
                     if (docsJM_Faturacao.Contains(_docVenda.Tipodoc) || docsJM_NotaCredito.Contains(_docVenda.Tipodoc))
                     {
-                        KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value);
+                        KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value * -1);
                         NovaLinhaEmTDU(bufferKvp);
                     }
-                }
-                return;
+                } return;
             }
             
             // Entidade Fornecedor de caixas (EUROPOOL)
@@ -56,18 +55,18 @@ namespace PP_Extens
 
                 foreach (var kvp in caixasNoDocumento)
                 {
-                    if (docsFornecedor_NotaCredito.Contains(_docVenda.Tipodoc) || docsFornecedor_Faturacao.Contains(_docVenda.Tipodoc)) {
-                        KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value * -1);
+                    if (docsFornecedor_NotaCredito.Contains(_docVenda.Tipodoc) || docsFornecedor_Faturacao.Contains(_docVenda.Tipodoc))
+                    {
+                        KeyValuePair<string, double> bufferKvp = new KeyValuePair<string, double>(kvp.Key, kvp.Value);
                         NovaLinhaEmTDU(bufferKvp);
                     }
-                }
-                return;
+                } return;
             }
         }
 
         private Dictionary<string,double> GetCaixasNoDocumento()
         {
-            List<string> artigosCaixaList = new List<string> { "F02" };
+            List<string> artigosCaixaList = new List<string> { "F02", "F03" };
 
             var caixasNoDocumento = _docVenda.Linhas
                 .Where(linha => artigosCaixaList.Contains(linha.Artigo))
@@ -102,7 +101,7 @@ namespace PP_Extens
             while (string.IsNullOrEmpty(armazemOrigem))
             {
                 try {
-                    resposta = PP_Geral.MostraInputForm("Armazém de origem das caixas", armazemInputBoxDescricao, "1", false, _BSO);
+                    resposta = PP_Geral.MostraInputForm("Armazém de origem das caixas", armazemInputBoxDescricao, "0", false, _BSO);
                     armazemOrigem = armazemDict[resposta];
                 }
                 catch (KeyNotFoundException e) {
@@ -121,7 +120,6 @@ namespace PP_Extens
                 {"CDU_TipoCaixa",  caixas.Key},
                 {"CDU_Quantidade", caixas.Value.ToString()},
                 {"CDU_ArmazemOrigem", armazemOrigem},
-                {"CDU_Data", _docVenda.DataGravacao.ToString()}
             };
 
             foreach (var kvp in campos)
@@ -129,15 +127,21 @@ namespace PP_Extens
                 StdBECampo campo = new StdBECampo();
                 campo.Nome = kvp.Key;
                 campo.Valor = kvp.Value;
-
+                
                 linha.Add(campo);
             }
 
+            // Campo Data
+            StdBECampo campoData = new StdBECampo();
+            campoData.Nome = "CDU_Data";
+            campoData.Valor = _docVenda.DataGravacao; //DateTime
+
             registoUtil.EmModoEdicao = true;
             registoUtil.Campos = linha;
+            registoUtil.Campos.Add(campoData);
             registoUtil.EmModoEdicao = false;
 
-            _BSO.TabelasUtilizador.Actualiza("TDU_CaixasJM", registoUtil);
+             _BSO.TabelasUtilizador.Actualiza("TDU_CaixasJM", registoUtil);
         }
     }
 }
