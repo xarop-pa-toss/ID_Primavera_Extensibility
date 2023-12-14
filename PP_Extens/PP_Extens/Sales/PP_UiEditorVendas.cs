@@ -461,6 +461,7 @@ namespace PP_Extens.Sales
                 PSO.ExecSql.Executa(sql2);
                 sql2.Dispose();
             }
+            // Inicializar recebe uma string mas só usa as primeiras 3 letras. Corresponde ao nome da pasta dos mapas em Mapas/LP/...
             PSO.Mapas.Inicializar("ERP");
             PSO.Mapas.SetParametro("ID", tempGUID);
             PSO.Mapas.ImprimeListagem("PP_MR_02", eCultura: StdBETipos.EnumGlobalCultures.CULT_PT, blnImpressaoCheque: false);
