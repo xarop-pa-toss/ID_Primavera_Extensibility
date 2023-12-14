@@ -464,11 +464,14 @@ namespace PP_Extens.Sales
             PSO.Mapas.Inicializar("ERP");
             PSO.Mapas.SetParametro("ID", tempGUID);
             PSO.Mapas.ImprimeListagem("PP_MR_02", eCultura: StdBETipos.EnumGlobalCultures.CULT_PT, blnImpressaoCheque: false);
+            //PP_MR_02
+            //tempGUID = tempGUID.Substring(2, 36);
+            StdBEExecSql sqlDelete = new StdBEExecSql();
+            sqlDelete.tpQuery = StdBETipos.EnumTpQuery.tpDELETE;
+            sqlDelete.Tabela = "PSI_TempCabecDoc";
 
-            tempGUID = tempGUID.Substring(2, 36);
             BSO.Consulta("DELETE FROM PSI_TempLinhasDoc WHERE IdCabecDoc = '" + tempGUID + "'");
             BSO.Consulta("DELETE FROM PSI_TempCabecDoc WHERE Id = '" + tempGUID + "'");
-            sql = null; sql2 = null;
         }
     }
 }
