@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DCT_Extens", "DCT_Extens.csproj", "{D93B2FE6-6494-4134-851C-09C1A5FD8784}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D93B2FE6-6494-4134-851C-09C1A5FD8784}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D93B2FE6-6494-4134-851C-09C1A5FD8784}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D93B2FE6-6494-4134-851C-09C1A5FD8784}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D93B2FE6-6494-4134-851C-09C1A5FD8784}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {56FFD0C1-9F77-42C7-BFA0-C91B7FD0E91D}
+	EndGlobalSection
+EndGlobal

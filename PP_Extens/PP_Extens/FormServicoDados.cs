@@ -12,12 +12,12 @@ namespace PP_Extens
 
         public static string Titulo
         {
-            get => GetOuDefeito("Titulo", "Titulo_Defeito");
+            get => GetOuDefeito("Titulo", "");
             set => FormDados["Titulo"] = value;
         }
         public static string Descricao
         {
-            get => GetOuDefeito("Descricao", "Descricao_Defeito");
+            get => GetOuDefeito("Descricao", "");
             set => FormDados["Descricao"] = value;
         }
         public static string ValorDefeito
@@ -27,7 +27,7 @@ namespace PP_Extens
         }
         public static string Resposta 
         {
-            get => GetOuDefeito("Resposta", "Resposta_Defeito");
+            get => GetOuDefeito("Resposta", "");
             set => FormDados["Resposta"] = value; 
         }
 
