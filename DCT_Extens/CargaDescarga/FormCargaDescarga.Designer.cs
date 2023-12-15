@@ -38,6 +38,7 @@
             this.Size = new System.Drawing.Size(800, 450);
             this.Text = "FormCargaDescarga";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormCargaDescarga_FormClosed);
+            this.Load += new System.EventHandler(this.FormCargaDescarga_Load);
             this.ResumeLayout(false);
 
         }

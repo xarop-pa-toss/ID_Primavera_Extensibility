@@ -12,10 +12,18 @@ namespace DCT_Extens
     {
         public FormCargaDescarga()
         {
+            Helpers.PriMotores Motores;
+            Helpers.HelperFunctions Helpers = new Helpers.HelperFunctions();
+
             InitializeComponent();
         }
 
         private void FormCargaDescarga_FormClosed(object sender, System.Windows.Forms.FormClosedEventArgs e)
+        {
+
+        }
+
+        private void FormCargaDescarga_Load(object sender, EventArgs e)
         {
 
         }

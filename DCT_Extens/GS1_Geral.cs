@@ -13,6 +13,7 @@ using StdBE100;
 using BasBE100;
 using System.Drawing.Text;
 using System.Security.Policy;
+using DCT_Extens.Helpers;
 
 namespace DCT_Extens
 {
@@ -24,23 +25,24 @@ namespace DCT_Extens
         private long _NumDoc { get; set; }
         private VndBEDocumentoVenda _dv { get; set; }
         private ErpBS _BSO { get; set; }
-        private StdBSInterfPub _PSO { get; set; }
-        HelperFunctions Helpers;
+        private StdPlatBS _PSO { get; set; }
+        private HelperFunctions _Helpers { get; set; }
+        
 
         private const string PREFIXO = "3";
         private const string PREFIXO_EMPRESA = "560089876";
 
-        public GS1_Geral(string Filial, string Serie, string Tipo, long NumDoc, VndBEDocumentoVenda dv, ErpBS BSO, StdBSInterfPub PSO)
+        public GS1_Geral(string Filial, string Serie, string Tipo, long NumDoc, VndBEDocumentoVenda dv)
         {
             _Filial = Filial;
             _Serie = Serie;
             _Tipo = Tipo;
             _NumDoc = NumDoc;
             _dv = dv;
-            _BSO = BSO;
-            _PSO = PSO;
+            _BSO = PriMotores.Motor;
+            _PSO = PriMotores.Plataforma;
 
-            Helpers = new HelperFunctions(BSO, PSO);
+            _Helpers = new HelperFunctions();
         }
 
         public void EditorVendas_DepoisDeGravar()
@@ -89,7 +91,7 @@ namespace DCT_Extens
                             { "PalletCode", strComPrefixo },
                             { "Sequencia", sequencia }
                         };
-                        Helpers.TDU_Actualiza("TDU_TTE_PackingCodes", dict);
+                        _Helpers.TDU_Actualiza("TDU_TTE_PackingCodes", dict);
                     }
                 }
             }

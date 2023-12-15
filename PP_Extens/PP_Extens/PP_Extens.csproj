@@ -148,7 +148,7 @@
       <DependentUpon>InputForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PP_CaixasJM.cs" />
-    <Compile Include="Motor\PriEngine.cs" />
+    <Compile Include="Helpers\PriEngine.cs" />
     <Compile Include="MSS_Gerais.cs" />
     <Compile Include="PP_Geral.cs" />
     <Compile Include="PP_UtilCBL.cs" />

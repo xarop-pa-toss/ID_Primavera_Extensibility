@@ -8,18 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 using ErpBS100; using StdPlatBS100; using BasBE100; using StdBE100;
 using VndBE100;
+using PRISDK100;
 
-namespace DCT_Extens
+namespace DCT_Extens.Helpers
 {
     public class HelperFunctions : CustomCode
     {
         private ErpBS _BSO {  get; set; }
-        private StdBSInterfPub _PSO { get; set; }
+        private StdPlatBS _PSO { get; set; }
+        private clsSDKContexto _SDKContexto { get; set; }
 
-        public HelperFunctions(ErpBS BSO, StdBSInterfPub PSO)
+        public HelperFunctions()
         {
-            _BSO = BSO;
-            _PSO = PSO;
+            _BSO = Helpers.PriMotores.Motor;
+            _PSO = Helpers.PriMotores.Plataforma;
+            _SDKContexto = Helpers.PriMotores.PriSDKContexto;
         }
 
         // Update TDU se existir linha. Insert se não existir.
@@ -43,7 +46,7 @@ namespace DCT_Extens
             registoUtil.Campos = linha;
             registoUtil.EmModoEdicao = false;
 
-            BSO.TabelasUtilizador.Actualiza(NomeTDU, registoUtil);
+            _BSO.TabelasUtilizador.Actualiza(NomeTDU, registoUtil);
         }
 
         public void ApagaLinhasFilhoEPai(VndBEDocumentoVenda dv, VndBELinhaDocumentoVenda linhaPai)

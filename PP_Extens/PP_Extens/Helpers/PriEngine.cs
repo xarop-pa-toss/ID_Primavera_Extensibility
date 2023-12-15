@@ -5,7 +5,7 @@ using StdPlatBS100;
 using static StdBE100.StdBETipos;
 
 
-namespace FRU_AlterarTerceiros.Motor
+namespace PP_Extens.Motor
 {
     sealed class PriEngine : BasBE100.BasBaseBE
     {

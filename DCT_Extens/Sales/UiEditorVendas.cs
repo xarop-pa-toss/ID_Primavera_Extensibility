@@ -185,7 +185,7 @@ namespace DCT_Extens.Sales
             base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
 
             //*** SSCC código GS1 ***
-            GS1_Geral GS1 = new GS1_Geral(Filial, Serie, Tipo, NumDoc, dv, BSO, PSO);
+            GS1_Geral GS1 = new GS1_Geral(Filial, Serie, Tipo, NumDoc, dv);
             GS1.EditorVendas_DepoisDeGravar();
         }
 
