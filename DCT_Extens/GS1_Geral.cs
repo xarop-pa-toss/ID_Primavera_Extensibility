@@ -41,7 +41,6 @@ namespace DCT_Extens
             _dv = dv;
             _BSO = PriMotores.Motor;
             _PSO = PriMotores.Plataforma;
-
             _Helpers = new HelperFunctions();
         }
 
