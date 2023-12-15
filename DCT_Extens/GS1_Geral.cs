@@ -12,6 +12,7 @@ using StdPlatBS100;
 using StdBE100;
 using BasBE100;
 using System.Drawing.Text;
+using System.Security.Policy;
 
 namespace DCT_Extens
 {
@@ -40,7 +41,7 @@ namespace DCT_Extens
             _PSO = PSO;
         }
 
-        public void EditorVendas_AntesDeGravar()
+        public void EditorVendas_DepoisDeGravar()
         {
             string strCliente = _dv.Entidade;
             BasBECliente objCliente = _BSO.Base.Clientes.Consulta(strCliente);
@@ -94,12 +95,33 @@ namespace DCT_Extens
 
         private string GetSequencia()
         {
-
+            StdBELista recSet = BSO.Consulta("SELECT TOP(1) sequencia from TDU_TTE_PackingCodes ORDER BY sequencia DESC");
+            return (recSet.Valor(0));
         }
 
-        private int GetDigitoControlo(string strFinal)
+        private string GetDigitoControlo(string str)
         {
+            long valor, digito = 0, flag = 3;
 
+            for (int i = str.Length; i >= 1; i--)
+            {
+                valor = long.Parse(str.Substring(i - 1, i)) * flag;
+
+                digito = digito + valor;
+                flag = flag.Equals(3) ? 1 : 3;
+            }
+
+            // EXTRAÇÃO DO NÚMERO DE CONTROLO A PARTIR DA SOMA FINAL
+            // Nas GS-1, o número de controlo é dado por:
+            // Subtracção da soma final pelo múltiplo de 10 mais próximo (igual ou maior).
+            // ex. soma = 120. 120 - 120 = 0.
+            // ex. soma = 123. 130 - 120 = 7
+            digito = digito % 10;
+            digito = 10 - digito;
+
+            if (digito.Equals(10)) { digito = 0; }
+
+            return digito.ToString();
         }
 
     }

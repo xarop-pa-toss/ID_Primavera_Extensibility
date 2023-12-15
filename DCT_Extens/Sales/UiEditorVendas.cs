@@ -186,7 +186,75 @@ namespace DCT_Extens.Sales
 
             //*** SSCC código GS1 ***
             GS1_Geral GS1 = new GS1_Geral(Filial, Serie, Tipo, NumDoc, dv, BSO, PSO);
+            GS1.EditorVendas_DepoisDeGravar();
+        }
 
+        public override void DepoisDeTransformar(ExtensibilityEventArgs e)
+        {
+            base.DepoisDeTransformar(e);
+            BasBEArtigo artigo;
+            StdBELista precUnitDesc;
+            double precUnit;
+
+            if (dv.TipoEntidade.Equals("C") && (bool)BSO.Base.Clientes.Edita(dv.Entidade).CamposUtil["CDU_VALIDAPRECO"].Valor)
+            {
+                foreach (VndBELinhaDocumentoVenda linha in dv.Linhas)
+                {
+                    precUnitDesc = null;
+
+                    if (linha.TipoLinha.Equals("10"))
+                    {
+                        artigo = BSO.Base.Artigos.Edita(linha.Artigo);
+                        precUnit = linha.PrecUnit;
+                        precUnitDesc = BSO.Consulta("" +
+                            " SELECT Preco" +
+                            " FROM REgrasDescPrec" +
+                            " WHERE Campo1 = N" + dv.Entidade +
+                            " AND Campo2 = N" + linha.Artigo);
+
+                        if (precUnitDesc.Vazia()) { PSO.MensagensDialogos.MostraAviso($"O artigo {linha.Artigo} não tem valores no Cardex!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico); }
+                        else if (precUnit != precUnitDesc.Valor(0)) { PSO.MensagensDialogos.MostraAviso($"O valor da encomenda do artigo {linha.Artigo} não coincide com o valor no Cardex!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico); }
+                    }
+                    // não parece ser necessário
+                    // precunit = 0
+                }
+            }
+        }
+
+        public override void ValidaLinha(int NumLinha, ExtensibilityEventArgs e)
+        {
+            base.ValidaLinha(NumLinha, e);
+
+            BasBEArtigo artigo;
+            VndBELinhaDocumentoVenda linha = dv.Linhas.GetEdita(NumLinha);
+
+            if (new List<string> { "FA", "FA1", "FA2", "FAL", "FAP" }.Contains(dv.Tipodoc))
+            {
+                artigo = BSO.Base.Artigos.Edita(linha.Artigo);
+
+                if ((bool)artigo.CamposUtil["CDU_ARTBLOQD"].Valor
+                    && (linha.DescontoComercial != 0
+                        || dv.DescFinanceiro != 0
+                        || dv.DescEntidade != 0))
+                {
+                    PSO.MensagensDialogos.MostraAviso(
+                        "ATENÇÃO:\n" +
+                        "Está a aplicar no Artigo\n" +
+                        $"{linha.Artigo} - {linha.Descricao}", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
+
+                    dv.Linhas.Remove(NumLinha);
+                }
+            }
+
+            // *** Se Quantidade tiver casas decimais, avisar
+            // Truncate devolve apenas a parte inteira de um dado número. Se o número truncado for igual ao original, o original não tinha casas decimais.
+            // Truncate não arredonda. ex: 10.75 truncado = 10
+            if (linha.Quantidade != Math.Truncate(linha.Quantidade))
+            {
+                PSO.MensagensDialogos.MostraAviso(
+                    "ATENÇÃO:\n" +
+                    "Está a inserir uma quantidade não inteira (com casas decimais).");
+            }
         }
 
 
