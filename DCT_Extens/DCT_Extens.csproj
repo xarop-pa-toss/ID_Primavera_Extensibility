@@ -131,6 +131,7 @@
       <DependentUpon>FormCargaDescarga.cs</DependentUpon>
     </Compile>
     <Compile Include="GS1_Geral.cs" />
+    <Compile Include="HelperFunctions.cs" />
     <Compile Include="Internal\UiEditorInternos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Purchases\UiEditorCompras.cs" />
