@@ -77,7 +77,7 @@ namespace DCT_Extens.Sales
                 foreach (VndBELinhaDocumentoVenda linha in dv.Linhas)
                 {
                     artigo = BSO.Base.Artigos.Edita(linha.Artigo);
-
+                    
                     if (linha.TipoLinha.Equals(10)
                         && (bool)artigo.CamposUtil["CDU_ArtBLOQD"].Valor
                         && (linha.DescontoComercial != 0 || dv.DescFinanceiro != 0 || dv.DescEntidade != 0))
