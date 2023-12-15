@@ -28,55 +28,55 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.priGrelha1 = new PRISDK100.PriGrelha();
+            this.priGrelha_Moradas = new PRISDK100.PriGrelha();
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.f4_Entidade = new PRISDK100.F4();
             this.btn_Actualizar = new System.Windows.Forms.Button();
             this.btn_Confirmar = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.priGrelha1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.priGrelha_Moradas)).BeginInit();
             this.SuspendLayout();
             // 
-            // priGrelha1
+            // priGrelha_Moradas
             // 
-            this.priGrelha1.BackColor = System.Drawing.Color.White;
-            this.priGrelha1.BandaMenuContexto = "";
-            this.priGrelha1.BotaoConfigurarActiveBar = true;
-            this.priGrelha1.BotaoProcurarActiveBar = false;
-            this.priGrelha1.CaminhoTemplateImpressao = "";
-            this.priGrelha1.Cols = null;
-            this.priGrelha1.ColsFrozen = -1;
-            this.priGrelha1.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.priGrelha1.Location = new System.Drawing.Point(20, 196);
-            this.priGrelha1.Margin = new System.Windows.Forms.Padding(4);
-            this.priGrelha1.Name = "priGrelha1";
-            this.priGrelha1.NumeroMaxRegistosSemPag = 150000;
-            this.priGrelha1.NumeroRegistos = 0;
-            this.priGrelha1.NumLinhasCabecalho = 1;
-            this.priGrelha1.OrientacaoMapa = PRISDK100.clsSDKTypes.OrientacaoImpressao.oiDefault;
-            this.priGrelha1.ParentFormModal = false;
-            this.priGrelha1.PermiteActiveBar = false;
-            this.priGrelha1.PermiteActualizar = true;
-            this.priGrelha1.PermiteAgrupamentosUser = true;
-            this.priGrelha1.PermiteConfigurarDetalhes = false;
-            this.priGrelha1.PermiteContextoVazia = false;
-            this.priGrelha1.PermiteDataFill = false;
-            this.priGrelha1.PermiteDetalhes = true;
-            this.priGrelha1.PermiteEdicao = false;
-            this.priGrelha1.PermiteFiltros = true;
-            this.priGrelha1.PermiteGrafico = true;
-            this.priGrelha1.PermiteGrandeTotal = false;
-            this.priGrelha1.PermiteOrdenacao = true;
-            this.priGrelha1.PermitePaginacao = false;
-            this.priGrelha1.PermiteScrollBars = true;
-            this.priGrelha1.PermiteStatusBar = true;
-            this.priGrelha1.PermiteVistas = true;
-            this.priGrelha1.PosicionaColunaSeguinte = true;
-            this.priGrelha1.Size = new System.Drawing.Size(1168, 441);
-            this.priGrelha1.TabIndex = 0;
-            this.priGrelha1.TituloGrelha = "";
-            this.priGrelha1.TituloMapa = "";
-            this.priGrelha1.TypeNameLinha = "";
-            this.priGrelha1.TypeNameLinhas = "";
+            this.priGrelha_Moradas.BackColor = System.Drawing.Color.White;
+            this.priGrelha_Moradas.BandaMenuContexto = "";
+            this.priGrelha_Moradas.BotaoConfigurarActiveBar = true;
+            this.priGrelha_Moradas.BotaoProcurarActiveBar = false;
+            this.priGrelha_Moradas.CaminhoTemplateImpressao = "";
+            this.priGrelha_Moradas.Cols = null;
+            this.priGrelha_Moradas.ColsFrozen = -1;
+            this.priGrelha_Moradas.Font = new System.Drawing.Font("Tahoma", 8.25F);
+            this.priGrelha_Moradas.Location = new System.Drawing.Point(20, 196);
+            this.priGrelha_Moradas.Margin = new System.Windows.Forms.Padding(4);
+            this.priGrelha_Moradas.Name = "priGrelha_Moradas";
+            this.priGrelha_Moradas.NumeroMaxRegistosSemPag = 150000;
+            this.priGrelha_Moradas.NumeroRegistos = 0;
+            this.priGrelha_Moradas.NumLinhasCabecalho = 1;
+            this.priGrelha_Moradas.OrientacaoMapa = PRISDK100.clsSDKTypes.OrientacaoImpressao.oiDefault;
+            this.priGrelha_Moradas.ParentFormModal = false;
+            this.priGrelha_Moradas.PermiteActiveBar = false;
+            this.priGrelha_Moradas.PermiteActualizar = true;
+            this.priGrelha_Moradas.PermiteAgrupamentosUser = true;
+            this.priGrelha_Moradas.PermiteConfigurarDetalhes = false;
+            this.priGrelha_Moradas.PermiteContextoVazia = false;
+            this.priGrelha_Moradas.PermiteDataFill = false;
+            this.priGrelha_Moradas.PermiteDetalhes = true;
+            this.priGrelha_Moradas.PermiteEdicao = false;
+            this.priGrelha_Moradas.PermiteFiltros = true;
+            this.priGrelha_Moradas.PermiteGrafico = true;
+            this.priGrelha_Moradas.PermiteGrandeTotal = false;
+            this.priGrelha_Moradas.PermiteOrdenacao = true;
+            this.priGrelha_Moradas.PermitePaginacao = false;
+            this.priGrelha_Moradas.PermiteScrollBars = true;
+            this.priGrelha_Moradas.PermiteStatusBar = true;
+            this.priGrelha_Moradas.PermiteVistas = true;
+            this.priGrelha_Moradas.PosicionaColunaSeguinte = true;
+            this.priGrelha_Moradas.Size = new System.Drawing.Size(1168, 441);
+            this.priGrelha_Moradas.TabIndex = 0;
+            this.priGrelha_Moradas.TituloGrelha = "";
+            this.priGrelha_Moradas.TituloMapa = "";
+            this.priGrelha_Moradas.TypeNameLinha = "";
+            this.priGrelha_Moradas.TypeNameLinhas = "";
             // 
             // printDialog1
             // 
@@ -133,6 +133,7 @@
             this.btn_Actualizar.TabIndex = 2;
             this.btn_Actualizar.Text = "Actualizar";
             this.btn_Actualizar.UseVisualStyleBackColor = true;
+            this.btn_Actualizar.Click += new System.EventHandler(this.btn_Actualizar_Click);
             // 
             // btn_Confirmar
             // 
@@ -143,6 +144,7 @@
             this.btn_Confirmar.TabIndex = 3;
             this.btn_Confirmar.Text = "Confirmar";
             this.btn_Confirmar.UseVisualStyleBackColor = true;
+            this.btn_Confirmar.Click += new System.EventHandler(this.btn_Confirmar_Click);
             // 
             // FormCargaDescarga
             // 
@@ -151,21 +153,21 @@
             this.Controls.Add(this.btn_Confirmar);
             this.Controls.Add(this.btn_Actualizar);
             this.Controls.Add(this.f4_Entidade);
-            this.Controls.Add(this.priGrelha1);
+            this.Controls.Add(this.priGrelha_Moradas);
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "FormCargaDescarga";
             this.Size = new System.Drawing.Size(1216, 660);
             this.Text = "FormCargaDescarga";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormCargaDescarga_FormClosed);
             this.Load += new System.EventHandler(this.FormCargaDescarga_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.priGrelha1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.priGrelha_Moradas)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private PRISDK100.PriGrelha priGrelha1;
+        private PRISDK100.PriGrelha priGrelha_Moradas;
         private System.Windows.Forms.PrintDialog printDialog1;
         private PRISDK100.F4 f4_Entidade;
         private System.Windows.Forms.Button btn_Actualizar;
