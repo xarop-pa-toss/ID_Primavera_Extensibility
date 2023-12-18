@@ -145,7 +145,6 @@
     <Compile Include="Helpers\PriMotores.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Purchases\UiEditorCompras.cs" />
-    <Compile Include="Sales\UiEditorCopiaLinhas.cs" />
     <Compile Include="Sales\UiEditorVendas.cs" />
     <Compile Include="Forms\FormStockQuebras.cs">
       <SubType>UserControl</SubType>
@@ -153,7 +152,7 @@
     <Compile Include="Forms\FormStockQuebras.Designer.cs">
       <DependentUpon>FormStockQuebras.cs</DependentUpon>
     </Compile>
-    <Compile Include="UiEditorCopiaLinhas.cs" />
+    <Compile Include="Sales\UiEditorCopiaLinhas.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="IGcpBS900">

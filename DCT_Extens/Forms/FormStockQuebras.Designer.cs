@@ -113,6 +113,7 @@
             this.Name = "FormStockQuebras";
             this.Size = new System.Drawing.Size(291, 214);
             this.Text = "FormStockQuebras";
+            this.Load += new System.EventHandler(this.FormStockQuebras_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

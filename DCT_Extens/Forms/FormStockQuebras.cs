@@ -14,5 +14,10 @@ namespace DCT_Extens.StockQuebras
         {
             InitializeComponent();
         }
+
+        private void FormStockQuebras_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
