@@ -19,9 +19,10 @@ namespace DCT_Extens
         private StdPlatBS _PSO { get; set; }
         private clsSDKContexto _SDKContexto { get; set; }
         private HelperFunctions _Helpers { get; set; }
-        private BasBECargaDescarga _cargaDescarga { get; set; }
-
-        public bool NaoGravar, MoradaAlterada, GravarComMoradaPorDefeito;
+        
+        public BasBECargaDescarga _cargaDescarga { get; set; }
+        public bool NaoGravar { get; set; }
+        public bool MoradaAlterada, GravarComMoradaPorDefeito;
 
         public FormCargaDescarga()
         {
@@ -52,9 +53,8 @@ namespace DCT_Extens
 
             // Inicializar objecto CargaDescarga público que será populado com linha escolhida na tabela.
             // Este objecto é então usado no EditorVendas_AntesDeGravar para popular a CargaDescarga do DocVenda
-            string morEntrega, morEntrega2, morCarga, morCarga2;
-            bool linhaSeleccionada = false;
             _cargaDescarga = new BasBECargaDescarga();
+            bool linhaSeleccionada = false;
 
             // Indice da primeira linha que tenha Cf = true;
             for (int i = 1; i == priGrelha_Moradas.Grelha.DataRowCnt; i++)
@@ -70,16 +70,16 @@ namespace DCT_Extens
                     _cargaDescarga.CodPostalLocalidadeEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "LocalidadePostal");
                     _cargaDescarga.DistritoEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Distrito");
                     _cargaDescarga.PaisEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Pais");
-                    break;
+
+                    this.Close();
                 }
             }
-
             // Mostra erro se não for escolhida nenhuma morada
-            _PSO.MensagensDialogos.MostraErro("Nenhuma morada selecionada.", StdBSTipos.IconId.PRI_Critico);
-
-
+            if (!linhaSeleccionada)
+            {
+                _PSO.MensagensDialogos.MostraErro("Nenhuma morada selecionada.", StdBSTipos.IconId.PRI_Critico);
+            }
         }
-
 
         private void InicializaPrigrelha()
         {
@@ -109,6 +109,7 @@ namespace DCT_Extens
 
         private void FormCargaDescarga_FormClosed(object sender, System.Windows.Forms.FormClosedEventArgs e)
         {
+
 
         }
     }

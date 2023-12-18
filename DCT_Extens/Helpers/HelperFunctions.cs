@@ -18,11 +18,16 @@ namespace DCT_Extens.Helpers
         private StdPlatBS _PSO { get; set; }
         private clsSDKContexto _SDKContexto { get; set; }
 
+        //Existem problemas quando se utiliza o FormCopiaLinhas para criar um DocStocks a partir de outro
+        //Como CopiaLinhas não dá trigger a TipoDocumentoIdentificado() nem ArtigoIdentificado(), é necessário manter uma variavel de estado que fica true pelo EditorCopiaLinhas
+        public static bool LinhasCopiadas { get; set; }
+
         public HelperFunctions()
         {
             _BSO = Helpers.PriMotores.Motor;
             _PSO = Helpers.PriMotores.Plataforma;
             _SDKContexto = Helpers.PriMotores.PriSDKContexto;
+            LinhasCopiadas = false;
         }
 
         // Update TDU se existir linha. Insert se não existir.

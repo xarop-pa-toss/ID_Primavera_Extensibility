@@ -21,13 +21,13 @@ namespace DCT_Extens.Purchases
         {
             base.AntesDeGravar(ref Cancel, e);
 
-            BasBEArtigo artigo = new BasBEArtigo();
             long i;
 
             if (DocumentoCompra.Entidade != "44" 
                 && new List<string> { "ECF", "ECL", "ECP" }.Contains(DocumentoCompra.Tipodoc)
                 && DocumentoCompra.Linhas.NumItens > 0)
             {
+                BasBEArtigo artigo = new BasBEArtigo();
                 foreach (CmpBELinhaDocumentoCompra linha in DocumentoCompra.Linhas)
                 {
                     artigo = BSO.Base.Artigos.Edita(linha.Artigo);
