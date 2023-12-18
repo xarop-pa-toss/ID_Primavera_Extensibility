@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using ErpBS100; using StdPlatBS100; using BasBE100; using StdBE100;
 using VndBE100;
 using PRISDK100;
+using System.Data;
 
 namespace DCT_Extens.Helpers
 {
@@ -76,6 +77,13 @@ namespace DCT_Extens.Helpers
             {
                 dv.Linhas.Remove(ind);
             }
+        }
+
+        // Devolve DataTable pois objecto criado por BSO.Consulta é uma StdBELista que não é enumerable (não permite usar Foreach loop ou LINQ)
+        public DataTable GetTabela(string querySQL)
+        {
+            DataTable TDULista = BSO.Consulta(querySQL).DataSet.GetTable();
+            return TDULista;
         }
     }
 }

@@ -124,6 +124,12 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UpgradeHelpers.DB.ADO">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\UpgradeHelpers.DB.ADO.dll</HintPath>
+    </Reference>
+    <Reference Include="UpgradeHelpers.DB.Essentials">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\UpgradeHelpers.DB.Essentials.dll</HintPath>
+    </Reference>
     <Reference Include="UpgradeHelpers.FpSpread">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\UpgradeHelpers.FpSpread.dll</HintPath>
     </Reference>
@@ -153,6 +159,7 @@
       <DependentUpon>FormStockQuebras.cs</DependentUpon>
     </Compile>
     <Compile Include="Sales\UiEditorCopiaLinhas.cs" />
+    <Compile Include="StockQuebras_Geral.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="IGcpBS900">
@@ -190,6 +197,9 @@
     <EmbeddedResource Include="Forms\FormStockQuebras.resx">
       <DependentUpon>FormStockQuebras.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
