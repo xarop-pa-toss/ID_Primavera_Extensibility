@@ -19,7 +19,6 @@ namespace DCT_Extens.Sales
     {
         private string _strMensagem;
         private const double DBL_LIMITE = 999;
-        private VndBEDocumentoVenda dv = DocumentoVenda;
 
         public override void AntesDeImprimir(ref bool Cancel, ExtensibilityEventArgs e)
         {
@@ -48,11 +47,11 @@ namespace DCT_Extens.Sales
             // - Tipo de documento financeiro (4) de recebimento (R).
             // - Entidade é Cliente e se o cliente tem a validação de faturas activa.
             // - Total de documento é superior ao limite DBL_LIMITE definido no topo do ficheiro
-            if (BSO.Vendas.TabVendas.Edita(dv.Tipodoc).TipoDocumento.Equals(4)
-                && BSO.Vendas.TabVendas.Edita(dv.Tipodoc).PagarReceber.Equals("R")
-                && dv.TipoEntidade.Equals("C")
-                && (bool)BSO.Base.Clientes.Edita(dv.Entidade).CamposUtil["CDU_ValidaFatura"].Valor
-                && (dv.TotalMerc + dv.TotalOutros + dv.TotalIva) > DBL_LIMITE
+            if (BSO.Vendas.TabVendas.Edita(DocumentoVenda.Tipodoc).TipoDocumento.Equals(4)
+                && BSO.Vendas.TabVendas.Edita(DocumentoVenda.Tipodoc).PagarReceber.Equals("R")
+                && DocumentoVenda.TipoEntidade.Equals("C")
+                && (bool)BSO.Base.Clientes.Edita(DocumentoVenda.Entidade).CamposUtil["CDU_ValidaFatura"].Valor
+                && (DocumentoVenda.TotalMerc + DocumentoVenda.TotalOutros + DocumentoVenda.TotalIva) > DBL_LIMITE
                 && PSO.MensagensDialogos.MostraPerguntaSimples(_strMensagem))
             {
                 Cancel = true;
@@ -60,11 +59,11 @@ namespace DCT_Extens.Sales
             #endregion
 
             #region Forçar Vendedor nas Linhas (vendedor) = Vendedor CabecDoc (responsável)
-            if (BSO.Vendas.TabVendas.Edita(dv.Tipodoc).TipoDocumento.Equals(4))
+            if (BSO.Vendas.TabVendas.Edita(DocumentoVenda.Tipodoc).TipoDocumento.Equals(4))
             {
-                foreach (VndBELinhaDocumentoVenda linha in dv.Linhas)
+                foreach (VndBELinhaDocumentoVenda linha in DocumentoVenda.Linhas)
                 {
-                    if (dv.Responsavel != linha.Vendedor) { linha.Vendedor = dv.Responsavel; }
+                    if (DocumentoVenda.Responsavel != linha.Vendedor) { linha.Vendedor = DocumentoVenda.Responsavel; }
                 }
             }
             #endregion
@@ -72,15 +71,15 @@ namespace DCT_Extens.Sales
             #region Validar se artigo está bloqueado para descontos (não permite gravar)
             BasBEArtigo artigo = new BasBEArtigo();
 
-            if (new List<string> { "FA", "FA1", "FA2", "FAP" }.Contains(DocumentoVenda.Tipodoc) && dv.Linhas.NumItens > 0)
+            if (new List<string> { "FA", "FA1", "FA2", "FAP" }.Contains(DocumentoVenda.Tipodoc) && DocumentoVenda.Linhas.NumItens > 0)
             {
-                foreach (VndBELinhaDocumentoVenda linha in dv.Linhas)
+                foreach (VndBELinhaDocumentoVenda linha in DocumentoVenda.Linhas)
                 {
                     artigo = BSO.Base.Artigos.Edita(linha.Artigo);
                     
                     if (linha.TipoLinha.Equals(10)
                         && (bool)artigo.CamposUtil["CDU_ArtBLOQD"].Valor
-                        && (linha.DescontoComercial != 0 || dv.DescFinanceiro != 0 || dv.DescEntidade != 0))
+                        && (linha.DescontoComercial != 0 || DocumentoVenda.DescFinanceiro != 0 || DocumentoVenda.DescEntidade != 0))
                     {
                         string mensagem = "ATENÇÃO: \n" +
                             "Está a aplicar no Artigo \n" +
@@ -96,7 +95,7 @@ namespace DCT_Extens.Sales
             #endregion
 
             #region Alteração de morada de descarga para entidade 13000
-            if (dv.Entidade.Equals("13000") && string.IsNullOrEmpty(dv.MoradaEntrega))
+            if (DocumentoVenda.Entidade.Equals("13000") && string.IsNullOrEmpty(DocumentoVenda.MoradaEntrega))
             {
                 FormCargaDescarga formCD = new FormCargaDescarga();
                 // Vamos "subscrever" ao evento do FormClosed do form de modo a conseguirmos aceder às suas propriedades públicas enquanto ele fecha.
@@ -125,15 +124,15 @@ namespace DCT_Extens.Sales
             // Criar Campo de Utilizador CDU_MotivoOferta nas LinhasDoc para armazenar o motivo de oferta
             // Criar Campo de Utilizador CDU_UltimoMotivo nas linhasdoc
 
-            if (dv.Entidade == "13000" && new List<string> { "FA", "FAL", "FAP" }.Contains(dv.Tipodoc))
+            if (DocumentoVenda.Entidade == "13000" && new List<string> { "FA", "FAL", "FAP" }.Contains(DocumentoVenda.Tipodoc))
             {
                 using (StdBELista ultimoMotivoLista = BSO.Consulta("SELECT CDU_UltimoMotivo FROM TDU_UM"))
                 {
-                    string titulo = dv.Linhas.GetEdita(NumLinha).CamposUtil["CDU_MotivoOferta"].Valor.ToString();
+                    string titulo = DocumentoVenda.Linhas.GetEdita(NumLinha).CamposUtil["CDU_MotivoOferta"].Valor.ToString();
 
                     PSO.MensagensDialogos.MostraDialogoInput(ref motivoOferta, titulo, "Inserir Motivo de Oferta: ", strValorDefeito: ultimoMotivoLista.DaValor<string>("CDU_UltimoMotivo"));
                     MessageBox.Show("Test");
-                    dv.Linhas.GetEdita(NumLinha).CamposUtil["CDU_MotivoOferta"].Valor = motivoOferta;
+                    DocumentoVenda.Linhas.GetEdita(NumLinha).CamposUtil["CDU_MotivoOferta"].Valor = motivoOferta;
 
                     // SQL Updates ou Deletes têm de ser feitos desta forma com o StdBEExecSql
                     using (StdBEExecSql sql = new StdBEExecSql())
@@ -166,17 +165,17 @@ namespace DCT_Extens.Sales
             {
                 BasBECargaDescarga cdl = new BasBECargaDescarga
                 {
-                    MoradaCarga = dv.CargaDescarga.MoradaCarga,
-                    Morada2Carga = dv.CargaDescarga.Morada2Carga,
-                    LocalidadeCarga = dv.CargaDescarga.LocalidadeCarga,
-                    CodPostalCarga = dv.CargaDescarga.CodPostalCarga,
-                    CodPostalLocalidadeCarga = dv.CargaDescarga.CodPostalLocalidadeCarga,
-                    DistritoCarga = dv.CargaDescarga.DistritoCarga,
-                    PaisCarga = dv.CargaDescarga.PaisCarga,
+                    MoradaCarga = DocumentoVenda.CargaDescarga.MoradaCarga,
+                    Morada2Carga = DocumentoVenda.CargaDescarga.Morada2Carga,
+                    LocalidadeCarga = DocumentoVenda.CargaDescarga.LocalidadeCarga,
+                    CodPostalCarga = DocumentoVenda.CargaDescarga.CodPostalCarga,
+                    CodPostalLocalidadeCarga = DocumentoVenda.CargaDescarga.CodPostalLocalidadeCarga,
+                    DistritoCarga = DocumentoVenda.CargaDescarga.DistritoCarga,
+                    PaisCarga = DocumentoVenda.CargaDescarga.PaisCarga,
                     EntidadeEntrega = "13000"
                 };
 
-                dv.CargaDescarga = cdl;
+                DocumentoVenda.CargaDescarga = cdl;
             }
         }
 
@@ -185,7 +184,7 @@ namespace DCT_Extens.Sales
             base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
 
             //*** SSCC código GS1 ***
-            GS1_Geral GS1 = new GS1_Geral(Filial, Serie, Tipo, NumDoc, dv);
+            GS1_Geral GS1 = new GS1_Geral(Filial, Serie, Tipo, NumDoc, DocumentoVenda);
             GS1.EditorVendas_DepoisDeGravar();
         }
 
@@ -196,9 +195,9 @@ namespace DCT_Extens.Sales
             StdBELista precUnitDesc;
             double precUnit;
 
-            if (dv.TipoEntidade.Equals("C") && (bool)BSO.Base.Clientes.Edita(dv.Entidade).CamposUtil["CDU_VALIDAPRECO"].Valor)
+            if (DocumentoVenda.TipoEntidade.Equals("C") && (bool)BSO.Base.Clientes.Edita(DocumentoVenda.Entidade).CamposUtil["CDU_VALIDAPRECO"].Valor)
             {
-                foreach (VndBELinhaDocumentoVenda linha in dv.Linhas)
+                foreach (VndBELinhaDocumentoVenda linha in DocumentoVenda.Linhas)
                 {
                     precUnitDesc = null;
 
@@ -209,7 +208,7 @@ namespace DCT_Extens.Sales
                         precUnitDesc = BSO.Consulta("" +
                             " SELECT Preco" +
                             " FROM REgrasDescPrec" +
-                            " WHERE Campo1 = N" + dv.Entidade +
+                            " WHERE Campo1 = N" + DocumentoVenda.Entidade +
                             " AND Campo2 = N" + linha.Artigo);
 
                         if (precUnitDesc.Vazia()) { PSO.MensagensDialogos.MostraAviso($"O artigo {linha.Artigo} não tem valores no Cardex!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico); }
@@ -226,23 +225,23 @@ namespace DCT_Extens.Sales
             base.ValidaLinha(NumLinha, e);
 
             BasBEArtigo artigo;
-            VndBELinhaDocumentoVenda linha = dv.Linhas.GetEdita(NumLinha);
+            VndBELinhaDocumentoVenda linha = DocumentoVenda.Linhas.GetEdita(NumLinha);
 
-            if (new List<string> { "FA", "FA1", "FA2", "FAL", "FAP" }.Contains(dv.Tipodoc))
+            if (new List<string> { "FA", "FA1", "FA2", "FAL", "FAP" }.Contains(DocumentoVenda.Tipodoc))
             {
                 artigo = BSO.Base.Artigos.Edita(linha.Artigo);
 
                 if ((bool)artigo.CamposUtil["CDU_ARTBLOQD"].Valor
                     && (linha.DescontoComercial != 0
-                        || dv.DescFinanceiro != 0
-                        || dv.DescEntidade != 0))
+                        || DocumentoVenda.DescFinanceiro != 0
+                        || DocumentoVenda.DescEntidade != 0))
                 {
                     PSO.MensagensDialogos.MostraAviso(
                         "ATENÇÃO:\n" +
                         "Está a aplicar no Artigo\n" +
                         $"{linha.Artigo} - {linha.Descricao}", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
 
-                    dv.Linhas.Remove(NumLinha);
+                    DocumentoVenda.Linhas.Remove(NumLinha);
                 }
             }
 
