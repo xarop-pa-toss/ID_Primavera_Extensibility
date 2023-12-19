@@ -52,9 +52,11 @@ namespace DCT_Extens
             if ((bool)objCliente.CamposUtil["CDU_SSCC"].Valor)
             {
                 // Destrancar as colunas GUID na tabela TDU_TTE_PackingCodes para conseguir inserir nessas colunas
-                StdBEExecSql sql = new StdBEExecSql();
-                sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-                sql.Tabela = "TDU_TTE_PackingCodes";
+                StdBEExecSql sql = new StdBEExecSql
+                {
+                    tpQuery = StdBETipos.EnumTpQuery.tpUPDATE,
+                    Tabela = "TDU_TTE_PackingCodes"
+                };
                 sql.AddCampo("IDENTITY_INSERT", "ON");
                 _PSO.ExecSql.Executa(sql);
                 sql.Dispose();
