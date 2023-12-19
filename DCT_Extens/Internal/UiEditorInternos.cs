@@ -19,32 +19,27 @@ namespace DCT_Extens.Internal
     public class UiEditorInternos : EditorInternos
     {
         private HelperFunctions _Helpers = new HelperFunctions();
-        private DataTable _tabelaOperadores, _tabelaSeries;
+        private DataTable _tabelaOperadores, _tabelaSerie;
         internal FormStockQuebras _formStockQuebras;
-        private bool _apagaPai, _apagaLinha, _serieValida;
+        private bool _apagaPai, _apagaLinha;
         internal bool _deveAbrirFormStockQuebras;
 
         public override void TipoDocumentoIdentificado(string TipoDocumento, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.TipoDocumentoIdentificado(TipoDocumento, ref Cancel, e);
 
-            // Form instanciado aqui para que não se mantenha entre cada documento.
-            _formStockQuebras = new FormStockQuebras();
-
             // Carregar TDUs OperadorQuebras e séries com CDU_StockQuebras a true.
             // Tem de ser feito pois TipoDocumentoIdentificado não dá série e não existe override para Série identificada.
             _tabelaOperadores = _Helpers.GetTabela("SELECT * FROM TDU_OperadorQuebra;");
 
-            _tabelaSeries = _Helpers.GetTabela($"" +
+            _tabelaSerie = _Helpers.GetTabela($"" +
                 $" SELECT Serie, CDU_PedeOperador_Operador, CDU_PedeOperador_Motivo " +
                 $" FROM SeriesStocks " +
                 $" WHERE " +
                 $"  DataInicial >= '2022-01-01' " +
                 $"   AND (CDU_PedeOperador_Motivo = 1 OR CDU_PedeOperador_Operador = 1)" +
-                $"   AND TipoDoc = '{TipoDocumento}'" +
+                $"   AND TipoDoc = '{TipoDocumento}'" +      
                 $"   AND Serie = '{DocumentoInterno.Serie}");
-
-            _serieValida = _tabelaSeries.Rows.Count > 0;
         }
 
         public override void ArtigoIdentificado(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
@@ -53,21 +48,32 @@ namespace DCT_Extens.Internal
 
             IntBELinhaDocumentoInterno linha = DocumentoInterno.Linhas.GetEdita(NumLinha);
 
-            if (_serieValida)
+            // Se série for válida, só terá uma linha contendo essa série
+            if (_tabelaSerie.Rows.Count.Equals(1))
             {
+                // Se linha for de artigo
                 if (linha.TipoLinha.Equals("10"))
                 {
                     var operadoresValidos = from DataRow row in _tabelaOperadores.Rows
                                             where (string)row["CDU_Armazem"] == linha.Armazem
                                             select row["CDU_Operador"];
 
+                    // Converter operadoresValidos de IEnumerable(object) para List<string>
+                    List<string> operadoresValidosList = operadoresValidos.OfType<string>().ToList();
+
                     // Se o user tiver picado a checkbox para repetir o motivo para todas as linhas, não vale a pena abrir o form
                     // Mas deve sempre abrir na primeira linha claro
                     if (NumLinha.Equals(1) || _deveAbrirFormStockQuebras)
                     {
-                        _formStockQuebras.Show();
+                        // Form instanciado aqui para que seja um objecto limpo para cada ArtigoIdentificado independentemente se o anterior foi gravado ou não
+                        // Recebe os Operadores a listar na combo box e qual o estado dos controlos (campos Motivo e Operador da _tabelaSeries - ver query acima).
+                        _formStockQuebras = new FormStockQuebras(operadoresValidosList, _tabelaSerie.Rows[0]);
+                        
 
-                        if (_formStockQuebras.DialogResult == DialogResult.OK)
+                        DialogResult resultado = _formStockQuebras.ShowDialog();
+
+                        // Verificações de regras de preenchimento dos dados são feitas dentro do Form e não aqui.
+                        if (resultado == DialogResult.OK)
                         {
                             // Impede o form de se abrir outra vez se a checkbox estiver picada
                             if (_formStockQuebras.GetCheckBox_RepetirMotivo) { _deveAbrirFormStockQuebras = false; }
@@ -75,13 +81,11 @@ namespace DCT_Extens.Internal
                             linha.CamposUtil["CDU_MotivoQuebra"].Valor = _formStockQuebras.GetTxtBox_MotivoQuebra;
                         }
 
-                        if (_formStockQuebras.DialogResult != DialogResult.OK)
+                        if (resultado != DialogResult.OK)
                         {
-                            _Helpers.ApagaLinhasFilhoEPai_docVenda()
+                            _Helpers.ApagaLinhasFilhoEPai_docInterno(DocumentoInterno, linha);
                         }
                     }
-                    
-                   
                 }
             }
         }
@@ -90,12 +94,22 @@ namespace DCT_Extens.Internal
         {
             base.AntesDeGravar(ref Cancel, e);
 
-            _apagaPai = false;
-
             if (HelperFunctions.LinhasCopiadas)
             {
+                // É melhor alterar a variavel de estado assim que possivel para evitar esquecimento mais tarde.
+                HelperFunctions.LinhasCopiadas = false;
+
+                IntBELinhasDocumentoInterno linhas = DocumentoInterno.Linhas;
+                if (linhas.NumItens == 0) { }
 
             }
+        }
+
+        public override void DepoisDeGravar(string Filial, string Tipo, string Serie, int NumDoc, ExtensibilityEventArgs e)
+        {
+            base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
+            
+            _formStockQuebras.Close();
         }
     }
 }

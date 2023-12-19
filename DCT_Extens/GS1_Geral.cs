@@ -34,10 +34,10 @@ namespace DCT_Extens
 
         public GS1_Geral(string Filial, string Serie, string Tipo, long NumDoc, VndBEDocumentoVenda dv)
         {
-            _Filial = Filial;
-            _Serie = Serie;
-            _Tipo = Tipo;
-            _NumDoc = NumDoc;
+            _filial = Filial;
+            _serie = Serie;
+            _tipo = Tipo;
+            _numDoc = NumDoc;
             _dv = dv;
             _BSO = PriMotores.Motor;
             _PSO = PriMotores.Plataforma;
