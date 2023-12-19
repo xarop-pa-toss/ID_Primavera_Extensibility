@@ -67,7 +67,6 @@ namespace DCT_Extens.Internal
                         // Form instanciado aqui para que seja um objecto limpo para cada ArtigoIdentificado independentemente se o anterior foi gravado ou não
                         // Recebe os Operadores a listar na combo box e qual o estado dos controlos (campos Motivo e Operador da _tabelaSeries - ver query acima).
                         _formStockQuebras = new FormStockQuebras(operadoresValidosList, _tabelaSerie.Rows[0]);
-                        
 
                         DialogResult resultado = _formStockQuebras.ShowDialog();
 
@@ -77,6 +76,7 @@ namespace DCT_Extens.Internal
                             // Impede o form de se abrir outra vez se a checkbox estiver picada
                             if (_formStockQuebras.GetCheckBox_RepetirMotivo) { _deveAbrirFormStockQuebras = false; }
 
+                            linha.CamposUtil["CDU_Operador"].Valor = _formStockQuebras.GetCmbBox_Operador;
                             linha.CamposUtil["CDU_MotivoQuebra"].Valor = _formStockQuebras.GetTxtBox_MotivoQuebra;
                         }
 
