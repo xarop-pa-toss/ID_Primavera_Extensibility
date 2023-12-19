@@ -21,7 +21,6 @@ namespace DCT_Extens.Internal
         private HelperFunctions _Helpers = new HelperFunctions();
         private DataTable _tabelaOperadores, _tabelaSerie;
         internal FormStockQuebras _formStockQuebras;
-        private bool _apagaPai, _apagaLinha;
         internal bool _deveAbrirFormStockQuebras;
 
         public override void TipoDocumentoIdentificado(string TipoDocumento, ref bool Cancel, ExtensibilityEventArgs e)

@@ -83,6 +83,7 @@
             // 
             // btn_Confirmar
             // 
+            this.btn_Confirmar.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btn_Confirmar.Location = new System.Drawing.Point(110, 174);
             this.btn_Confirmar.Name = "btn_Confirmar";
             this.btn_Confirmar.Size = new System.Drawing.Size(75, 23);
@@ -92,6 +93,7 @@
             // 
             // btn_Cancelar
             // 
+            this.btn_Cancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btn_Cancelar.Location = new System.Drawing.Point(191, 174);
             this.btn_Cancelar.Name = "btn_Cancelar";
             this.btn_Cancelar.Size = new System.Drawing.Size(78, 23);

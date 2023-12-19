@@ -103,7 +103,7 @@ namespace DCT_Extens.Helpers
             }
         }
 
-        public void ApagaLinhasFilhoEPai_docInterno(CmpBEDocumentoCompra docCompra, CmpBELinhaDocumentoCompra linhaPai)
+        public void ApagaLinhasFilhoEPai_docCompra(CmpBEDocumentoCompra docCompra, CmpBELinhaDocumentoCompra linhaPai)
         {
             // Percorre linhas e encontra todas as que sejam filho da linhaPai. Apaga primeiro filhos e depois pai.
             CmpBELinhasDocumentoCompra linhasFilho = new CmpBELinhasDocumentoCompra();

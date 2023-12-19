@@ -25,6 +25,7 @@ namespace DCT_Extens.StockQuebras
             get { return cmbBox_Operador.Text; }
         }
         private List<string> _listaOperadores;
+        private Helpers.HelperFunctions _Helpers = new Helpers.HelperFunctions();
         private DataRow _rowSerie;
 
 
@@ -52,7 +53,6 @@ namespace DCT_Extens.StockQuebras
             if (!(bool)_rowSerie["CDU_PedeMotivo"]) {
                 txtBox_MotivoQuebra.Enabled = false;
             }
-
         }
     }
 }
