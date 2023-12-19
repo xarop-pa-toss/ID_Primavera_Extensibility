@@ -20,13 +20,16 @@ namespace DCT_Extens.Internal
     {
         private HelperFunctions _Helpers = new HelperFunctions();
         private DataTable _tabelaOperadores, _tabelaSeries;
-        internal FormStockQuebras _form = new FormStockQuebras();
+        internal FormStockQuebras _formStockQuebras;
         private bool _apagaPai, _apagaLinha, _serieValida;
         internal bool _deveAbrirFormStockQuebras;
 
         public override void TipoDocumentoIdentificado(string TipoDocumento, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.TipoDocumentoIdentificado(TipoDocumento, ref Cancel, e);
+
+            // Form instanciado aqui para que não se mantenha entre cada documento.
+            _formStockQuebras = new FormStockQuebras();
 
             // Carregar TDUs OperadorQuebras e séries com CDU_StockQuebras a true.
             // Tem de ser feito pois TipoDocumentoIdentificado não dá série e não existe override para Série identificada.
@@ -60,19 +63,25 @@ namespace DCT_Extens.Internal
 
                     // Se o user tiver picado a checkbox para repetir o motivo para todas as linhas, não vale a pena abrir o form
                     // Mas deve sempre abrir na primeira linha claro
-                    if (NumLinha.Equals(1) || _deveAbrirFormStockQuebras == true)
+                    if (NumLinha.Equals(1) || _deveAbrirFormStockQuebras)
                     {
-                        _form.ShowDialog();
+                        _formStockQuebras.Show();
 
-                        if (_form.DialogResult == DialogResult.OK)
+                        if (_formStockQuebras.DialogResult == DialogResult.OK)
                         {
-                            if (_form.GetCheckBox_RepetirMotivo) { _deveAbrirFormStockQuebras = false; }
+                            // Impede o form de se abrir outra vez se a checkbox estiver picada
+                            if (_formStockQuebras.GetCheckBox_RepetirMotivo) { _deveAbrirFormStockQuebras = false; }
+
+                            linha.CamposUtil["CDU_MotivoQuebra"].Valor = _formStockQuebras.GetTxtBox_MotivoQuebra;
+                        }
+
+                        if (_formStockQuebras.DialogResult != DialogResult.OK)
+                        {
+                            _Helpers.ApagaLinhasFilhoEPai_docVenda()
                         }
                     }
-
-
-
-
+                    
+                   
                 }
             }
         }

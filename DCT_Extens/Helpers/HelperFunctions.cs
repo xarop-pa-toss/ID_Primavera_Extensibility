@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ErpBS100; using StdPlatBS100; using BasBE100; using StdBE100;
+using ErpBS100; using StdPlatBS100; using BasBE100; using StdBE100; using IntBE100; using CmpBE100;
 using VndBE100;
 using PRISDK100;
 using System.Data;
@@ -55,14 +55,14 @@ namespace DCT_Extens.Helpers
             _BSO.TabelasUtilizador.Actualiza(NomeTDU, registoUtil);
         }
 
-        public void ApagaLinhasFilhoEPai(VndBEDocumentoVenda dv, VndBELinhaDocumentoVenda linhaPai)
+        public void ApagaLinhasFilhoEPai_docVenda(VndBEDocumentoVenda docVenda, VndBELinhaDocumentoVenda linhaPai)
         {
             // Percorre linhas e encontra todas as que sejam filho da linhaPai. Apaga primeiro filhos e depois pai.
             VndBELinhasDocumentoVenda linhasFilho = new VndBELinhasDocumentoVenda();
             string idPai = linhaPai.IdLinha;
 
             // Usar LINQ para obter os indices das linhas com o seu IDLinhaPai = IDLinha da linha pai passada como argumento
-            List<int> indicesLista = dv.Linhas
+            List<int> indicesLista = docVenda.Linhas
                 .Select((linha, indice) => new { Linha = linha, Indice = indice })
                 .Where(item => item.Linha.IdLinhaPai == idPai || item.Linha.IdLinha == idPai )
                 .Select(item => item.Indice)
@@ -75,7 +75,55 @@ namespace DCT_Extens.Helpers
 
             foreach (int ind in indicesLista)
             {
-                dv.Linhas.Remove(ind);
+                docVenda.Linhas.Remove(ind);
+            }
+        }
+
+        public void ApagaLinhasFilhoEPai_docInterno(IntBEDocumentoInterno docInterno, IntBELinhaDocumentoInterno linhaPai)
+        {
+            // Percorre linhas e encontra todas as que sejam filho da linhaPai. Apaga primeiro filhos e depois pai.
+            IntBELinhasDocumentoInterno linhasFilho = new IntBELinhasDocumentoInterno();
+            string idPai = linhaPai.IdLinha;
+
+            // Usar LINQ para obter os indices das linhas com o seu IDLinhaPai = IDLinha da linha pai passada como argumento
+            List<int> indicesLista = docInterno.Linhas
+                .Select((linha, indice) => new { Linha = linha, Indice = indice })
+                .Where(item => item.Linha.IdLinhaPai == idPai || item.Linha.IdLinha == idPai)
+                .Select(item => item.Indice)
+                .OrderByDescending(index => index)
+                .ToList();
+
+            // Adicionamos linha pai à lista. Se não houver filhos, só a linha pai será apagada.
+            // Invertemos a tabela para apagar de baixo para cima (para manter integridade da tabela)
+            indicesLista.Reverse();
+
+            foreach (int ind in indicesLista)
+            {
+                docInterno.Linhas.Remove(ind);
+            }
+        }
+
+        public void ApagaLinhasFilhoEPai_docInterno(CmpBEDocumentoCompra docCompra, CmpBELinhaDocumentoCompra linhaPai)
+        {
+            // Percorre linhas e encontra todas as que sejam filho da linhaPai. Apaga primeiro filhos e depois pai.
+            CmpBELinhasDocumentoCompra linhasFilho = new CmpBELinhasDocumentoCompra();
+            string idPai = linhaPai.IdLinha;
+
+            // Usar LINQ para obter os indices das linhas com o seu IDLinhaPai = IDLinha da linha pai passada como argumento
+            List<int> indicesLista = docCompra.Linhas
+                .Select((linha, indice) => new { Linha = linha, Indice = indice })
+                .Where(item => item.Linha.IdLinhaPai == idPai || item.Linha.IdLinha == idPai)
+                .Select(item => item.Indice)
+                .OrderByDescending(index => index)
+                .ToList();
+
+            // Adicionamos linha pai à lista. Se não houver filhos, só a linha pai será apagada.
+            // Invertemos a tabela para apagar de baixo para cima (para manter integridade da tabela)
+            indicesLista.Reverse();
+
+            foreach (int ind in indicesLista)
+            {
+                docCompra.Linhas.Remove(ind);
             }
         }
 

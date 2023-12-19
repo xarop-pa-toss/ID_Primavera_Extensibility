@@ -19,10 +19,10 @@ namespace DCT_Extens
 {
     public class GS1_Geral : CustomCode
     {
-        private string _Filial { get; set; }
-        private string _Serie { get; set; }
-        private string _Tipo { get; set; }
-        private long _NumDoc { get; set; }
+        private string _filial { get; set; }
+        private string _serie { get; set; }
+        private string _tipo { get; set; }
+        private long _numDoc { get; set; }
         private VndBEDocumentoVenda _dv { get; set; }
         private ErpBS _BSO { get; set; }
         private StdPlatBS _PSO { get; set; }

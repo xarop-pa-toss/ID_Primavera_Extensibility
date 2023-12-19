@@ -20,6 +20,14 @@ namespace DCT_Extens.StockQuebras
         {
             get { return chkBox_RepetirMotivo.Checked; }
         }
+        public string GetTxtBox_MotivoQuebra
+        {
+            get { return txtBox_MotivoQuebra.Text; }
+        }
+        public string GetCmbBox_Operador
+        {
+            get { return cmbBox_Operador.Text; }
+        }
 
         private void FormStockQuebras_Load(object sender, EventArgs e)
         {
