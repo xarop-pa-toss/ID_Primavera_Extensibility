@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="BasBE100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\BasBE100.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="BasBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\BasBS100.dll</HintPath>
@@ -50,6 +51,7 @@
     </Reference>
     <Reference Include="IBasBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\IBasBS100.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ICmpBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\ICmpBS100.dll</HintPath>
@@ -69,6 +71,10 @@
     </Reference>
     <Reference Include="Primavera.Extensibility.Attributes">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Attributes.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Primavera.Extensibility.Base">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Base.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Primavera.Extensibility.BusinessEntities">
@@ -139,6 +145,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UiFichaClientes.cs" />
     <Compile Include="Forms\FormCargaDescarga.cs">
       <SubType>UserControl</SubType>
     </Compile>

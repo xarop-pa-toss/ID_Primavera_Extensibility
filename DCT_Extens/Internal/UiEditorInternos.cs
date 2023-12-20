@@ -29,9 +29,9 @@ namespace DCT_Extens.Internal
 
             // Carregar TDUs OperadorQuebras e séries com CDU_StockQuebras a true.
             // Tem de ser feito pois TipoDocumentoIdentificado não dá série e não existe override para Série identificada.
-            _tabelaOperadores = _Helpers.GetTabela("SELECT * FROM TDU_OperadorQuebra;");
+            _tabelaOperadores = _Helpers.GetDataTableDeSQL("SELECT * FROM TDU_OperadorQuebra;");
 
-            _tabelaSerie = _Helpers.GetTabela($"" +
+            _tabelaSerie = _Helpers.GetDataTableDeSQL($"" +
                 $" SELECT Serie, CDU_PedeOperador_Operador, CDU_PedeOperador_Motivo " +
                 $" FROM SeriesStocks " +
                 $" WHERE " +

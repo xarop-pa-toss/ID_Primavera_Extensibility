@@ -128,7 +128,7 @@ namespace DCT_Extens.Helpers
         }
 
         // Devolve DataTable pois objecto criado por BSO.Consulta é uma StdBELista que não é enumerable (não permite usar Foreach loop ou LINQ)
-        public DataTable GetTabela(string querySQL)
+        public DataTable GetDataTableDeSQL(string querySQL)
         {
             DataTable TDULista = BSO.Consulta(querySQL).DataSet.GetTable();
             return TDULista;
