@@ -14,6 +14,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 using StdBE100;
+using VndBE100;
 
 namespace DCT_Extens.Forms
 {
@@ -82,10 +83,12 @@ namespace DCT_Extens.Forms
                 string gTipoDoc = priGrelha_Docs.GetGRID_GetValorCelula(i, "TipoDoc");
                 string gSerie = priGrelha_Docs.GetGRID_GetValorCelula(i, "Serie");
                 long gNumDoc = priGrelha_Docs.GetGRID_GetValorCelula(i, "NumDoc");
-                
 
+                // *** IMPRESSAO ***
+                bool printed;
+                VndBEDocumentoVenda docVenda;
 
-
+                if ()
             }
         }
 
