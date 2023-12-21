@@ -1,6 +1,6 @@
 ﻿namespace DCT_Extens.Forms.FormEncomendas
 {
-    partial class FormEncomendas_Compras
+    partial class FormEncomendas
     {
         /// <summary>
         /// Required designer variable.
@@ -40,8 +40,12 @@
             this.dtPicker_DataFinal = new System.Windows.Forms.DateTimePicker();
             this.dtPicker_DataInicial = new System.Windows.Forms.DateTimePicker();
             this.txtBox_TipoDoc = new System.Windows.Forms.TextBox();
+            this.radio_Vendas = new System.Windows.Forms.RadioButton();
+            this.radio_Compras = new System.Windows.Forms.RadioButton();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Docs)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -87,7 +91,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(558, 15);
+            this.label2.Location = new System.Drawing.Point(565, 15);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(72, 13);
             this.label2.TabIndex = 29;
@@ -107,7 +111,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(413, 15);
+            this.label1.Location = new System.Drawing.Point(424, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(71, 13);
             this.label1.TabIndex = 28;
@@ -145,22 +149,54 @@
             // dtPicker_DataInicial
             // 
             this.dtPicker_DataInicial.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtPicker_DataInicial.Location = new System.Drawing.Point(561, 34);
+            this.dtPicker_DataInicial.Location = new System.Drawing.Point(568, 34);
             this.dtPicker_DataInicial.Name = "dtPicker_DataInicial";
             this.dtPicker_DataInicial.Size = new System.Drawing.Size(100, 20);
             this.dtPicker_DataInicial.TabIndex = 22;
             // 
             // txtBox_TipoDoc
             // 
-            this.txtBox_TipoDoc.Location = new System.Drawing.Point(416, 34);
+            this.txtBox_TipoDoc.Location = new System.Drawing.Point(427, 34);
             this.txtBox_TipoDoc.Name = "txtBox_TipoDoc";
             this.txtBox_TipoDoc.Size = new System.Drawing.Size(100, 20);
             this.txtBox_TipoDoc.TabIndex = 21;
             // 
-            // FormEncomendas_Compras
+            // radio_Vendas
+            // 
+            this.radio_Vendas.AutoSize = true;
+            this.radio_Vendas.Location = new System.Drawing.Point(16, 7);
+            this.radio_Vendas.Name = "radio_Vendas";
+            this.radio_Vendas.Size = new System.Drawing.Size(61, 17);
+            this.radio_Vendas.TabIndex = 32;
+            this.radio_Vendas.TabStop = true;
+            this.radio_Vendas.Text = "Vendas";
+            this.radio_Vendas.UseVisualStyleBackColor = true;
+            // 
+            // radio_Compras
+            // 
+            this.radio_Compras.AutoSize = true;
+            this.radio_Compras.Location = new System.Drawing.Point(16, 33);
+            this.radio_Compras.Name = "radio_Compras";
+            this.radio_Compras.Size = new System.Drawing.Size(66, 17);
+            this.radio_Compras.TabIndex = 33;
+            this.radio_Compras.TabStop = true;
+            this.radio_Compras.Text = "Compras";
+            this.radio_Compras.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.radio_Vendas);
+            this.panel1.Controls.Add(this.radio_Compras);
+            this.panel1.Location = new System.Drawing.Point(328, 10);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(89, 56);
+            this.panel1.TabIndex = 34;
+            // 
+            // FormEncomendas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.dataGrid_Docs);
@@ -172,12 +208,15 @@
             this.Controls.Add(this.dtPicker_DataFinal);
             this.Controls.Add(this.dtPicker_DataInicial);
             this.Controls.Add(this.txtBox_TipoDoc);
-            this.Name = "FormEncomendas_Compras";
+            this.Name = "FormEncomendas";
             this.Size = new System.Drawing.Size(994, 580);
             this.Text = "FormEncomendas_Compras";
+            this.Load += new System.EventHandler(this.FormEncomendas_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Docs)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -197,5 +236,8 @@
         private System.Windows.Forms.DateTimePicker dtPicker_DataFinal;
         private System.Windows.Forms.DateTimePicker dtPicker_DataInicial;
         private System.Windows.Forms.TextBox txtBox_TipoDoc;
+        private System.Windows.Forms.RadioButton radio_Vendas;
+        private System.Windows.Forms.RadioButton radio_Compras;
+        private System.Windows.Forms.Panel panel1;
     }
 }

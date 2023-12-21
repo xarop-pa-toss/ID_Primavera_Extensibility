@@ -10,13 +10,15 @@ using System.Windows.Forms;
 
 namespace DCT_Extens.Forms.FormEncomendas
 {
-    public partial class FormEncomendas_Compras : CustomForm
+    public partial class FormEncomendas : CustomForm
     {
         private ErpBS100.ErpBS _BSO;
         private StdPlatBS100.StdPlatBS _PSO;
         private Helpers.HelperFunctions _Helpers;
 
-        public FormEncomendas_Compras()
+        private string _radioSeleccionado;
+
+        public FormEncomendas()
         {
             _BSO = PriMotores.Motor;
             _PSO = PriMotores.Plataforma;
@@ -27,7 +29,7 @@ namespace DCT_Extens.Forms.FormEncomendas
 
         private void btn_VerDocs_Click(object sender, EventArgs e)
         {
-            var sqlQuery = $"SELECT " +
+            var query = $"SELECT " +
                             $"   ccs.fechado AS Fechado, " +
                             $"   cc.TipoDoc AS Documento, " +
                             $"   cc.NumDoc AS Numero, " +
@@ -50,6 +52,11 @@ namespace DCT_Extens.Forms.FormEncomendas
                             $"ORDER BY " +
                             $"   DataDoc";
 
+
+        }
+
+        private void FormEncomendas_Load(object sender, EventArgs e)
+        {
 
         }
     }
