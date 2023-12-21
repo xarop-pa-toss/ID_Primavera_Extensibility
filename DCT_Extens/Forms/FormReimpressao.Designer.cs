@@ -81,6 +81,7 @@ namespace DCT_Extens.Forms
             this.btn_Imprimir.TabIndex = 1;
             this.btn_Imprimir.Text = "Imprimir  ";
             this.btn_Imprimir.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_Imprimir.Click += new System.EventHandler(this.btn_Imprimir_Click);
             // 
             // labelInicial
             // 
@@ -152,15 +153,24 @@ namespace DCT_Extens.Forms
             this.cmbBox_Mapas.Name = "cmbBox_Mapas";
             this.cmbBox_Mapas.Size = new System.Drawing.Size(203, 21);
             this.cmbBox_Mapas.TabIndex = 6;
-            this.cmbBox_Mapas.TextChanged += new System.EventHandler(this.cmbBox_Mapas_TextChanged);
             // 
             // numUpDown_NumVias
             // 
             this.numUpDown_NumVias.Location = new System.Drawing.Point(223, 102);
+            this.numUpDown_NumVias.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numUpDown_NumVias.Name = "numUpDown_NumVias";
             this.numUpDown_NumVias.Size = new System.Drawing.Size(37, 20);
             this.numUpDown_NumVias.TabIndex = 7;
             this.numUpDown_NumVias.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numUpDown_NumVias.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // f4_Cliente
             // 
@@ -252,6 +262,7 @@ namespace DCT_Extens.Forms
             this.btn_SeleccionarTodos.Size = new System.Drawing.Size(25, 23);
             this.btn_SeleccionarTodos.TabIndex = 11;
             this.btn_SeleccionarTodos.UseVisualStyleBackColor = true;
+            this.btn_SeleccionarTodos.Click += new System.EventHandler(this.btn_SeleccionarTodos_Click);
             // 
             // btn_LimparSeleccao
             // 
@@ -261,6 +272,7 @@ namespace DCT_Extens.Forms
             this.btn_LimparSeleccao.Size = new System.Drawing.Size(25, 23);
             this.btn_LimparSeleccao.TabIndex = 12;
             this.btn_LimparSeleccao.UseVisualStyleBackColor = true;
+            this.btn_LimparSeleccao.Click += new System.EventHandler(this.btn_LimparSeleccao_Click);
             // 
             // listBox_TipoDoc
             // 

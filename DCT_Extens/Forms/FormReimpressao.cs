@@ -51,18 +51,45 @@ namespace DCT_Extens.Forms
             dtPicker_DataDocFinal.Value = DateTime.Now;
         }
 
-        private void btn_Actualizar_Click(object sender, EventArgs e)
+        private void btn_Imprimir_Click(object sender, EventArgs e)
         {
-            InicializaPriGrelha();
+            if (string.IsNullOrEmpty(cmbBox_Mapas.Text)) { _PSO.MensagensDialogos.MostraAviso("Não foi seleccionado um mapa.", StdBSTipos.IconId.PRI_Exclama); return; }
+
+            // Get código do mapa de impressão (nome do ficheiro .rpt)
+            DataTable mapaTable = _Helpers.GetDataTableDeSQL($"" +
+                $" SELECT Mapa" +
+                $" FROM [PRIEMPRE].[dbo].[Mapas] " +
+                $" WHERE " +
+                    $" Descricao = '{cmbBox_Mapas.Text}' " +
+                    $" AND Categoria = 'DocVenda' " +
+                    $" AND Apl = 'GCP' " +
+                    $" AND Custom = 1" +
+                $" ORDER BY Descricao;");
+
+            string mapa = mapaTable.Rows[0]["Mapa"].ToString();
+            int linhasCount = priGrelha_Docs.Grelha.DataRowCnt;
+
+            // Cliente pediu para impressão ser feita do NumDoc mais baixo para o mais alto. Por isso loop corre ao contrário
+            // Corre loop enquanto linhas da PriGrelha não forem vazias.
+            for (int i = linhasCount; i > 0; i--)
+            {
+                // Se NumDoc for nulo, termina loop 
+                if (priGrelha_Docs.GetGRID_GetValorCelula(i,"NumDoc") == "") { break; }
+                // Se "Cf" não estiver picado, skip linha
+                if ((bool)priGrelha_Docs.GetGRID_GetValorCelula(i,"Cf") == false) { continue; }
+
+                // Valores das colunas que identificam documento
+                string gTipoDoc = priGrelha_Docs.GetGRID_GetValorCelula(i, "TipoDoc");
+                string gSerie = priGrelha_Docs.GetGRID_GetValorCelula(i, "Serie");
+                long gNumDoc = priGrelha_Docs.GetGRID_GetValorCelula(i, "NumDoc");
+                
+
+
+
+            }
         }
 
-        private void cmbBox_Mapas_TextChanged(object sender, EventArgs e)
-        {
-            ActualizaCBoxSerie();
-        }
-
-
-        #region Funções de Inicialização
+        #region Funções de Inicialização dos controlos
         private void InicializaPriGrelha()
         {
             priGrelha_Docs.TituloGrelha = "DocsReimpressao";
@@ -100,6 +127,7 @@ namespace DCT_Extens.Forms
             priGrelha_Docs.AddColKey(strColKey: "TotalDocumento", intTipo: 2, strTitulo: "Total", dblLargura: 10, strCamposBaseDados: "TotalDocumento", blnMostraSempre: true);
 
         }
+        
         private void InicializaListBox_TipoDoc()
         {
             listBox_TipoDoc.Items.Clear();
@@ -120,6 +148,7 @@ namespace DCT_Extens.Forms
 
             listBox_TipoDoc.Items.AddRange(tipoDocsValores.ToArray());
         }
+        
         private void InicializaCmbBox_Mapas()
         {
             DataTable mapasTabela = _Helpers.GetDataTableDeSQL(
@@ -136,7 +165,7 @@ namespace DCT_Extens.Forms
 
             if (!tipoDocsLista.Any())
             {
-                PSO.MensagensDialogos.MostraErro("Não foi possivel encontrar mapas personalizados.");
+                _PSO.MensagensDialogos.MostraErro("Não foi possivel encontrar mapas personalizados.");
                 Close();
             }
             else
@@ -149,7 +178,7 @@ namespace DCT_Extens.Forms
         }
         #endregion
 
-        #region Funções de Actualização
+        #region Funções de Actualização dos controlos
         private void ActualizaPriGrelha()
         {
             DateTime dataInicial = dtPicker_DataDocInicial.Value;
@@ -157,7 +186,7 @@ namespace DCT_Extens.Forms
 
             if (listBox_TipoDoc.SelectedItems.Count.Equals(0))
             {
-                PSO.MensagensDialogos.MostraAviso("Não foi seleccionado um tipo de documento.", StdBSTipos.IconId.PRI_Exclama);
+                _PSO.MensagensDialogos.MostraAviso("Não foi seleccionado um tipo de documento.", StdBSTipos.IconId.PRI_Exclama);
                 return;
             }
 
@@ -184,10 +213,36 @@ namespace DCT_Extens.Forms
 
             // Preencher PriGrelha com resultados da query. DataBind deve ser feito a uma StdBELista (retornado por BSO.Consulta)
             priGrelha_Docs.LimpaGrelha();
-            priGrelha_Docs.DataBind(BSO.Consulta(queryBuilder.ToString()));
+            priGrelha_Docs.DataBind(_BSO.Consulta(queryBuilder.ToString()));
         }
 
-        #endregion
+        private void btn_SeleccionarTodos_Click(object sender, EventArgs e)
+        {
+            for (int i = 1; i <= priGrelha_Docs.Grelha.DataRowCnt; i++)
+            {
+                priGrelha_Docs.SetGRID_SetValorCelula(i, "Cf", 1);
+            }
+        }
 
+        private void btn_LimparSeleccao_Click(object sender, EventArgs e)
+        {
+            for (int i = 1; i <= priGrelha_Docs.Grelha.DataRowCnt; i++)
+            {
+                priGrelha_Docs.SetGRID_SetValorCelula(i, "Cf", 1);
+            }
+        }
+
+        private void btn_Actualizar_Click(object sender, EventArgs e)
+        {
+            InicializaPriGrelha();
+        }
+
+
+        //private void cmbBox_Mapas_TextChanged(object sender, EventArgs e)
+        //{
+        //    ActualizaCBoxSerie();
+        //}
+
+        #endregion
     }
 }
