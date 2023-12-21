@@ -38,7 +38,7 @@
             this.btn_Sair = new System.Windows.Forms.Button();
             this.btn_VerDocs = new System.Windows.Forms.Button();
             this.dtPicker_DataFinal = new System.Windows.Forms.DateTimePicker();
-            this.dtPicked_DataInicial = new System.Windows.Forms.DateTimePicker();
+            this.dtPicker_DataInicial = new System.Windows.Forms.DateTimePicker();
             this.txtBox_TipoDoc = new System.Windows.Forms.TextBox();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Docs)).BeginInit();
@@ -65,7 +65,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(498, 15);
+            this.label3.Location = new System.Drawing.Point(707, 15);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(65, 13);
             this.label3.TabIndex = 30;
@@ -87,7 +87,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(208, 15);
+            this.label2.Location = new System.Drawing.Point(558, 15);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(72, 13);
             this.label2.TabIndex = 29;
@@ -107,7 +107,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(18, 15);
+            this.label1.Location = new System.Drawing.Point(413, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(71, 13);
             this.label1.TabIndex = 28;
@@ -132,24 +132,27 @@
             this.btn_VerDocs.TabIndex = 24;
             this.btn_VerDocs.Text = "Ver Documentos";
             this.btn_VerDocs.UseVisualStyleBackColor = true;
+            this.btn_VerDocs.Click += new System.EventHandler(this.btn_VerDocs_Click);
             // 
             // dtPicker_DataFinal
             // 
-            this.dtPicker_DataFinal.Location = new System.Drawing.Point(501, 34);
+            this.dtPicker_DataFinal.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtPicker_DataFinal.Location = new System.Drawing.Point(710, 34);
             this.dtPicker_DataFinal.Name = "dtPicker_DataFinal";
-            this.dtPicker_DataFinal.Size = new System.Drawing.Size(200, 20);
+            this.dtPicker_DataFinal.Size = new System.Drawing.Size(100, 20);
             this.dtPicker_DataFinal.TabIndex = 23;
             // 
-            // dtPicked_DataInicial
+            // dtPicker_DataInicial
             // 
-            this.dtPicked_DataInicial.Location = new System.Drawing.Point(211, 34);
-            this.dtPicked_DataInicial.Name = "dtPicked_DataInicial";
-            this.dtPicked_DataInicial.Size = new System.Drawing.Size(200, 20);
-            this.dtPicked_DataInicial.TabIndex = 22;
+            this.dtPicker_DataInicial.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtPicker_DataInicial.Location = new System.Drawing.Point(561, 34);
+            this.dtPicker_DataInicial.Name = "dtPicker_DataInicial";
+            this.dtPicker_DataInicial.Size = new System.Drawing.Size(100, 20);
+            this.dtPicker_DataInicial.TabIndex = 22;
             // 
             // txtBox_TipoDoc
             // 
-            this.txtBox_TipoDoc.Location = new System.Drawing.Point(21, 34);
+            this.txtBox_TipoDoc.Location = new System.Drawing.Point(416, 34);
             this.txtBox_TipoDoc.Name = "txtBox_TipoDoc";
             this.txtBox_TipoDoc.Size = new System.Drawing.Size(100, 20);
             this.txtBox_TipoDoc.TabIndex = 21;
@@ -167,7 +170,7 @@
             this.Controls.Add(this.btn_Sair);
             this.Controls.Add(this.btn_VerDocs);
             this.Controls.Add(this.dtPicker_DataFinal);
-            this.Controls.Add(this.dtPicked_DataInicial);
+            this.Controls.Add(this.dtPicker_DataInicial);
             this.Controls.Add(this.txtBox_TipoDoc);
             this.Name = "FormEncomendas_Compras";
             this.Size = new System.Drawing.Size(994, 580);
@@ -192,7 +195,7 @@
         private System.Windows.Forms.Button btn_Sair;
         private System.Windows.Forms.Button btn_VerDocs;
         private System.Windows.Forms.DateTimePicker dtPicker_DataFinal;
-        private System.Windows.Forms.DateTimePicker dtPicked_DataInicial;
+        private System.Windows.Forms.DateTimePicker dtPicker_DataInicial;
         private System.Windows.Forms.TextBox txtBox_TipoDoc;
     }
 }

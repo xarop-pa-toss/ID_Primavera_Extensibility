@@ -50,6 +50,7 @@
             this.btn_AbrirFormCompras.TabIndex = 25;
             this.btn_AbrirFormCompras.Text = "Compras";
             this.btn_AbrirFormCompras.UseVisualStyleBackColor = true;
+            this.btn_AbrirFormCompras.Click += new System.EventHandler(this.btn_AbrirFormCompras_Click);
             // 
             // btn_Sair
             // 
@@ -72,6 +73,7 @@
             this.btn_AbrirFormVendas.TabIndex = 23;
             this.btn_AbrirFormVendas.Text = "Vendas";
             this.btn_AbrirFormVendas.UseVisualStyleBackColor = true;
+            this.btn_AbrirFormVendas.Click += new System.EventHandler(this.btn_AbrirFormVendas_Click);
             // 
             // label4
             // 
