@@ -55,7 +55,8 @@ namespace DCT_Extens.Helpers
         }
         public enum TipoErro
         {
-            Impressao
+            FormReimpressao_Impressao,
+            FormEncomendas_ActualizaPriGrelha,
         }
         
 

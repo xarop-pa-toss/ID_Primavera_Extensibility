@@ -73,7 +73,6 @@
             this.btn_AbrirFormVendas.TabIndex = 23;
             this.btn_AbrirFormVendas.Text = "Vendas";
             this.btn_AbrirFormVendas.UseVisualStyleBackColor = true;
-            this.btn_AbrirFormVendas.Click += new System.EventHandler(this.btn_AbrirFormVendas_Click);
             // 
             // label4
             // 

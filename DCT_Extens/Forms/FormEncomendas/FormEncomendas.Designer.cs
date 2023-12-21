@@ -42,10 +42,10 @@
             this.txtBox_TipoDoc = new System.Windows.Forms.TextBox();
             this.radio_Vendas = new System.Windows.Forms.RadioButton();
             this.radio_Compras = new System.Windows.Forms.RadioButton();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel_TipoDocRadios = new System.Windows.Forms.Panel();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Docs)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.panel_TipoDocRadios.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -183,20 +183,20 @@
             this.radio_Compras.Text = "Compras";
             this.radio_Compras.UseVisualStyleBackColor = true;
             // 
-            // panel1
+            // panel_TipoDocRadios
             // 
-            this.panel1.Controls.Add(this.radio_Vendas);
-            this.panel1.Controls.Add(this.radio_Compras);
-            this.panel1.Location = new System.Drawing.Point(328, 10);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(89, 56);
-            this.panel1.TabIndex = 34;
+            this.panel_TipoDocRadios.Controls.Add(this.radio_Vendas);
+            this.panel_TipoDocRadios.Controls.Add(this.radio_Compras);
+            this.panel_TipoDocRadios.Location = new System.Drawing.Point(328, 10);
+            this.panel_TipoDocRadios.Name = "panel_TipoDocRadios";
+            this.panel_TipoDocRadios.Size = new System.Drawing.Size(89, 56);
+            this.panel_TipoDocRadios.TabIndex = 34;
             // 
             // FormEncomendas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panel_TipoDocRadios);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.dataGrid_Docs);
@@ -215,8 +215,8 @@
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid_Docs)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.panel_TipoDocRadios.ResumeLayout(false);
+            this.panel_TipoDocRadios.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -238,6 +238,6 @@
         private System.Windows.Forms.TextBox txtBox_TipoDoc;
         private System.Windows.Forms.RadioButton radio_Vendas;
         private System.Windows.Forms.RadioButton radio_Compras;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel_TipoDocRadios;
     }
 }

@@ -15,12 +15,6 @@ namespace DCT_Extens.Forms.FormEncomendas
             InitializeComponent();
         }
 
-        private void btn_AbrirFormVendas_Click(object sender, EventArgs e)
-        {
-            FormEncomendas_Vendas form = new FormEncomendas_Vendas();
-            form.Show();
-        }
-
         private void btn_AbrirFormCompras_Click(object sender, EventArgs e)
         {
             FormEncomendas  form = new FormEncomendas();

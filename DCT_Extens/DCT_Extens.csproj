@@ -152,23 +152,17 @@
     <Compile Include="Forms\FormCargaDescarga.Designer.cs">
       <DependentUpon>FormCargaDescarga.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormEncomendas\FormEncomendas_Compras.cs">
+    <Compile Include="Forms\FormEncomendas\FormEncomendas.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\FormEncomendas\FormEncomendas_Compras.Designer.cs">
-      <DependentUpon>FormEncomendas_Compras.cs</DependentUpon>
+    <Compile Include="Forms\FormEncomendas\FormEncomendas.Designer.cs">
+      <DependentUpon>FormEncomendas.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormEncomendas\FormEncomendas_Menu.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\FormEncomendas\FormEncomendas_Menu.Designer.cs">
       <DependentUpon>FormEncomendas_Menu.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormEncomendas\FormEncomendas_Vendas.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\FormEncomendas\FormEncomendas_Vendas.Designer.cs">
-      <DependentUpon>FormEncomendas_Vendas.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormEncomendas\Old\Conn.cs" />
     <Compile Include="Forms\FormEncomendas\Old\Form1.cs">
@@ -251,14 +245,11 @@
     <EmbeddedResource Include="Forms\FormCargaDescarga.resx">
       <DependentUpon>FormCargaDescarga.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormEncomendas\FormEncomendas_Compras.resx">
-      <DependentUpon>FormEncomendas_Compras.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\FormEncomendas\FormEncomendas.resx">
+      <DependentUpon>FormEncomendas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormEncomendas\FormEncomendas_Menu.resx">
       <DependentUpon>FormEncomendas_Menu.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormEncomendas\FormEncomendas_Vendas.resx">
-      <DependentUpon>FormEncomendas_Vendas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormEncomendas\Old\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
