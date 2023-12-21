@@ -25,7 +25,6 @@ namespace DCT_Extens.Forms
         private clsSDKContexto _SDKContexto { get; set; }
         private HelperFunctions _Helpers { get; set; }
 
-        private bool _mapasVazio;
 
         public FormReimpressao()
         {
@@ -72,6 +71,8 @@ namespace DCT_Extens.Forms
 
             // Cliente pediu para impressão ser feita do NumDoc mais baixo para o mais alto. Por isso loop corre ao contrário
             // Corre loop enquanto linhas da PriGrelha não forem vazias.
+            List<string> falhasImpressao = new List<string>();
+
             for (int i = linhasCount; i > 0; i--)
             {
                 // Se NumDoc for nulo, termina loop 
@@ -85,10 +86,18 @@ namespace DCT_Extens.Forms
                 long gNumDoc = priGrelha_Docs.GetGRID_GetValorCelula(i, "NumDoc");
 
                 // *** IMPRESSAO ***
-                bool printed;
-                VndBEDocumentoVenda docVenda;
+                // Se houver erro na impressão (que o Primavera saiba), adicionado erro a uma lista que será mostrada ao user.
+                bool imprimido = _SDKContexto.BSO.Vendas.Documentos.ImprimeDocumento(gTipoDoc, gSerie, (int)gNumDoc, "000", (int)numUpDown_NumVias.Value, mapa);
 
-                if ()
+                if (!imprimido) { falhasImpressao.Add(gTipoDoc + " " + gSerie + "/" + gNumDoc.ToString()); }
+            }
+
+            // Mostra ao utilizador se houver falhas de impressao
+            if (falhasImpressao.Any())
+            {
+                string impressoesFalhadas = string.Join(", \n", falhasImpressao);
+                PSO.MensagensDialogos.MostraErro("Não foi possivel imprimir alguns dos documentos seleccionados.", sDetalhe: impressoesFalhadas);
+
             }
         }
 

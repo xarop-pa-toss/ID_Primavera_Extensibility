@@ -223,7 +223,7 @@ namespace DCT_Extens.Forms
             this.priGrelha_Docs.Cols = null;
             this.priGrelha_Docs.ColsFrozen = -1;
             this.priGrelha_Docs.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.priGrelha_Docs.Location = new System.Drawing.Point(18, 249);
+            this.priGrelha_Docs.Location = new System.Drawing.Point(10, 249);
             this.priGrelha_Docs.Name = "priGrelha_Docs";
             this.priGrelha_Docs.NumeroMaxRegistosSemPag = 150000;
             this.priGrelha_Docs.NumeroRegistos = 0;
@@ -247,7 +247,7 @@ namespace DCT_Extens.Forms
             this.priGrelha_Docs.PermiteStatusBar = true;
             this.priGrelha_Docs.PermiteVistas = true;
             this.priGrelha_Docs.PosicionaColunaSeguinte = true;
-            this.priGrelha_Docs.Size = new System.Drawing.Size(625, 331);
+            this.priGrelha_Docs.Size = new System.Drawing.Size(633, 331);
             this.priGrelha_Docs.TabIndex = 10;
             this.priGrelha_Docs.TituloGrelha = "";
             this.priGrelha_Docs.TituloMapa = "";
@@ -257,7 +257,7 @@ namespace DCT_Extens.Forms
             // btn_SeleccionarTodos
             // 
             this.btn_SeleccionarTodos.Image = ((System.Drawing.Image)(resources.GetObject("btn_SeleccionarTodos.Image")));
-            this.btn_SeleccionarTodos.Location = new System.Drawing.Point(18, 220);
+            this.btn_SeleccionarTodos.Location = new System.Drawing.Point(10, 220);
             this.btn_SeleccionarTodos.Name = "btn_SeleccionarTodos";
             this.btn_SeleccionarTodos.Size = new System.Drawing.Size(25, 23);
             this.btn_SeleccionarTodos.TabIndex = 11;
@@ -267,7 +267,7 @@ namespace DCT_Extens.Forms
             // btn_LimparSeleccao
             // 
             this.btn_LimparSeleccao.Image = ((System.Drawing.Image)(resources.GetObject("btn_LimparSeleccao.Image")));
-            this.btn_LimparSeleccao.Location = new System.Drawing.Point(49, 220);
+            this.btn_LimparSeleccao.Location = new System.Drawing.Point(41, 220);
             this.btn_LimparSeleccao.Name = "btn_LimparSeleccao";
             this.btn_LimparSeleccao.Size = new System.Drawing.Size(25, 23);
             this.btn_LimparSeleccao.TabIndex = 12;
