@@ -101,6 +101,11 @@ namespace DCT_Extens.Forms
             }
         }
 
+        private void btn_Actualizar_Click(object sender, EventArgs e)
+        {
+            ActualizaPriGrelha();
+        }
+
         #region Funções de Inicialização dos controlos
         private void InicializaPriGrelha()
         {
@@ -243,12 +248,6 @@ namespace DCT_Extens.Forms
                 priGrelha_Docs.SetGRID_SetValorCelula(i, "Cf", 1);
             }
         }
-
-        private void btn_Actualizar_Click(object sender, EventArgs e)
-        {
-            InicializaPriGrelha();
-        }
-
 
         //private void cmbBox_Mapas_TextChanged(object sender, EventArgs e)
         //{

@@ -46,7 +46,7 @@
             this.priGrelha_Moradas.Cols = null;
             this.priGrelha_Moradas.ColsFrozen = -1;
             this.priGrelha_Moradas.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.priGrelha_Moradas.Location = new System.Drawing.Point(15, 159);
+            this.priGrelha_Moradas.Location = new System.Drawing.Point(15, 89);
             this.priGrelha_Moradas.Name = "priGrelha_Moradas";
             this.priGrelha_Moradas.NumeroMaxRegistosSemPag = 150000;
             this.priGrelha_Moradas.NumeroRegistos = 0;
@@ -70,7 +70,7 @@
             this.priGrelha_Moradas.PermiteStatusBar = true;
             this.priGrelha_Moradas.PermiteVistas = true;
             this.priGrelha_Moradas.PosicionaColunaSeguinte = true;
-            this.priGrelha_Moradas.Size = new System.Drawing.Size(876, 358);
+            this.priGrelha_Moradas.Size = new System.Drawing.Size(876, 348);
             this.priGrelha_Moradas.TabIndex = 0;
             this.priGrelha_Moradas.TituloGrelha = "";
             this.priGrelha_Moradas.TituloMapa = "";
@@ -150,9 +150,9 @@
             this.Controls.Add(this.btn_Actualizar);
             this.Controls.Add(this.f4_Entidade);
             this.Controls.Add(this.priGrelha_Moradas);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormCargaDescarga";
-            this.Size = new System.Drawing.Size(912, 536);
+            this.Size = new System.Drawing.Size(907, 453);
             this.Text = "FormCargaDescarga";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormCargaDescarga_FormClosed);
             this.Load += new System.EventHandler(this.FormCargaDescarga_Load);
