@@ -97,7 +97,7 @@ namespace DCT_Extens.Forms
             {
                 string impressoesFalhadas = string.Join(", \n", falhasImpressao);
                 PSO.MensagensDialogos.MostraErro("Não foi possivel imprimir alguns dos documentos seleccionados.", sDetalhe: impressoesFalhadas);
-
+                _Helpers.EscreverErroParaFicheiroTxt(impressoesFalhadas, HelperFunctions.TipoErro.Impressao);
             }
         }
 
