@@ -257,6 +257,9 @@
     <EmbeddedResource Include="Forms\FormEncomendas\FormEncomendas_Menu.resx">
       <DependentUpon>FormEncomendas_Menu.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormEncomendas\FormEncomendas_Vendas.resx">
+      <DependentUpon>FormEncomendas_Vendas.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormEncomendas\Old\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormEncomendas_Menu));
-            this.btn_Compras = new System.Windows.Forms.Button();
+            this.btn_AbrirFormCompras = new System.Windows.Forms.Button();
             this.btn_Sair = new System.Windows.Forms.Button();
-            this.btn_Vendas = new System.Windows.Forms.Button();
+            this.btn_AbrirFormVendas = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -41,15 +41,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // btn_Compras
+            // btn_AbrirFormCompras
             // 
-            this.btn_Compras.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Compras.Location = new System.Drawing.Point(357, 167);
-            this.btn_Compras.Name = "btn_Compras";
-            this.btn_Compras.Size = new System.Drawing.Size(110, 39);
-            this.btn_Compras.TabIndex = 25;
-            this.btn_Compras.Text = "Compras";
-            this.btn_Compras.UseVisualStyleBackColor = true;
+            this.btn_AbrirFormCompras.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_AbrirFormCompras.Location = new System.Drawing.Point(357, 167);
+            this.btn_AbrirFormCompras.Name = "btn_AbrirFormCompras";
+            this.btn_AbrirFormCompras.Size = new System.Drawing.Size(110, 39);
+            this.btn_AbrirFormCompras.TabIndex = 25;
+            this.btn_AbrirFormCompras.Text = "Compras";
+            this.btn_AbrirFormCompras.UseVisualStyleBackColor = true;
             // 
             // btn_Sair
             // 
@@ -63,15 +63,15 @@
             this.btn_Sair.Text = "Sair";
             this.btn_Sair.UseVisualStyleBackColor = true;
             // 
-            // btn_Vendas
+            // btn_AbrirFormVendas
             // 
-            this.btn_Vendas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Vendas.Location = new System.Drawing.Point(357, 100);
-            this.btn_Vendas.Name = "btn_Vendas";
-            this.btn_Vendas.Size = new System.Drawing.Size(110, 39);
-            this.btn_Vendas.TabIndex = 23;
-            this.btn_Vendas.Text = "Vendas";
-            this.btn_Vendas.UseVisualStyleBackColor = true;
+            this.btn_AbrirFormVendas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_AbrirFormVendas.Location = new System.Drawing.Point(357, 100);
+            this.btn_AbrirFormVendas.Name = "btn_AbrirFormVendas";
+            this.btn_AbrirFormVendas.Size = new System.Drawing.Size(110, 39);
+            this.btn_AbrirFormVendas.TabIndex = 23;
+            this.btn_AbrirFormVendas.Text = "Vendas";
+            this.btn_AbrirFormVendas.UseVisualStyleBackColor = true;
             // 
             // label4
             // 
@@ -135,9 +135,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.btn_Compras);
+            this.Controls.Add(this.btn_AbrirFormCompras);
             this.Controls.Add(this.btn_Sair);
-            this.Controls.Add(this.btn_Vendas);
+            this.Controls.Add(this.btn_AbrirFormVendas);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -155,9 +155,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btn_Compras;
+        private System.Windows.Forms.Button btn_AbrirFormCompras;
         private System.Windows.Forms.Button btn_Sair;
-        private System.Windows.Forms.Button btn_Vendas;
+        private System.Windows.Forms.Button btn_AbrirFormVendas;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
