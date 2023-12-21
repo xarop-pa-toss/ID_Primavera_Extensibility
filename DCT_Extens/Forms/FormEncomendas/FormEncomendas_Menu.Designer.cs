@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormEncomendas_Menu));
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btn_Compras = new System.Windows.Forms.Button();
+            this.btn_Sair = new System.Windows.Forms.Button();
+            this.btn_Vendas = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -41,36 +41,37 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // button3
+            // btn_Compras
             // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(357, 167);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(110, 39);
-            this.button3.TabIndex = 25;
-            this.button3.Text = "Compras";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btn_Compras.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Compras.Location = new System.Drawing.Point(357, 167);
+            this.btn_Compras.Name = "btn_Compras";
+            this.btn_Compras.Size = new System.Drawing.Size(110, 39);
+            this.btn_Compras.TabIndex = 25;
+            this.btn_Compras.Text = "Compras";
+            this.btn_Compras.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btn_Sair
             // 
-            this.button2.BackColor = System.Drawing.SystemColors.Control;
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(357, 234);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(110, 34);
-            this.button2.TabIndex = 24;
-            this.button2.Text = "Sair";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btn_Sair.BackColor = System.Drawing.SystemColors.Control;
+            this.btn_Sair.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btn_Sair.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Sair.Location = new System.Drawing.Point(357, 239);
+            this.btn_Sair.Name = "btn_Sair";
+            this.btn_Sair.Size = new System.Drawing.Size(110, 34);
+            this.btn_Sair.TabIndex = 24;
+            this.btn_Sair.Text = "Sair";
+            this.btn_Sair.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btn_Vendas
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(357, 100);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(110, 39);
-            this.button1.TabIndex = 23;
-            this.button1.Text = "Vendas";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btn_Vendas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Vendas.Location = new System.Drawing.Point(357, 100);
+            this.btn_Vendas.Name = "btn_Vendas";
+            this.btn_Vendas.Size = new System.Drawing.Size(110, 39);
+            this.btn_Vendas.TabIndex = 23;
+            this.btn_Vendas.Text = "Vendas";
+            this.btn_Vendas.UseVisualStyleBackColor = true;
             // 
             // label4
             // 
@@ -134,9 +135,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btn_Compras);
+            this.Controls.Add(this.btn_Sair);
+            this.Controls.Add(this.btn_Vendas);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -154,9 +155,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_Compras;
+        private System.Windows.Forms.Button btn_Sair;
+        private System.Windows.Forms.Button btn_Vendas;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
