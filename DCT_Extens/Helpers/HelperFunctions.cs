@@ -10,6 +10,7 @@ using ErpBS100; using StdPlatBS100; using BasBE100; using StdBE100; using IntBE1
 using VndBE100;
 using PRISDK100;
 using System.Data;
+using System.IO;
 
 namespace DCT_Extens.Helpers
 {
@@ -30,6 +31,33 @@ namespace DCT_Extens.Helpers
             _SDKContexto = Helpers.PriMotores.PriSDKContexto;
             LinhasCopiadas = false;
         }
+
+
+        // Error Logging para um ficheiro de texto. Se não for dado path, cria uma pasta nos Documentos com o nome do projecto
+        public void EscreverErroParaFicheiroTxt(string erro, TipoErro tipoErro)
+        {            
+            string pastaErrosPath = "C:/PastaTecnica/PrimaveraExtensibilidadeLogs";
+            string ficheiroNome = $"{tipoErro}_{DateTime.Now.ToString("ddMMyyyy_HHmmss")}";
+            string ficheiroPath = Path.Combine(pastaErrosPath, ficheiroNome);
+
+            // O caminho final (pastaErrosPath) é criado se não existir
+            if (!Directory.Exists(pastaErrosPath))
+            {
+                Directory.CreateDirectory(pastaErrosPath);
+            }
+
+            // Criação ficheiro
+            try {
+                File.WriteAllText(ficheiroPath, erro);
+            } catch (Exception ex) {
+                _PSO.MensagensDialogos.MostraErro("Aconteceu um erro mas não foi possivel criar o ficheiro Log.", sDetalhe: ex.ToString());
+            }
+        }
+        public enum TipoErro
+        {
+            Impressao
+        }
+        
 
         // Update TDU se existir linha. Insert se não existir.
         public void TDU_Actualiza(string NomeTDU, Dictionary<string, string> Dict)
