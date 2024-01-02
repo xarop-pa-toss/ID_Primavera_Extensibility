@@ -278,6 +278,9 @@
     <Content Include="Forms\FormEncomendas\Old\ERP900P.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>Call "C:\Program Files\PRIMAVERA\SG100\Apl\RegisterExtension.exe" DEMO user password 1 $(TargetPath) True</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
