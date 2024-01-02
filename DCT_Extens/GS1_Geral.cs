@@ -27,7 +27,10 @@ namespace DCT_Extens
         private ErpBS _BSO { get; set; }
         private StdPlatBS _PSO { get; set; }
         private HelperFunctions _Helpers { get; set; }
-        
+
+        //Existem problemas quando se utiliza o FormCopiaLinhas para criar um DocStocks a partir de outro
+        //Como CopiaLinhas não dá trigger a TipoDocumentoIdentificado() nem ArtigoIdentificado(), é necessário manter uma variavel de estado que fica true pelo EditorCopiaLinhas
+        public static bool LinhasCopiadas { get; set; }
 
         private const string PREFIXO = "3";
         private const string PREFIXO_EMPRESA = "560089876";
@@ -42,6 +45,8 @@ namespace DCT_Extens
             _BSO = PriMotores.Motor;
             _PSO = PriMotores.Plataforma;
             _Helpers = new HelperFunctions();
+
+            LinhasCopiadas = false;
         }
 
         public void EditorVendas_DepoisDeGravar()

@@ -9,7 +9,6 @@ using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using StdBE100;
 using CmpBE100;
 using ErpBS100;
-using StdBE100;
 using BasBE100;
 
 

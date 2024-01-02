@@ -16,7 +16,7 @@ namespace DCT_Extens
             base.DepoisDeCopiar(e);
 
             // Ver definição para mais informação (Alt+F12 na linha abaixo)
-            Helpers.HelperFunctions.LinhasCopiadas = true;
+            GS1_Geral.LinhasCopiadas = true;
         }
     }
 }

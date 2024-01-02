@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
-using StdBE100; using VndBE100; using ErpBS100; using StdBE100; using BasBE100;
+using StdBE100; using VndBE100; using ErpBS100; using BasBE100;
 using DCT_Extens.Helpers;
 using System.Data;
 using System.Windows.Forms;
@@ -93,10 +93,10 @@ namespace DCT_Extens.Internal
         {
             base.AntesDeGravar(ref Cancel, e);
 
-            if (HelperFunctions.LinhasCopiadas)
+            if (GS1_Geral.LinhasCopiadas)
             {
                 // É melhor alterar a variavel de estado assim que possivel para evitar esquecimento mais tarde.
-                HelperFunctions.LinhasCopiadas = false;
+                GS1_Geral.LinhasCopiadas = false;
 
                 IntBELinhasDocumentoInterno linhas = DocumentoInterno.Linhas;
                 if (linhas.NumItens == 0) { }
