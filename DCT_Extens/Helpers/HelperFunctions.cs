@@ -34,7 +34,7 @@ namespace DCT_Extens.Helpers
 
 
         // Error Logging para um ficheiro de texto. Se não for dado path, cria uma pasta nos Documentos com o nome do projecto
-        public void EscreverErroParaFicheiroTxt(string erro, TipoErro tipoErro)
+        public void EscreverErroParaFicheiroTxt(string erro, string tipoErro)
         {            
             string pastaErrosPath = "C:/PastaTecnica/PrimaveraExtensibilidadeLogs";
             string ficheiroNome = $"{tipoErro}_{DateTime.Now.ToString("ddMMyyyy_HHmmss")}";
@@ -52,11 +52,6 @@ namespace DCT_Extens.Helpers
             } catch (Exception ex) {
                 _PSO.MensagensDialogos.MostraErro("Aconteceu um erro mas não foi possivel criar o ficheiro Log.", sDetalhe: ex.ToString());
             }
-        }
-        public enum TipoErro
-        {
-            FormReimpressao_Impressao,
-            FormEncomendas_ActualizaPriGrelha,
         }
         
 

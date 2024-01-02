@@ -1,10 +1,13 @@
 ﻿using DCT_Extens.Helpers;
+using Encomendas;
 using Primavera.Extensibility.BusinessEntities;
 using Primavera.Extensibility.CustomForm;
+using StdBE100;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,10 +47,9 @@ namespace DCT_Extens.Forms.FormEncomendas
             }
             catch (Exception ex)
             {
-                _Helpers.EscreverErroParaFicheiroTxt(ex.ToString(), HelperFunctions.TipoErro.FormEncomendas_ActualizaPriGrelha);
+                _Helpers.EscreverErroParaFicheiroTxt(ex.ToString(), "FormEncomendas_VerDocs_Click");
+                PSO.MensagensDialogos.MostraErro("Falha ao ler dados na base de dados Primavera.");
             }
-
-
         }
 
         public void ActualizaDataGrid()
@@ -117,5 +119,34 @@ namespace DCT_Extens.Forms.FormEncomendas
             dataGrid_Docs.Columns[6].Width = 319;
             dataGrid_Docs.Columns[7].Visible = false; //coluna com o ID IdCabecDoc
         }
+
+
+        private void btn_UpdateDB_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow linha in dataGrid_Docs.Rows)
+            {
+
+                if ((bool)linha.Cells[0].Value)
+                {
+                    try
+                    {
+                        StdBEExecSql sql = new StdBEExecSql();
+                        sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
+                        sql.Tabela = "CabecDocStatus";
+                        sql.AddCampo("Fechado", "1");
+                        sql.AddCampo("IdcCabecDoc", linha.Cells[7].Value, true);
+
+                        toolStripStatusLabel1.Text = "O estado dos documentos seleccionados foi alterado para 'Fechado'.";
+                        PSO.MensagensDialogos.MostraAviso("Documento(s) Fechado(s)");
+                    }
+                    catch (Exception ex)
+                    {
+                        _Helpers.EscreverErroParaFicheiroTxt(ex.ToString(), "FormEncomendas_UpdateDB_Click");
+                        PSO.MensagensDialogos.MostraErro("Não foi possivel fechar os documentos seleccionados.");
+                    }
+                }
+            }
+        }
     }
 }
+
