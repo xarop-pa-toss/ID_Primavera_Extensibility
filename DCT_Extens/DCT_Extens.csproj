@@ -117,6 +117,9 @@
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Sales.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Primavera.Platform.Collections">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\Primavera.Platform.Collections.dll</HintPath>
+    </Reference>
     <Reference Include="PRISDK100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\PRISDK100.dll</HintPath>
     </Reference>

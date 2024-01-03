@@ -18,6 +18,8 @@ namespace DCT_Extens.Sales
         private Dictionary<string, double> _clientesTotalDocs = new Dictionary<string, double>();
         private HelperFunctions _Helpers = new HelperFunctions();
 
+        // AntesDeConverter activa DEPOIS do AntesDeGravar
+
         public override void AntesDeConverter(int NumDoc, string Tipodoc, string Serie, string Filial, string TipodocDestino, string SerieDestino, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.AntesDeConverter(NumDoc, Tipodoc, Serie, Filial, TipodocDestino, SerieDestino, ref Cancel, e);
@@ -30,8 +32,8 @@ namespace DCT_Extens.Sales
             if (!_clientesTotalDocs.ContainsKey(strCliente))
             {
                 _clientesTotalDocs.Add(strCliente, valorDocOrigem);
-            } 
-            else {
+            } else
+            {
                 _clientesTotalDocs[strCliente] += valorDocOrigem;
             }
 
@@ -44,6 +46,11 @@ namespace DCT_Extens.Sales
             //        _docsQueUltrapassamLimiteCredito.Add($"clienteStr {Tipodoc} {Serie}/{NumDoc} - {valorDocOrigem}€\n");
             //    }
             //}
+        }
+
+        public override void DepoisDeConverter(Primavera.Platform.Collections.PrimaveraOrderedDictionary colDocumentosGerados, ExtensibilityEventArgs e)
+        {
+            base.DepoisDeConverter(colDocumentosGerados, e);
         }
 
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
@@ -68,20 +75,26 @@ namespace DCT_Extens.Sales
             if (clientesQueUltrapassamLimiteCredito.Any())
             {
                 DialogResult resultado = MessageBox.Show(
-                    "Existem clientes que irão ficar acima dos seus limites de crédito caso decida avançar com a conversão dos documentos. \n\n Deseja proceder com a conversão?",
+                    "Existem clientes que irão ficar acima dos seus limites de crédito caso decida avançar com a conversão dos documentos. \n\nDeseja proceder com a conversão?",
                     "Limites de Crédito",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
+                string listaFinalStr = string.Join("", clientesQueUltrapassamLimiteCredito);
                 if (resultado == DialogResult.Yes)
                 {
-                    _Helpers.EscreverParaFicheiroTxt(clientesQueUltrapassamLimiteCredito.ToString(), "ConversaoDocumentosVenda_gravado");
+                    _Helpers.EscreverParaFicheiroTxt(listaFinalStr, "ConversaoDocumentosVenda_gravado");
                 } else
                 {
-                    _Helpers.EscreverParaFicheiroTxt(clientesQueUltrapassamLimiteCredito.ToString(), "ConversaoDocumentosVenda_nao_gravado");
-                    PSO.MensagensDialogos.MostraAviso("Nenhum documento foi convertido.\n Ver detalhes para mais informações.", StdPlatBS100.StdBSTipos.IconId.PRI_Exclama, clientesQueUltrapassamLimiteCredito.ToString());
+                    _Helpers.EscreverParaFicheiroTxt(listaFinalStr, "ConversaoDocumentosVenda_nao_gravado");
+                    PSO.MensagensDialogos.MostraAviso("Nenhum documento foi convertido.\n Ver detalhes para mais informações.", StdPlatBS100.StdBSTipos.IconId.PRI_Exclama, listaFinalStr);
                 }
             }
+        }
+
+        public override void DepoisDeGravar(Primavera.Platform.Collections.PrimaveraOrderedDictionary colTodosDocumentosGerados, ExtensibilityEventArgs e)
+        {
+            base.DepoisDeGravar(colTodosDocumentosGerados, e);
         }
     }
 }
