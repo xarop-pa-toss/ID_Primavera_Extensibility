@@ -5,8 +5,6 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DCT_Extens", "DCT_Extens.csproj", "{D93B2FE6-6494-4134-851C-09C1A5FD8784}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encomendas", "..\..\..\..\Desktop\Encomendas\Encomendas\Encomendas.csproj", "{B6002826-4E8E-4A60-BBE6-AA09E95B3F51}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{D93B2FE6-6494-4134-851C-09C1A5FD8784}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D93B2FE6-6494-4134-851C-09C1A5FD8784}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D93B2FE6-6494-4134-851C-09C1A5FD8784}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B6002826-4E8E-4A60-BBE6-AA09E95B3F51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6002826-4E8E-4A60-BBE6-AA09E95B3F51}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6002826-4E8E-4A60-BBE6-AA09E95B3F51}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6002826-4E8E-4A60-BBE6-AA09E95B3F51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

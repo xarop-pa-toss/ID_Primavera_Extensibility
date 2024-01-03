@@ -164,27 +164,6 @@
     <Compile Include="Forms\FormEncomendas\FormEncomendas_Menu.Designer.cs">
       <DependentUpon>FormEncomendas_Menu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormEncomendas\Old\Conn.cs" />
-    <Compile Include="Forms\FormEncomendas\Old\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormEncomendas\Old\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormEncomendas\Old\Form_Compras.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormEncomendas\Old\Form_Compras.Designer.cs">
-      <DependentUpon>Form_Compras.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormEncomendas\Old\Form_Menu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormEncomendas\Old\Form_Menu.Designer.cs">
-      <DependentUpon>Form_Menu.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormEncomendas\Old\Program.cs" />
-    <Compile Include="Forms\FormEncomendas\Old\SqlConnnection.cs" />
     <Compile Include="Forms\FormReimpressao.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -252,15 +231,6 @@
     <EmbeddedResource Include="Forms\FormEncomendas\FormEncomendas_Menu.resx">
       <DependentUpon>FormEncomendas_Menu.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormEncomendas\Old\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormEncomendas\Old\Form_Compras.resx">
-      <DependentUpon>Form_Compras.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormEncomendas\Old\Form_Menu.resx">
-      <DependentUpon>Form_Menu.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormReimpressao.resx">
       <DependentUpon>FormReimpressao.cs</DependentUpon>
     </EmbeddedResource>
@@ -274,9 +244,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Forms\FormEncomendas\Old\ERP900P.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

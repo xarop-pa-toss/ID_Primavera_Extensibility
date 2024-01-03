@@ -63,9 +63,10 @@ namespace DCT_Extens.Forms
             // 
             this.btn_Actualizar.Image = ((System.Drawing.Image)(resources.GetObject("btn_Actualizar.Image")));
             this.btn_Actualizar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Actualizar.Location = new System.Drawing.Point(10, 10);
+            this.btn_Actualizar.Location = new System.Drawing.Point(13, 12);
+            this.btn_Actualizar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_Actualizar.Name = "btn_Actualizar";
-            this.btn_Actualizar.Size = new System.Drawing.Size(80, 27);
+            this.btn_Actualizar.Size = new System.Drawing.Size(107, 33);
             this.btn_Actualizar.TabIndex = 0;
             this.btn_Actualizar.Text = "Actualizar";
             this.btn_Actualizar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -75,9 +76,10 @@ namespace DCT_Extens.Forms
             // 
             this.btn_Imprimir.Image = ((System.Drawing.Image)(resources.GetObject("btn_Imprimir.Image")));
             this.btn_Imprimir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Imprimir.Location = new System.Drawing.Point(96, 10);
+            this.btn_Imprimir.Location = new System.Drawing.Point(128, 12);
+            this.btn_Imprimir.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_Imprimir.Name = "btn_Imprimir";
-            this.btn_Imprimir.Size = new System.Drawing.Size(80, 27);
+            this.btn_Imprimir.Size = new System.Drawing.Size(107, 33);
             this.btn_Imprimir.TabIndex = 1;
             this.btn_Imprimir.Text = "Imprimir  ";
             this.btn_Imprimir.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -85,34 +87,38 @@ namespace DCT_Extens.Forms
             // 
             // labelInicial
             // 
-            this.labelInicial.Location = new System.Drawing.Point(5, 26);
+            this.labelInicial.Location = new System.Drawing.Point(7, 32);
+            this.labelInicial.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelInicial.Name = "labelInicial";
-            this.labelInicial.Size = new System.Drawing.Size(39, 16);
+            this.labelInicial.Size = new System.Drawing.Size(52, 20);
             this.labelInicial.TabIndex = 0;
             this.labelInicial.Text = "Inicial:";
             // 
             // labelFinal
             // 
-            this.labelFinal.Location = new System.Drawing.Point(6, 55);
+            this.labelFinal.Location = new System.Drawing.Point(8, 68);
+            this.labelFinal.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelFinal.Name = "labelFinal";
-            this.labelFinal.Size = new System.Drawing.Size(35, 16);
+            this.labelFinal.Size = new System.Drawing.Size(47, 20);
             this.labelFinal.TabIndex = 1;
             this.labelFinal.Text = "Final:";
             // 
             // dtPicker_DataDocInicial
             // 
             this.dtPicker_DataDocInicial.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtPicker_DataDocInicial.Location = new System.Drawing.Point(45, 26);
+            this.dtPicker_DataDocInicial.Location = new System.Drawing.Point(60, 32);
+            this.dtPicker_DataDocInicial.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dtPicker_DataDocInicial.Name = "dtPicker_DataDocInicial";
-            this.dtPicker_DataDocInicial.Size = new System.Drawing.Size(97, 20);
+            this.dtPicker_DataDocInicial.Size = new System.Drawing.Size(128, 22);
             this.dtPicker_DataDocInicial.TabIndex = 2;
             // 
             // dtPicker_DataDocFinal
             // 
             this.dtPicker_DataDocFinal.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtPicker_DataDocFinal.Location = new System.Drawing.Point(45, 55);
+            this.dtPicker_DataDocFinal.Location = new System.Drawing.Point(60, 68);
+            this.dtPicker_DataDocFinal.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dtPicker_DataDocFinal.Name = "dtPicker_DataDocFinal";
-            this.dtPicker_DataDocFinal.Size = new System.Drawing.Size(97, 20);
+            this.dtPicker_DataDocFinal.Size = new System.Drawing.Size(128, 22);
             this.dtPicker_DataDocFinal.TabIndex = 3;
             // 
             // groupBox1
@@ -121,9 +127,11 @@ namespace DCT_Extens.Forms
             this.groupBox1.Controls.Add(this.labelFinal);
             this.groupBox1.Controls.Add(this.dtPicker_DataDocFinal);
             this.groupBox1.Controls.Add(this.dtPicker_DataDocInicial);
-            this.groupBox1.Location = new System.Drawing.Point(10, 55);
+            this.groupBox1.Location = new System.Drawing.Point(13, 68);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(152, 92);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Size = new System.Drawing.Size(203, 113);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Data dos Documentos";
@@ -131,39 +139,43 @@ namespace DCT_Extens.Forms
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(172, 66);
+            this.label1.Location = new System.Drawing.Point(229, 81);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(37, 13);
+            this.label1.Size = new System.Drawing.Size(45, 16);
             this.label1.TabIndex = 4;
             this.label1.Text = "Mapa:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(172, 102);
+            this.label2.Location = new System.Drawing.Point(229, 126);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(45, 13);
+            this.label2.Size = new System.Drawing.Size(55, 16);
             this.label2.TabIndex = 5;
             this.label2.Text = "Nº Vias:";
             // 
             // cmbBox_Mapas
             // 
             this.cmbBox_Mapas.FormattingEnabled = true;
-            this.cmbBox_Mapas.Location = new System.Drawing.Point(223, 66);
+            this.cmbBox_Mapas.Location = new System.Drawing.Point(297, 81);
+            this.cmbBox_Mapas.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cmbBox_Mapas.Name = "cmbBox_Mapas";
-            this.cmbBox_Mapas.Size = new System.Drawing.Size(203, 21);
+            this.cmbBox_Mapas.Size = new System.Drawing.Size(559, 24);
             this.cmbBox_Mapas.TabIndex = 6;
             // 
             // numUpDown_NumVias
             // 
-            this.numUpDown_NumVias.Location = new System.Drawing.Point(223, 102);
+            this.numUpDown_NumVias.Location = new System.Drawing.Point(297, 126);
+            this.numUpDown_NumVias.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numUpDown_NumVias.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.numUpDown_NumVias.Name = "numUpDown_NumVias";
-            this.numUpDown_NumVias.Size = new System.Drawing.Size(37, 20);
+            this.numUpDown_NumVias.Size = new System.Drawing.Size(49, 22);
             this.numUpDown_NumVias.TabIndex = 7;
             this.numUpDown_NumVias.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numUpDown_NumVias.Value = new decimal(new int[] {
@@ -189,10 +201,11 @@ namespace DCT_Extens.Forms
             this.f4_Cliente.F4Modal = false;
             this.f4_Cliente.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.f4_Cliente.IDCategoria = "Clientes";
-            this.f4_Cliente.Location = new System.Drawing.Point(10, 163);
+            this.f4_Cliente.Location = new System.Drawing.Point(13, 201);
+            this.f4_Cliente.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.f4_Cliente.MaxLengthDescricao = 0;
             this.f4_Cliente.MaxLengthF4 = 50;
-            this.f4_Cliente.MinimumSize = new System.Drawing.Size(37, 21);
+            this.f4_Cliente.MinimumSize = new System.Drawing.Size(49, 26);
             this.f4_Cliente.Modulo = "BAS";
             this.f4_Cliente.MostraDescricao = true;
             this.f4_Cliente.MostraLink = true;
@@ -206,7 +219,7 @@ namespace DCT_Extens.Forms
             this.f4_Cliente.ResourcePersonalizada = false;
             this.f4_Cliente.Restricao = "";
             this.f4_Cliente.SelectionFormula = "";
-            this.f4_Cliente.Size = new System.Drawing.Size(416, 21);
+            this.f4_Cliente.Size = new System.Drawing.Size(599, 26);
             this.f4_Cliente.TabIndex = 8;
             this.f4_Cliente.TextoDescricao = "";
             this.f4_Cliente.WidthEspacamento = 60;
@@ -223,7 +236,8 @@ namespace DCT_Extens.Forms
             this.priGrelha_Docs.Cols = null;
             this.priGrelha_Docs.ColsFrozen = -1;
             this.priGrelha_Docs.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.priGrelha_Docs.Location = new System.Drawing.Point(10, 249);
+            this.priGrelha_Docs.Location = new System.Drawing.Point(13, 306);
+            this.priGrelha_Docs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.priGrelha_Docs.Name = "priGrelha_Docs";
             this.priGrelha_Docs.NumeroMaxRegistosSemPag = 150000;
             this.priGrelha_Docs.NumeroRegistos = 0;
@@ -247,7 +261,7 @@ namespace DCT_Extens.Forms
             this.priGrelha_Docs.PermiteStatusBar = true;
             this.priGrelha_Docs.PermiteVistas = true;
             this.priGrelha_Docs.PosicionaColunaSeguinte = true;
-            this.priGrelha_Docs.Size = new System.Drawing.Size(633, 331);
+            this.priGrelha_Docs.Size = new System.Drawing.Size(844, 407);
             this.priGrelha_Docs.TabIndex = 10;
             this.priGrelha_Docs.TituloGrelha = "";
             this.priGrelha_Docs.TituloMapa = "";
@@ -257,9 +271,10 @@ namespace DCT_Extens.Forms
             // btn_SeleccionarTodos
             // 
             this.btn_SeleccionarTodos.Image = ((System.Drawing.Image)(resources.GetObject("btn_SeleccionarTodos.Image")));
-            this.btn_SeleccionarTodos.Location = new System.Drawing.Point(10, 220);
+            this.btn_SeleccionarTodos.Location = new System.Drawing.Point(13, 271);
+            this.btn_SeleccionarTodos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_SeleccionarTodos.Name = "btn_SeleccionarTodos";
-            this.btn_SeleccionarTodos.Size = new System.Drawing.Size(25, 23);
+            this.btn_SeleccionarTodos.Size = new System.Drawing.Size(33, 28);
             this.btn_SeleccionarTodos.TabIndex = 11;
             this.btn_SeleccionarTodos.UseVisualStyleBackColor = true;
             this.btn_SeleccionarTodos.Click += new System.EventHandler(this.btn_SeleccionarTodos_Click);
@@ -267,9 +282,10 @@ namespace DCT_Extens.Forms
             // btn_LimparSeleccao
             // 
             this.btn_LimparSeleccao.Image = ((System.Drawing.Image)(resources.GetObject("btn_LimparSeleccao.Image")));
-            this.btn_LimparSeleccao.Location = new System.Drawing.Point(41, 220);
+            this.btn_LimparSeleccao.Location = new System.Drawing.Point(55, 271);
+            this.btn_LimparSeleccao.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_LimparSeleccao.Name = "btn_LimparSeleccao";
-            this.btn_LimparSeleccao.Size = new System.Drawing.Size(25, 23);
+            this.btn_LimparSeleccao.Size = new System.Drawing.Size(33, 28);
             this.btn_LimparSeleccao.TabIndex = 12;
             this.btn_LimparSeleccao.UseVisualStyleBackColor = true;
             this.btn_LimparSeleccao.Click += new System.EventHandler(this.btn_LimparSeleccao_Click);
@@ -277,15 +293,17 @@ namespace DCT_Extens.Forms
             // listBox_TipoDoc
             // 
             this.listBox_TipoDoc.FormattingEnabled = true;
-            this.listBox_TipoDoc.Location = new System.Drawing.Point(432, 64);
+            this.listBox_TipoDoc.ItemHeight = 16;
+            this.listBox_TipoDoc.Location = new System.Drawing.Point(620, 127);
+            this.listBox_TipoDoc.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.listBox_TipoDoc.Name = "listBox_TipoDoc";
             this.listBox_TipoDoc.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listBox_TipoDoc.Size = new System.Drawing.Size(211, 173);
+            this.listBox_TipoDoc.Size = new System.Drawing.Size(236, 164);
             this.listBox_TipoDoc.TabIndex = 13;
             // 
             // FormReimpressao
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.listBox_TipoDoc);
             this.Controls.Add(this.btn_LimparSeleccao);
@@ -299,8 +317,9 @@ namespace DCT_Extens.Forms
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_Actualizar);
             this.Controls.Add(this.btn_Imprimir);
+            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.Name = "FormReimpressao";
-            this.Size = new System.Drawing.Size(654, 593);
+            this.Size = new System.Drawing.Size(872, 730);
             this.Text = "FormReimpressão";
             this.Load += new System.EventHandler(this.FormReimpressao_Load);
             this.groupBox1.ResumeLayout(false);

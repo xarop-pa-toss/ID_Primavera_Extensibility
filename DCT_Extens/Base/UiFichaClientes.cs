@@ -29,7 +29,7 @@ namespace DCT_Extens
             // Se o utilizador actual não tiver permissão, a variavel 'autorizacao' é uma lista vazia.
             if (!autorizacao.Any())
             {
-                PSO.MensagensDialogos.MostraAviso("Não tem permissão para alterar o valor Anulado de um cliente. \n O documento não será gravado.", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
+                PSO.MensagensDialogos.MostraAviso("Não tem permissão para alterar o estado Anulado de um cliente. \n O documento não será gravado.", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
                 Cancel = true;
             }
         }
