@@ -37,23 +37,22 @@ namespace DCT_Extens.Sales
 
 
             // Se ultrapassar Limite de Crédito
-            if (valorDocOrigem + cliente.DebitoContaCorrente > cliente.Limitecredito)
+            if (cliente.LimiteCredValor && (valorDocOrigem + cliente.DebitoContaCorrente > cliente.Limitecredito))
             {
                 double valorAcimaDoLimite = cliente.Limitecredito - (valorDocOrigem + cliente.DebitoContaCorrente);
 
                 DialogResult resultado = MessageBox.Show(
-                    $"O documento {Tipodoc} {Serie}/{NumDoc} ira pôr o cliente {strCliente} - {cliente.Nome} acima do seu limite de crédito.\n\n" +
+                    $"O documento {Tipodoc} {Serie}/{NumDoc} ira colocar o cliente acima do seu limite de crédito.\n\n" +
+                    $"Cliente: {strCliente} - {cliente.Nome}\n" +
                     $"Limite: {cliente.Limitecredito}\n" +
                     $"Débito Actual: {cliente.DebitoContaCorrente}\n" +
-                    $"Excedente: {valorAcimaDoLimite}\n\n" +
+                    $"Excedente: {valorAcimaDoLimite * -1}\n\n" +
                     $"Deseja continuar com a conversão deste documento?",
                     "Limites de Crédito",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
                 // Lista a gravar num documento no DepoisDeGravar
-
-
                 if (resultado == DialogResult.Yes)
                 {
                     _clientesQueUltrapassamLimiteList.Add($"{strCliente}: {valorAcimaDoLimite}€ acima do limite de {cliente.Limitecredito}€\n");
