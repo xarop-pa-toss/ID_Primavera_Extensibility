@@ -19,10 +19,7 @@ namespace DCT_Extens
         {
             base.AntesDeGravar(ref Cancel, e);
 
-            DataTable TDU = _Helpers.GetDataTableDeSQL($"" +
-                $" SELECT CDU_Utilizador" +
-                $" FROM TDU_PermissaoAnularClientes" +
-                $" WHERE CDU_PermissaoAnular = 1;");
+            DataTable TDU = _Helpers.GetDataTableDeSQL("SELECT CDU_Utilizador FROM TDU_PermissaoAnularClientes");
 
             string userActual = BSO.Contexto.UtilizadorActual;
             var autorizacao = from DataRow linha in TDU.Rows
@@ -33,6 +30,7 @@ namespace DCT_Extens
             if (!autorizacao.Any())
             {
                 PSO.MensagensDialogos.MostraAviso("Não tem permissão para alterar o valor Anulado de um cliente. \n O documento não será gravado.", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
+                Cancel = true;
             }
         }
     }
