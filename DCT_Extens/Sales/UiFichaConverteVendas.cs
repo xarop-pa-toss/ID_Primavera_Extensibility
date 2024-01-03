@@ -10,13 +10,20 @@ using StdBE100; using ErpBS100; using VndBE100; using CctBE100;
 using BasBE100;
 using System.Windows.Forms;
 using DCT_Extens.Helpers;
+using System.Data;
 
 namespace DCT_Extens.Sales
 {
     public class UiFichaConverteVendas : FichaConverteVendas
     {
-        private Dictionary<string, double> _clientesTotalDocs = new Dictionary<string, double>();
+        private List<string> _clientesQueUltrapassamLimiteList = new List<string>();
         private HelperFunctions _Helpers = new HelperFunctions();
+
+        public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
+        {
+            base.AntesDeGravar(ref Cancel, e);
+            _clientesQueUltrapassamLimiteList.Clear();
+        }
 
         // AntesDeConverter activa DEPOIS do AntesDeGravar
 
@@ -24,70 +31,35 @@ namespace DCT_Extens.Sales
         {
             base.AntesDeConverter(NumDoc, Tipodoc, Serie, Filial, TipodocDestino, SerieDestino, ref Cancel, e);
 
-            double valorDocOrigem = BSO.Vendas.Documentos.DaValorAtributo(Filial, Tipodoc, Serie, NumDoc, "TotalDocumento");
             string strCliente = BSO.Vendas.Documentos.DaValorAtributo(Filial, Tipodoc, Serie, NumDoc, "Entidade");
+            BasBECliente cliente = BSO.Base.Clientes.Edita(strCliente);
+            double valorDocOrigem = BSO.Vendas.Documentos.DaValorAtributo(Filial, Tipodoc, Serie, NumDoc, "TotalDocumento");
 
-            // Dicionário mantém valor total de todos os documentos a converter para cada cliente.
-            // Se já tiver sido convertido um doc para o cliente, apenas actualiza o valor. Será usado no antes de gravar para validar se ultrapassa limite de crédito.
-            if (!_clientesTotalDocs.ContainsKey(strCliente))
+
+            // Se ultrapassar Limite de Crédito
+            if (valorDocOrigem + cliente.DebitoContaCorrente > cliente.Limitecredito)
             {
-                _clientesTotalDocs.Add(strCliente, valorDocOrigem);
-            } else
-            {
-                _clientesTotalDocs[strCliente] += valorDocOrigem;
-            }
+                double valorAcimaDoLimite = cliente.Limitecredito - (valorDocOrigem + cliente.DebitoContaCorrente);
 
-            //// Adicionar à lista de documentos que vão ultrapassar o limite de crédito do cliente
-            //if (cliente.LimiteCredValor)
-            //{
-            //    // Se o valor do documento + o que o cliente tem em dívida ultrapassar o limite estabelecido
-            //    if (cliente.DebitoContaCorrente + valorDocOrigem > cliente.Limitecredito)
-            //    {
-            //        _docsQueUltrapassamLimiteCredito.Add($"clienteStr {Tipodoc} {Serie}/{NumDoc} - {valorDocOrigem}€\n");
-            //    }
-            //}
-        }
-
-        public override void DepoisDeConverter(Primavera.Platform.Collections.PrimaveraOrderedDictionary colDocumentosGerados, ExtensibilityEventArgs e)
-        {
-            base.DepoisDeConverter(colDocumentosGerados, e);
-        }
-
-        public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
-        {
-            base.AntesDeGravar(ref Cancel, e);
-
-            List<string> clientesQueUltrapassamLimiteCredito = new List<string>();
-
-            foreach (KeyValuePair<string, double> kvp in _clientesTotalDocs)
-            {
-                BasBECliente cliente = BSO.Base.Clientes.Edita(kvp.Key);
-
-                // Se cliente tiver activo o tipo de crédito com Limite de Crédito por Valor + o total dos seus documentos a converter ultrapassar o limite, adiciona este cliente à lista a mostrar ao utilizador
-                if (cliente.LimiteCredValor && (cliente.DebitoContaCorrente + kvp.Value > cliente.Limitecredito))
-                {
-                    double valorAcimaDoLimiteCredito = cliente.Limitecredito - kvp.Value;
-
-                    clientesQueUltrapassamLimiteCredito.Add($"{kvp.Key}: {valorAcimaDoLimiteCredito}€ acima do limite {cliente.Limitecredito}€\n");
-                }
-            }
-
-            if (clientesQueUltrapassamLimiteCredito.Any())
-            {
                 DialogResult resultado = MessageBox.Show(
-                    "Existem clientes que irão ficar acima dos seus limites de crédito caso decida avançar com a conversão dos documentos. \n\nDeseja proceder com a conversão?",
+                    $"O documento {Tipodoc} {Serie}/{NumDoc} ira pôr o cliente {strCliente} - {cliente.Nome} acima do seu limite de crédito.\n\n" +
+                    $"Limite: {cliente.Limitecredito}\n" +
+                    $"Débito Actual: {cliente.DebitoContaCorrente}\n" +
+                    $"Excedente: {valorAcimaDoLimite}\n\n" +
+                    $"Deseja continuar com a conversão deste documento?",
                     "Limites de Crédito",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-                string listaFinalStr = string.Join("", clientesQueUltrapassamLimiteCredito);
+                // Lista a gravar num documento no DepoisDeGravar
+
+
                 if (resultado == DialogResult.Yes)
                 {
-                    _Helpers.EscreverParaFicheiroTxt(listaFinalStr, "ConversaoDocumentosVenda_gravado");
-                } else
-                {
-                    _Helpers.EscreverParaFicheiroTxt(listaFinalStr, "ConversaoDocumentosVenda_nao_gravado");
-                    PSO.MensagensDialogos.MostraAviso("Nenhum documento foi convertido.\n Ver detalhes para mais informações.", StdPlatBS100.StdBSTipos.IconId.PRI_Exclama, listaFinalStr);
+                    _clientesQueUltrapassamLimiteList.Add($"{strCliente}: {valorAcimaDoLimite}€ acima do limite de {cliente.Limitecredito}€\n");
+                } 
+                else {
+                    Cancel = true;
                 }
             }
         }
@@ -95,6 +67,16 @@ namespace DCT_Extens.Sales
         public override void DepoisDeGravar(Primavera.Platform.Collections.PrimaveraOrderedDictionary colTodosDocumentosGerados, ExtensibilityEventArgs e)
         {
             base.DepoisDeGravar(colTodosDocumentosGerados, e);
+
+            if (_clientesQueUltrapassamLimiteList.Any())
+            {
+                PSO.MensagensDialogos.MostraAviso(
+                    "Os seguintes clientes ultrapassaram os seus limites de crédito.",
+                    StdPlatBS100.StdBSTipos.IconId.PRI_Exclama,
+                    string.Join("", _clientesQueUltrapassamLimiteList));
+
+                _Helpers.EscreverParaFicheiroTxt("Os seguintes clientes ultrapassaram os seus limites de crédito.\n\n" + string.Join("", _clientesQueUltrapassamLimiteList), "ConversaoDocumentosVenda_ClientesUltrapassamLimite");
+            }
         }
     }
 }
