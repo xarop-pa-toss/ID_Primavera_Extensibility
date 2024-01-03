@@ -38,6 +38,12 @@
     <Reference Include="BasBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\BasBS100.dll</HintPath>
     </Reference>
+    <Reference Include="CctBE100">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\CctBE100.dll</HintPath>
+    </Reference>
+    <Reference Include="CctBS100">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\CctBS100.dll</HintPath>
+    </Reference>
     <Reference Include="CmpBE100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\CmpBE100.dll</HintPath>
       <Private>False</Private>
@@ -52,6 +58,9 @@
     <Reference Include="IBasBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\IBasBS100.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="ICctBS100">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\ICctBS100.dll</HintPath>
     </Reference>
     <Reference Include="ICmpBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\ICmpBS100.dll</HintPath>
@@ -189,6 +198,7 @@
       <DependentUpon>FormStockQuebras.cs</DependentUpon>
     </Compile>
     <Compile Include="Sales\UiEditorCopiaLinhas.cs" />
+    <Compile Include="Sales\UiFichaConverteVendas.cs" />
     <Compile Include="Secrets.cs" />
     <Compile Include="StockQuebras_Geral.cs" />
   </ItemGroup>
