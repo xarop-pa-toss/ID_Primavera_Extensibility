@@ -46,7 +46,7 @@ namespace DCT_Extens.Forms.FormEncomendas
             }
             catch (Exception ex)
             {
-                _Helpers.EscreverErroParaFicheiroTxt(ex.ToString(), "FormEncomendas_VerDocs_Click");
+                _Helpers.EscreverParaFicheiroTxt(ex.ToString(), "FormEncomendas_VerDocs_Click");
                 PSO.MensagensDialogos.MostraErro("Falha ao ler dados na base de dados Primavera.");
             }
         }
@@ -140,7 +140,7 @@ namespace DCT_Extens.Forms.FormEncomendas
                     }
                     catch (Exception ex)
                     {
-                        _Helpers.EscreverErroParaFicheiroTxt(ex.ToString(), "FormEncomendas_UpdateDB_Click");
+                        _Helpers.EscreverParaFicheiroTxt(ex.ToString(), "FormEncomendas_UpdateDB_Click");
                         PSO.MensagensDialogos.MostraErro("Não foi possivel fechar os documentos seleccionados.");
                     }
                 }

@@ -30,10 +30,10 @@ namespace DCT_Extens.Helpers
 
 
         // Error Logging para um ficheiro de texto. Se não for dado path, cria uma pasta nos Documentos com o nome do projecto
-        public void EscreverErroParaFicheiroTxt(string erro, string tipoErro)
+        public void EscreverParaFicheiroTxt(string texto, string titulo)
         {            
             string pastaErrosPath = "C:/PastaTecnica/PrimaveraExtensibilidadeLogs";
-            string ficheiroNome = $"{tipoErro}_{DateTime.Now.ToString("ddMMyyyy_HHmmss")}";
+            string ficheiroNome = $"{titulo}_{DateTime.Now.ToString("ddMMyyyy_HHmmss")}";
             string ficheiroPath = Path.Combine(pastaErrosPath, ficheiroNome);
 
             // O caminho final (pastaErrosPath) é criado se não existir
@@ -44,7 +44,7 @@ namespace DCT_Extens.Helpers
 
             // Criação ficheiro
             try {
-                File.WriteAllText(ficheiroPath, erro);
+                File.WriteAllText(ficheiroPath, texto);
             } catch (Exception ex) {
                 _PSO.MensagensDialogos.MostraErro("Aconteceu um erro mas não foi possivel criar o ficheiro Log.", sDetalhe: ex.ToString());
             }
