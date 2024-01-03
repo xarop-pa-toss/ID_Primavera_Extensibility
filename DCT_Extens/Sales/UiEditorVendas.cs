@@ -34,11 +34,6 @@ namespace DCT_Extens.Sales
         {
             base.AntesDeGravar(ref Cancel, e);
 
-            string strCliente, resp, vend;
-            long i;
-            BasBECargaDescarga cargaDescarga;
-            bool modNaoGravar = false;
-
             #region Validar CabecDoc
             // Mensagem a apresentar ao utilizador
             _strMensagem = "O valor desta fatura ultrapassa o limite definido (" + DBL_LIMITE.ToString("F2") + "). Deseja continuar com a gravação?";
@@ -113,7 +108,7 @@ namespace DCT_Extens.Sales
         {
             base.ArtigoIdentificado(Artigo, NumLinha, ref Cancel, e);
 
-            string motivoOferta = null, nz, d, ultimoMotivo;
+            string motivoOferta = null;
 
             // O código que se segue irá permitir que surja uma inputbox quando é escolhido o cliente 13000, no momento do lançamento dos artigos
             // ao escrever o motivo de oferta nessa inputbox esse valor será gravado no campo de utilizador nas linhasdoc CDU_MotivoOferta.

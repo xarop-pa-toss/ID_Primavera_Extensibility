@@ -20,8 +20,6 @@ namespace DCT_Extens.Purchases
         {
             base.AntesDeGravar(ref Cancel, e);
 
-            long i;
-
             if (DocumentoCompra.Entidade != "44" 
                 && new List<string> { "ECF", "ECL", "ECP" }.Contains(DocumentoCompra.Tipodoc)
                 && DocumentoCompra.Linhas.NumItens > 0)
