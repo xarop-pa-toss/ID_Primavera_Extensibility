@@ -136,11 +136,8 @@ namespace Encomendas
                         
                         toolStripStatusLabel1.Text = "Os Documentos selecionados, foram alterados para o estado 'Fechado'";
                         statusStrip1.Refresh();
-
                     }
-
                 }
-                
             }
             MessageBox.Show("Documento(s) Fechado(s)");
             //ZONA DE TESTE PARA UPDATE QUERY

@@ -16,14 +16,13 @@ namespace DCT_Extens.Helpers
 {
     public class HelperFunctions : CustomCode
     {
-        private ErpBS _BSO {  get; set; }
-        private StdPlatBS _PSO { get; set; }
-        private clsSDKContexto _SDKContexto { get; set; }
-
-       
+        private static ErpBS _BSO {  get; set; }
+        private static StdPlatBS _PSO { get; set; }
+        private static clsSDKContexto _SDKContexto { get; set; }
 
         public HelperFunctions()
         {
+            PriMotores.InicializarContexto(Secrets.Empresa, Secrets.Utilizador, Secrets.Password);
             _BSO = Helpers.PriMotores.Motor;
             _PSO = Helpers.PriMotores.Plataforma;
             _SDKContexto = Helpers.PriMotores.PriSDKContexto;

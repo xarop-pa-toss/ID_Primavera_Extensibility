@@ -3,6 +3,7 @@
 *.sql
 *SQL.cs
 PriMotores.cs
+Secrets.cs
 formImportTxt.cs
 formFaturasExploracao_WF.cs
 

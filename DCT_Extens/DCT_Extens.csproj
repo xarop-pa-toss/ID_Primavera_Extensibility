@@ -210,6 +210,7 @@
       <DependentUpon>FormStockQuebras.cs</DependentUpon>
     </Compile>
     <Compile Include="Sales\UiEditorCopiaLinhas.cs" />
+    <Compile Include="Secrets.cs" />
     <Compile Include="StockQuebras_Geral.cs" />
   </ItemGroup>
   <ItemGroup>
