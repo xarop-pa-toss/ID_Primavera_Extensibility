@@ -22,7 +22,7 @@ namespace DCT_Extens.Helpers
 
         public HelperFunctions()
         {
-            PriMotores.InicializarContexto(Secrets.Empresa, Secrets.Utilizador, Secrets.Password);
+            PriMotores.InicializarContexto();
             _BSO = Helpers.PriMotores.Motor;
             _PSO = Helpers.PriMotores.Plataforma;
             _SDKContexto = Helpers.PriMotores.PriSDKContexto;
