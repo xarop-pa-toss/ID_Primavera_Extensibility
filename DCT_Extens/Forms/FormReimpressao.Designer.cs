@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace DCT_Extens.Forms
+namespace DCT_Extens
 {
     partial class FormReimpressao
     {

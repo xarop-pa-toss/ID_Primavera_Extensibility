@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DCT_Extens.StockQuebras
+namespace DCT_Extens
 {
     public partial class FormStockQuebras : CustomForm
     {
@@ -57,6 +57,11 @@ namespace DCT_Extens.StockQuebras
             if (!_pedeMotivo) {
                 txtBox_MotivoQuebra.Enabled = false;
             }
+        }
+
+        private void txtBox_MotivoQuebra_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
         private void btn_Confirmar_Click(object sender, EventArgs e)

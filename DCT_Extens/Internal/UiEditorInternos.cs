@@ -12,7 +12,7 @@ using System.Data;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
 using IntBE100;
-using DCT_Extens.StockQuebras;
+using DCT_Extens;
 
 namespace DCT_Extens.Internal
 {

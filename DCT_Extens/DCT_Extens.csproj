@@ -170,12 +170,6 @@
     <Compile Include="Forms\FormEncomendas\FormEncomendas.Designer.cs">
       <DependentUpon>FormEncomendas.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormEncomendas\FormEncomendas_Menu.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\FormEncomendas\FormEncomendas_Menu.Designer.cs">
-      <DependentUpon>FormEncomendas_Menu.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FormReimpressao.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -240,10 +234,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormEncomendas\FormEncomendas.resx">
       <DependentUpon>FormEncomendas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormEncomendas\FormEncomendas_Menu.resx">
-      <DependentUpon>FormEncomendas_Menu.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormReimpressao.resx">
       <DependentUpon>FormReimpressao.cs</DependentUpon>

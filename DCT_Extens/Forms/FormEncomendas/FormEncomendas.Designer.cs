@@ -1,4 +1,4 @@
-﻿namespace DCT_Extens.Forms.FormEncomendas
+﻿namespace DCT_Extens
 {
     partial class FormEncomendas
     {

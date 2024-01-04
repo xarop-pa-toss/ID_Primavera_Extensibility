@@ -16,7 +16,7 @@ using System.Windows.Forms;
 using StdBE100;
 using VndBE100;
 
-namespace DCT_Extens.Forms
+namespace DCT_Extens
 {
     public partial class FormReimpressao : CustomForm
     {

@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DCT_Extens.Forms.FormEncomendas
+namespace DCT_Extens
 {
     public partial class FormEncomendas : CustomForm
     {
