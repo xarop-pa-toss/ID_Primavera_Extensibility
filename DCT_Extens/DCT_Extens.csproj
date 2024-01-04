@@ -243,6 +243,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormEncomendas\FormEncomendas_Menu.resx">
       <DependentUpon>FormEncomendas_Menu.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormReimpressao.resx">
       <DependentUpon>FormReimpressao.cs</DependentUpon>

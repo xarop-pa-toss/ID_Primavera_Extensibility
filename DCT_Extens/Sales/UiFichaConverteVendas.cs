@@ -50,18 +50,15 @@ namespace DCT_Extens.Sales
                     $"Excedente: {valorAcimaDoLimite * -1}\n\n" +
                     $"Deseja continuar com a conversão deste documento?",
                     StdPlatBS100.StdBSTipos.IconId.PRI_Exclama);
-                
+
                 if (resultado == StdPlatBS100.StdBSTipos.ResultMsg.PRI_Sim)
                 {
                     _clientesQueUltrapassamLimiteList.Add($"{strCliente}: {valorAcimaDoLimite}€ acima do limite de {cliente.Limitecredito}€\n");
-                } else {
+                } else
+                {
                     Cancel = true;
                 }
-                BSO.IniciaTransaccao
             }
-            string strCodEmp = "x", strUtilizador = "y", strPassword = "z";
-            BSO.AbreEmpresaTrabalho(StdBETipos.EnumTipoPlataforma.tpProfissional, strCodEmp, strUtilizador, strPassword);
-            string x = BSO.Contexto.PasswordUtilizadorActual;
         }
         
 
