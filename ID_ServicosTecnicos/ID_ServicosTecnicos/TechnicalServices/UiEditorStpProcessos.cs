@@ -15,7 +15,7 @@ namespace ID_ServicosTecnicos.TechnicalServices
 
             if (CDU.Equals(true))
             {
-                PSO.Dialogos.MostraMensagem(StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimplesOk, "Este cliente tem as assistências suspensas!", StdPlatBS100.StdBSTipos.IconId.PRI_Exclama);
+                PSO.MensagensDialogos.MostraMensagem(StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimplesOk, "Este cliente tem as assistências suspensas!", StdPlatBS100.StdBSTipos.IconId.PRI_Exclama);
             }
 
             base.ClienteIdentificado(Cliente, e);
