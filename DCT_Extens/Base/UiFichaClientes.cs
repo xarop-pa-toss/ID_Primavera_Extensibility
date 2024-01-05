@@ -1,13 +1,7 @@
-﻿using Primavera.Extensibility.Sales.Editors;
-using Primavera.Extensibility.Base.Editors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Primavera.Extensibility.Base.Editors;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
-
+using System.Data;
+using System.Linq;
 
 namespace DCT_Extens
 {

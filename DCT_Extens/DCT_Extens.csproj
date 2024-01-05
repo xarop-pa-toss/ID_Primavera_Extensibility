@@ -164,10 +164,10 @@
     <Compile Include="Forms\FormCargaDescarga.Designer.cs">
       <DependentUpon>FormCargaDescarga.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormEncomendas\FormEncomendas.cs">
+    <Compile Include="Forms\FormEncomendas.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\FormEncomendas\FormEncomendas.Designer.cs">
+    <Compile Include="Forms\FormEncomendas.Designer.cs">
       <DependentUpon>FormEncomendas.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormReimpressao.cs">
@@ -232,7 +232,7 @@
     <EmbeddedResource Include="Forms\FormCargaDescarga.resx">
       <DependentUpon>FormCargaDescarga.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormEncomendas\FormEncomendas.resx">
+    <EmbeddedResource Include="Forms\FormEncomendas.resx">
       <DependentUpon>FormEncomendas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormReimpressao.resx">

@@ -15,6 +15,7 @@ using System.Data.SqlClient;
 using System.Windows.Forms;
 using StdBE100;
 using VndBE100;
+using System.Linq.Expressions;
 
 namespace DCT_Extens
 {
@@ -24,7 +25,7 @@ namespace DCT_Extens
         private StdPlatBS _PSO { get; set; }
         private clsSDKContexto _SDKContexto { get; set; }
         private HelperFunctions _Helpers { get; set; }
-
+        private string loadError = null;
 
         public FormReimpressao()
         {
@@ -38,17 +39,36 @@ namespace DCT_Extens
 
         private void FormReimpressao_Load(object sender, EventArgs e)
         {
-            // Inicializar controlos Primavera
-            priGrelha_Docs.Inicializa(_SDKContexto);
-            f4_Cliente.Inicializa(_SDKContexto);
+            try
+            {
+                // Inicializar controlos Primavera
+                priGrelha_Docs.Inicializa(_SDKContexto);
+                f4_Cliente.Inicializa(_SDKContexto);
 
-            // Inicialização dos controlos
-            InicializaPriGrelha();
-            InicializaListBox_TipoDoc();
-            InicializaCmbBox_Mapas();
-            
-            dtPicker_DataDocInicial.Value = DateTime.Now;
-            dtPicker_DataDocFinal.Value = DateTime.Now;
+                // Inicialização dos controlos
+                InicializaPriGrelha();
+                InicializaListBox_TipoDoc();
+                InicializaCmbBox_Mapas();
+
+                dtPicker_DataDocInicial.Value = DateTime.Now;
+                dtPicker_DataDocFinal.Value = DateTime.Now;
+            }
+            catch(Exception err)
+            {
+                loadError = err.ToString();
+            }
+
+        }
+
+        private void FormReimpressao_Shown(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(loadError))
+            {
+                _Helpers.EscreverParaFicheiroTxt(loadError, "FormReimpressao_ErroLoad");
+                PSO.MensagensDialogos.MostraErro("Não foi possível abrir o form de Reimpressão de Documentos. Por favor contacte a Infodinâmica para apoio técnico.");
+
+                this.Close();
+            }
         }
 
         private void btn_Imprimir_Click(object sender, EventArgs e)
@@ -161,7 +181,7 @@ namespace DCT_Extens
             // As razões são interessantes (se bem que em datasets pequenos podem não fazer grande diferença.
             // https://pastebin.com/T6CXVXtE
             var tipoDocsValores = tipoDocsTabela.AsEnumerable()
-                .Select(linha => linha.Field<string>("Docs")).ToList();
+                .Select(linha => linha.Field<string>("Doc")).ToList();
 
             listBox_TipoDoc.Items.AddRange(tipoDocsValores.ToArray());
         }
@@ -248,11 +268,6 @@ namespace DCT_Extens
                 priGrelha_Docs.SetGRID_SetValorCelula(i, "Cf", 1);
             }
         }
-
-        //private void cmbBox_Mapas_TextChanged(object sender, EventArgs e)
-        //{
-        //    ActualizaCBoxSerie();
-        //}
 
         #endregion
     }
