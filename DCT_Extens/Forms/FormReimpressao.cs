@@ -38,7 +38,7 @@ namespace DCT_Extens
         }
 
         private void FormReimpressao_Load(object sender, EventArgs e)
-        {
+         {
             try
             {
                 // Inicializar controlos Primavera
@@ -82,7 +82,7 @@ namespace DCT_Extens
                 $" WHERE " +
                     $" Descricao = '{cmbBox_Mapas.Text}' " +
                     $" AND Categoria = 'DocVenda' " +
-                    $" AND Apl = 'GCP' " +
+                    $" AND Apl = 'VND' " +
                     $" AND Custom = 1" +
                 $" ORDER BY Descricao;");
 
@@ -98,12 +98,13 @@ namespace DCT_Extens
                 // Se NumDoc for nulo, termina loop 
                 if (priGrelha_Docs.GetGRID_GetValorCelula(i,"NumDoc") == "") { break; }
                 // Se "Cf" não estiver picado, skip linha
-                if ((bool)priGrelha_Docs.GetGRID_GetValorCelula(i,"Cf") == false) { continue; }
+                bool cfEstado = priGrelha_Docs.GetGRID_GetValorCelula(i, "Cf") == 1 ? true : false;
+                if (!cfEstado) { continue; }
 
                 // Valores das colunas que identificam documento
                 string gTipoDoc = priGrelha_Docs.GetGRID_GetValorCelula(i, "TipoDoc");
                 string gSerie = priGrelha_Docs.GetGRID_GetValorCelula(i, "Serie");
-                long gNumDoc = priGrelha_Docs.GetGRID_GetValorCelula(i, "NumDoc");
+                long gNumDoc = long.Parse(priGrelha_Docs.GetGRID_GetValorCelula(i, "NumDoc"));
 
                 // *** IMPRESSAO ***
                 // Se houver erro na impressão (que o Primavera saiba), adicionado erro a uma lista que será mostrada ao user.
@@ -189,11 +190,11 @@ namespace DCT_Extens
         private void InicializaCmbBox_Mapas()
         {
             DataTable mapasTabela = _Helpers.GetDataTableDeSQL(
-                " SELECT Descricao " +
+                " SELECT Descricao " + 
                 " FROM [PRIEMPRE].[dbo].[Mapas] " +
                 " WHERE " +
                 "   Categoria = 'DocVenda' " +
-                "   AND Apl = 'GCP' " +
+                "   AND Apl = 'VND' " +
                 "   AND Custom = 1 " +
                 "   ORDER BY Descricao;");
 
@@ -228,15 +229,14 @@ namespace DCT_Extens
             }
 
             // Lista de strings com os valores seleccionados na ListBox para a query SQL. Fica apenas com o TipoDoc sem o hífen e descrição
-            List<string> tipoDocSelec = listBox_TipoDoc.SelectedItems
+            List<string> tipoDocList = listBox_TipoDoc.SelectedItems
                 .Cast<string>()
-                .Select(x => x.Split(' ')[0].Trim() + ",")
+                .Select(x => x.Split(' ')[0].Trim())
                 .ToList();
 
-            // Remoção da virgula do último TipoDoc na lista para evitar erro de SQL e criação da string final
-            int ultimoIndice = tipoDocSelec.Count - 1;
-            tipoDocSelec[ultimoIndice] = tipoDocSelec[ultimoIndice].Replace(",", string.Empty);
-            string tipoDocString = string.Concat(tipoDocSelec);
+            // Os membros da lista são primeiro interpolados no inicio e no fim com plicas $"'{x}'") e depois juntados com virgulas entre eles
+            int ultimoIndice = tipoDocList.Count - 1;
+            string tipoDocString = string.Join(", ", tipoDocList.Select(x => $"'{x}'"));
 
             // *** SQL QUERY ***
             StringBuilder queryBuilder = new StringBuilder();
@@ -265,7 +265,7 @@ namespace DCT_Extens
         {
             for (int i = 1; i <= priGrelha_Docs.Grelha.DataRowCnt; i++)
             {
-                priGrelha_Docs.SetGRID_SetValorCelula(i, "Cf", 1);
+                priGrelha_Docs.SetGRID_SetValorCelula(i, "Cf", 0);
             }
         }
 

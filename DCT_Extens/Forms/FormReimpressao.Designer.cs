@@ -198,7 +198,7 @@ namespace DCT_Extens
             this.f4_Cliente.Categoria = PRISDK100.clsSDKTypes.EnumCategoria.Clientes;
             this.f4_Cliente.ChaveFisica = "";
             this.f4_Cliente.ChaveNumerica = false;
-            this.f4_Cliente.F4Modal = false;
+            this.f4_Cliente.F4Modal = true;
             this.f4_Cliente.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.f4_Cliente.IDCategoria = "Clientes";
             this.f4_Cliente.Location = new System.Drawing.Point(13, 201);
@@ -223,7 +223,7 @@ namespace DCT_Extens
             this.f4_Cliente.TabIndex = 8;
             this.f4_Cliente.TextoDescricao = "";
             this.f4_Cliente.WidthEspacamento = 60;
-            this.f4_Cliente.WidthF4 = 1100;
+            this.f4_Cliente.WidthF4 = 1300;
             this.f4_Cliente.WidthLink = 800;
             // 
             // priGrelha_Docs
@@ -297,7 +297,7 @@ namespace DCT_Extens
             this.listBox_TipoDoc.Location = new System.Drawing.Point(620, 127);
             this.listBox_TipoDoc.Margin = new System.Windows.Forms.Padding(4);
             this.listBox_TipoDoc.Name = "listBox_TipoDoc";
-            this.listBox_TipoDoc.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.listBox_TipoDoc.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.listBox_TipoDoc.Size = new System.Drawing.Size(236, 164);
             this.listBox_TipoDoc.TabIndex = 13;
             // 
@@ -319,7 +319,7 @@ namespace DCT_Extens
             this.Controls.Add(this.btn_Imprimir);
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "FormReimpressao";
-            this.Size = new System.Drawing.Size(872, 730);
+            this.Size = new System.Drawing.Size(697, 584);
             this.Text = "FormReimpressão";
             this.Shown += new System.EventHandler(this.FormReimpressao_Shown);
             this.Load += new System.EventHandler(this.FormReimpressao_Load);
