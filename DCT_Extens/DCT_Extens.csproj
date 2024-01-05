@@ -38,6 +38,10 @@
     <Reference Include="BasBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\BasBS100.dll</HintPath>
     </Reference>
+    <Reference Include="CblBE100">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\CblBE100.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="CctBE100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\CctBE100.dll</HintPath>
     </Reference>
@@ -59,6 +63,10 @@
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\IBasBS100.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ICblBS100">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\ICblBS100.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="ICctBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\ICctBS100.dll</HintPath>
     </Reference>
@@ -76,6 +84,10 @@
     </Reference>
     <Reference Include="IVndBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\IVndBS100.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Primavera.Extensibility.Accounting">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Accounting.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Primavera.Extensibility.Attributes">

@@ -28,18 +28,17 @@ namespace DCT_Extens.Helpers
             _SDKContexto = Helpers.PriMotores.PriSDKContexto;
         }
 
-
         // Error Logging para um ficheiro de texto. Se não for dado path, cria uma pasta nos Documentos com o nome do projecto
         public void EscreverParaFicheiroTxt(string texto, string titulo)
-        {            
-            string pastaErrosPath = "C:/PastaTecnica/PrimaveraExtensibilidadeLogs";
+        {
+            const string PASTAERROSPATH = "C:/PastaTecnica/PrimaveraExtensibilidadeLogs";
             string ficheiroNome = $"{titulo}_{DateTime.Now.ToString("ddMMyyyy_HHmmss")}";
-            string ficheiroPath = Path.Combine(pastaErrosPath, ficheiroNome);
+            string ficheiroPath = Path.Combine(PASTAERROSPATH, ficheiroNome);
 
-            // O caminho final (pastaErrosPath) é criado se não existir
-            if (!Directory.Exists(pastaErrosPath))
+            // O caminho final (PASTAERROSPATH) é criado se não existir
+            if (!Directory.Exists(PASTAERROSPATH))
             {
-                Directory.CreateDirectory(pastaErrosPath);
+                Directory.CreateDirectory(PASTAERROSPATH);
             }
 
             // Criação ficheiro
@@ -49,7 +48,6 @@ namespace DCT_Extens.Helpers
                 _PSO.MensagensDialogos.MostraErro("Aconteceu um erro mas não foi possivel criar o ficheiro Log.", sDetalhe: ex.ToString());
             }
         }
-        
 
         // Update TDU se existir linha. Insert se não existir.
         public void TDU_Actualiza(string NomeTDU, Dictionary<string, string> Dict)
@@ -62,9 +60,11 @@ namespace DCT_Extens.Helpers
 
             foreach (KeyValuePair<string, string> kvp in Dict)
             {
-                StdBECampo campo = new StdBECampo();
-                campo.Nome = kvp.Key;
-                campo.Valor = kvp.Value;
+                StdBECampo campo = new StdBECampo
+                {
+                    Nome = kvp.Key,
+                    Valor = kvp.Value
+                };
 
                 linha.Add(campo);
             }
@@ -155,4 +155,3 @@ namespace DCT_Extens.Helpers
         }
     }
 }
-

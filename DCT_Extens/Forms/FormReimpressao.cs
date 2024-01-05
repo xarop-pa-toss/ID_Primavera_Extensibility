@@ -57,7 +57,6 @@ namespace DCT_Extens
             {
                 loadError = err.ToString();
             }
-
         }
 
         private void FormReimpressao_Shown(object sender, EventArgs e)
@@ -76,15 +75,15 @@ namespace DCT_Extens
             if (string.IsNullOrEmpty(cmbBox_Mapas.Text)) { _PSO.MensagensDialogos.MostraAviso("Não foi seleccionado um mapa.", StdBSTipos.IconId.PRI_Exclama); return; }
 
             // Get código do mapa de impressão (nome do ficheiro .rpt)
-            DataTable mapaTable = _Helpers.GetDataTableDeSQL($"" +
-                $" SELECT Mapa" +
-                $" FROM [PRIEMPRE].[dbo].[Mapas] " +
-                $" WHERE " +
+            DataTable mapaTable = _Helpers.GetDataTableDeSQL("" +
+                " SELECT Mapa" +
+                " FROM [PRIEMPRE].[dbo].[Mapas] " +
+                " WHERE " +
                     $" Descricao = '{cmbBox_Mapas.Text}' " +
-                    $" AND Categoria = 'DocVenda' " +
-                    $" AND Apl = 'VND' " +
-                    $" AND Custom = 1" +
-                $" ORDER BY Descricao;");
+                    " AND Categoria = 'DocVenda' " +
+                    " AND Apl = 'VND' " +
+                    " AND Custom = 1" +
+                " ORDER BY Descricao;");
 
             string mapa = mapaTable.Rows[0]["Mapa"].ToString();
             int linhasCount = priGrelha_Docs.Grelha.DataRowCnt;
@@ -98,7 +97,7 @@ namespace DCT_Extens
                 // Se NumDoc for nulo, termina loop 
                 if (priGrelha_Docs.GetGRID_GetValorCelula(i,"NumDoc") == "") { break; }
                 // Se "Cf" não estiver picado, skip linha
-                bool cfEstado = priGrelha_Docs.GetGRID_GetValorCelula(i, "Cf") == 1 ? true : false;
+                bool cfEstado = priGrelha_Docs.GetGRID_GetValorCelula(i, "Cf") == 1;
                 if (!cfEstado) { continue; }
 
                 // Valores das colunas que identificam documento
@@ -141,7 +140,7 @@ namespace DCT_Extens
             priGrelha_Docs.PermiteActiveBar = false;
             priGrelha_Docs.PermiteContextoVazia = false;
             priGrelha_Docs.PermiteOrdenacao = true;
-            
+
             // Colunas da tabela de reimpressão
             // Cf - CheckBox - defines whether it will print or not
             // Data - Date - document issuance date
@@ -153,29 +152,28 @@ namespace DCT_Extens
             // Moeda - Str/Currency
             // Total - Double/Float - total value of the Doc
             // Imp - Symbol - whether it has been printed or not
-            
-            priGrelha_Docs.AddColKey(strColKey: "Cf", intTipo: 10, strTitulo: "Cf.", dblLargura: 3, blnMostraSempre: true, blnVisivel: true);
-            priGrelha_Docs.AddColKey(strColKey: "Data", intTipo: 5, strTitulo: "Data", dblLargura: 13, strCamposBaseDados: "Data", blnMostraSempre: true);
-            priGrelha_Docs.AddColKey(strColKey: "TipoDoc", intTipo: 5, strTitulo: "Doc", dblLargura: 7, strCamposBaseDados: "TipoDoc", blnDrillDown: true, blnMostraSempre: true);
-            priGrelha_Docs.AddColKey(strColKey: "Serie", intTipo: 5, strTitulo: "Serie", dblLargura: 7, strCamposBaseDados: "Serie", blnMostraSempre: true);
-            priGrelha_Docs.AddColKey(strColKey: "NumDoc", intTipo: 5, strTitulo: "Numero", dblLargura: 10, strCamposBaseDados: "NumDoc", blnDrillDown: true, blnMostraSempre: true);
-            priGrelha_Docs.AddColKey(strColKey: "TipoEntidade", intTipo: 5, strTitulo: "Tipo Entidade", dblLargura: 5, strCamposBaseDados: "TipoEntidade", blnMostraSempre: true);
-            priGrelha_Docs.AddColKey(strColKey: "Entidade", intTipo: 5, strTitulo: "Entidade", dblLargura: 10, strCamposBaseDados: "Entidade", blnDrillDown: true, blnMostraSempre: true);
-            priGrelha_Docs.AddColKey(strColKey: "Moeda", intTipo: 5, strTitulo: "Moeda", dblLargura: 7, strCamposBaseDados: "Moeda", blnDrillDown: true, blnMostraSempre: true);
-            priGrelha_Docs.AddColKey(strColKey: "TotalDocumento", intTipo: 2, strTitulo: "Total", dblLargura: 10, strCamposBaseDados: "TotalDocumento", blnMostraSempre: true);
 
+            priGrelha_Docs.AddColKey(strColKey: "Cf", intTipo: 10, strTitulo: "Cf.", dblLargura: 3, blnVisivel: true, blnMostraSempre: true);
+            priGrelha_Docs.AddColKey(strColKey: "Data", intTipo: 5, strTitulo: "Data", dblLargura: 13, blnMostraSempre: true, strCamposBaseDados: "Data");
+            priGrelha_Docs.AddColKey(strColKey: "TipoDoc", intTipo: 5, strTitulo: "Doc", dblLargura: 7, blnMostraSempre: true, strCamposBaseDados: "TipoDoc", blnDrillDown: true);
+            priGrelha_Docs.AddColKey(strColKey: "Serie", intTipo: 5, strTitulo: "Serie", dblLargura: 7, blnMostraSempre: true, strCamposBaseDados: "Serie");
+            priGrelha_Docs.AddColKey(strColKey: "NumDoc", intTipo: 5, strTitulo: "Numero", dblLargura: 10, blnMostraSempre: true, strCamposBaseDados: "NumDoc", blnDrillDown: true);
+            priGrelha_Docs.AddColKey(strColKey: "TipoEntidade", intTipo: 5, strTitulo: "Tipo Entidade", dblLargura: 5, blnMostraSempre: true, strCamposBaseDados: "TipoEntidade");
+            priGrelha_Docs.AddColKey(strColKey: "Entidade", intTipo: 5, strTitulo: "Entidade", dblLargura: 10, blnMostraSempre: true, strCamposBaseDados: "Entidade", blnDrillDown: true);
+            priGrelha_Docs.AddColKey(strColKey: "Moeda", intTipo: 5, strTitulo: "Moeda", dblLargura: 7, blnMostraSempre: true, strCamposBaseDados: "Moeda", blnDrillDown: true);
+            priGrelha_Docs.AddColKey(strColKey: "TotalDocumento", intTipo: 2, strTitulo: "Total", dblLargura: 10, blnMostraSempre: true, strCamposBaseDados: "TotalDocumento");
         }
-        
+
         private void InicializaListBox_TipoDoc()
         {
             listBox_TipoDoc.Items.Clear();
 
-            DataTable tipoDocsTabela = _Helpers.GetDataTableDeSQL($"" +
-                $" SELECT Documento + ' - ' + Descricao AS Doc" +
-                $" FROM DocumentosVenda" +
-                $" WHERE Inactivo = 0" +
-                $"  AND CDU_ModReimpDocs = 1" +
-                $" ORDER BY Documento DESC;");
+            DataTable tipoDocsTabela = _Helpers.GetDataTableDeSQL("" +
+                " SELECT Documento + ' - ' + Descricao AS Doc" +
+                " FROM DocumentosVenda" +
+                " WHERE Inactivo = 0" +
+                "  AND CDU_ModReimpDocs = 1" +
+                " ORDER BY Documento DESC;");
 
             // Get coluna Doc como List e depois converte pra Array ao introduzir na ListBox (não aceita List)
             // Mais eficiente que loop pela Lista toda.
@@ -186,11 +184,11 @@ namespace DCT_Extens
 
             listBox_TipoDoc.Items.AddRange(tipoDocsValores.ToArray());
         }
-        
+
         private void InicializaCmbBox_Mapas()
         {
             DataTable mapasTabela = _Helpers.GetDataTableDeSQL(
-                " SELECT Descricao " + 
+                " SELECT Descricao " +
                 " FROM [PRIEMPRE].[dbo].[Mapas] " +
                 " WHERE " +
                 "   Categoria = 'DocVenda' " +
@@ -211,8 +209,6 @@ namespace DCT_Extens
                 cmbBox_Mapas.Items.Clear();
                 cmbBox_Mapas.Items.AddRange(tipoDocsLista.ToArray());
             }
-
-
         }
         #endregion
 

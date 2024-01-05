@@ -194,11 +194,12 @@ namespace DCT_Extens
             this.f4_Cliente.CampoChaveFisica = "";
             this.f4_Cliente.CampoDescricao = "Nome";
             this.f4_Cliente.Caption = "Cliente:";
-            this.f4_Cliente.CarregarValoresEdicao = false;
+            this.f4_Cliente.CarregarValoresEdicao = true;
             this.f4_Cliente.Categoria = PRISDK100.clsSDKTypes.EnumCategoria.Clientes;
+            this.f4_Cliente.CausesValidation = false;
             this.f4_Cliente.ChaveFisica = "";
             this.f4_Cliente.ChaveNumerica = false;
-            this.f4_Cliente.F4Modal = true;
+            this.f4_Cliente.F4Modal = false;
             this.f4_Cliente.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.f4_Cliente.IDCategoria = "Clientes";
             this.f4_Cliente.Location = new System.Drawing.Point(13, 201);
@@ -305,11 +306,11 @@ namespace DCT_Extens
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.f4_Cliente);
             this.Controls.Add(this.listBox_TipoDoc);
             this.Controls.Add(this.btn_LimparSeleccao);
             this.Controls.Add(this.btn_SeleccionarTodos);
             this.Controls.Add(this.priGrelha_Docs);
-            this.Controls.Add(this.f4_Cliente);
             this.Controls.Add(this.numUpDown_NumVias);
             this.Controls.Add(this.cmbBox_Mapas);
             this.Controls.Add(this.label2);
@@ -319,7 +320,7 @@ namespace DCT_Extens
             this.Controls.Add(this.btn_Imprimir);
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "FormReimpressao";
-            this.Size = new System.Drawing.Size(697, 584);
+            this.Size = new System.Drawing.Size(872, 730);
             this.Text = "FormReimpressão";
             this.Shown += new System.EventHandler(this.FormReimpressao_Shown);
             this.Load += new System.EventHandler(this.FormReimpressao_Load);
@@ -338,10 +339,10 @@ namespace DCT_Extens
         private Label label2;
         private ComboBox cmbBox_Mapas;
         private NumericUpDown numUpDown_NumVias;
-        private PRISDK100.F4 f4_Cliente;
         private PRISDK100.PriGrelha priGrelha_Docs;
         private Button btn_SeleccionarTodos;
         private Button btn_LimparSeleccao;
         private ListBox listBox_TipoDoc;
+        public PRISDK100.F4 f4_Cliente;
     }
 }
