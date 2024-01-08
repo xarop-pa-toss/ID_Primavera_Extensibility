@@ -223,10 +223,15 @@ namespace DCT_Extens.Sales
             {
                 artigo = BSO.Base.Artigos.Edita(linha.Artigo);
 
-                if ((bool)artigo.CamposUtil["CDU_ARTBLOQD"].Valor
-                    && (linha.DescontoComercial != 0
-                    || DocumentoVenda.DescFinanceiro != 0
-                    || DocumentoVenda.DescEntidade != 0))
+                // CDU_ARTBLOQD está para retornar null por defeito (se nunca foi picado) o que é... mau.
+                // O bool abaixo é true se o valorCDU não for nulo nem falso.
+                object valorCDU = artigo.CamposUtil["CDU_ARTBLOQD"].Valor;
+                bool ArtigoAnulacaoBloqueada = valorCDU != null && (bool)valorCDU;
+
+                if (ArtigoAnulacaoBloqueada
+                    && (linha.DescontoComercial != 0 ||
+                        DocumentoVenda.DescFinanceiro != 0 ||
+                        DocumentoVenda.DescEntidade != 0))
                 {
                     string mensagem = 
                         "ATENÇÃO: " + Environment.NewLine +
