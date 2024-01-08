@@ -3,8 +3,10 @@ using DCT_Extens.Helpers;
 using ErpBS100;
 using Primavera.Extensibility.CustomForm;
 using PRISDK100;
+using StdBE100;
 using StdPlatBS100;
 using System;
+using System.Text;
 
 namespace DCT_Extens
 {
@@ -39,7 +41,12 @@ namespace DCT_Extens
 
         private void btn_Actualizar_Click(object sender, EventArgs e)
         {
-            // Vazio de propósito
+            ActualizaPriGrelha();
+        }
+
+        private void f4_Entidade_Leave(object sender, EventArgs e)
+        {
+            ActualizaPriGrelha();
         }
 
         private void btn_Confirmar_Click(object sender, EventArgs e)
@@ -102,8 +109,31 @@ namespace DCT_Extens
             priGrelha_Moradas.AddColKey(strColKey: "DistritoDescricao", intTipo: 5, strTitulo: "Descrição", dblLargura: 10, strCamposBaseDados: "DistritoDescricao", blnMostraSempre: true);
         }
 
-        private void FormCargaDescarga_FormClosed(object sender, System.Windows.Forms.FormClosedEventArgs e)
+        private void ActualizaPriGrelha()
         {
+            // A coluna Cf recebe NULL pq a Prigrelha estava a dar problemas se a query não tivesse exactamente a mesma quantidade de colunas que a grelha em si
+            // A primeira parte da query vai buscar a morada default, a segunda parte vai buscar todas as moradas alternativas
+            string sql = 
+                "SELECT NULL Cf, 'Fac' AS Codigo, Fac_Mor, Fac_Mor2, Fac_Local, Fac_Cp CodigoPostal, Fac_Cploc LocalidadePostal, " +
+                "clt.Pais, Paises.Descricao PaisDescricao, clt.Distrito, Distritos.Descricao DistritoDescricao " +
+                "FROM Clientes AS clt " +
+                "   LEFT JOIN Paises ON clt.pais = Paises.pais " +
+                "   LEFT JOIN Distritos ON clt.Distrito = Distritos.Distrito " +
+                "WHERE Cliente = '" + f4_Entidade.Text + "'" +
+                "UNION " +
+                "SELECT NULL As Cf, MoradaAlternativa AS Codigo, Morada, Morada2, Localidade, Cp AS CodigoPostal, CpLocalidade AS LocalidadePostal, " +
+                "mac.Pais, Paises.Descricao AS PaisDescricao, mac.Distrito, Distritos.Descricao AS DistritoDescricao " +
+                "FROM MoradasAlternativasClientes AS mac " +
+                "   LEFT JOIN Paises ON mac.pais = Paises.pais " +
+                "   LEFT JOIN Distritos ON mac.Distrito = Distritos.Distrito " +
+                "WHERE Cliente = '" + f4_Entidade.Text + "'" +
+                "ORDER BY Codigo";
+
+            StdBELista resultadoList = BSO.Consulta(sql);
+            if (!resultadoList.Vazia())
+            {
+                priGrelha_Moradas.DataBind(resultadoList);
+            }
         }
     }
 }

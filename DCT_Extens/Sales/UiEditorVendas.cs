@@ -97,9 +97,6 @@ namespace DCT_Extens.Sales
                 // Temos de criar um método aqui que contenha a lógica para isso (get properties). A sintaxe é igual à do FormCargaDescarga_FormClosed dentro do form.
                 formCD.FormClosed += FormCargaDescaga_FormClosed;
                 formCD.Show();
-
-
-
             }
             #endregion
         }
@@ -126,7 +123,6 @@ namespace DCT_Extens.Sales
                     string titulo = DocumentoVenda.Linhas.GetEdita(NumLinha).CamposUtil["CDU_MotivoOferta"].Valor.ToString();
 
                     PSO.MensagensDialogos.MostraDialogoInput(ref motivoOferta, titulo, "Inserir Motivo de Oferta: ", strValorDefeito: ultimoMotivoLista.DaValor<string>("CDU_UltimoMotivo"));
-                    MessageBox.Show("Test");
                     DocumentoVenda.Linhas.GetEdita(NumLinha).CamposUtil["CDU_MotivoOferta"].Valor = motivoOferta;
 
                     // SQL Updates ou Deletes têm de ser feitos desta forma com o StdBEExecSql
