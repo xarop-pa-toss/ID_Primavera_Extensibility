@@ -169,29 +169,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InputForm.cs" />
+  	<Compile Include="InputForm.Designer.cs" />
     <Compile Include="Base\UiFichaClientes.cs" />
-    
-    <Compile Include="Helpers\InputForm.cs">
-     <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Helpers\InputForm.Designer.cs">
-  	<DependentUpon>InputForm.cs</DependentUpon>
-    </Compile>
-    
     <Compile Include="Forms\FormCargaDescarga.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\FormCargaDescarga.Designer.cs">
       <DependentUpon>FormCargaDescarga.cs</DependentUpon>
     </Compile>
-    
     <Compile Include="Forms\FormEncomendas.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\FormEncomendas.Designer.cs">
       <DependentUpon>FormEncomendas.cs</DependentUpon>
     </Compile>
-    
     <Compile Include="Forms\FormReimpressao.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -252,9 +244,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Helpers\InputForm.resx">
-      <DependentUpon>InputForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormCargaDescarga.resx">
       <DependentUpon>FormCargaDescarga.cs</DependentUpon>
     </EmbeddedResource>

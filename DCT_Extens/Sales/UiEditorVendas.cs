@@ -132,6 +132,7 @@ namespace DCT_Extens.Sales
                 {
                     string titulo = DocumentoVenda.Linhas.GetEdita(NumLinha).CamposUtil["CDU_MotivoOferta"].Valor.ToString();
 
+
                     PSO.MensagensDialogos.MostraDialogoInput(ref motivoOferta, titulo, "Inserir Motivo de Oferta: ", strValorDefeito: ultimoMotivoLista.DaValor<string>("CDU_UltimoMotivo"));
                     DocumentoVenda.Linhas.GetEdita(NumLinha).CamposUtil["CDU_MotivoOferta"].Valor = motivoOferta;
 
