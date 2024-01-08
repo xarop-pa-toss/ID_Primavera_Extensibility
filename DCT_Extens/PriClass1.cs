@@ -19,6 +19,7 @@ namespace DCT_Extens
 
             if (KeyCode == (int)Keys.F8)
             {
+                EditorMovimentos x = new EditorMovimentos();
                 this.RefreshContext();
                 PSO.MensagensDialogos.MostraMensagem(StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimplesOk, "OK");
             }
