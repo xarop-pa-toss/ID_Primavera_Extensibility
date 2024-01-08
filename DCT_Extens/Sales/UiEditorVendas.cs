@@ -65,23 +65,32 @@ namespace DCT_Extens.Sales
             #endregion
 
             #region Validar se artigo está bloqueado para descontos (não permite gravar)
-            BasBEArtigo artigo = new BasBEArtigo();
+            BasBEArtigo artigo;
+            List<string> docsList = new List<string> { "FA", "FA1", "FA2", "FAL", "FAP" };
 
-            if (new List<string> { "FA", "FA1", "FA2", "FAP" }.Contains(DocumentoVenda.Tipodoc) && DocumentoVenda.Linhas.NumItens > 0)
+            if (docsList.Contains(DocumentoVenda.Tipodoc))
             {
                 foreach (VndBELinhaDocumentoVenda linha in DocumentoVenda.Linhas)
-                {
+                {   
                     artigo = BSO.Base.Artigos.Edita(linha.Artigo);
-                    
-                    if (linha.TipoLinha.Equals(10)
-                        && (bool)artigo.CamposUtil["CDU_ArtBLOQD"].Valor
-                        && (linha.DescontoComercial != 0 || DocumentoVenda.DescFinanceiro != 0 || DocumentoVenda.DescEntidade != 0))
+
+                    // CDU_ARTBLOQD está para retornar null por defeito (se nunca foi picado) o que é... mau.
+                    // O bool abaixo é true se o valorCDU não for nulo nem falso.
+                    object valorCDU = artigo.CamposUtil["CDU_ARTBLOQD"].Valor;
+                    bool ArtigoAnulacaoBloqueada = valorCDU as bool? ?? false;
+
+                    if (ArtigoAnulacaoBloqueada
+                        && (linha.DescontoComercial != 0 ||
+                            DocumentoVenda.DescFinanceiro != 0 ||
+                            DocumentoVenda.DescEntidade != 0))
                     {
-                        string mensagem = "ATENÇÃO: \n" +
-                            "Está a aplicar no Artigo \n" +
-                            $"{linha.Artigo} - {linha.Descricao} \n" +
-                            "um desconto e este encontra-se bloqueado para descontos!! \n\n" +
+                        string mensagem =
+                            "ATENÇÃO: " + Environment.NewLine +
+                            "Está a aplicar no Artigo " + Environment.NewLine +
+                            $"{linha.Artigo} - {linha.Descricao}" + Environment.NewLine +
+                            "um desconto e este encontra-se bloqueado para descontos!!" + Environment.NewLine + Environment.NewLine +
                             "Valide todos os descontos.";
+
                         PSO.MensagensDialogos.MostraAviso(mensagem, StdPlatBS100.StdBSTipos.IconId.PRI_Exclama);
 
                         Cancel = true;
@@ -216,35 +225,7 @@ namespace DCT_Extens.Sales
         {
             base.ValidaLinha(NumLinha, e);
 
-            BasBEArtigo artigo;
             VndBELinhaDocumentoVenda linha = DocumentoVenda.Linhas.GetEdita(NumLinha);
-
-            if (new List<string> { "FA", "FA1", "FA2", "FAL", "FAP" }.Contains(DocumentoVenda.Tipodoc))
-            {
-                artigo = BSO.Base.Artigos.Edita(linha.Artigo);
-
-                // CDU_ARTBLOQD está para retornar null por defeito (se nunca foi picado) o que é... mau.
-                // O bool abaixo é true se o valorCDU não for nulo nem falso.
-                object valorCDU = artigo.CamposUtil["CDU_ARTBLOQD"].Valor;
-                bool ArtigoAnulacaoBloqueada = valorCDU != null && (bool)valorCDU;
-
-                if (ArtigoAnulacaoBloqueada
-                    && (linha.DescontoComercial != 0 ||
-                        DocumentoVenda.DescFinanceiro != 0 ||
-                        DocumentoVenda.DescEntidade != 0))
-                {
-                    string mensagem = 
-                        "ATENÇÃO: " + Environment.NewLine +
-                        "Está a aplicar no Artigo " + Environment.NewLine +
-                        $"{linha.Artigo} - {linha.Descricao}" + Environment.NewLine +
-                        "um desconto e este encontra-se bloqueado para descontos!!" + Environment.NewLine + Environment.NewLine +
-                        "Valide todos os descontos.";
-
-                    PSO.MensagensDialogos.MostraAviso(mensagem, StdPlatBS100.StdBSTipos.IconId.PRI_Exclama);
-
-                    DocumentoVenda.Linhas.Remove(NumLinha);
-                }
-            }
 
             // *** Se Quantidade tiver casas decimais, avisar
             // Truncate devolve apenas a parte inteira de um dado número. Se o número truncado for igual ao original, o original não tinha casas decimais.
@@ -256,7 +237,6 @@ namespace DCT_Extens.Sales
                     "Está a inserir uma quantidade não inteira (com casas decimais).");
             }
         }
-
 
         private void FormCargaDescaga_FormClosed(object sender, FormClosedEventArgs e)
         {
