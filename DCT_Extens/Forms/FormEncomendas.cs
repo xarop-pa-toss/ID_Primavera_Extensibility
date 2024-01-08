@@ -122,29 +122,35 @@ namespace DCT_Extens
 
         private void btn_UpdateDB_Click(object sender, EventArgs e)
         {
+
             foreach (DataGridViewRow linha in dataGrid_Docs.Rows)
             {
-
-                if ((bool)linha.Cells[0].Value)
+                try
                 {
-                    try
+                    if ((bool)linha.Cells[0].Value)
                     {
                         StdBEExecSql sql = new StdBEExecSql();
                         sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
                         sql.Tabela = "CabecDocStatus";
                         sql.AddCampo("Fechado", "1");
-                        sql.AddCampo("IdcCabecDoc", linha.Cells[7].Value, true);
+                        sql.AddCampo("IdCabecDoc", "" + linha.Cells[7].Value + "", true);
 
-                        toolStripStatusLabel1.Text = "O estado dos documentos seleccionados foi alterado para 'Fechado'.";
-                        PSO.MensagensDialogos.MostraAviso("Documento(s) Fechado(s)");
-                    }
-                    catch (Exception ex)
-                    {
-                        _Helpers.EscreverParaFicheiroTxt(ex.ToString(), "FormEncomendas_UpdateDB_Click");
-                        PSO.MensagensDialogos.MostraErro("Não foi possivel fechar os documentos seleccionados.");
+                        PSO.ExecSql.Executa(sql);
                     }
                 }
+                catch (Exception ex)
+                {
+                    _Helpers.EscreverParaFicheiroTxt(ex.ToString(), "FormEncomendas_UpdateDB_Click");
+                    PSO.MensagensDialogos.MostraErro("Não foi possivel fechar todos os documentos seleccionados.");
+                    ActualizaDataGrid();
+                    break;
+                }
             }
+
+            // Se o catch não apanhar nada é porque fechou tudo ok
+            PSO.MensagensDialogos.MostraMensagem(StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimplesOk, "Todos os documentos foram fechados com sucesso.");
+            ActualizaDataGrid();
+
         }
     }
 }
