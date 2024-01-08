@@ -12,6 +12,7 @@ using VndBE100;
 using StdBE100;
 using System.Windows.Forms;
 using System.Runtime.CompilerServices;
+using ConstantesPrimavera100;
 
 namespace DCT_Extens.Sales
 {
@@ -224,13 +225,17 @@ namespace DCT_Extens.Sales
 
                 if ((bool)artigo.CamposUtil["CDU_ARTBLOQD"].Valor
                     && (linha.DescontoComercial != 0
-                        || DocumentoVenda.DescFinanceiro != 0
-                        || DocumentoVenda.DescEntidade != 0))
+                    || DocumentoVenda.DescFinanceiro != 0
+                    || DocumentoVenda.DescEntidade != 0))
                 {
-                    PSO.MensagensDialogos.MostraAviso(
-                        "ATENÇÃO:\n" +
-                        "Está a aplicar no Artigo\n" +
-                        $"{linha.Artigo} - {linha.Descricao}", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
+                    string mensagem = 
+                        "ATENÇÃO: " + Environment.NewLine +
+                        "Está a aplicar no Artigo " + Environment.NewLine +
+                        $"{linha.Artigo} - {linha.Descricao}" + Environment.NewLine +
+                        "um desconto e este encontra-se bloqueado para descontos!!" + Environment.NewLine + Environment.NewLine +
+                        "Valide todos os descontos.";
+
+                    PSO.MensagensDialogos.MostraAviso(mensagem, StdPlatBS100.StdBSTipos.IconId.PRI_Exclama);
 
                     DocumentoVenda.Linhas.Remove(NumLinha);
                 }
