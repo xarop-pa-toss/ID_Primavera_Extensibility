@@ -1,16 +1,5 @@
-﻿using Primavera.Extensibility.BusinessEntities;
-using Primavera.Extensibility.CustomForm;
-using Primavera.Extensibility.Extensions;
-using StdPlatBS100;
-using ErpBS100;
+﻿using Primavera.Extensibility.CustomForm;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using PP_Extens.Sales;
 using System.Windows.Forms;
 using System.Drawing;
 
@@ -25,9 +14,9 @@ namespace DCT_Extens
 
         private void InputForm_Load(object sender, EventArgs e)
         {
-            this.Text = FormServicoDados.Titulo;
-            lbl_Descricao.Text = FormServicoDados.Descricao;
-            txtBox_Resposta.Text = FormServicoDados.ValorDefeito;
+            this.Text = InputFormServico.Titulo;
+            lbl_Descricao.Text = InputFormServico.Descricao;
+            txtBox_Resposta.Text = InputFormServico.ValorDefeito;
 
             // Ajustar as altura do form à altura da descrição
             this.SuspendLayout();
@@ -42,7 +31,7 @@ namespace DCT_Extens
         #region Botões
         private void btn_OK_Click(object sender, EventArgs e)
         {
-            FormServicoDados.Resposta = txtBox_Resposta.Text;
+            InputFormServico.Resposta = txtBox_Resposta.Text;
             this.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Close();
         }

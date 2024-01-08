@@ -170,28 +170,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\UiFichaClientes.cs" />
-    
     <Compile Include="Helpers\InputForm.cs">
-     <SubType>UserControl</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Helpers\InputForm.Designer.cs">
-  	<DependentUpon>InputForm.cs</DependentUpon>
+      <DependentUpon>InputForm.cs</DependentUpon>
     </Compile>
-    
     <Compile Include="Forms\FormCargaDescarga.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\FormCargaDescarga.Designer.cs">
       <DependentUpon>FormCargaDescarga.cs</DependentUpon>
     </Compile>
-    
     <Compile Include="Forms\FormEncomendas.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\FormEncomendas.Designer.cs">
       <DependentUpon>FormEncomendas.cs</DependentUpon>
     </Compile>
-    
     <Compile Include="Forms\FormReimpressao.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -200,6 +196,7 @@
     </Compile>
     <Compile Include="GS1_Geral.cs" />
     <Compile Include="Helpers\HelperFunctions.cs" />
+    <Compile Include="Helpers\InputFormServico.cs" />
     <Compile Include="Internal\UiEditorInternos.cs" />
     <Compile Include="Helpers\PriMotores.cs" />
     <Compile Include="PriClass1.cs" />
