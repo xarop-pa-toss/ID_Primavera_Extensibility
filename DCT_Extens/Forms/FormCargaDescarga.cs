@@ -18,22 +18,22 @@ namespace DCT_Extens
         private clsSDKContexto _SDKContexto { get; set; }
         private HelperFunctions _Helpers = new HelperFunctions();
 
-        public BasBECargaDescarga _cargaDescarga { get; set; }
         public bool NaoGravar { get; set; }
         public bool MoradaAlterada, GravarComMoradaPorDefeito;
+        public BasBECargaDescarga _cargaDescarga { get; private set; }
+
 
         public FormCargaDescarga()
+        {
+            InitializeComponent();
+        }
+
+        private void FormCargaDescarga_Shown(object sender, EventArgs e)
         {
             _BSO = PriMotores.Motor;
             _PSO = PriMotores.Plataforma;
             _SDKContexto = PriMotores.PriSDKContexto;
-            _Helpers = new HelperFunctions();
 
-            InitializeComponent();
-        }
-
-        private void FormCargaDescarga_Load(object sender, EventArgs e)
-        {
             priGrelha_Moradas.Inicializa(_SDKContexto);
             f4_Entidade.Inicializa(_SDKContexto);
 
@@ -60,7 +60,7 @@ namespace DCT_Extens
             bool linhaSeleccionada = false;
 
             // Indice da primeira linha que tenha Cf = true;
-            for (int i = 1; i == priGrelha_Moradas.Grelha.DataRowCnt; i++)
+            for (int i = 1;  i <= priGrelha_Moradas.Grelha.DataRowCnt; i++)
             {
                 if (priGrelha_Moradas.GetGRID_GetValorCelula(i, "Cf") == 1)
                 {
@@ -73,9 +73,6 @@ namespace DCT_Extens
                     _cargaDescarga.CodPostalLocalidadeEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "LocalidadePostal");
                     _cargaDescarga.DistritoEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Distrito");
                     _cargaDescarga.PaisEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Pais");
-
-                    _Helpers.SetVariavel(_cargaDescarga);
-                    this.Close();
                 }
             }
             // Mostra erro se não for escolhida nenhuma morada

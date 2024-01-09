@@ -26,7 +26,10 @@ namespace DCT_Extens.Helpers
 
         public HelperFunctions()
         {
-            PriMotores.InicializarContexto();
+            if (!PriMotores.MotorStatus)
+            {
+                PriMotores.InicializarContexto();
+            }
             _BSO = Helpers.PriMotores.Motor;
             _PSO = Helpers.PriMotores.Plataforma;
             _SDKContexto = Helpers.PriMotores.PriSDKContexto;

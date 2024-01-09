@@ -12,6 +12,8 @@ using VndBE100;
 using StdBE100;
 using System.Windows.Forms;
 using DCT_Extens.Helpers;
+using Primavera.Extensibility.Extensions;
+using System.ComponentModel;
 
 namespace DCT_Extens.Sales
 {
@@ -103,8 +105,19 @@ namespace DCT_Extens.Sales
             #region Alteração de morada de descarga para entidade 13000
             if (DocumentoVenda.Entidade.Equals("13000") && string.IsNullOrEmpty(DocumentoVenda.MoradaEntrega))
             {
-                FormCargaDescarga formCD = new FormCargaDescarga();
-                formCD.ShowDialog();
+                using (var formInstancia = BSO.Extensibility.CreateCustomFormInstance(typeof(FormCargaDescarga)))
+                {
+                    if (formInstancia.IsSuccess())
+                    {
+                        var formCargaDescarga = formInstancia.Result as FormCargaDescarga;
+                        var resultado = formCargaDescarga.ShowDialog();
+
+                        if (resultado == DialogResult.OK)
+                        {
+                            DocumentoVenda.CargaDescarga = formCargaDescarga._cargaDescarga;
+                        }
+                    }
+                }
 
                 // Se o que estiver na variável pública em _Helpers não for do tipo BasBeCargaDescarga, retorna nulo.
                 BasBECargaDescarga cargaDescarga = _Helpers.GetVariavelOuDefault<BasBECargaDescarga>();

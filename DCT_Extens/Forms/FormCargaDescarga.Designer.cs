@@ -138,6 +138,7 @@
             // 
             // btn_Confirmar
             // 
+            this.btn_Confirmar.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btn_Confirmar.Location = new System.Drawing.Point(748, 31);
             this.btn_Confirmar.Margin = new System.Windows.Forms.Padding(4);
             this.btn_Confirmar.Name = "btn_Confirmar";
@@ -160,7 +161,7 @@
             this.Size = new System.Drawing.Size(1209, 558);
             this.Text = "FormCargaDescarga";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormCargaDescarga_FormClosed);
-            this.Load += new System.EventHandler(this.FormCargaDescarga_Load);
+            this.Shown += new System.EventHandler(this.FormCargaDescarga_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.priGrelha_Moradas)).EndInit();
             this.ResumeLayout(false);
 
