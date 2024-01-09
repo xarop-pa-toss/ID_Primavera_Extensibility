@@ -11,15 +11,16 @@ using System.Security.Policy;
 using VndBE100;
 using StdBE100;
 using System.Windows.Forms;
-using System.Runtime.CompilerServices;
-using ConstantesPrimavera100;
+using DCT_Extens.Helpers;
 
 namespace DCT_Extens.Sales
 {
     public class UiEditorVendas : EditorVendas
     {
+        private HelperFunctions _Helpers = new HelperFunctions();
         private string _strMensagem;
         private const double DBL_LIMITE = 999;
+
 
         public override void AntesDeImprimir(ref bool Cancel, ExtensibilityEventArgs e)
         {
@@ -103,10 +104,20 @@ namespace DCT_Extens.Sales
             if (DocumentoVenda.Entidade.Equals("13000") && string.IsNullOrEmpty(DocumentoVenda.MoradaEntrega))
             {
                 FormCargaDescarga formCD = new FormCargaDescarga();
-                // Vamos "subscrever" ao evento do FormClosed do form de modo a conseguirmos aceder às suas propriedades públicas enquanto ele fecha.
-                // Temos de criar um método aqui que contenha a lógica para isso (get properties). A sintaxe é igual à do FormCargaDescarga_FormClosed dentro do form.
-                formCD.FormClosed += FormCargaDescaga_FormClosed;
-                formCD.Show();
+                formCD.ShowDialog();
+
+                // Se o que estiver na variável pública em _Helpers não for do tipo BasBeCargaDescarga, retorna nulo.
+                BasBECargaDescarga cargaDescarga = _Helpers.GetVariavelOuDefault<BasBECargaDescarga>();
+
+                if (cargaDescarga != null) { DocumentoVenda.CargaDescarga = cargaDescarga; } else
+                {
+                    string erro = "Dados de morada de Carga e Descarga não foram alterados para o cliente 13000." + Environment.NewLine +
+                        "O documento não será gravado." + Environment.NewLine + Environment.NewLine +
+                        "Por favor contacte a Infodinâmica.";
+
+                    _Helpers.EscreverParaFicheiroTxt(erro, "EditorVendas_AntesDeGravar_CargaDescarga");
+                    PSO.MensagensDialogos.MostraErro(erro);
+                }
             }
             #endregion
         }
@@ -130,30 +141,40 @@ namespace DCT_Extens.Sales
             {
                 using (StdBELista ultimoMotivoLista = BSO.Consulta("SELECT CDU_UltimoMotivo FROM TDU_UM"))
                 {
+
                     string titulo = DocumentoVenda.Linhas.GetEdita(NumLinha).CamposUtil["CDU_MotivoOferta"].Valor.ToString();
-
-
-                    PSO.MensagensDialogos.MostraDialogoInput(ref motivoOferta, titulo, "Inserir Motivo de Oferta: ", strValorDefeito: ultimoMotivoLista.DaValor<string>("CDU_UltimoMotivo"));
+                    motivoOferta = _Helpers.MostraInputForm(titulo, "Inserir Motivo de Oferta", ultimoMotivoLista.DaValor<string>("CDU_UltimoMotivo"), false, BSO);
                     DocumentoVenda.Linhas.GetEdita(NumLinha).CamposUtil["CDU_MotivoOferta"].Valor = motivoOferta;
 
-                    // SQL Updates ou Deletes têm de ser feitos desta forma com o StdBEExecSql
-                    using (StdBEExecSql sql = new StdBEExecSql())
+                    // Se motivo ficar nulo, apaga linha
+                    if (!string.IsNullOrEmpty(motivoOferta))
                     {
-                        sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-                        sql.Tabela = "TDU_UM";                          // UPDATE TDU_UM                                                  
-                        sql.AddCampo("CDU_UltimoMotivo", motivoOferta); // SET CDU_UltimoMotivo                                                  
-
-                        sql.AddQuery();
-
-                        // Se Update falhar, preenche lista com NumDoc para mostrar ao cliente.
-                        try
+                        // SQL Updates ou Deletes têm de ser feitos desta forma com o StdBEExecSql
+                        using (StdBEExecSql sql = new StdBEExecSql())
                         {
-                            PSO.ExecSql.Executa(sql);
+                            sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
+                            sql.Tabela = "TDU_UM";                          // UPDATE TDU_UM                                                  
+                            sql.AddCampo("CDU_UltimoMotivo", motivoOferta); // SET CDU_UltimoMotivo                                                  
+
+                            sql.AddQuery();
+
+                            // Se Update falhar, preenche lista com NumDoc para mostrar ao cliente.
+                            try
+                            {
+                                PSO.ExecSql.Executa(sql);
+                            }
+                            catch
+                            {
+                                string erro = "Erro ao actualizar CDU_UltimoMotivo na tabela TDU_UM";
+                                _Helpers.EscreverParaFicheiroTxt(erro, "EditorVendas_ArtigoIdentificado_UltimoMotivo");
+                                PSO.MensagensDialogos.MostraErro(erro);
+                            }
                         }
-                        catch
-                        {
-                            MessageBox.Show("Erro ao actualizar CDU_UltimoMotivo na tabela TDU_UM");
-                        }
+                    } else
+                    {
+                        PSO.MensagensDialogos.MostraErro("Não foi dado um motivo de quebra para este artigo." + Environment.NewLine + "A linha será apagada.");
+                        DocumentoVenda.Linhas.Remove(NumLinha);
+
                     }
                 }
             }
@@ -239,7 +260,7 @@ namespace DCT_Extens.Sales
             }
         }
 
-        private void FormCargaDescaga_FormClosed(object sender, FormClosedEventArgs e)
+        private void FormCargaDescarga_FormClosed(object sender, FormClosedEventArgs e)
         {
 
         }

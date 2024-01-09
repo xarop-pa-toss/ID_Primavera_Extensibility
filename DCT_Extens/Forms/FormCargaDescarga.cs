@@ -7,6 +7,7 @@ using StdBE100;
 using StdPlatBS100;
 using System;
 using System.Text;
+using System.Windows.Forms;
 
 namespace DCT_Extens
 {
@@ -15,7 +16,7 @@ namespace DCT_Extens
         private ErpBS _BSO { get; set; }
         private StdPlatBS _PSO { get; set; }
         private clsSDKContexto _SDKContexto { get; set; }
-        private HelperFunctions _Helpers { get; set; }
+        private HelperFunctions _Helpers = new HelperFunctions();
 
         public BasBECargaDescarga _cargaDescarga { get; set; }
         public bool NaoGravar { get; set; }
@@ -73,6 +74,7 @@ namespace DCT_Extens
                     _cargaDescarga.DistritoEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Distrito");
                     _cargaDescarga.PaisEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Pais");
 
+                    _Helpers.SetVariavel(_cargaDescarga);
                     this.Close();
                 }
             }
@@ -107,6 +109,14 @@ namespace DCT_Extens
             priGrelha_Moradas.AddColKey(strColKey: "PaisDescricao", intTipo: 5, strTitulo: "Descrição", dblLargura: 10, strCamposBaseDados: "PaisDescricao", blnMostraSempre: true);
             priGrelha_Moradas.AddColKey(strColKey: "Distrito", intTipo: 5, strTitulo: "Distrito", dblLargura: 5, strCamposBaseDados: "Distrito", blnMostraSempre: true);
             priGrelha_Moradas.AddColKey(strColKey: "DistritoDescricao", intTipo: 5, strTitulo: "Descrição", dblLargura: 10, strCamposBaseDados: "DistritoDescricao", blnMostraSempre: true);
+        }
+
+        private void FormCargaDescarga_FormClosed(object sender, System.Windows.Forms.FormClosedEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(() => FormCargaDescarga_FormClosed(sender, e)));
+            }
         }
 
         private void ActualizaPriGrelha()

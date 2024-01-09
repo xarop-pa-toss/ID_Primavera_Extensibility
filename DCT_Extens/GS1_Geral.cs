@@ -124,7 +124,7 @@ namespace DCT_Extens
             // EXTRAÇÃO DO NÚMERO DE CONTROLO A PARTIR DA SOMA FINAL
             // Nas GS-1, o número de controlo é dado por:
             // Subtracção da soma final pelo múltiplo de 10 mais próximo (igual ou maior).
-            // ex. soma = 120. 120 - 120 = 0.
+            // ex. soma = 120. 120 - 120 = 0
             // ex. soma = 123. 130 - 120 = 7
             digito = digito % 10;
             digito = 10 - digito;
@@ -133,7 +133,6 @@ namespace DCT_Extens
 
             return digito.ToString();
         }
-
     }
 } 
 

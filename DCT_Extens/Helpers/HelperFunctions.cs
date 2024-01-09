@@ -11,6 +11,7 @@ using VndBE100;
 using PRISDK100;
 using System.Data;
 using System.IO;
+using Primavera.Extensibility.Extensions;
 
 namespace DCT_Extens.Helpers
 {
@@ -20,12 +21,39 @@ namespace DCT_Extens.Helpers
         private static StdPlatBS _PSO { get; set; }
         private static clsSDKContexto _SDKContexto { get; set; }
 
+        private static object lockObj = new object();
+        private static object variavelGuardada;
+
         public HelperFunctions()
         {
             PriMotores.InicializarContexto();
             _BSO = Helpers.PriMotores.Motor;
             _PSO = Helpers.PriMotores.Plataforma;
             _SDKContexto = Helpers.PriMotores.PriSDKContexto;
+        }
+
+        // SET e GET uma variável de qualquer lado do programa.
+        // Variável autodestroi-se quando é acedida (GetVariavel).
+        public void SetVariavel<T>(T value)
+        {
+            lock (lockObj)
+            {
+                variavelGuardada = value;
+            }
+        }
+        public T GetVariavelOuDefault<T>()
+        {
+            lock (lockObj)
+            {
+                if (variavelGuardada != null && variavelGuardada is T)
+                {
+                    T resultado = (T)variavelGuardada;
+                    variavelGuardada = default(T); // Reset à variável
+                    return resultado;
+                }
+
+                return default(T);
+            }
         }
 
         // Error Logging para um ficheiro de texto. Se não for dado path, cria uma pasta nos Documentos com o nome do projecto
@@ -152,6 +180,34 @@ namespace DCT_Extens.Helpers
         {
             DataTable TDULista = _BSO.Consulta(querySQL).DataSet.GetTable();
             return TDULista;
+        }
+
+        // Abre InputForm e devolve resposta
+        public string MostraInputForm(string titulo, string descricao, string valorDefeito, bool permiteNull, ErpBS BSO)
+        {
+            string resposta = null;
+
+            using (var formInstancia = BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
+            {
+                InputFormServico.Titulo = titulo;
+                InputFormServico.Descricao = descricao;
+                InputFormServico.ValorDefeito = valorDefeito;
+
+                if (formInstancia.IsSuccess())
+                {
+                    (formInstancia.Result as InputForm).ShowDialog();
+                    resposta = InputFormServico.Resposta;
+                }
+
+                InputFormServico.Limpar();
+                if (string.IsNullOrWhiteSpace(resposta) && !permiteNull)
+                {
+                    System.Windows.Forms.MessageBox.Show("Campo não pode estar vazio.");
+                    MostraInputForm(titulo, descricao, valorDefeito, permiteNull, BSO);
+                }
+
+                return resposta;
+            }
         }
     }
 }
