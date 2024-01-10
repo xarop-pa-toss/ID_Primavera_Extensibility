@@ -56,37 +56,40 @@ namespace DCT_Extens
 
             if ((bool)objCliente.CamposUtil["CDU_SSCC"].Valor)
             {
-                // Destrancar as colunas GUID na tabela TDU_TTE_PackingCodes para conseguir inserir nessas colunas
-                StdBEExecSql sql = new StdBEExecSql
-                {
-                    tpQuery = StdBETipos.EnumTpQuery.tpUPDATE,
-                    Tabela = "TDU_TTE_PackingCodes"
-                };
-                sql.AddCampo("IDENTITY_INSERT", "ON");
-                _PSO.ExecSql.Executa(sql);
-                sql.Dispose();
+                //// Destrancar as colunas GUID na tabela TDU_TTE_PackingCodes para conseguir inserir nessas colunas
+                //using (StdBEExecSql sql = new StdBEExecSql())
+                //{
+                //    sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
+                //    sql.Tabela = "TDU_TTE_PackingCodes";
+
+                //    sql.AddCampo("IDENTITY_INSERT", "ON");
+                //    _PSO.ExecSql.Executa(sql);
+                //};
+                _Helpers.AlterarPropriedadeTabelaNaBD("TDU_TTE_PackingCodes", "IDENTITY_INSERT", "ON");
 
                 // Calcular digito controlo para cada linha de artigo e criar a sequencia final.
                 // Inserir a sequencia final em cada linha e na tabela TDU_TTE_PackingCodes
                 foreach (VndBELinhaDocumentoVenda linha in _dv.Linhas)
                 {
-                    if (linha.TipoLinha.Equals(10))
+                    if (linha.TipoLinha.Equals("10"))
                     {
                         // Incrementar número de sequência da TDU_TTE_PackingCodes (última sequência inserida na tabela)
-                        string sequencia = GetSequencia() + 1;
+                        string sequencia = (GetSequencia() + 1).ToString();
 
                         // Concatena todos os elementos necessários para calcular o Digito de Controlo.
                         // Por fim, concatena o digito ao restante.
                         string strFinal = PREFIXO + PREFIXO_EMPRESA + sequencia;
                         strFinal += GetDigitoControlo(strFinal);
 
-                        // Cada linha com artigo no DocVenda tem de ter a strFinal no seu CDU_SSCC
-                        sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-                        sql.Tabela = "LinhasDoc";
-                        sql.AddCampo("CDU_SSCC", strFinal);
-                        sql.AddCampo("ID", linha.IdLinha, true);
-                        _PSO.ExecSql.Executa(sql);
-                        sql.Dispose();
+                        // Cada linha com artigo no DocVenda tem de ter o código final no seu CDU_SSCC
+                        using (StdBEExecSql sql = new StdBEExecSql())
+                        {
+                            sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
+                            sql.Tabela = "LinhasDoc";
+                            sql.AddCampo("CDU_SSCC", strFinal);
+                            sql.AddCampo("ID", linha.IdLinha, true);
+                            _PSO.ExecSql.Executa(sql);
+                        }
 
                         // Para cada linha que recebe um strFinal, tem de ser criada uma entrada na tabela TDU_TTE_PackingCodes
                         string strComPrefixo = "(00)" + strFinal;
@@ -100,24 +103,26 @@ namespace DCT_Extens
                         _Helpers.TDU_Actualiza("TDU_TTE_PackingCodes", dict);
                     }
                 }
+                _Helpers.AlterarPropriedadeTabelaNaBD("TDU_TTE_PackingCodes", "IDENTITY_INSERT", "OFF");
             }
         }
 
-        private string GetSequencia()
+        private int GetSequencia()
         {
-            StdBELista recSet = BSO.Consulta("SELECT TOP(1) sequencia from TDU_TTE_PackingCodes ORDER BY sequencia DESC");
-            return (recSet.Valor(0));
+            StdBELista recSet = _BSO.Consulta("SELECT TOP(1) sequencia from TDU_TTE_PackingCodes ORDER BY sequencia DESC");
+            return recSet.Valor(0);
         }
 
         private string GetDigitoControlo(string str)
         {
-            long valor, digito = 0, flag = 3;
+            long digito = 0, flag = 3;
+            long valor;
 
             for (int i = str.Length; i >= 1; i--)
             {
-                valor = long.Parse(str.Substring(i - 1, i)) * flag;
+                valor = Convert.ToInt64(str.Substring(i - 1, 1)) * flag;
 
-                digito = digito + valor;
+                digito += valor;
                 flag = flag.Equals(3) ? 1 : 3;
             }
 

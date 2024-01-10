@@ -23,6 +23,7 @@ namespace DCT_Extens.Sales
         private string _strMensagem;
         private const double DBL_LIMITE = 999;
 
+        // AntesDeImprimir está com "mapatest". Alterar pro real.
 
         public override void AntesDeImprimir(ref bool Cancel, ExtensibilityEventArgs e)
         {
@@ -51,9 +52,10 @@ namespace DCT_Extens.Sales
                 && DocumentoVenda.TipoEntidade.Equals("C")
                 && (bool)BSO.Base.Clientes.Edita(DocumentoVenda.Entidade).CamposUtil["CDU_ValidaFatura"].Valor
                 && (DocumentoVenda.TotalMerc + DocumentoVenda.TotalOutros + DocumentoVenda.TotalIva) > DBL_LIMITE
-                && PSO.MensagensDialogos.MostraPerguntaSimples(_strMensagem))
+                && !PSO.MensagensDialogos.MostraPerguntaSimples(_strMensagem))
             {
                 Cancel = true;
+                return;
             }
             #endregion
 
@@ -97,6 +99,7 @@ namespace DCT_Extens.Sales
                         PSO.MensagensDialogos.MostraAviso(mensagem, StdPlatBS100.StdBSTipos.IconId.PRI_Exclama);
 
                         Cancel = true;
+                        return;
                     }
                 }
             }
@@ -109,30 +112,48 @@ namespace DCT_Extens.Sales
                 {
                     if (formInstancia.IsSuccess())
                     {
-                        var formCargaDescarga = formInstancia.Result as FormCargaDescarga;
-                        var resultado = formCargaDescarga.ShowDialog();
+                        FormCargaDescarga formCargaDescarga = formInstancia.Result as FormCargaDescarga;
+                        DialogResult resultado = formCargaDescarga.ShowDialog();
 
                         if (resultado == DialogResult.OK)
                         {
-                            DocumentoVenda.CargaDescarga = formCargaDescarga._cargaDescarga;
+                            if (formCargaDescarga.cdForm != null) {
+                                DocumentoVenda.CargaDescarga.MoradaEntrega = formCargaDescarga.cdForm.MoradaEntrega;
+                                DocumentoVenda.CargaDescarga.Morada2Entrega = formCargaDescarga.cdForm.Morada2Entrega;
+                                DocumentoVenda.CargaDescarga.LocalidadeEntrega = formCargaDescarga.cdForm.LocalidadeEntrega;
+                                DocumentoVenda.CargaDescarga.CodPostalEntrega = formCargaDescarga.cdForm.CodPostalEntrega;
+                                DocumentoVenda.CargaDescarga.CodPostalLocalidadeEntrega = formCargaDescarga.cdForm.CodPostalLocalidadeEntrega;
+                                DocumentoVenda.CargaDescarga.DistritoEntrega = formCargaDescarga.cdForm.DistritoEntrega;
+                                DocumentoVenda.CargaDescarga.PaisEntrega = formCargaDescarga.cdForm.PaisEntrega;
+                            } 
+                            else {
+                                string erro = "Dados de morada de Carga e Descarga não foram alterados para o cliente 13000." + Environment.NewLine +
+                                    "O documento não será gravado." + Environment.NewLine +
+                                    "Por favor contacte a Infodinâmica.";
+
+                                _Helpers.EscreverParaFicheiroTxt(erro, "EditorVendas_AntesDeGravar_CargaDescarga");
+                                PSO.MensagensDialogos.MostraErro(erro);
+                                Cancel = true;
+                                return;
+                            }
                         }
                     }
                 }
-
-                // Se o que estiver na variável pública em _Helpers não for do tipo BasBeCargaDescarga, retorna nulo.
-                BasBECargaDescarga cargaDescarga = _Helpers.GetVariavelOuDefault<BasBECargaDescarga>();
-
-                if (cargaDescarga != null) { DocumentoVenda.CargaDescarga = cargaDescarga; } else
-                {
-                    string erro = "Dados de morada de Carga e Descarga não foram alterados para o cliente 13000." + Environment.NewLine +
-                        "O documento não será gravado." + Environment.NewLine + Environment.NewLine +
-                        "Por favor contacte a Infodinâmica.";
-
-                    _Helpers.EscreverParaFicheiroTxt(erro, "EditorVendas_AntesDeGravar_CargaDescarga");
-                    PSO.MensagensDialogos.MostraErro(erro);
-                }
             }
             #endregion
+        }
+
+        public override void DepoisDeGravar(string Filial, string Tipo, string Serie, int NumDoc, ExtensibilityEventArgs e)
+        {
+            base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
+
+            //*** SSCC código GS1 ***
+            BasBECliente objCliente = BSO.Base.Clientes.Consulta(DocumentoVenda.Entidade);
+            if ((bool)objCliente.CamposUtil["CDU_SSCC"].Valor)
+            {
+                GS1_Geral GS1 = new GS1_Geral(Filial, Serie, Tipo, NumDoc, DocumentoVenda);
+                GS1.EditorVendas_DepoisDeGravar();
+            }
         }
 
         public override void ArtigoIdentificado(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
@@ -213,15 +234,6 @@ namespace DCT_Extens.Sales
 
                 DocumentoVenda.CargaDescarga = cdl;
             }
-        }
-
-        public override void DepoisDeGravar(string Filial, string Tipo, string Serie, int NumDoc, ExtensibilityEventArgs e)
-        {
-            base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
-
-            //*** SSCC código GS1 ***
-            GS1_Geral GS1 = new GS1_Geral(Filial, Serie, Tipo, NumDoc, DocumentoVenda);
-            GS1.EditorVendas_DepoisDeGravar();
         }
 
         public override void DepoisDeTransformar(ExtensibilityEventArgs e)

@@ -20,7 +20,7 @@ namespace DCT_Extens
 
         public bool NaoGravar { get; set; }
         public bool MoradaAlterada, GravarComMoradaPorDefeito;
-        public BasBECargaDescarga _cargaDescarga { get; private set; }
+        public BasBECargaDescarga cdForm { get; private set; }
 
 
         public FormCargaDescarga()
@@ -56,7 +56,7 @@ namespace DCT_Extens
 
             // Inicializar objecto CargaDescarga público que será populado com linha escolhida na tabela.
             // Este objecto é então usado no EditorVendas_AntesDeGravar para popular a CargaDescarga do DocVenda
-            _cargaDescarga = new BasBECargaDescarga();
+            cdForm = new BasBECargaDescarga();
             bool linhaSeleccionada = false;
 
             // Indice da primeira linha que tenha Cf = true;
@@ -66,13 +66,16 @@ namespace DCT_Extens
                 {
                     linhaSeleccionada = true;
                     // Dados de Entrega
-                    _cargaDescarga.MoradaEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Morada");
-                    _cargaDescarga.Morada2Entrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Morada2");
-                    _cargaDescarga.LocalidadeEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Localidade");
-                    _cargaDescarga.CodPostalEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "CodigoPostal");
-                    _cargaDescarga.CodPostalLocalidadeEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "LocalidadePostal");
-                    _cargaDescarga.DistritoEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Distrito");
-                    _cargaDescarga.PaisEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Pais");
+                    cdForm.MoradaEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Morada");
+                    cdForm.Morada2Entrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Morada2");
+                    cdForm.LocalidadeEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Localidade");
+                    cdForm.CodPostalEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "CodigoPostal");
+                    cdForm.CodPostalLocalidadeEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "LocalidadePostal");
+                    cdForm.DistritoEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Distrito");
+                    cdForm.PaisEntrega = priGrelha_Moradas.GetGRID_GetValorCelula(i, "Pais");
+                    cdForm.EntidadeEntrega = "13000";
+
+                    break;
                 }
             }
             // Mostra erro se não for escolhida nenhuma morada

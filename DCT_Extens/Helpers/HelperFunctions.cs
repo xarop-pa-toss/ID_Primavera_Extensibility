@@ -6,12 +6,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ErpBS100; using StdPlatBS100; using BasBE100; using StdBE100; using IntBE100; using CmpBE100;
+using ErpBS100; 
+using StdPlatBS100; 
+using BasBE100; 
+using StdBE100; 
+using IntBE100; 
+using CmpBE100;
 using VndBE100;
 using PRISDK100;
 using System.Data;
 using System.IO;
 using Primavera.Extensibility.Extensions;
+using DCT_Extens.Helpers;
+using System.Data.SqlClient;
 
 namespace DCT_Extens.Helpers
 {
@@ -102,9 +109,44 @@ namespace DCT_Extens.Helpers
             registoUtil.EmModoEdicao = true;
             registoUtil.Campos = linha;
             registoUtil.EmModoEdicao = false;
-
+            
             _BSO.TabelasUtilizador.Actualiza(NomeTDU, registoUtil);
+
         }
+
+        // Por vezes, TDUs com campos ID têm de ter esses campos desbloqueados antes de se poder escrever
+        // Infelizmente o Primavera 10 já não permite fazer queries não-consulta directamente à BD sem passar pelos métodos de controlo dele
+        public void AlterarPropriedadeTabelaNaBD(string tabela, string propriedade, string valor, bool LoginComWindowsAuthentication = true)
+        {
+            string nomeBDdaEmpresa = _PSO.BaseDados.DaNomeBDdaEmpresa(_BSO.Contexto.CodEmp);
+            string connString = _PSO.BaseDados.DaConnectionString(nomeBDdaEmpresa, Secrets.DB_Instancia);
+            
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    // QUERY altera uma propriedade da tabela, não um campo nela presente.
+                    string query = $"SET {propriedade} {tabela} {valor};";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    EscreverParaFicheiroTxt(ex.ToString(), "Helpers_AlterarPropriedadeTabelaNaBD_LigacaoBD");
+                }
+            }
+
+
+
+
+
+
+
+    }
 
         public void ApagaLinhasFilhoEPai_docVenda(VndBEDocumentoVenda docVenda, VndBELinhaDocumentoVenda linhaPai)
         {
