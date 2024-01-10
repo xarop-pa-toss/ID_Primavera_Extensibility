@@ -129,9 +129,9 @@ namespace DCT_Extens.Helpers
                     // QUERY altera propriedade IDENTITY_INSERT para se conseguir manipular GUIDs
                     List<string> queryList = new List<string>
                     {
-                        $"SET IDENTITY_INSERT {tabelaIdentityInsert} OFF",
+                        $"SET IDENTITY_INSERT {tabelaIdentityInsert} ON",
                         querySQL,
-                        $"SET IDENTITY_INSERT {tabelaIdentityInsert} ON"
+                        $"SET IDENTITY_INSERT {tabelaIdentityInsert} OFF"
                     };
 
                     string query = string.Join("; ", queryList);

@@ -102,7 +102,7 @@ namespace DCT_Extens
 
                         string query =
                             $"INSERT INTO TDU_TTE_PackingCodes" +
-                            $"(IdCabec, IdLinha, PalletCode, Sequencia) VALUES ({_dv.ID}, {linha.IdLinha}, {strComPrefixo}, {sequencia});";
+                            $"(IdCabec, IdLinha, PalletCode, Sequencia) VALUES ('{_dv.ID}', '{linha.IdLinha}', '{strComPrefixo}', '{sequencia}');";
                         _Helpers.QuerySQLComIdentityInsert("TDU_TTE_PackingCodes", query);
                     }
                 }
