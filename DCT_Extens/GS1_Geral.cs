@@ -65,7 +65,6 @@ namespace DCT_Extens
                 //    sql.AddCampo("IDENTITY_INSERT", "ON");
                 //    _PSO.ExecSql.Executa(sql);
                 //};
-                _Helpers.AlterarPropriedadeTabelaNaBD("TDU_TTE_PackingCodes", "IDENTITY_INSERT", "ON");
 
                 // Calcular digito controlo para cada linha de artigo e criar a sequencia final.
                 // Inserir a sequencia final em cada linha e na tabela TDU_TTE_PackingCodes
@@ -100,10 +99,13 @@ namespace DCT_Extens
                             { "PalletCode", strComPrefixo },
                             { "Sequencia", sequencia }
                         };
-                        _Helpers.TDU_Actualiza("TDU_TTE_PackingCodes", dict);
+
+                        string query =
+                            $"INSERT INTO TDU_TTE_PackingCodes" +
+                            $"(IdCabec, IdLinha, PalletCode, Sequencia) VALUES ({_dv.ID}, {linha.IdLinha}, {strComPrefixo}, {sequencia});";
+                        _Helpers.QuerySQLComIdentityInsert("TDU_TTE_PackingCodes", query);
                     }
                 }
-                _Helpers.AlterarPropriedadeTabelaNaBD("TDU_TTE_PackingCodes", "IDENTITY_INSERT", "OFF");
             }
         }
 

@@ -109,26 +109,33 @@ namespace DCT_Extens.Helpers
             registoUtil.EmModoEdicao = true;
             registoUtil.Campos = linha;
             registoUtil.EmModoEdicao = false;
-            
-            _BSO.TabelasUtilizador.Actualiza(NomeTDU, registoUtil);
 
+            _BSO.TabelasUtilizador.Actualiza(NomeTDU, registoUtil);
         }
 
         // Por vezes, TDUs com campos ID têm de ter esses campos desbloqueados antes de se poder escrever
         // Infelizmente o Primavera 10 já não permite fazer queries não-consulta directamente à BD sem passar pelos métodos de controlo dele
-        public void AlterarPropriedadeTabelaNaBD(string tabela, string propriedade, string valor, bool LoginComWindowsAuthentication = true)
+        public void QuerySQLComIdentityInsert(string tabelaIdentityInsert, string querySQL)
         {
             string nomeBDdaEmpresa = _PSO.BaseDados.DaNomeBDdaEmpresa(_BSO.Contexto.CodEmp);
-            string connString = _PSO.BaseDados.DaConnectionString(nomeBDdaEmpresa, Secrets.DB_Instancia);
-            
+            string connString = $"Data Source={Secrets.BD_Instancia};Initial Catalog={nomeBDdaEmpresa}; Integrated Security=True";
+
             using (SqlConnection connection = new SqlConnection(connString))
             {
                 try
                 {
                     connection.Open();
 
-                    // QUERY altera uma propriedade da tabela, não um campo nela presente.
-                    string query = $"SET {propriedade} {tabela} {valor};";
+                    // QUERY altera propriedade IDENTITY_INSERT para se conseguir manipular GUIDs
+                    List<string> queryList = new List<string>
+                    {
+                        $"SET IDENTITY_INSERT {tabelaIdentityInsert} OFF",
+                        querySQL,
+                        $"SET IDENTITY_INSERT {tabelaIdentityInsert} ON"
+                    };
+
+                    string query = string.Join("; ", queryList);
+
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.ExecuteNonQuery();
@@ -139,13 +146,6 @@ namespace DCT_Extens.Helpers
                     EscreverParaFicheiroTxt(ex.ToString(), "Helpers_AlterarPropriedadeTabelaNaBD_LigacaoBD");
                 }
             }
-
-
-
-
-
-
-
     }
 
         public void ApagaLinhasFilhoEPai_docVenda(VndBEDocumentoVenda docVenda, VndBELinhaDocumentoVenda linhaPai)
