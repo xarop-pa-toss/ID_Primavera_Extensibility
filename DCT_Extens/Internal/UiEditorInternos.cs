@@ -86,7 +86,7 @@ namespace DCT_Extens.Internal
                                     linha.CamposUtil["CDU_MotivoQuebra"].Valor = formStockQuebras.GetTxtBox_MotivoQuebra;
                                 }
 
-                                if (resultado != DialogResult.Cancel)
+                                if (resultado == DialogResult.Cancel)
                                 {
                                     _Helpers.ApagaLinhasFilhoEPai_docInterno(DocumentoInterno, linha);
                                 }

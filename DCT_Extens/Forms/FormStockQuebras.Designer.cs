@@ -61,7 +61,7 @@
             // 
             this.cmbBox_Operador.FormattingEnabled = true;
             this.cmbBox_Operador.Location = new System.Drawing.Point(105, 25);
-            this.cmbBox_Operador.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmbBox_Operador.Margin = new System.Windows.Forms.Padding(4);
             this.cmbBox_Operador.Name = "cmbBox_Operador";
             this.cmbBox_Operador.Size = new System.Drawing.Size(252, 24);
             this.cmbBox_Operador.TabIndex = 2;
@@ -69,7 +69,7 @@
             // txtBox_MotivoQuebra
             // 
             this.txtBox_MotivoQuebra.Location = new System.Drawing.Point(105, 64);
-            this.txtBox_MotivoQuebra.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBox_MotivoQuebra.Margin = new System.Windows.Forms.Padding(4);
             this.txtBox_MotivoQuebra.Multiline = true;
             this.txtBox_MotivoQuebra.Name = "txtBox_MotivoQuebra";
             this.txtBox_MotivoQuebra.Size = new System.Drawing.Size(252, 101);
@@ -80,7 +80,7 @@
             // 
             this.chkBox_RepetirMotivo.AutoSize = true;
             this.chkBox_RepetirMotivo.Location = new System.Drawing.Point(164, 174);
-            this.chkBox_RepetirMotivo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkBox_RepetirMotivo.Margin = new System.Windows.Forms.Padding(4);
             this.chkBox_RepetirMotivo.Name = "chkBox_RepetirMotivo";
             this.chkBox_RepetirMotivo.Size = new System.Drawing.Size(182, 20);
             this.chkBox_RepetirMotivo.TabIndex = 4;
@@ -91,7 +91,7 @@
             // 
             this.btn_Confirmar.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btn_Confirmar.Location = new System.Drawing.Point(147, 214);
-            this.btn_Confirmar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_Confirmar.Margin = new System.Windows.Forms.Padding(4);
             this.btn_Confirmar.Name = "btn_Confirmar";
             this.btn_Confirmar.Size = new System.Drawing.Size(100, 28);
             this.btn_Confirmar.TabIndex = 5;
@@ -101,9 +101,9 @@
             // 
             // btn_Cancelar
             // 
-            this.btn_Cancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btn_Cancelar.DialogResult = System.Windows.Forms.DialogResult.Abort;
             this.btn_Cancelar.Location = new System.Drawing.Point(255, 214);
-            this.btn_Cancelar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_Cancelar.Margin = new System.Windows.Forms.Padding(4);
             this.btn_Cancelar.Name = "btn_Cancelar";
             this.btn_Cancelar.Size = new System.Drawing.Size(104, 28);
             this.btn_Cancelar.TabIndex = 6;
@@ -121,9 +121,11 @@
             this.Controls.Add(this.cmbBox_Operador);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "FormStockQuebras";
             this.Size = new System.Drawing.Size(388, 263);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FormStockQuebras";
             this.Load += new System.EventHandler(this.FormStockQuebras_Load);
             this.ResumeLayout(false);

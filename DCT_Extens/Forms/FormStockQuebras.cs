@@ -39,8 +39,8 @@ namespace DCT_Extens
             cmbBox_Operador.Items.Clear();
             txtBox_MotivoQuebra.Text = string.Empty;
 
-            _pedeOperador = (bool)_rowSerie["CDU_PedeOperador"];
-            _pedeMotivo = (bool)_rowSerie["CDU_PedeMotivo"];
+            _pedeOperador = (bool)_rowSerie["CDU_PedeOperador_Operador"];
+            _pedeMotivo = (bool)_rowSerie["CDU_PedeOperador_Motivo"];
 
             // Combobox de operador ou Textbox de motivo têm estados diferentes de acordo com as queries às TDU
             // PedeOperador e PedeMotivo activam ou desactivam os controlos mas os conteudos da Combobox muda de acordo com o armazém documento -> armazém do operador
@@ -49,7 +49,7 @@ namespace DCT_Extens
             } else {
                 foreach (string op in _listaOperadores) { cmbBox_Operador.Items.Add(op); }
             }
-
+            
             if (!_pedeMotivo) {
                 txtBox_MotivoQuebra.Enabled = false;
             }
