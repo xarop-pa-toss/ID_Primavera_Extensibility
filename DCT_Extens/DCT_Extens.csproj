@@ -216,7 +216,6 @@
     <Compile Include="Sales\UiEditorCopiaLinhas.cs" />
     <Compile Include="Sales\UiFichaConverteVendas.cs" />
     <Compile Include="Helpers\Secrets.cs" />
-    <Compile Include="StockQuebras_Geral.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="IGcpBS900">
