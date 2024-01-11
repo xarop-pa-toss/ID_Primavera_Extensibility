@@ -7,36 +7,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DCT_Extens.Helpers;
 
 namespace DCT_Extens
 {
     public partial class FormStockQuebras : CustomForm
     {
-        public bool GetCheckBox_RepetirMotivo
-        {
-            get { return chkBox_RepetirMotivo.Checked; }
-        }
-        public string GetTxtBox_MotivoQuebra
-        {
-            get { return txtBox_MotivoQuebra.Text; }
-        }
-        public string GetCmbBox_Operador
-        {
-            get { return cmbBox_Operador.Text; }
-        }
+        public bool GetCheckBox_RepetirMotivo { get { return chkBox_RepetirMotivo.Checked; } }
+        public string GetTxtBox_MotivoQuebra { get { return txtBox_MotivoQuebra.Text; } }
+        public string GetCmbBox_Operador { get { return cmbBox_Operador.Text; } }
 
-        private List<string> _listaOperadores;
-        private Helpers.HelperFunctions _Helpers = new Helpers.HelperFunctions();
-        private DataRow _rowSerie;
+        private HelperFunctions _Helpers = new HelperFunctions();
         private bool _pedeOperador, _pedeMotivo;
+        private List<string> _listaOperadores;
+        private DataRow _rowSerie;
 
-        public FormStockQuebras(List<string> listaOperadores, DataRow rowSerie)
+        public FormStockQuebras()//(List<string> listaOperadores, DataRow rowSerie)
+        {
+            InitializeComponent();
+        }
+
+        public void SetVariaveis(List<string> listaOperadores, DataRow rowSerie)
         {
             _listaOperadores = listaOperadores;
             _rowSerie = rowSerie;
-
-            InitializeComponent();
         }
+
 
         private void FormStockQuebras_Load(object sender, EventArgs e)
         {
