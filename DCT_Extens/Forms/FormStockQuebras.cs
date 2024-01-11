@@ -8,16 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DCT_Extens.Helpers;
+using Primavera.Extensibility.Internal.Editors;
 
 namespace DCT_Extens
 {
     public partial class FormStockQuebras : CustomForm
     {
+        private HelperFunctions _Helpers = new HelperFunctions();
+
         public bool GetCheckBox_RepetirMotivo { get { return chkBox_RepetirMotivo.Checked; } }
         public string GetTxtBox_MotivoQuebra { get { return txtBox_MotivoQuebra.Text; } }
         public string GetCmbBox_Operador { get { return cmbBox_Operador.Text; } }
 
-        private HelperFunctions _Helpers = new HelperFunctions();
+        public static bool RepeteMotivo = false;
         private bool _pedeOperador, _pedeMotivo;
         private List<string> _listaOperadores;
         private DataRow _rowSerie;
@@ -32,7 +35,6 @@ namespace DCT_Extens
             _listaOperadores = listaOperadores;
             _rowSerie = rowSerie;
         }
-
 
         private void FormStockQuebras_Load(object sender, EventArgs e)
         {
@@ -55,11 +57,6 @@ namespace DCT_Extens
             }
         }
 
-        private void txtBox_MotivoQuebra_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void btn_Confirmar_Click(object sender, EventArgs e)
         {
             // Check motivo nulo
@@ -69,8 +66,12 @@ namespace DCT_Extens
 
                 if (resposta) {
                     DialogResult = DialogResult.Cancel;
-                    Close(); 
+                    Close();
                 }
+            } 
+            else {
+                DialogResult = DialogResult.OK;
+                Close();
             }
         }
     }

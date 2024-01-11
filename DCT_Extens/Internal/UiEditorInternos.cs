@@ -21,11 +21,13 @@ namespace DCT_Extens.Internal
     {
         private HelperFunctions _Helpers = new HelperFunctions();
         private DataTable _tabelaOperadores, _tabelaSerie;
+        private string _motivoRepetir;
         internal bool _deveAbrirFormStockQuebras;
 
         public override void TipoDocumentoIdentificado(string TipoDocumento, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.TipoDocumentoIdentificado(TipoDocumento, ref Cancel, e);
+            _motivoRepetir = "";
 
             // Carregar TDUs OperadorQuebras e séries com CDU_StockQuebras a true.
             // Tem de ser feito pois TipoDocumentoIdentificado não dá série e não existe override para Série identificada.
@@ -36,9 +38,9 @@ namespace DCT_Extens.Internal
                 $" FROM SeriesStocks " +
                 $" WHERE " +
                 $"  DataInicial >= '2022-01-01' " +
-                $"   AND (CDU_PedeOperador_Motivo = 1 OR CDU_PedeOperador_Operador = 1)" +
-                $"   AND TipoDoc = '{TipoDocumento}'" +      
-                $"   AND Serie = '{DocumentoInterno.Serie}'");
+                $"  AND (CDU_PedeOperador_Motivo = 1 OR CDU_PedeOperador_Operador = 1)" +
+                $"  AND TipoDoc = '{TipoDocumento}'" +      
+                $"  AND Serie = '{DocumentoInterno.Serie}'");
         }
 
         public override void ArtigoIdentificado(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
@@ -47,53 +49,48 @@ namespace DCT_Extens.Internal
 
             IntBELinhaDocumentoInterno linha = DocumentoInterno.Linhas.GetEdita(NumLinha);
 
-            // Se série for válida, só terá uma linha contendo essa série
-            if (_tabelaSerie.Rows.Count.Equals(1))
+            // Se série for válida, só terá uma linha contendo essa série && Se linha for de artigo
+            if (_tabelaSerie.Rows.Count.Equals(1) && linha.TipoLinha.Equals("10"))
             {
-                // Se linha for de artigo
-                if (linha.TipoLinha.Equals("10"))
+                var operadoresValidos = from DataRow row in _tabelaOperadores.Rows
+                                        where (string)row["CDU_Armazem"] == linha.Armazem
+                                        select row["CDU_OperadorQuebra"];
+
+                // Converter operadoresValidos de IEnumerable(object) para List<string>
+                List<string> operadoresValidosList = operadoresValidos.OfType<string>().ToList();
+
+                // Se o user tiver picado a checkbox para repetir o motivo para todas as linhas, não vale a pena abrir o form
+                // Mas deve sempre abrir na primeira linha claro
+                if (NumLinha.Equals(1) || _motivoRepetir == "")
                 {
-                    var operadoresValidos = from DataRow row in _tabelaOperadores.Rows
-                                            where (string)row["CDU_Armazem"] == linha.Armazem
-                                            select row["CDU_OperadorQuebra"];
-
-                    // Converter operadoresValidos de IEnumerable(object) para List<string>
-                    List<string> operadoresValidosList = operadoresValidos.OfType<string>().ToList();
-
-                    // Se o user tiver picado a checkbox para repetir o motivo para todas as linhas, não vale a pena abrir o form
-                    // Mas deve sempre abrir na primeira linha claro
-                    if (NumLinha.Equals(1) || _deveAbrirFormStockQuebras)
+                    // Form instanciado aqui para que seja um objecto limpo para cada ArtigoIdentificado independentemente se o anterior foi gravado ou não
+                    // Recebe os Operadores a listar na combo box e qual o estado dos controlos (campos Motivo e Operador da _tabelaSeries - ver query acima).
+                    using (var formInstancia = BSO.Extensibility.CreateCustomFormInstance(typeof(FormStockQuebras)))
                     {
-                        // Form instanciado aqui para que seja um objecto limpo para cada ArtigoIdentificado independentemente se o anterior foi gravado ou não
-                        // Recebe os Operadores a listar na combo box e qual o estado dos controlos (campos Motivo e Operador da _tabelaSeries - ver query acima).
-
-                        using (var formInstancia = BSO.Extensibility.CreateCustomFormInstance(typeof(FormStockQuebras)))
+                        if (formInstancia.IsSuccess())
                         {
-                            if (formInstancia.IsSuccess())
+                            FormStockQuebras formStockQuebras = formInstancia.Result as FormStockQuebras;
+                            // Para conseguir usar algumas variáveis dentro do form é necessário enviar após a inicialização pois não é possível cria-lo directamente com argumentos... -_-'
+                            formStockQuebras.SetVariaveis(operadoresValidosList, _tabelaSerie.Rows[0]);
+                            DialogResult resultado = formStockQuebras.ShowDialog();
+
+                            // Verificações de regras de preenchimento dos dados são feitas dentro do Form e não aqui.
+                            if (resultado == DialogResult.OK)
                             {
-                                FormStockQuebras formStockQuebras = formInstancia.Result as FormStockQuebras;
-                                // Para conseguir usar algumas variáveis dentro do form é necessário enviar após a inicialização pois não é possível cria-lo directamente com argumentos... -_-'
-                                formStockQuebras.SetVariaveis(operadoresValidosList, _tabelaSerie.Rows[0]);
-                                DialogResult resultado = formStockQuebras.ShowDialog();
+                                // Impede o form de se abrir outra vez se a checkbox estiver picada
+                                if (formStockQuebras.GetCheckBox_RepetirMotivo) { _motivoRepetir = formStockQuebras.GetTxtBox_MotivoQuebra; }
 
-                                // Verificações de regras de preenchimento dos dados são feitas dentro do Form e não aqui.
-                                if (resultado == DialogResult.OK)
-                                {
-                                    // Impede o form de se abrir outra vez se a checkbox estiver picada
-                                    if (formStockQuebras.GetCheckBox_RepetirMotivo) { _deveAbrirFormStockQuebras = false; }
+                                linha.CamposUtil["CDU_OperadorQuebra"].Valor = formStockQuebras.GetCmbBox_Operador;
+                                linha.CamposUtil["CDU_MotivoQuebra"].Valor = formStockQuebras.GetTxtBox_MotivoQuebra;
+                            }
 
-                                    linha.CamposUtil["CDU_OperadorQuebra"].Valor = formStockQuebras.GetCmbBox_Operador;
-                                    linha.CamposUtil["CDU_MotivoQuebra"].Valor = formStockQuebras.GetTxtBox_MotivoQuebra;
-                                }
-
-                                if (resultado == DialogResult.Cancel)
-                                {
-                                    _Helpers.ApagaLinhasFilhoEPai_docInterno(DocumentoInterno, linha);
-                                }
+                            if (resultado == DialogResult.Cancel)
+                            {
+                                _Helpers.ApagaLinhasFilhoEPai_docInterno(DocumentoInterno, linha);
                             }
                         }
-                    }   
-                }
+                    }
+                }   
             }
         }
 
@@ -115,7 +112,14 @@ namespace DCT_Extens.Internal
         public override void DepoisDeGravar(string Filial, string Tipo, string Serie, int NumDoc, ExtensibilityEventArgs e)
         {
             base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
-            
+
+            _motivoRepetir = "";
+        }
+
+        public override void EntidadeIdentificada(string TipoEntidade, string Entidade, ref bool Cancel, ExtensibilityEventArgs e)
+        {
+            base.EntidadeIdentificada(TipoEntidade, Entidade, ref Cancel, e);
+            _motivoRepetir = "";
         }
     }
 }

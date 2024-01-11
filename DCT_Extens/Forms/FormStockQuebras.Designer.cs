@@ -74,7 +74,6 @@
             this.txtBox_MotivoQuebra.Name = "txtBox_MotivoQuebra";
             this.txtBox_MotivoQuebra.Size = new System.Drawing.Size(252, 101);
             this.txtBox_MotivoQuebra.TabIndex = 3;
-            this.txtBox_MotivoQuebra.TextChanged += new System.EventHandler(this.txtBox_MotivoQuebra_TextChanged);
             // 
             // chkBox_RepetirMotivo
             // 
@@ -89,7 +88,6 @@
             // 
             // btn_Confirmar
             // 
-            this.btn_Confirmar.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btn_Confirmar.Location = new System.Drawing.Point(147, 214);
             this.btn_Confirmar.Margin = new System.Windows.Forms.Padding(4);
             this.btn_Confirmar.Name = "btn_Confirmar";
@@ -101,7 +99,7 @@
             // 
             // btn_Cancelar
             // 
-            this.btn_Cancelar.DialogResult = System.Windows.Forms.DialogResult.Abort;
+            this.btn_Cancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btn_Cancelar.Location = new System.Drawing.Point(255, 214);
             this.btn_Cancelar.Margin = new System.Windows.Forms.Padding(4);
             this.btn_Cancelar.Name = "btn_Cancelar";
