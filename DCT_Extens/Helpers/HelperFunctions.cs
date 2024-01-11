@@ -118,7 +118,11 @@ namespace DCT_Extens.Helpers
         public void QuerySQLComIdentityInsert(string tabelaIdentityInsert, string querySQL)
         {
             string nomeBDdaEmpresa = _PSO.BaseDados.DaNomeBDdaEmpresa(_BSO.Contexto.CodEmp);
-            string connString = $"Data Source={Secrets.BD_Instancia};Initial Catalog={nomeBDdaEmpresa}; Integrated Security=True";
+            string connString = 
+                $"Data Source={Secrets.BD_ServidorInstancia};" +
+                "Network Library=DBMSSOCN;" +
+                $"Initial Catalog={nomeBDdaEmpresa};" +
+                "Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connString))
             {

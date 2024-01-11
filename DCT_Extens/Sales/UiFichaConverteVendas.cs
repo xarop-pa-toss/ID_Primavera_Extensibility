@@ -43,7 +43,7 @@ namespace DCT_Extens.Sales
 
                 var resultado = PSO.MensagensDialogos.MostraMensagem(
                     StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimNao,
-                    $"O documento {Tipodoc} {Serie}/{NumDoc} ira colocar o cliente acima do seu limite de crédito.\n\n" +
+                    $"O documento {Tipodoc} {Serie}/{NumDoc} ira colocar o cliente acima do seu limite de crédito.\n" +
                     $"Cliente: {strCliente} - {cliente.Nome}\n" +
                     $"Limite: {cliente.Limitecredito}\n" +
                     $"Débito Actual: {cliente.DebitoContaCorrente}\n" +
