@@ -13,7 +13,7 @@ using StdBE100;
 using BasBE100;
 using System.Drawing.Text;
 using System.Security.Policy;
-using DCT_Extens.Helpers;
+using HelperFunctionsPrimavera10;
 
 namespace DCT_Extens
 {
@@ -26,7 +26,7 @@ namespace DCT_Extens
         private VndBEDocumentoVenda _dv { get; set; }
         private ErpBS _BSO { get; set; }
         private StdPlatBS _PSO { get; set; }
-        private HelperFunctions _Helpers { get; set; }
+        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
 
         //Existem problemas quando se utiliza o FormCopiaLinhas para criar um DocStocks a partir de outro
         //Como CopiaLinhas não dá trigger a TipoDocumentoIdentificado() nem ArtigoIdentificado(), é necessário manter uma variavel de estado que fica true pelo EditorCopiaLinhas
@@ -44,7 +44,6 @@ namespace DCT_Extens
             _dv = dv;
             _BSO = PriMotores.Motor;
             _PSO = PriMotores.Plataforma;
-            _Helpers = new HelperFunctions();
 
             LinhasCopiadas = false;
         }
