@@ -59,6 +59,9 @@
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\ErpBS100.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HelperFunctionsPrimavera10">
+      <HintPath>..\HelperFunctionsPrimavera10\bin\Debug\HelperFunctionsPrimavera10.dll</HintPath>
+    </Reference>
     <Reference Include="IBasBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\IBasBS100.dll</HintPath>
       <Private>False</Private>
@@ -170,12 +173,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\UiFichaClientes.cs" />
-    <Compile Include="Helpers\InputForm.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Helpers\InputForm.Designer.cs">
-      <DependentUpon>InputForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FormCargaDescarga.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -195,10 +192,7 @@
       <DependentUpon>FormReimpressao.cs</DependentUpon>
     </Compile>
     <Compile Include="GS1_Geral.cs" />
-    <Compile Include="Helpers\HelperFunctions.cs" />
-    <Compile Include="Helpers\InputFormServico.cs" />
     <Compile Include="Internal\UiEditorInternos.cs" />
-    <Compile Include="Helpers\PriMotores.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -215,7 +209,7 @@
     </Compile>
     <Compile Include="Sales\UiEditorCopiaLinhas.cs" />
     <Compile Include="Sales\UiFichaConverteVendas.cs" />
-    <Compile Include="Helpers\Secrets.cs" />
+    <Compile Include="Secrets.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="IGcpBS900">
@@ -247,9 +241,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Helpers\InputForm.resx">
-      <DependentUpon>InputForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormCargaDescarga.resx">
       <DependentUpon>FormCargaDescarga.cs</DependentUpon>
     </EmbeddedResource>

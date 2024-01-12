@@ -11,15 +11,15 @@ using System.Security.Policy;
 using VndBE100;
 using StdBE100;
 using System.Windows.Forms;
-using DCT_Extens.Helpers;
 using Primavera.Extensibility.Extensions;
 using System.ComponentModel;
+using HelperFunctionsPrimavera10;
 
 namespace DCT_Extens.Sales
 {
     public class UiEditorVendas : EditorVendas
     {
-        private HelperFunctions _Helpers = new HelperFunctions();
+        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
         private string _strMensagem;
         private const double DBL_LIMITE = 999;
 

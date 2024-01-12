@@ -9,15 +9,15 @@ using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using StdBE100; using ErpBS100; using VndBE100; using CctBE100;
 using BasBE100;
 using System.Windows.Forms;
-using DCT_Extens.Helpers;
 using System.Data;
+using HelperFunctionsPrimavera10;
 
 namespace DCT_Extens.Sales
 {
     public class UiFichaConverteVendas : FichaConverteVendas
     {
         private List<string> _clientesQueUltrapassamLimiteList = new List<string>();
-        private HelperFunctions _Helpers = new HelperFunctions();
+        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
 
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {

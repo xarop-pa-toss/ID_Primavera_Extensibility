@@ -1,25 +1,19 @@
 using Primavera.Extensibility.Internal.Editors;
-using Primavera.Extensibility.BusinessEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
-using StdBE100; using VndBE100; using ErpBS100; using BasBE100;
-using DCT_Extens.Helpers;
 using System.Data;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 using IntBE100;
-using DCT_Extens;
 using Primavera.Extensibility.Extensions;
+using HelperFunctionsPrimavera10;
 
 namespace DCT_Extens.Internal
 {
     public class UiEditorInternos : EditorInternos
     {
-        private HelperFunctions _Helpers = new HelperFunctions();
+        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
         private DataTable _tabelaOperadores, _tabelaSerie;
         private string _motivoRepetir;
         internal bool _deveAbrirFormStockQuebras;

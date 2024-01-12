@@ -1,4 +1,5 @@
-﻿using DCT_Extens.Helpers;
+﻿using DCT_Extens;
+using HelperFunctionsPrimavera10;
 using Primavera.Extensibility.BusinessEntities;
 using Primavera.Extensibility.CustomForm;
 using StdBE100;
@@ -18,13 +19,12 @@ namespace DCT_Extens
     {
         private ErpBS100.ErpBS _BSO;
         private StdPlatBS100.StdPlatBS _PSO;
-        private Helpers.HelperFunctions _Helpers;
+        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
 
         public FormEncomendas()
         {
             _BSO = PriMotores.Motor;
             _PSO = PriMotores.Plataforma;
-            _Helpers = new Helpers.HelperFunctions();
 
             InitializeComponent();
 

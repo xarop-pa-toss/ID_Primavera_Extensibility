@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelperFunctionsPrimavera10", "HelperFunctionsPrimavera10.csproj", "{5CEC4B60-044C-4A7D-894F-40912C5DE64D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5CEC4B60-044C-4A7D-894F-40912C5DE64D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CEC4B60-044C-4A7D-894F-40912C5DE64D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CEC4B60-044C-4A7D-894F-40912C5DE64D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CEC4B60-044C-4A7D-894F-40912C5DE64D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {472E70BA-F988-45DA-A136-1AEDE0FC7F99}
+	EndGlobalSection
+EndGlobal

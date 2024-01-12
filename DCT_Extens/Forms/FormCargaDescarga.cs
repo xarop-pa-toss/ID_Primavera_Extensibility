@@ -1,6 +1,6 @@
 ﻿using BasBE100;
-using DCT_Extens.Helpers;
 using ErpBS100;
+using HelperFunctionsPrimavera10;
 using Primavera.Extensibility.CustomForm;
 using PRISDK100;
 using StdBE100;
@@ -16,7 +16,7 @@ namespace DCT_Extens
         private ErpBS _BSO { get; set; }
         private StdPlatBS _PSO { get; set; }
         private clsSDKContexto _SDKContexto { get; set; }
-        private HelperFunctions _Helpers = new HelperFunctions();
+        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
 
         public bool NaoGravar { get; set; }
         public bool MoradaAlterada, GravarComMoradaPorDefeito;
@@ -117,6 +117,11 @@ namespace DCT_Extens
             {
                 this.Invoke(new MethodInvoker(() => FormCargaDescarga_FormClosed(sender, e)));
             }
+        }
+
+        private void FormCargaDescarga_Load(object sender, EventArgs e)
+        {
+
         }
 
         private void ActualizaPriGrelha()

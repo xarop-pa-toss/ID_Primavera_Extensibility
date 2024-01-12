@@ -2,12 +2,13 @@
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using System.Data;
 using System.Linq;
+using HelperFunctionsPrimavera10;
 
 namespace DCT_Extens
 {
     public class UiFichaClientes : FichaClientes
     {
-        private Helpers.HelperFunctions _Helpers = new Helpers.HelperFunctions();
+        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
 
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {

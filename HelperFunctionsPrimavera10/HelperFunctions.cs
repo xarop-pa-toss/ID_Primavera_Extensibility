@@ -1,6 +1,4 @@
-﻿using Primavera.Extensibility;
-using Primavera.Extensibility.BusinessEntities;
-using Primavera.Extensibility.CustomCode;
+﻿using Primavera.Extensibility.CustomCode;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ErpBS100; 
 using StdPlatBS100; 
-using BasBE100; 
 using StdBE100; 
 using IntBE100; 
 using CmpBE100;
@@ -17,29 +14,32 @@ using PRISDK100;
 using System.Data;
 using System.IO;
 using Primavera.Extensibility.Extensions;
-using DCT_Extens.Helpers;
 using System.Data.SqlClient;
 
-namespace DCT_Extens.Helpers
+namespace HelperFunctionsPrimavera10
 {
     public class HelperFunctions : CustomCode
     {
         private static ErpBS _BSO {  get; set; }
         private static StdPlatBS _PSO { get; set; }
         private static clsSDKContexto _SDKContexto { get; set; }
+        private readonly ISecrets _secrets;
 
         private static object lockObj = new object();
         private static object variavelGuardada;
 
-        public HelperFunctions()
+        public HelperFunctions(ISecrets secrets)
         {
+            _secrets = secrets;
+            
             if (!PriMotores.MotorStatus)
             {
                 PriMotores.InicializarContexto();
             }
-            _BSO = Helpers.PriMotores.Motor;
-            _PSO = Helpers.PriMotores.Plataforma;
-            _SDKContexto = Helpers.PriMotores.PriSDKContexto;
+
+            _BSO = PriMotores.Motor;
+            _PSO = PriMotores.Plataforma;
+            _SDKContexto = PriMotores.PriSDKContexto;
         }
 
         // SET e GET uma variável de qualquer lado do programa.
@@ -119,7 +119,7 @@ namespace DCT_Extens.Helpers
         {
             string nomeBDdaEmpresa = _PSO.BaseDados.DaNomeBDdaEmpresa(_BSO.Contexto.CodEmp);
             string connString = 
-                $"Data Source={Secrets.BD_ServidorInstancia};" +
+                $"Data Source={_secrets.BDServidorInstancia()};" +
                 "Network Library=DBMSSOCN;" +
                 $"Initial Catalog={nomeBDdaEmpresa};" +
                 "Integrated Security=True";

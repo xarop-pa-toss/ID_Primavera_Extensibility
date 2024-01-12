@@ -1,9 +1,9 @@
 ﻿using Primavera.Extensibility.CustomForm;
 using System;
-using System.Windows.Forms;
 using System.Drawing;
+using System.Windows.Forms;
 
-namespace DCT_Extens
+namespace HelperFunctionsPrimavera10
 {
     public partial class InputForm : CustomForm
     {

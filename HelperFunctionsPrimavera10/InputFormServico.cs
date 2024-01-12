@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DCT_Extens
+namespace HelperFunctionsPrimavera10
 {
     public class InputFormServico
     {

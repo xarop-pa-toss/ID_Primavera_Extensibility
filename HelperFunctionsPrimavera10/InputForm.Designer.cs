@@ -1,4 +1,6 @@
-﻿namespace DCT_Extens
+﻿using System.Drawing;
+
+namespace HelperFunctionsPrimavera10
 {
     partial class InputForm
     {

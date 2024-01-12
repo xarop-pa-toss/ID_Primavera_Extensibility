@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using BasBE100;
 using System.Threading.Tasks;
-using DCT_Extens.Helpers;
 using ErpBS100;
 using StdPlatBS100;
 using PRISDK100;
@@ -16,6 +15,7 @@ using System.Windows.Forms;
 using StdBE100;
 using VndBE100;
 using System.Linq.Expressions;
+using HelperFunctionsPrimavera10;
 
 namespace DCT_Extens
 {
@@ -24,7 +24,7 @@ namespace DCT_Extens
         private ErpBS _BSO { get; set; }
         private StdPlatBS _PSO { get; set; }
         private clsSDKContexto _SDKContexto { get; set; }
-        private HelperFunctions _Helpers { get; set; }
+        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
         private string loadError = null;
 
         public FormReimpressao()
@@ -32,7 +32,6 @@ namespace DCT_Extens
             _BSO = PriMotores.Motor;
             _PSO = PriMotores.Plataforma;
             _SDKContexto = PriMotores.PriSDKContexto;
-            _Helpers = new HelperFunctions();
 
             InitializeComponent();
         }
