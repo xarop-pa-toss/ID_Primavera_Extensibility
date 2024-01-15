@@ -23,7 +23,7 @@ namespace HelperFunctionsPrimavera10
         private static ErpBS _BSO {  get; set; }
         private static StdPlatBS _PSO { get; set; }
         private static clsSDKContexto _SDKContexto { get; set; }
-        private readonly ISecrets _secrets;
+        public readonly ISecrets _secrets;
 
         private static object lockObj = new object();
         private static object variavelGuardada;
@@ -34,7 +34,7 @@ namespace HelperFunctionsPrimavera10
             
             if (!PriMotores.MotorStatus)
             {
-                PriMotores.InicializarContexto();
+                PriMotores.InicializarContexto(_secrets.Empresa(), _secrets.Utilizador(), _secrets.Password());
             }
 
             _BSO = PriMotores.Motor;
@@ -61,7 +61,6 @@ namespace HelperFunctionsPrimavera10
                     variavelGuardada = default(T); // Reset à variável
                     return resultado;
                 }
-
                 return default(T);
             }
         }
