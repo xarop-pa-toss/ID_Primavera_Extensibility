@@ -20,6 +20,8 @@ namespace DCT_Extens.Purchases
         {
             base.AntesDeGravar(ref Cancel, e);
 
+            // Mesma verificação que no ArtigoIdentificado
+            // É feita aqui pois podem ser alterados os CDU em runtime
             if (DocumentoCompra.Entidade != "44" 
                 && new List<string> { "ECF", "ECL", "ECP" }.Contains(DocumentoCompra.Tipodoc)
                 && DocumentoCompra.Linhas.NumItens > 0)
@@ -44,6 +46,7 @@ namespace DCT_Extens.Purchases
                 && DocumentoCompra.Entidade != "44"
                 && new List<string> { "ECF", "ECL", "ECP" }.Contains(DocumentoCompra.Tipodoc))
             {
+                
                 PSO.MensagensDialogos.MostraAviso("Este artigo está bloqueado para Encomendas!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
                 DocumentoCompra.Linhas.GetEdita(NumLinha).Artigo = null;
                 Cancel = true;

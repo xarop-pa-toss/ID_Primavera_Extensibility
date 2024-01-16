@@ -26,7 +26,7 @@ namespace HelperFunctionsPrimavera10
         public readonly ISecrets _secrets;
 
         private static object lockObj = new object();
-        private static object variavelGuardada;
+        private static object global;
 
         public HelperFunctions(ISecrets secrets)
         {
@@ -44,21 +44,21 @@ namespace HelperFunctionsPrimavera10
 
         // SET e GET uma variável de qualquer lado do programa.
         // Variável autodestroi-se quando é acedida (GetVariavel).
-        public void SetVariavel<T>(T value)
+        public void SetGlobalVar<T>(T value)
         {
             lock (lockObj)
             {
-                variavelGuardada = value;
+                globalVar = value;
             }
         }
-        public T GetVariavelOuDefault<T>()
+        public T GetGlobalVarOuDefault<T>()
         {
             lock (lockObj)
             {
-                if (variavelGuardada != null && variavelGuardada is T)
+                if (globalVar != null && globalVar is T)
                 {
-                    T resultado = (T)variavelGuardada;
-                    variavelGuardada = default(T); // Reset à variável
+                    T resultado = (T)globalVar;
+                    globalVar = default(T); // Reset à variável
                     return resultado;
                 }
                 return default(T);
