@@ -61,7 +61,6 @@ namespace DCT_Extens.Sales
             }
         }
         
-
         public override void DepoisDeGravar(Primavera.Platform.Collections.PrimaveraOrderedDictionary colTodosDocumentosGerados, ExtensibilityEventArgs e)
         {
             base.DepoisDeGravar(colTodosDocumentosGerados, e);

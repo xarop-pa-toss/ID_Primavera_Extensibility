@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using IntBE100;
 using Primavera.Extensibility.Extensions;
 using HelperFunctionsPrimavera10;
+using Primavera.Extensibility.Production.Delegates;
 
 namespace DCT_Extens.Internal
 {
@@ -15,13 +16,18 @@ namespace DCT_Extens.Internal
     {
         private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
         private DataTable _tabelaOperadores, _tabelaSerie;
-        private string _motivoRepetir;
-        internal bool _deveAbrirFormStockQuebras;
+
+        private bool _deveRepetir = false;
+        private Dictionary<string, string> _repetirDict = new Dictionary<string, string>
+        {
+            { "operador","" },
+            { "motivo", "" }
+        };
 
         public override void TipoDocumentoIdentificado(string TipoDocumento, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.TipoDocumentoIdentificado(TipoDocumento, ref Cancel, e);
-            _motivoRepetir = "";
+            LimparRepetirVars();
 
             // Carregar TDUs OperadorQuebras e séries com CDU_StockQuebras a true.
             // Tem de ser feito pois TipoDocumentoIdentificado não dá série e não existe override para Série identificada.
@@ -55,7 +61,7 @@ namespace DCT_Extens.Internal
 
                 // Se o user tiver picado a checkbox para repetir o motivo para todas as linhas, não vale a pena abrir o form
                 // Mas deve sempre abrir na primeira linha claro
-                if (NumLinha.Equals(1) || _motivoRepetir == "")
+                if (NumLinha.Equals(1) || !_deveRepetir)
                 {
                     // Form instanciado aqui para que seja um objecto limpo para cada ArtigoIdentificado independentemente se o anterior foi gravado ou não
                     // Recebe os Operadores a listar na combo box e qual o estado dos controlos (campos Motivo e Operador da _tabelaSeries - ver query acima).
@@ -71,9 +77,12 @@ namespace DCT_Extens.Internal
                             // Verificações de regras de preenchimento dos dados são feitas dentro do Form e não aqui.
                             if (resultado == DialogResult.OK)
                             {
-                                // Impede o form de se abrir outra vez se a checkbox estiver picada
-                                if (formStockQuebras.GetCheckBox_RepetirMotivo) { _motivoRepetir = formStockQuebras.GetTxtBox_MotivoQuebra; }
-
+                                // Impede o form de se abrir outra vez se a checkbox estiver picada. Guarda os valores para usar nas próximas linhas
+                                if (formStockQuebras.GetCheckBox_RepetirMotivo) {
+                                    _deveRepetir = true;
+                                    _repetirDict["operador"] = formStockQuebras.GetCmbBox_Operador;
+                                    _repetirDict["motivo"] = formStockQuebras.GetTxtBox_MotivoQuebra;
+                                }
                                 linha.CamposUtil["CDU_OperadorQuebra"].Valor = formStockQuebras.GetCmbBox_Operador;
                                 linha.CamposUtil["CDU_MotivoQuebra"].Valor = formStockQuebras.GetTxtBox_MotivoQuebra;
                             }
@@ -84,7 +93,12 @@ namespace DCT_Extens.Internal
                             }
                         }
                     }
-                }   
+                }
+                else if (_deveRepetir)
+                {
+                    linha.CamposUtil["CDU_OperadorQuebra"].Valor = _repetirDict["operador"];
+                    linha.CamposUtil["CDU_MotivoQuebra"].Valor = _repetirDict["motivo"];
+                }
             }
         }
 
@@ -107,13 +121,23 @@ namespace DCT_Extens.Internal
         {
             base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
 
-            _motivoRepetir = "";
+            LimparRepetirVars();
         }
 
         public override void EntidadeIdentificada(string TipoEntidade, string Entidade, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.EntidadeIdentificada(TipoEntidade, Entidade, ref Cancel, e);
-            _motivoRepetir = "";
+
+            LimparRepetirVars();
+        }
+
+        private void LimparRepetirVars()
+        {
+            _deveRepetir = false;
+            foreach (var key in _repetirDict.Keys.ToList())
+            {
+                _repetirDict[key] = null;
+            }
         }
     }
 }
