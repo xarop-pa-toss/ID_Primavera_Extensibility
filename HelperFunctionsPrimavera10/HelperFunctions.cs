@@ -26,7 +26,7 @@ namespace HelperFunctionsPrimavera10
         public readonly ISecrets _secrets;
 
         private static object lockObj = new object();
-        private static object global;
+        private static object globalVar;
 
         public HelperFunctions(ISecrets secrets)
         {
@@ -114,7 +114,7 @@ namespace HelperFunctionsPrimavera10
 
         // Por vezes, TDUs com campos ID têm de ter esses campos desbloqueados antes de se poder escrever
         // Infelizmente o Primavera 10 já não permite fazer queries não-consulta directamente à BD sem passar pelos métodos de controlo dele
-        public void QuerySQLComIdentityInsert(string tabelaIdentityInsert, string querySQL)
+        public void QuerySQL(string querySQL, string tabelaIdentityInsert = null)
         {
             string nomeBDdaEmpresa = _PSO.BaseDados.DaNomeBDdaEmpresa(_BSO.Contexto.CodEmp);
             string connString = 
@@ -127,23 +127,26 @@ namespace HelperFunctionsPrimavera10
             {
                 try
                 {
-                    connection.Open();
-
-                    // QUERY altera propriedade IDENTITY_INSERT para se conseguir manipular GUIDs
-                    List<string> queryList = new List<string>
+                    // Se parâmetro tabelaIdentityInsert não for nulo, QUERY altera propriedade IDENTITY_INSERT para se conseguir manipular GUIDs
+                    List<string> queryList = new List<string>();
+                    if (tabelaIdentityInsert != null)
                     {
-                        $"SET IDENTITY_INSERT {tabelaIdentityInsert} ON",
-                        querySQL,
-                        $"SET IDENTITY_INSERT {tabelaIdentityInsert} OFF"
-                    };
-
+                        queryList.Add($"SET IDENTITY_INSERT {tabelaIdentityInsert} ON)");
+                        queryList.Add(querySQL);
+                        queryList.Add($"SET IDENTITY_INSERT {tabelaIdentityInsert} OFF)");
+                    }
+                    else
+                    {
+                        queryList.Add(querySQL);
+                    }
                     string query = string.Join("; ", queryList);
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
+                        command.Connection.Open()
                         command.ExecuteNonQuery();
                     }
-                }
+
                 catch (Exception ex)
                 {
                     EscreverParaFicheiroTxt(ex.ToString(), "Helpers_AlterarPropriedadeTabelaNaBD_LigacaoBD");

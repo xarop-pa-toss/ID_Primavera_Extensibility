@@ -21,9 +21,11 @@ namespace DCT_Extens
         }
 
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
+        
         {
             base.AntesDeGravar(ref Cancel, e);
 
+            #region Transferir histórico de cliente quando é alterado o Responsável de Cobrança (bendedor).
             if (vendedorOriginal != this.Cliente.Vendedor)
             {
                 bool resposta = PSO.MensagensDialogos.MostraPerguntaSimples(
@@ -32,36 +34,39 @@ namespace DCT_Extens
 
                 if (resposta)
                 {
-                    // Têm de ser alterados todos os campos RespCobranca(CabecDoc) e Vendedor(LinhasDoc) para o novo vendedor
-                    // 1 - Get IDs dos CabecDoc com o vendedor actual.
-                    // 2 - Set RespCobranca(CabecDoc.ID = ID) e Vendedor(LinhasDoc.IDCabecDoc = ID) para vendedor novo
+                    // Têm de ser alterados todos os campos RespCobranca(CabecDoc) e Vendedor(LinhasDoc) para o novo vendedor.
+                    // 1 - Query com os IdCabecDoc que têm o vendedor original
+                    // 2 - Set do novo vendedor nas linhas das tabelas. Podemos encontrar as linhas apenas com o IdCabecDoc
+                    //   CabecDoc pelo campo Id -> RespCobranca
+                    //   LinhasDoc pelo campo IdCabecDoc -> Vendedor
+                    //   Historico pelo campo IdDoc -> RespCobranca e Vendedor
 
                     // 1
-                    DataTable cabecDocsTabela = _Helpers.GetDataTableDeSQL(
+                    string idCabecDocQuery = 
                         " SELECT Id" +
                         " FROM CabecDoc" +
-                        $" WHERE RespCobranca = '{vendedorOriginal}'");
+                        $" WHERE Entidade = '{Cliente.Cliente}'";
 
-                    List<string> cabecDocsList = cabecDocsTabela.AsEnumerable().Select(x => x[0].ToString()).ToList();
+                    // 2
+                    _Helpers.QuerySQL(
+                        " UPDATE CabecDoc" +
+                       $" SET RespCobranca = '{Cliente.Vendedor}'" +
+                       $" WHERE Id IN ({idCabecDocQuery});");
 
-                    // 3
-                    StdBEExecSql sql = new StdBEExecSql();
-                    sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-                    sql.Tabela = "CabecDoc";
-                    sql.AddCampo("RespCobranca", this.Cliente.Vendedor);
-                    sql.AddCampo("Id", cabecDocsList, true);
-                    PSO.ExecSql.Executa(sql);
+                    _Helpers.QuerySQL(
+                        " UPDATE LinhasDoc" +
+                       $" SET Vendedor = '{Cliente.Vendedor}'" +
+                       $" WHERE IdCabecDoc IN ({idCabecDocQuery});");
 
-                    sql = new StdBEExecSql();
-                    sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-                    sql.Tabela = "LinhasDoc";
-                    sql.AddCampo("Vendedor", this.Cliente.Vendedor);
-                    sql.AddCampo("IdCabecDoc", cabecDocsList, true);
-                    PSO.ExecSql.Executa(sql);
+                    _Helpers.QuerySQL(
+                        " UPDATE Historico" +
+                       $" SET RespCobranca = '{Cliente.Vendedor}', Vendedor = '{Cliente.Vendedor}'" +
+                       $" WHERE IdDoc IN ({idCabecDocQuery});");
                 }
             }
+            #endregion
 
-# region VERIFICAÇÃO DE PERMISSÕES PARA ANULAÇÃO DE CLIENTE
+            #region Verificação de permissões de utilizador para anulação de clientes
             DataTable TDU = _Helpers.GetDataTableDeSQL("SELECT CDU_Utilizador FROM TDU_PermissaoAnularClientes");
 
             string userActual = BSO.Contexto.UtilizadorActual;
