@@ -24,7 +24,26 @@ namespace DCT_Extens
         
         {
             base.AntesDeGravar(ref Cancel, e);
+            #region Verificação de permissões de utilizador para anulação de clientes
+            DataTable TDU = _Helpers.GetDataTableDeSQL("SELECT CDU_Utilizador FROM TDU_PermissaoAnularClientes");
 
+            string userActual = BSO.Contexto.UtilizadorActual;
+            var autorizacao = from DataRow linha in TDU.Rows
+                              where (string)linha["CDU_Utilizador"] == userActual
+                              select (string)linha["CDU_Utilizador"];
+
+            // Se o utilizador actual não tiver permissão, a variavel 'autorizacao' é uma lista vazia.
+            if (!autorizacao.Any())
+            {
+                PSO.MensagensDialogos.MostraAviso("Não tem permissão para alterar o estado Anulado de um cliente. \n Este registo não será gravado.", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
+                Cancel = true;
+            }
+            #endregion
+        }
+
+        public override void DepoisDeGravar(string Cliente, ExtensibilityEventArgs e)
+        {
+            base.DepoisDeGravar(Cliente, e);
             #region Transferir histórico de cliente quando é alterado o Responsável de Cobrança (bendedor).
             if (vendedorOriginal != this.Cliente.Vendedor)
             {
@@ -42,45 +61,29 @@ namespace DCT_Extens
                     //   Historico pelo campo IdDoc -> RespCobranca e Vendedor
 
                     // 1
-                    string idCabecDocQuery = 
+                    string idCabecDocQuery =
                         " SELECT Id" +
                         " FROM CabecDoc" +
-                        $" WHERE Entidade = '{Cliente.Cliente}'";
+                        $" WHERE Entidade = '{this.Cliente.Cliente}'";
 
                     // 2
                     _Helpers.QuerySQL(
                         " UPDATE CabecDoc" +
-                       $" SET RespCobranca = '{Cliente.Vendedor}'" +
+                       $" SET RespCobranca = '{this.Cliente.Vendedor}'" +
                        $" WHERE Id IN ({idCabecDocQuery});");
 
                     _Helpers.QuerySQL(
                         " UPDATE LinhasDoc" +
-                       $" SET Vendedor = '{Cliente.Vendedor}'" +
+                       $" SET Vendedor = '{this.Cliente.Vendedor}'" +
                        $" WHERE IdCabecDoc IN ({idCabecDocQuery});");
 
                     _Helpers.QuerySQL(
                         " UPDATE Historico" +
-                       $" SET RespCobranca = '{Cliente.Vendedor}', Vendedor = '{Cliente.Vendedor}'" +
+                       $" SET RespCobranca = '{this.Cliente.Vendedor}', Vendedor = '{this.Cliente.Vendedor}'" +
                        $" WHERE IdDoc IN ({idCabecDocQuery});");
                 }
             }
             #endregion
-
-            #region Verificação de permissões de utilizador para anulação de clientes
-            DataTable TDU = _Helpers.GetDataTableDeSQL("SELECT CDU_Utilizador FROM TDU_PermissaoAnularClientes");
-
-            string userActual = BSO.Contexto.UtilizadorActual;
-            var autorizacao = from DataRow linha in TDU.Rows
-                              where (string)linha["CDU_Utilizador"] == userActual
-                              select (string)linha["CDU_Utilizador"];
-
-            // Se o utilizador actual não tiver permissão, a variavel 'autorizacao' é uma lista vazia.
-            if (!autorizacao.Any())
-            {
-                PSO.MensagensDialogos.MostraAviso("Não tem permissão para alterar o estado Anulado de um cliente. \n Este registo não será gravado.", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
-                Cancel = true;
-            }
-#endregion
         }
     }
 }

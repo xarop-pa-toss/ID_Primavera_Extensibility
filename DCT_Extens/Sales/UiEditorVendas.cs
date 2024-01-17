@@ -27,6 +27,7 @@ namespace DCT_Extens.Sales
         {
             base.ClienteIdentificado(Cliente, ref Cancel, e);
 
+            #region Processamento de ofertas (cliente 13000 / FormCargaDescarga)
             if (Cliente.Equals("13000"))
             {
                 BasBECargaDescarga cdl = new BasBECargaDescarga
@@ -43,12 +44,14 @@ namespace DCT_Extens.Sales
 
                 DocumentoVenda.CargaDescarga = cdl;
             }
+            #endregion
         }
 
         public override void ArtigoIdentificado(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.ArtigoIdentificado(Artigo, NumLinha, ref Cancel, e);
 
+            #region Processamento de ofertas (cliente 13000 / FormCargaDescarga)
             string motivoOferta = null;
 
             // O código que se segue irá permitir que surja uma inputbox quando é escolhido o cliente 13000, no momento do lançamento dos artigos
@@ -101,12 +104,14 @@ namespace DCT_Extens.Sales
                     }
                 }
             }
+            #endregion
         }
 
         public override void ValidaLinha(int NumLinha, ExtensibilityEventArgs e)
         {
             base.ValidaLinha(NumLinha, e);
 
+            #region Validação de quantidades não inteiras
             VndBELinhaDocumentoVenda linha = DocumentoVenda.Linhas.GetEdita(NumLinha);
 
             // *** Se Quantidade tiver casas decimais, avisar
@@ -118,12 +123,14 @@ namespace DCT_Extens.Sales
                     "ATENÇÃO:" + Environment.NewLine + 
                     "Está a inserir uma quantidade não inteira (com casas decimais).");
             }
+            #endregion
         }
 
-        
         public override void DepoisDeTransformar(ExtensibilityEventArgs e)
         {
             base.DepoisDeTransformar(e);
+
+            #region Validações Cardex
             BasBEArtigo artigo;
             StdBELista precUnitDesc;
             double precUnit;
@@ -140,23 +147,23 @@ namespace DCT_Extens.Sales
                         precUnit = linha.PrecUnit;
                         precUnitDesc = BSO.Consulta("" +
                             " SELECT Preco" +
-                            " FROM REgrasDescPrec" +
+                            " FROM RegrasDescPrec" +
                             " WHERE Campo1 = N" + DocumentoVenda.Entidade +
                             " AND Campo2 = N" + linha.Artigo);
 
-                        if (precUnitDesc.Vazia()) { PSO.MensagensDialogos.MostraAviso($"O artigo {linha.Artigo} não tem valores no Cardex!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico); } else if (precUnit != precUnitDesc.Valor(0)) { PSO.MensagensDialogos.MostraAviso($"O valor da encomenda do artigo {linha.Artigo} não coincide com o valor no Cardex!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico); }
+                        if (precUnitDesc.Vazia()) { PSO.MensagensDialogos.MostraAviso($"O artigo {linha.Artigo} não tem valores no Cardex!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico); } 
+                        else if (precUnit != precUnitDesc.Valor(0)) { PSO.MensagensDialogos.MostraAviso($"O valor da encomenda do artigo {linha.Artigo} não coincide com o valor no Cardex!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico); }
                     }
-                    // não parece ser necessário
-                    // precunit = 0
                 }
             }
+            #endregion
         }
 
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.AntesDeGravar(ref Cancel, e);
 
-            #region Validar CabecDoc
+            #region Validação de valor final de documento
             // Mensagem a apresentar ao utilizador
             _strMensagem = "O valor desta fatura ultrapassa o limite definido (" + DBL_LIMITE.ToString("F2") + "). Deseja continuar com a gravação?";
 
@@ -176,7 +183,7 @@ namespace DCT_Extens.Sales
             }
             #endregion
 
-            #region Forçar Vendedor nas Linhas (vendedor) = Vendedor CabecDoc (responsável)
+            #region Alteração de campo Vendedor nas linhas para corresponder ao campo Reponsavel do cabeçalho
             if (BSO.Vendas.TabVendas.Edita(DocumentoVenda.Tipodoc).TipoDocumento.Equals(4))
             {
                 foreach (VndBELinhaDocumentoVenda linha in DocumentoVenda.Linhas)
@@ -222,7 +229,7 @@ namespace DCT_Extens.Sales
             }
             #endregion
 
-            #region Alteração de morada de descarga para entidade 13000
+            #region Processamento de ofertas (cliente 13000 / FormCargaDescarga)
             if (DocumentoVenda.Entidade.Equals("13000") && string.IsNullOrEmpty(DocumentoVenda.MoradaEntrega))
             {
                 using (var formInstancia = BSO.Extensibility.CreateCustomFormInstance(typeof(FormCargaDescarga)))
@@ -265,7 +272,7 @@ namespace DCT_Extens.Sales
         {
             base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
 
-            //*** SSCC código GS1 ***
+            // *** SSCC código GS1 ***
             BasBECliente objCliente = BSO.Base.Clientes.Consulta(DocumentoVenda.Entidade);
             if ((bool)objCliente.CamposUtil["CDU_SSCC"].Valor)
             {
@@ -279,10 +286,12 @@ namespace DCT_Extens.Sales
         {
             base.AntesDeImprimir(ref Cancel, e);
 
+            #region Alteração de mapa para cliente 21366
             if (new List<string> { "GRL", "FAL" }.Contains(DocumentoVenda.Tipodoc) && DocumentoVenda.Entidade.Equals("21366"))
             {
                 DocumentoVenda.MapaImpressao = "mapatest";
             }
+            #endregion
         }
 
         private void FormCargaDescarga_FormClosed(object sender, FormClosedEventArgs e)

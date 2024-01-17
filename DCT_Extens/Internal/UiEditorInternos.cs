@@ -27,6 +27,8 @@ namespace DCT_Extens.Internal
         public override void TipoDocumentoIdentificado(string TipoDocumento, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.TipoDocumentoIdentificado(TipoDocumento, ref Cancel, e);
+
+            #region StockQuebras
             LimparRepetirVars();
 
             // Carregar TDUs OperadorQuebras e séries com CDU_StockQuebras a true.
@@ -41,12 +43,14 @@ namespace DCT_Extens.Internal
                 $"  AND (CDU_PedeOperador_Motivo = 1 OR CDU_PedeOperador_Operador = 1)" +
                 $"  AND TipoDoc = '{TipoDocumento}'" +      
                 $"  AND Serie = '{DocumentoInterno.Serie}'");
+            #endregion
         }
 
         public override void ArtigoIdentificado(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.ArtigoIdentificado(Artigo, NumLinha, ref Cancel, e);
 
+            #region StockQuebras
             IntBELinhaDocumentoInterno linha = DocumentoInterno.Linhas.GetEdita(NumLinha);
 
             // Se série for válida, só terá uma linha contendo essa série && Se linha for de artigo
@@ -100,35 +104,40 @@ namespace DCT_Extens.Internal
                     linha.CamposUtil["CDU_MotivoQuebra"].Valor = _repetirDict["motivo"];
                 }
             }
+            #endregion
         }
 
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.AntesDeGravar(ref Cancel, e);
 
+            #region GS1 / SSCC
             if (GS1_Geral.LinhasCopiadas)
             {
                 // É melhor alterar a variavel de estado assim que possivel para evitar esquecimento mais tarde.
                 GS1_Geral.LinhasCopiadas = false;
 
                 IntBELinhasDocumentoInterno linhas = DocumentoInterno.Linhas;
-                if (linhas.NumItens == 0) { }
-
             }
+            #endregion
         }
 
         public override void DepoisDeGravar(string Filial, string Tipo, string Serie, int NumDoc, ExtensibilityEventArgs e)
         {
             base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
 
+            #region StockQuebras
             LimparRepetirVars();
+            #endregion
         }
 
         public override void EntidadeIdentificada(string TipoEntidade, string Entidade, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.EntidadeIdentificada(TipoEntidade, Entidade, ref Cancel, e);
 
+            #region StockQuebras
             LimparRepetirVars();
+            #endregion
         }
 
         private void LimparRepetirVars()

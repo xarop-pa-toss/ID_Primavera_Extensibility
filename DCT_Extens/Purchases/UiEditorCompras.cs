@@ -20,6 +20,7 @@ namespace DCT_Extens.Purchases
         {
             base.AntesDeGravar(ref Cancel, e);
 
+            #region Bloqueio de encomendas por artigo
             // Mesma verificação que no ArtigoIdentificado
             // É feita aqui pois podem ser alterados os CDU em runtime
             if (DocumentoCompra.Entidade != "44" 
@@ -34,12 +35,14 @@ namespace DCT_Extens.Purchases
                     if (linha.TipoLinha.Equals(10) && (bool)artigo.CamposUtil["CDU_ArtBLOQC"].Valor) { Cancel = true; }
                 }
             }
+            #endregion
         }
 
         public override void ArtigoIdentificado(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.ArtigoIdentificado(Artigo, NumLinha, ref Cancel, e);
 
+            #region Bloqueio de encomendas por artigo
             BasBEArtigo artigo = BSO.Base.Artigos.Edita(DocumentoCompra.Linhas.GetEdita(NumLinha).Artigo);
 
             if ((bool)artigo.CamposUtil["CDU_ArtBLOQC"].Valor
@@ -51,6 +54,7 @@ namespace DCT_Extens.Purchases
                 DocumentoCompra.Linhas.GetEdita(NumLinha).Artigo = null;
                 Cancel = true;
             }
+            #endregion
         }
     }
 }
