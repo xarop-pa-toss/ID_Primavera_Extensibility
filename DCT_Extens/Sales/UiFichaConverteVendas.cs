@@ -31,6 +31,7 @@ namespace DCT_Extens.Sales
         {
             base.AntesDeConverter(NumDoc, Tipodoc, Serie, Filial, TipodocDestino, SerieDestino, ref Cancel, e);
 
+            #region Verificação de limite de crédito do cliente antes de converter um documento de venda
             string strCliente = BSO.Vendas.Documentos.DaValorAtributo(Filial, Tipodoc, Serie, NumDoc, "Entidade");
             BasBECliente cliente = BSO.Base.Clientes.Edita(strCliente);
             double valorDocOrigem = BSO.Vendas.Documentos.DaValorAtributo(Filial, Tipodoc, Serie, NumDoc, "TotalDocumento");
@@ -43,11 +44,11 @@ namespace DCT_Extens.Sales
 
                 var resultado = PSO.MensagensDialogos.MostraMensagem(
                     StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimNao,
-                    $"O documento {Tipodoc} {Serie}/{NumDoc} ira colocar o cliente acima do seu limite de crédito.\n" +
-                    $"Cliente: {strCliente} - {cliente.Nome}\n" +
-                    $"Limite: {cliente.Limitecredito}\n" +
-                    $"Débito Actual: {cliente.DebitoContaCorrente}\n" +
-                    $"Excedente: {valorAcimaDoLimite * -1}\n\n" +
+                    $"O documento {Tipodoc} {Serie}/{NumDoc} ira colocar o cliente acima do seu limite de crédito." + Environment.NewLine +
+                    $"Cliente: {strCliente} - {cliente.Nome}" + Environment.NewLine +
+                    $"Limite: {cliente.Limitecredito}" + Environment.NewLine +
+                    $"Débito Actual: {cliente.DebitoContaCorrente}" + Environment.NewLine +
+                    $"Excedente: {valorAcimaDoLimite * -1}" + Environment.NewLine + Environment.NewLine +
                     $"Deseja continuar com a conversão deste documento?",
                     StdPlatBS100.StdBSTipos.IconId.PRI_Exclama);
 
@@ -59,12 +60,14 @@ namespace DCT_Extens.Sales
                     Cancel = true;
                 }
             }
+            #endregion
         }
-        
+
         public override void DepoisDeGravar(Primavera.Platform.Collections.PrimaveraOrderedDictionary colTodosDocumentosGerados, ExtensibilityEventArgs e)
         {
             base.DepoisDeGravar(colTodosDocumentosGerados, e);
 
+            #region Verificação de limite de crédito do cliente antes de converter um documento de venda
             if (_clientesQueUltrapassamLimiteList.Any())
             {
                 PSO.MensagensDialogos.MostraAviso(
@@ -74,6 +77,7 @@ namespace DCT_Extens.Sales
 
                 _Helpers.EscreverParaFicheiroTxt("Os seguintes clientes ultrapassaram os seus limites de crédito.\n\n" + string.Join("", _clientesQueUltrapassamLimiteList), "ConversaoDocumentosVenda_ClientesUltrapassamLimite");
             }
+            #endregion
         }
     }
 }

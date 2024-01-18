@@ -31,7 +31,7 @@ namespace DCT_Extens.Internal
             #region StockQuebras
             LimparRepetirVars();
 
-            // Carregar TDUs OperadorQuebras e séries com CDU_StockQuebras a true.
+            // Carregar TDUs OperadorQuebras e séries.
             // Tem de ser feito pois TipoDocumentoIdentificado não dá série e não existe override para Série identificada.
             _tabelaOperadores = _Helpers.GetDataTableDeSQL("SELECT * FROM TDU_OperadorQuebra;");
 
@@ -42,7 +42,7 @@ namespace DCT_Extens.Internal
                 $"  DataInicial >= '2022-01-01' " +
                 $"  AND (CDU_PedeOperador_Motivo = 1 OR CDU_PedeOperador_Operador = 1)" +
                 $"  AND TipoDoc = '{TipoDocumento}'" +      
-                $"  AND Serie = '{DocumentoInterno.Serie}'");
+                $"  AND Serie = '{DocumentoInterno.Serie}';");
             #endregion
         }
 
@@ -110,7 +110,7 @@ namespace DCT_Extens.Internal
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.AntesDeGravar(ref Cancel, e);
-
+          
             #region GS1 / SSCC
             if (GS1_Geral.LinhasCopiadas)
             {

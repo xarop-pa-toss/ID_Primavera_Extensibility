@@ -167,7 +167,7 @@ namespace DCT_Extens
         {
             listBox_TipoDoc.Items.Clear();
 
-            DataTable tipoDocsTabela = _Helpers.GetDataTableDeSQL("" +
+            DataTable tipoDocsTabela = _Helpers.GetDataTableDeSQL(
                 " SELECT Documento + ' - ' + Descricao AS Doc" +
                 " FROM DocumentosVenda" +
                 " WHERE Inactivo = 0" +

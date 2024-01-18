@@ -272,13 +272,15 @@ namespace DCT_Extens.Sales
         {
             base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
 
+            #region Códigos GS1 / SSCC
             // *** SSCC código GS1 ***
             BasBECliente objCliente = BSO.Base.Clientes.Consulta(DocumentoVenda.Entidade);
             if ((bool)objCliente.CamposUtil["CDU_SSCC"].Valor)
             {
-                GS1_Geral GS1 = new GS1_Geral(Filial, Serie, Tipo, NumDoc, DocumentoVenda);
+                GS1_Geral GS1 = new GS1_Geral(DocumentoVenda);
                 GS1.EditorVendas_DepoisDeGravar();
             }
+            #endregion
         }
 
         // AntesDeImprimir está com "mapatest". Alterar pro real.

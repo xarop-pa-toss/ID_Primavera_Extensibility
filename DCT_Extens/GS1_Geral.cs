@@ -19,10 +19,6 @@ namespace DCT_Extens
 {
     public class GS1_Geral : CustomCode
     {
-        private string _filial { get; set; }
-        private string _serie { get; set; }
-        private string _tipo { get; set; }
-        private long _numDoc { get; set; }
         private VndBEDocumentoVenda _dv { get; set; }
         private ErpBS _BSO { get; set; }
         private StdPlatBS _PSO { get; set; }
@@ -35,12 +31,8 @@ namespace DCT_Extens
         private const string PREFIXO = "3";
         private const string PREFIXO_EMPRESA = "560089876";
 
-        public GS1_Geral(string Filial, string Serie, string Tipo, long NumDoc, VndBEDocumentoVenda dv)
+        public GS1_Geral(VndBEDocumentoVenda dv)
         {
-            _filial = Filial;
-            _serie = Serie;
-            _tipo = Tipo;
-            _numDoc = NumDoc;
             _dv = dv;
             _BSO = PriMotores.Motor;
             _PSO = PriMotores.Plataforma;
@@ -55,16 +47,6 @@ namespace DCT_Extens
 
             if ((bool)objCliente.CamposUtil["CDU_SSCC"].Valor)
             {
-                //// Destrancar as colunas GUID na tabela TDU_TTE_PackingCodes para conseguir inserir nessas colunas
-                //using (StdBEExecSql sql = new StdBEExecSql())
-                //{
-                //    sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-                //    sql.Tabela = "TDU_TTE_PackingCodes";
-
-                //    sql.AddCampo("IDENTITY_INSERT", "ON");
-                //    _PSO.ExecSql.Executa(sql);
-                //};
-
                 // Calcular digito controlo para cada linha de artigo e criar a sequencia final.
                 // Inserir a sequencia final em cada linha e na tabela TDU_TTE_PackingCodes
                 foreach (VndBELinhaDocumentoVenda linha in _dv.Linhas)

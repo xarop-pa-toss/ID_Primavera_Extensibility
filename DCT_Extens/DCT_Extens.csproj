@@ -173,6 +173,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\UiFichaClientes.cs" />
+    <Compile Include="FormCustom.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FormCustom.Designer.cs">
+      <DependentUpon>FormCustom.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormCargaDescarga.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -193,6 +199,7 @@
     </Compile>
     <Compile Include="GS1_Geral.cs" />
     <Compile Include="Internal\UiEditorInternos.cs" />
+    <Compile Include="PriCustomCode1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -241,6 +248,9 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FormCustom.resx">
+      <DependentUpon>FormCustom.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormCargaDescarga.resx">
       <DependentUpon>FormCargaDescarga.cs</DependentUpon>
     </EmbeddedResource>

@@ -33,7 +33,7 @@ namespace DCT_Extens
             _BSO = PriMotores.Motor;
             _PSO = PriMotores.Plataforma;
             _SDKContexto = PriMotores.PriSDKContexto;
-
+            
             priGrelha_Moradas.Inicializa(_SDKContexto);
             f4_Entidade.Inicializa(_SDKContexto);
 

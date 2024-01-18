@@ -24,7 +24,7 @@ namespace DCT_Extens
         private List<string> _listaOperadores;
         private DataRow _rowSerie;
 
-        public FormStockQuebras()//(List<string> listaOperadores, DataRow rowSerie)
+        public FormStockQuebras()
         {
             InitializeComponent();
         }
