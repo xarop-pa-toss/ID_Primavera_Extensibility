@@ -34,25 +34,25 @@
             // f4
             // 
             this.f4.AgrupaOutrosTerceiros = false;
-            this.f4.Audit = "";
+            this.f4.Audit = "mnuTabClientes";
             this.f4.AutoComplete = false;
             this.f4.BackColorLocked = System.Drawing.SystemColors.ButtonFace;
-            this.f4.CampoChave = "";
+            this.f4.CampoChave = "Cliente";
             this.f4.CampoChaveFisica = "";
-            this.f4.CampoDescricao = "";
-            this.f4.Caption = "";
+            this.f4.CampoDescricao = "Nome";
+            this.f4.Caption = "Cliente:";
             this.f4.CarregarValoresEdicao = false;
-            this.f4.Categoria = PRISDK100.clsSDKTypes.EnumCategoria.NaoDefinida;
+            this.f4.Categoria = PRISDK100.clsSDKTypes.EnumCategoria.Clientes;
             this.f4.ChaveFisica = "";
             this.f4.ChaveNumerica = false;
             this.f4.F4Modal = false;
             this.f4.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.f4.IDCategoria = "";
-            this.f4.Location = new System.Drawing.Point(96, 151);
+            this.f4.IDCategoria = "Clientes";
+            this.f4.Location = new System.Drawing.Point(81, 151);
             this.f4.MaxLengthDescricao = 0;
             this.f4.MaxLengthF4 = 50;
             this.f4.MinimumSize = new System.Drawing.Size(37, 21);
-            this.f4.Modulo = "";
+            this.f4.Modulo = "BAS";
             this.f4.MostraDescricao = true;
             this.f4.MostraLink = true;
             this.f4.Name = "f4";
@@ -61,11 +61,11 @@
             this.f4.PermiteDrillDown = true;
             this.f4.PermiteEnabledLink = true;
             this.f4.PodeEditarDescricao = false;
-            this.f4.ResourceID = 0;
+            this.f4.ResourceID = 669;
             this.f4.ResourcePersonalizada = false;
             this.f4.Restricao = "";
             this.f4.SelectionFormula = "";
-            this.f4.Size = new System.Drawing.Size(474, 30);
+            this.f4.Size = new System.Drawing.Size(489, 30);
             this.f4.TabIndex = 0;
             this.f4.TextoDescricao = "";
             this.f4.WidthEspacamento = 60;

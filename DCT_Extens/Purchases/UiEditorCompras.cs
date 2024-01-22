@@ -10,14 +10,20 @@ using StdBE100;
 using CmpBE100;
 using ErpBS100;
 using BasBE100;
+using PRISDK100;
 
 
 namespace DCT_Extens.Purchases
 {
     public class UiEditorCompras : EditorCompras
     {
+        private clsSDKContexto sdk;
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
+            sdk = new clsSDKContexto();
+            sdk.Inicializa(BSO, "ERP");
+            PSO.InicializaPlataforma(sdk);
+            
             base.AntesDeGravar(ref Cancel, e);
 
             #region Bloqueio de encomendas por artigo

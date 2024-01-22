@@ -26,6 +26,7 @@ namespace PP_PPCS.Motor
         /// </summary>
         private PriEngine()
         {
+            CreateContext();
         }
 
         public static PriEngine CreateContext(string Company, string User, string Password)
@@ -74,7 +75,7 @@ namespace PP_PPCS.Motor
                 if (MotorLE != null) {
                     //Inicializa o SDK
                     PriSDKContexto = new PRISDK100.clsSDKContexto();
-                    PriSDKContexto.Inicializa(MotorLE, ConstantesPrimavera100.Modulos.Vendas);
+                    PriSDKContexto.Inicializa(MotorLE, "ERP");
                     PriSDKContexto.InicializaPlataforma(Platform);
                 }
 

@@ -50,6 +50,9 @@
     <Reference Include="ErpBS100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\ErpBS100.dll</HintPath>
     </Reference>
+    <Reference Include="HelperFunctionsPrimavera10">
+      <HintPath>..\..\HelperFunctionsPrimavera10\bin\Debug\HelperFunctionsPrimavera10.dll</HintPath>
+    </Reference>
     <Reference Include="IBasBS100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\IBasBS100.dll</HintPath>
     </Reference>

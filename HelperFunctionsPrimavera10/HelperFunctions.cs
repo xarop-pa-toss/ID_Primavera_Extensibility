@@ -134,8 +134,7 @@ namespace HelperFunctionsPrimavera10
                         queryList.Add($"SET IDENTITY_INSERT {tabelaIdentityInsert} ON)");
                         queryList.Add(querySQL);
                         queryList.Add($"SET IDENTITY_INSERT {tabelaIdentityInsert} OFF)");
-                    }
-                    else
+                    } else
                     {
                         queryList.Add(querySQL);
                     }
@@ -143,9 +142,10 @@ namespace HelperFunctionsPrimavera10
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Connection.Open()
+                        command.Connection.Open();
                         command.ExecuteNonQuery();
                     }
+                }
 
                 catch (Exception ex)
                 {

@@ -2,6 +2,7 @@
 using ErpBS100;
 using HelperFunctionsPrimavera10;
 using Primavera.Extensibility.CustomForm;
+using Primavera.Extensibility.Integration.Modules.Platform.Services;
 using PRISDK100;
 using StdBE100;
 using StdPlatBS100;
@@ -16,6 +17,7 @@ namespace DCT_Extens
         private ErpBS _BSO { get; set; }
         private StdPlatBS _PSO { get; set; }
         private clsSDKContexto _SDKContexto { get; set; }
+        private clsSDKContexto contexto { get; set; }
         private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
 
         public bool NaoGravar { get; set; }
@@ -28,14 +30,18 @@ namespace DCT_Extens
             InitializeComponent();
         }
 
-        private void FormCargaDescarga_Shown(object sender, EventArgs e)
+        private void FormCargaDescarga_Load(object sender, EventArgs e)
         {
             _BSO = PriMotores.Motor;
             _PSO = PriMotores.Plataforma;
             _SDKContexto = PriMotores.PriSDKContexto;
-            
-            priGrelha_Moradas.Inicializa(_SDKContexto);
-            f4_Entidade.Inicializa(_SDKContexto);
+
+            contexto = new clsSDKContexto();
+            contexto.Inicializa(BSO, "ERP");
+            PSO.InicializaPlataforma(contexto);
+
+            priGrelha_Moradas.Inicializa(contexto);
+            f4_Entidade.Inicializa(contexto);
 
             InicializaPrigrelha();
         }
@@ -117,11 +123,6 @@ namespace DCT_Extens
             {
                 this.Invoke(new MethodInvoker(() => FormCargaDescarga_FormClosed(sender, e)));
             }
-        }
-
-        private void FormCargaDescarga_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void ActualizaPriGrelha()
