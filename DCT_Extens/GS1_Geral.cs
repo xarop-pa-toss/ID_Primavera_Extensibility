@@ -1,19 +1,12 @@
-﻿using Primavera.Extensibility.Sales.Editors;
-using Primavera.Extensibility.BusinessEntities;
+﻿using BasBE100;
+using ErpBS100;
+using HelperFunctionsPrimavera10;
+using Primavera.Extensibility.CustomCode;
+using StdBE100;
+using StdPlatBS100;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Primavera.Extensibility.CustomCode;
 using VndBE100;
-using ErpBS100;
-using StdPlatBS100;
-using StdBE100;
-using BasBE100;
-using System.Drawing.Text;
-using System.Security.Policy;
-using HelperFunctionsPrimavera10;
 
 namespace DCT_Extens
 {
@@ -122,6 +115,6 @@ namespace DCT_Extens
             return digito.ToString();
         }
     }
-} 
+}
 
- 
+

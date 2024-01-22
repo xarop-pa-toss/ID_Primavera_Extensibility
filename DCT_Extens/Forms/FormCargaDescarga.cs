@@ -2,12 +2,10 @@
 using ErpBS100;
 using HelperFunctionsPrimavera10;
 using Primavera.Extensibility.CustomForm;
-using Primavera.Extensibility.Integration.Modules.Platform.Services;
 using PRISDK100;
 using StdBE100;
 using StdPlatBS100;
 using System;
-using System.Text;
 using System.Windows.Forms;
 
 namespace DCT_Extens
@@ -66,7 +64,7 @@ namespace DCT_Extens
             bool linhaSeleccionada = false;
 
             // Indice da primeira linha que tenha Cf = true;
-            for (int i = 1;  i <= priGrelha_Moradas.Grelha.DataRowCnt; i++)
+            for (int i = 1; i <= priGrelha_Moradas.Grelha.DataRowCnt; i++)
             {
                 if (priGrelha_Moradas.GetGRID_GetValorCelula(i, "Cf") == 1)
                 {
@@ -129,7 +127,7 @@ namespace DCT_Extens
         {
             // A coluna Cf recebe NULL pq a Prigrelha estava a dar problemas se a query não tivesse exactamente a mesma quantidade de colunas que a grelha em si
             // A primeira parte da query vai buscar a morada default, a segunda parte vai buscar todas as moradas alternativas
-            string sql = 
+            string sql =
                 "SELECT NULL Cf, 'Fac' AS Codigo, Fac_Mor, Fac_Mor2, Fac_Local, Fac_Cp CodigoPostal, Fac_Cploc LocalidadePostal, " +
                 "clt.Pais, Paises.Descricao PaisDescricao, clt.Distrito, Distritos.Descricao DistritoDescricao " +
                 "FROM Clientes AS clt " +

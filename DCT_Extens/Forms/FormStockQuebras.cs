@@ -1,12 +1,8 @@
 ﻿using HelperFunctionsPrimavera10;
-using Primavera.Extensibility.BusinessEntities;
 using Primavera.Extensibility.CustomForm;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DCT_Extens
@@ -45,13 +41,16 @@ namespace DCT_Extens
 
             // Combobox de operador ou Textbox de motivo têm estados diferentes de acordo com as queries às TDU
             // PedeOperador e PedeMotivo activam ou desactivam os controlos mas os conteudos da Combobox muda de acordo com o armazém documento -> armazém do operador
-            if (!_pedeOperador) {
+            if (!_pedeOperador)
+            {
                 cmbBox_Operador.Enabled = false;
-            } else {
+            } else
+            {
                 foreach (string op in _listaOperadores) { cmbBox_Operador.Items.Add(op); }
             }
-            
-            if (!_pedeMotivo) {
+
+            if (!_pedeMotivo)
+            {
                 txtBox_MotivoQuebra.Enabled = false;
             }
         }
@@ -63,12 +62,13 @@ namespace DCT_Extens
             {
                 bool resposta = PSO.MensagensDialogos.MostraPerguntaSimples("É necessário introduzir um motivo. A linha será apagada. Deseja continuar?");
 
-                if (resposta) {
+                if (resposta)
+                {
                     DialogResult = DialogResult.Cancel;
                     Close();
                 }
-            } 
-            else {
+            } else
+            {
                 DialogResult = DialogResult.OK;
                 Close();
             }

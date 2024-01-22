@@ -1,14 +1,12 @@
-using Primavera.Extensibility.Internal.Editors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
-using System.Data;
-using System.Windows.Forms;
-using IntBE100;
-using Primavera.Extensibility.Extensions;
 using HelperFunctionsPrimavera10;
-using Primavera.Extensibility.Production.Delegates;
+using IntBE100;
+using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
+using Primavera.Extensibility.Extensions;
+using Primavera.Extensibility.Internal.Editors;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace DCT_Extens.Internal
 {
@@ -41,7 +39,7 @@ namespace DCT_Extens.Internal
                 $" WHERE " +
                 $"  DataInicial >= '2022-01-01' " +
                 $"  AND (CDU_PedeOperador_Motivo = 1 OR CDU_PedeOperador_Operador = 1)" +
-                $"  AND TipoDoc = '{TipoDocumento}'" +      
+                $"  AND TipoDoc = '{TipoDocumento}'" +
                 $"  AND Serie = '{DocumentoInterno.Serie}';");
             #endregion
         }
@@ -82,7 +80,8 @@ namespace DCT_Extens.Internal
                             if (resultado == DialogResult.OK)
                             {
                                 // Impede o form de se abrir outra vez se a checkbox estiver picada. Guarda os valores para usar nas próximas linhas
-                                if (formStockQuebras.GetCheckBox_RepetirMotivo) {
+                                if (formStockQuebras.GetCheckBox_RepetirMotivo)
+                                {
                                     _deveRepetir = true;
                                     _repetirDict["operador"] = formStockQuebras.GetCmbBox_Operador;
                                     _repetirDict["motivo"] = formStockQuebras.GetTxtBox_MotivoQuebra;
@@ -97,8 +96,7 @@ namespace DCT_Extens.Internal
                             }
                         }
                     }
-                }
-                else if (_deveRepetir)
+                } else if (_deveRepetir)
                 {
                     linha.CamposUtil["CDU_OperadorQuebra"].Valor = _repetirDict["operador"];
                     linha.CamposUtil["CDU_MotivoQuebra"].Valor = _repetirDict["motivo"];
@@ -110,7 +108,7 @@ namespace DCT_Extens.Internal
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.AntesDeGravar(ref Cancel, e);
-          
+
             #region GS1 / SSCC
             if (GS1_Geral.LinhasCopiadas)
             {

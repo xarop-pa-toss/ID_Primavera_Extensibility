@@ -1,11 +1,9 @@
-﻿using Primavera.Extensibility.Base.Editors;
+﻿using HelperFunctionsPrimavera10;
+using Primavera.Extensibility.Base.Editors;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
+using System;
 using System.Data;
 using System.Linq;
-using HelperFunctionsPrimavera10;
-using System;
-using StdBE100;
-using System.Collections.Generic;
 
 namespace DCT_Extens
 {
@@ -21,7 +19,7 @@ namespace DCT_Extens
         }
 
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
-        
+
         {
             base.AntesDeGravar(ref Cancel, e);
             #region Verificação de permissões de utilizador para anulação de clientes

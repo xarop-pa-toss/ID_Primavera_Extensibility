@@ -1,21 +1,13 @@
-﻿using Primavera.Extensibility.BusinessEntities;
+﻿using ErpBS100;
+using HelperFunctionsPrimavera10;
 using Primavera.Extensibility.CustomForm;
+using PRISDK100;
+using StdPlatBS100;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
-using BasBE100;
-using System.Threading.Tasks;
-using ErpBS100;
-using StdPlatBS100;
-using PRISDK100;
-using System.Data;
-using System.Data.SqlClient;
-using System.Windows.Forms;
-using StdBE100;
-using VndBE100;
-using System.Linq.Expressions;
-using HelperFunctionsPrimavera10;
 
 namespace DCT_Extens
 {
@@ -37,7 +29,7 @@ namespace DCT_Extens
         }
 
         private void FormReimpressao_Load(object sender, EventArgs e)
-         {
+        {
             try
             {
                 // Inicializar controlos Primavera
@@ -52,7 +44,7 @@ namespace DCT_Extens
                 dtPicker_DataDocInicial.Value = DateTime.Now;
                 dtPicker_DataDocFinal.Value = DateTime.Now;
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 loadError = err.ToString();
             }
@@ -94,7 +86,7 @@ namespace DCT_Extens
             for (int i = linhasCount; i > 0; i--)
             {
                 // Se NumDoc for nulo, termina loop 
-                if (priGrelha_Docs.GetGRID_GetValorCelula(i,"NumDoc") == "") { break; }
+                if (priGrelha_Docs.GetGRID_GetValorCelula(i, "NumDoc") == "") { break; }
                 // Se "Cf" não estiver picado, skip linha
                 bool cfEstado = priGrelha_Docs.GetGRID_GetValorCelula(i, "Cf") == 1;
                 if (!cfEstado) { continue; }
@@ -202,8 +194,7 @@ namespace DCT_Extens
             {
                 _PSO.MensagensDialogos.MostraErro("Não foi possivel encontrar mapas personalizados.");
                 Close();
-            }
-            else
+            } else
             {
                 cmbBox_Mapas.Items.Clear();
                 cmbBox_Mapas.Items.AddRange(tipoDocsLista.ToArray());

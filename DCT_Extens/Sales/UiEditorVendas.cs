@@ -1,19 +1,13 @@
+using BasBE100;
+using HelperFunctionsPrimavera10;
+using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
+using Primavera.Extensibility.Extensions;
 using Primavera.Extensibility.Sales.Editors;
-using Primavera.Extensibility.BusinessEntities;
+using StdBE100;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
-using BasBE100;
-using System.Security.Policy;
-using VndBE100;
-using StdBE100;
 using System.Windows.Forms;
-using Primavera.Extensibility.Extensions;
-using System.ComponentModel;
-using HelperFunctionsPrimavera10;
+using VndBE100;
 
 namespace DCT_Extens.Sales
 {
@@ -120,7 +114,7 @@ namespace DCT_Extens.Sales
             if (linha.Quantidade != Math.Truncate(linha.Quantidade))
             {
                 PSO.MensagensDialogos.MostraAviso(
-                    "ATENÇÃO:" + Environment.NewLine + 
+                    "ATENÇÃO:" + Environment.NewLine +
                     "Está a inserir uma quantidade não inteira (com casas decimais).");
             }
             #endregion
@@ -151,8 +145,7 @@ namespace DCT_Extens.Sales
                             " WHERE Campo1 = N" + DocumentoVenda.Entidade +
                             " AND Campo2 = N" + linha.Artigo);
 
-                        if (precUnitDesc.Vazia()) { PSO.MensagensDialogos.MostraAviso($"O artigo {linha.Artigo} não tem valores no Cardex!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico); } 
-                        else if (precUnit != precUnitDesc.Valor(0)) { PSO.MensagensDialogos.MostraAviso($"O valor da encomenda do artigo {linha.Artigo} não coincide com o valor no Cardex!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico); }
+                        if (precUnitDesc.Vazia()) { PSO.MensagensDialogos.MostraAviso($"O artigo {linha.Artigo} não tem valores no Cardex!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico); } else if (precUnit != precUnitDesc.Valor(0)) { PSO.MensagensDialogos.MostraAviso($"O valor da encomenda do artigo {linha.Artigo} não coincide com o valor no Cardex!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico); }
                     }
                 }
             }

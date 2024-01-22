@@ -1,16 +1,8 @@
-﻿using DCT_Extens;
-using HelperFunctionsPrimavera10;
-using Primavera.Extensibility.BusinessEntities;
+﻿using HelperFunctionsPrimavera10;
 using Primavera.Extensibility.CustomForm;
 using StdBE100;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DCT_Extens

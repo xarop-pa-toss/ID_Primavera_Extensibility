@@ -1,16 +1,10 @@
+using BasBE100;
+using HelperFunctionsPrimavera10;
+using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Sales.Editors;
-using Primavera.Extensibility.BusinessEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
-using StdBE100; using ErpBS100; using VndBE100; using CctBE100;
-using BasBE100;
-using System.Windows.Forms;
-using System.Data;
-using HelperFunctionsPrimavera10;
 
 namespace DCT_Extens.Sales
 {
