@@ -124,6 +124,10 @@
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Internal.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Primavera.Extensibility.Platform">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Platform.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Primavera.Extensibility.Purchases">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Purchases.dll</HintPath>
       <Private>False</Private>
@@ -197,6 +201,7 @@
     <Compile Include="Forms\FormReimpressao.Designer.cs">
       <DependentUpon>FormReimpressao.cs</DependentUpon>
     </Compile>
+    <Compile Include="InicializarPriMotores.cs" />
     <Compile Include="GS1_Geral.cs" />
     <Compile Include="Internal\UiEditorInternos.cs" />
     <Compile Include="PriCustomCode1.cs" />

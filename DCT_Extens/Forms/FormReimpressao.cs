@@ -14,9 +14,9 @@ namespace DCT_Extens
     public partial class FormReimpressao : CustomForm
     {
         private ErpBS _BSO { get; set; }
-        private StdPlatBS _PSO { get; set; }
+        private StdBSInterfPub _PSO { get; set; }
         private clsSDKContexto _SDKContexto { get; set; }
-        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
+        private HelperFunctions _Helpers = new HelperFunctions();
         private string loadError = null;
 
         public FormReimpressao()

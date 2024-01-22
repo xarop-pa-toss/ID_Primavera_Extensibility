@@ -14,7 +14,7 @@ namespace DCT_Extens
     {
         private VndBEDocumentoVenda _dv { get; set; }
         private ErpBS _BSO { get; set; }
-        private StdPlatBS _PSO { get; set; }
+        private StdBSInterfPub _PSO { get; set; }
         private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
 
         //Existem problemas quando se utiliza o FormCopiaLinhas para criar um DocStocks a partir de outro

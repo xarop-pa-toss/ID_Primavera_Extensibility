@@ -13,7 +13,7 @@ namespace DCT_Extens.Sales
 {
     public class UiEditorVendas : EditorVendas
     {
-        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
+        private HelperFunctions _Helpers = new HelperFunctions();
         private string _strMensagem;
         private const double DBL_LIMITE = 999;
 
@@ -61,9 +61,8 @@ namespace DCT_Extens.Sales
             {
                 using (StdBELista ultimoMotivoLista = BSO.Consulta("SELECT CDU_UltimoMotivo FROM TDU_UM"))
                 {
-
                     string titulo = DocumentoVenda.Linhas.GetEdita(NumLinha).CamposUtil["CDU_MotivoOferta"].Valor.ToString();
-                    motivoOferta = _Helpers.MostraInputForm(titulo, "Inserir Motivo de Oferta", ultimoMotivoLista.DaValor<string>("CDU_UltimoMotivo"), false, BSO);
+                    motivoOferta = _Helpers.MostraInputForm(titulo, "Inserir Motivo de Oferta", ultimoMotivoLista.DaValor<string>("CDU_UltimoMotivo"), false);
                     DocumentoVenda.Linhas.GetEdita(NumLinha).CamposUtil["CDU_MotivoOferta"].Valor = motivoOferta;
 
                     // Se motivo ficar nulo, apaga linha

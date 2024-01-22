@@ -9,7 +9,7 @@ namespace DCT_Extens
 {
     public class UiFichaClientes : FichaClientes
     {
-        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
+        private HelperFunctions _Helpers = new HelperFunctions();
         private string vendedorOriginal;
 
         public override void AntesDeEditar(string Cliente, ref bool Cancel, ExtensibilityEventArgs e)

@@ -9,7 +9,7 @@ namespace DCT_Extens
 {
     public partial class FormStockQuebras : CustomForm
     {
-        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
+        private HelperFunctions _Helpers = new HelperFunctions();
 
         public bool GetCheckBox_RepetirMotivo { get { return chkBox_RepetirMotivo.Checked; } }
         public string GetTxtBox_MotivoQuebra { get { return txtBox_MotivoQuebra.Text; } }

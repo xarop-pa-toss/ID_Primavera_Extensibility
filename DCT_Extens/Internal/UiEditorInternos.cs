@@ -12,7 +12,7 @@ namespace DCT_Extens.Internal
 {
     public class UiEditorInternos : EditorInternos
     {
-        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
+        private HelperFunctions _Helpers = new HelperFunctions();
         private DataTable _tabelaOperadores, _tabelaSerie;
 
         private bool _deveRepetir = false;

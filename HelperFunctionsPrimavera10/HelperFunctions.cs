@@ -21,25 +21,25 @@ namespace HelperFunctionsPrimavera10
     public class HelperFunctions : CustomCode
     {
         private static ErpBS _BSO {  get; set; }
-        private static StdPlatBS _PSO { get; set; }
+        private static StdBSInterfPub _PSO { get; set; }
         private static clsSDKContexto _SDKContexto { get; set; }
-        public readonly ISecrets _secrets;
+        private static ISecrets _secrets;
 
         private static object lockObj = new object();
         private static object globalVar;
 
         public HelperFunctions(ISecrets secrets)
         {
-            _secrets = secrets;
+            if (_secrets == null) { _secrets = secrets; }
             
-            if (!PriMotores.MotorStatus)
-            {
-                PriMotores.InicializarContexto(_secrets.Empresa(), _secrets.Utilizador(), _secrets.Password());
-            }
-
+            PriMotores.InicializarContexto(_secrets);
             _BSO = PriMotores.Motor;
             _PSO = PriMotores.Plataforma;
             _SDKContexto = PriMotores.PriSDKContexto;
+        }
+
+        public HelperFunctions()
+        {
         }
 
         // SET e GET uma variável de qualquer lado do programa.
@@ -234,11 +234,11 @@ namespace HelperFunctionsPrimavera10
         }
 
         // Abre InputForm e devolve resposta
-        public string MostraInputForm(string titulo, string descricao, string valorDefeito, bool permiteNull, ErpBS BSO)
+        public string MostraInputForm(string titulo, string descricao, string valorDefeito, bool permiteNull)
         {
             string resposta = null;
 
-            using (var formInstancia = BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
+            using (var formInstancia = _BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
             {
                 InputFormServico.Titulo = titulo;
                 InputFormServico.Descricao = descricao;
@@ -248,15 +248,19 @@ namespace HelperFunctionsPrimavera10
                 {
                     (formInstancia.Result as InputForm).ShowDialog();
                     resposta = InputFormServico.Resposta;
-                }
 
-                InputFormServico.Limpar();
-                if (string.IsNullOrWhiteSpace(resposta) && !permiteNull)
+                    InputFormServico.Limpar();
+                    if (string.IsNullOrWhiteSpace(resposta) && !permiteNull)
+                    {
+                        System.Windows.Forms.MessageBox.Show("Campo não pode estar vazio.");
+                        MostraInputForm(titulo, descricao, valorDefeito, permiteNull);
+                    }
+                } 
+                else
                 {
-                    System.Windows.Forms.MessageBox.Show("Campo não pode estar vazio.");
-                    MostraInputForm(titulo, descricao, valorDefeito, permiteNull, BSO);
+                    _PSO.MensagensDialogos.MostraErro("Não é possivel abrir a janela de motivo.");
+                    return "";
                 }
-
                 return resposta;
             }
         }

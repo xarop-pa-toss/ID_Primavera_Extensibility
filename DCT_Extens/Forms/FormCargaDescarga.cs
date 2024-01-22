@@ -13,10 +13,9 @@ namespace DCT_Extens
     public partial class FormCargaDescarga : CustomForm
     {
         private ErpBS _BSO { get; set; }
-        private StdPlatBS _PSO { get; set; }
+        private StdBSInterfPub _PSO { get; set; }
         private clsSDKContexto _SDKContexto { get; set; }
-        private clsSDKContexto contexto { get; set; }
-        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
+        private HelperFunctions _Helpers = new HelperFunctions();
 
         public bool NaoGravar { get; set; }
         public bool MoradaAlterada, GravarComMoradaPorDefeito;
@@ -30,16 +29,16 @@ namespace DCT_Extens
 
         private void FormCargaDescarga_Load(object sender, EventArgs e)
         {
-            _BSO = PriMotores.Motor;
+            _BSO = PriMotores.Motor; 
             _PSO = PriMotores.Plataforma;
             _SDKContexto = PriMotores.PriSDKContexto;
 
-            contexto = new clsSDKContexto();
-            contexto.Inicializa(BSO, "ERP");
-            PSO.InicializaPlataforma(contexto);
+            //_SDKContexto = new clsSDKContexto();
+            //_SDKContexto.Inicializa(BSO, "ERP");
+            //_PSO.InterfacePublico.InicializaPlataforma(contexto);
 
-            priGrelha_Moradas.Inicializa(contexto);
-            f4_Entidade.Inicializa(contexto);
+            priGrelha_Moradas.Inicializa(_SDKContexto);
+            f4_Entidade.Inicializa(_SDKContexto);
 
             InicializaPrigrelha();
         }

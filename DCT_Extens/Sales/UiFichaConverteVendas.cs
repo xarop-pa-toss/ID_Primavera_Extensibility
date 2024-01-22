@@ -11,7 +11,7 @@ namespace DCT_Extens.Sales
     public class UiFichaConverteVendas : FichaConverteVendas
     {
         private List<string> _clientesQueUltrapassamLimiteList = new List<string>();
-        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
+        private HelperFunctions _Helpers = new HelperFunctions();
 
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {

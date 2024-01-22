@@ -1,6 +1,7 @@
 ﻿using HelperFunctionsPrimavera10;
 using Primavera.Extensibility.CustomForm;
 using StdBE100;
+using StdPlatBS100;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -10,8 +11,8 @@ namespace DCT_Extens
     public partial class FormEncomendas : CustomForm
     {
         private ErpBS100.ErpBS _BSO;
-        private StdPlatBS100.StdPlatBS _PSO;
-        private HelperFunctions _Helpers = new HelperFunctions(new Secrets());
+        private StdBSInterfPub _PSO;
+        private HelperFunctions _Helpers = new HelperFunctions();
 
         public FormEncomendas()
         {
