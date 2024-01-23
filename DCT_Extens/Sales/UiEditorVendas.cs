@@ -62,7 +62,7 @@ namespace DCT_Extens.Sales
                 using (StdBELista ultimoMotivoLista = BSO.Consulta("SELECT CDU_UltimoMotivo FROM TDU_UM"))
                 {
                     string titulo = DocumentoVenda.Linhas.GetEdita(NumLinha).CamposUtil["CDU_MotivoOferta"].Valor.ToString();
-                    motivoOferta = _Helpers.MostraInputForm(titulo, "Inserir Motivo de Oferta", ultimoMotivoLista.DaValor<string>("CDU_UltimoMotivo"), false);
+                    motivoOferta = _Helpers.MostraInputForm(titulo, "Inserir Motivo de Oferta", ultimoMotivoLista.DaValor<string>("CDU_UltimoMotivo"));
                     DocumentoVenda.Linhas.GetEdita(NumLinha).CamposUtil["CDU_MotivoOferta"].Valor = motivoOferta;
 
                     // Se motivo ficar nulo, apaga linha

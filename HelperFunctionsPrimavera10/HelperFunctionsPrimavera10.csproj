@@ -130,7 +130,6 @@
     <Compile Include="InputForm.Designer.cs">
       <DependentUpon>InputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputFormServico.cs" />
     <Compile Include="ISecrets.cs" />
     <Compile Include="PriMotores.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

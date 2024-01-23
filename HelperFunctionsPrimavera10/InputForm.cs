@@ -7,6 +7,9 @@ namespace HelperFunctionsPrimavera10
 {
     public partial class InputForm : CustomForm
     {
+
+        public string resp { get; set; }
+
         public InputForm()
         {
             InitializeComponent();
@@ -49,7 +52,6 @@ namespace HelperFunctionsPrimavera10
             {
                 this.DialogResult = System.Windows.Forms.DialogResult.OK;
             }
-            
         }
 
         // Quando textbox está em foco, carregar no Enter activa o botão OK

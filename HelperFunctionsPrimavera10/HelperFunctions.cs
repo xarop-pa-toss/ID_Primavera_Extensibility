@@ -15,6 +15,7 @@ using System.Data;
 using System.IO;
 using Primavera.Extensibility.Extensions;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace HelperFunctionsPrimavera10
 {
@@ -234,35 +235,80 @@ namespace HelperFunctionsPrimavera10
         }
 
         // Abre InputForm e devolve resposta
-        public string MostraInputForm(string titulo, string descricao, string valorDefeito, bool permiteNull)
+        public string MostraInputForm(string titulo, string descricao, string valorDefeito, bool permiteNull = true)
         {
-            string resposta = null;
+            string resposta;
+            InputFormServico.Limpar();
 
-            using (var formInstancia = _BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
+            InputFormServico.Titulo = titulo;
+            InputFormServico.Descricao = descricao;
+            InputFormServico.ValorDefeito = valorDefeito;
+
+            InputForm inputForm = new InputForm();
+            inputForm.ShowDialog();
+            
+            if (string.IsNullOrEmpty(InputFormServico.Resposta) && permiteNull == false)
             {
-                InputFormServico.Titulo = titulo;
-                InputFormServico.Descricao = descricao;
-                InputFormServico.ValorDefeito = valorDefeito;
+                StdBSTipos.ResultMsg resultadoForm = _PSO.MensagensDialogos.MostraMensagem(
+                    StdBSTipos.TipoMsg.PRI_OkCancelar,
+                    "É necessário um valor para poder avançar." + Environment.NewLine + "Prima OK para tentar outra vez ou Cancelar para abortar a operação.",
+                    StdBSTipos.IconId.PRI_Exclama);
 
-                if (formInstancia.IsSuccess())
+                if (resultadoForm == StdBSTipos.ResultMsg.PRI_OK)
                 {
-                    (formInstancia.Result as InputForm).ShowDialog();
-                    resposta = InputFormServico.Resposta;
-
-                    InputFormServico.Limpar();
-                    if (string.IsNullOrWhiteSpace(resposta) && !permiteNull)
-                    {
-                        System.Windows.Forms.MessageBox.Show("Campo não pode estar vazio.");
-                        MostraInputForm(titulo, descricao, valorDefeito, permiteNull);
-                    }
-                } 
+                    MostraInputForm(titulo, descricao, valorDefeito, permiteNull);
+                }
                 else
                 {
-                    _PSO.MensagensDialogos.MostraErro("Não é possivel abrir a janela de motivo.");
                     return "";
                 }
-                return resposta;
             }
+            return InputFormServico.Resposta;
         }
+    }
+
+    public class InputFormServico
+    {
+        private static Dictionary<string, string> FormDados = new Dictionary<string, string>();
+
+        public static string Titulo
+        {
+            get => GetOuDefeito("Titulo", "");
+            set => FormDados["Titulo"] = value;
+        }
+        public static string Descricao
+        {
+            get => GetOuDefeito("Descricao", "");
+            set => FormDados["Descricao"] = value;
+        }
+        public static string ValorDefeito
+        {
+            get => GetOuDefeito("ValorDefeito", null);
+            set => FormDados["ValorDefeito"] = value;
+        }
+        public static string Resposta
+        {
+            get => GetOuDefeito("Resposta", "");
+            set => FormDados["Resposta"] = value;
+        }
+
+        // Custom method to get a value with a fallback
+        private static string GetOuDefeito(string key, string defeito)
+        {
+            return FormDados.TryGetValue(key, out var value) ? value : defeito;
+        }
+
+        public static void Limpar()
+        {
+            FormDados.Clear();
+        }
+        //// Limpa chave se existir. Garante que ao utilizar Forms não se transportem valores de forms anteriores para os novos (por ser static)
+        //private static void LimparKey(string key)
+        //{
+        //    if (FormDados.ContainsKey(key))
+        //    {
+        //        FormDados.Remove(key);
+        //    }
+        //}
     }
 }
