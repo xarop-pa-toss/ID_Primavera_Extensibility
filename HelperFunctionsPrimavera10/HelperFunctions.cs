@@ -16,6 +16,7 @@ using System.IO;
 using Primavera.Extensibility.Extensions;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using BasBE100;
 
 namespace HelperFunctionsPrimavera10
 {
@@ -52,6 +53,7 @@ namespace HelperFunctionsPrimavera10
                 globalVar = value;
             }
         }
+
         public T GetGlobalVarOuDefault<T>()
         {
             lock (lockObj)
@@ -234,81 +236,17 @@ namespace HelperFunctionsPrimavera10
             return TDULista;
         }
 
-        // Abre InputForm e devolve resposta
+        // Abre InputForm e devolve string. Pode retornar:
+        // 1 - String com valor se user preencheu textbox.
+        // 2 - String null se não user preencheu textbox e permiteNull = true, ou se cancelou o form.
+        //     Ou seja, pode retornar null mesmo que permiteNull seja true!!
         public string MostraInputForm(string titulo, string descricao, string valorDefeito, bool permiteNull = true)
         {
-            string resposta;
-            InputFormServico.Limpar();
-
-            InputFormServico.Titulo = titulo;
-            InputFormServico.Descricao = descricao;
-            InputFormServico.ValorDefeito = valorDefeito;
-
-            InputForm inputForm = new InputForm();
-            inputForm.ShowDialog();
-            
-            if (string.IsNullOrEmpty(InputFormServico.Resposta) && permiteNull == false)
+            using (InputForm inputForm = new InputForm(titulo, descricao, valorDefeito, permiteNull))
             {
-                StdBSTipos.ResultMsg resultadoForm = _PSO.MensagensDialogos.MostraMensagem(
-                    StdBSTipos.TipoMsg.PRI_OkCancelar,
-                    "É necessário um valor para poder avançar." + Environment.NewLine + "Prima OK para tentar outra vez ou Cancelar para abortar a operação.",
-                    StdBSTipos.IconId.PRI_Exclama);
-
-                if (resultadoForm == StdBSTipos.ResultMsg.PRI_OK)
-                {
-                    MostraInputForm(titulo, descricao, valorDefeito, permiteNull);
-                }
-                else
-                {
-                    return "";
-                }
+                inputForm.ShowDialog();
+                return inputForm.Resposta;
             }
-            return InputFormServico.Resposta;
         }
-    }
-
-    public class InputFormServico
-    {
-        private static Dictionary<string, string> FormDados = new Dictionary<string, string>();
-
-        public static string Titulo
-        {
-            get => GetOuDefeito("Titulo", "");
-            set => FormDados["Titulo"] = value;
-        }
-        public static string Descricao
-        {
-            get => GetOuDefeito("Descricao", "");
-            set => FormDados["Descricao"] = value;
-        }
-        public static string ValorDefeito
-        {
-            get => GetOuDefeito("ValorDefeito", null);
-            set => FormDados["ValorDefeito"] = value;
-        }
-        public static string Resposta
-        {
-            get => GetOuDefeito("Resposta", "");
-            set => FormDados["Resposta"] = value;
-        }
-
-        // Custom method to get a value with a fallback
-        private static string GetOuDefeito(string key, string defeito)
-        {
-            return FormDados.TryGetValue(key, out var value) ? value : defeito;
-        }
-
-        public static void Limpar()
-        {
-            FormDados.Clear();
-        }
-        //// Limpa chave se existir. Garante que ao utilizar Forms não se transportem valores de forms anteriores para os novos (por ser static)
-        //private static void LimparKey(string key)
-        //{
-        //    if (FormDados.ContainsKey(key))
-        //    {
-        //        FormDados.Remove(key);
-        //    }
-        //}
     }
 }

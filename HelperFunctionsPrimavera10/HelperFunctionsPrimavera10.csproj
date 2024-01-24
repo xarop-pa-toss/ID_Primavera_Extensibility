@@ -125,7 +125,7 @@
   <ItemGroup>
     <Compile Include="HelperFunctions.cs" />
     <Compile Include="InputForm.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="InputForm.Designer.cs">
       <DependentUpon>InputForm.cs</DependentUpon>
