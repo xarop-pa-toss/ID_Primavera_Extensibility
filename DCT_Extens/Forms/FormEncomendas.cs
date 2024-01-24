@@ -1,4 +1,4 @@
-﻿using HelperFunctionsPrimavera10;
+﻿using HelpersPrimavera10;
 using Primavera.Extensibility.CustomForm;
 using StdBE100;
 using StdPlatBS100;

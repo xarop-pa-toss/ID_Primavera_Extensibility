@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ErpBS100; 
 using StdPlatBS100; 
 using StdBE100; 
@@ -13,13 +11,14 @@ using VndBE100;
 using PRISDK100;
 using System.Data;
 using System.IO;
-using Primavera.Extensibility.Extensions;
 using System.Data.SqlClient;
 using System.Windows.Forms;
-using BasBE100;
 
-namespace HelperFunctionsPrimavera10
+namespace HelpersPrimavera10
 {
+    /// <summary>
+    /// Funções de suporte para ajudar com desenvolvimento de Extensibilidade para o ERP Primavera 10
+    /// </summary>
     public class HelperFunctions : CustomCode
     {
         private static ErpBS _BSO {  get; set; }
@@ -29,7 +28,12 @@ namespace HelperFunctionsPrimavera10
 
         private static object lockObj = new object();
         private static object globalVar;
+        private const string EscreveTxtPastaPath = "C:/PastaTecnica/PrimaveraExtensibilityLogs";
 
+        /// <summary>
+        /// Inicializa PriMotores estaticamente. Deve ser criada no evento DepoisDeCriarMenus na Plataforma para popular PSO e BSO assim que são abertos. Contém várias funções de suporte.
+        /// </summary>
+        /// <param name="secrets">Implementa ISecrets.</param>
         public HelperFunctions(ISecrets secrets)
         {
             if (_secrets == null) { _secrets = secrets; }
@@ -44,8 +48,10 @@ namespace HelperFunctionsPrimavera10
         {
         }
 
-        // SET e GET uma variável de qualquer lado do programa.
-        // Variável autodestroi-se quando é acedida (GetVariavel).
+        /// <summary>
+        /// Set uma variável genérica autodestructiva global.
+        /// </summary>
+        /// <param name="value">Valor de qualquer tipo.</param>
         public void SetGlobalVar<T>(T value)
         {
             lock (lockObj)
@@ -54,6 +60,9 @@ namespace HelperFunctionsPrimavera10
             }
         }
 
+        /// <summary>
+        /// Get variável genérica criada com SetGlobalVar<T>. Autodestroi-se quando acedida.
+        /// </summary>
         public T GetGlobalVarOuDefault<T>()
         {
             lock (lockObj)
@@ -68,26 +77,33 @@ namespace HelperFunctionsPrimavera10
             }
         }
 
-        // Error Logging para um ficheiro de texto. Se não for dado path, cria uma pasta nos Documentos com o nome do projecto
-        public void EscreverParaFicheiroTxt(string texto, string titulo)
+        /// <summary>
+        /// Escreve para ficheiro de texto no caminho definido na propriedade EscreveTxtPastaPath (cria a pasta se não existir).
+        /// </summary>
+        /// <param name="texto">String a escrever para o ficheiro.</param>
+        /// <param name="ficheiroNome">Nome do ficheiro. Será sucedido de data/hora no formato 'ddMMyyyy_HHmmss'.</param>
+        /// <param name="pastaPath">Usar formato "C:/Pasta1/Pasta2". Se pasta não existir, será criada. Se for passado como null, escreve para "C:/PastaTecnica/PrimaveraExtensibilityLogs".</param>
+        public void EscreverParaFicheiroTxt(string texto, string ficheiroNome, string pastaPath = null)
         {
-            const string PASTAERROSPATH = "C:/PastaTecnica/PrimaveraExtensibilidadeLogs";
-            string ficheiroNome = $"{titulo}_{DateTime.Now.ToString("ddMMyyyy_HHmmss")}";
-            string ficheiroPath = Path.Combine(PASTAERROSPATH, ficheiroNome);
+            if (pastaPath == null) { pastaPath = EscreveTxtPastaPath; }
 
-            // O caminho final (PASTAERROSPATH) é criado se não existir
-            if (!Directory.Exists(PASTAERROSPATH))
+            string ficheiroNomeFinal = $"{ficheiroNome}_{DateTime.Now.ToString("ddMMyyyy_HHmmss")}";
+            string ficheiroPath = Path.Combine(pastaPath, ficheiroNomeFinal);
+
+            // O caminho final (pastaPath) é criado se não existir
+            if (!Directory.Exists(pastaPath))
             {
-                Directory.CreateDirectory(PASTAERROSPATH);
+                Directory.CreateDirectory(pastaPath);
             }
 
             // Criação ficheiro
             try {
                 File.WriteAllText(ficheiroPath, texto);
             } catch (Exception ex) {
-                _PSO.MensagensDialogos.MostraErro("Aconteceu um erro mas não foi possivel criar o ficheiro Log.", sDetalhe: ex.ToString());
+                _PSO.MensagensDialogos.MostraErro("Aconteceu um erro e não foi possivel criar o ficheiro Log.", sDetalhe: ex.ToString());
             }
         }
+
 
         // Update TDU se existir linha. Insert se não existir.
         public void TDU_Actualiza(string NomeTDU, Dictionary<string, string> Dict)
@@ -115,8 +131,11 @@ namespace HelperFunctionsPrimavera10
             _BSO.TabelasUtilizador.Actualiza(NomeTDU, registoUtil);
         }
 
-        // Por vezes, TDUs com campos ID têm de ter esses campos desbloqueados antes de se poder escrever
-        // Infelizmente o Primavera 10 já não permite fazer queries não-consulta directamente à BD sem passar pelos métodos de controlo dele
+        /// <summary>
+        /// Query SQL directa e sem restrições à base de dados da empresa aberta. Usado para Update/Insert/Delete quando o StdBEExecSql não satisfaz as condições necessárias.
+        /// </summary>
+        /// <param name="querySQL"></param>
+        /// <param name="tabelaIdentityInsert">Nome da tabela a destrancar, caso seja preciso executar CRUD em linhas com campos GUID.
         public void QuerySQL(string querySQL, string tabelaIdentityInsert = null)
         {
             string nomeBDdaEmpresa = _PSO.BaseDados.DaNomeBDdaEmpresa(_BSO.Contexto.CodEmp);
@@ -149,14 +168,16 @@ namespace HelperFunctionsPrimavera10
                         command.ExecuteNonQuery();
                     }
                 }
-
                 catch (Exception ex)
                 {
-                    EscreverParaFicheiroTxt(ex.ToString(), "Helpers_AlterarPropriedadeTabelaNaBD_LigacaoBD");
+                    EscreverParaFicheiroTxt(ex.ToString(), "Helpers_AlterarPropriedadeTabelaNaBD_LigacaoBD", EscreveTxtPastaPath);
                 }
             }
     }
 
+        /// <summary>
+        /// Apaga todas as linhas relacionadas com a linha a ser apagada, sejam irmãs, filhas ou pai.
+        /// </summary>
         public void ApagaLinhasFilhoEPai_docVenda(VndBEDocumentoVenda docVenda, VndBELinhaDocumentoVenda linhaPai)
         {
             // Percorre linhas e encontra todas as que sejam filho da linhaPai. Apaga primeiro filhos e depois pai.
@@ -181,6 +202,9 @@ namespace HelperFunctionsPrimavera10
             }
         }
 
+        /// <summary>
+        /// Apaga todas as linhas relacionadas com a linha a ser apagada, sejam irmãs, filhas ou pai.
+        /// </summary>
         public void ApagaLinhasFilhoEPai_docInterno(IntBEDocumentoInterno docInterno, IntBELinhaDocumentoInterno linhaPai)
         {
             // Percorre linhas e encontra todas as que sejam filho da linhaPai. Apaga primeiro filhos e depois pai.
@@ -205,6 +229,9 @@ namespace HelperFunctionsPrimavera10
             }
         }
 
+        /// <summary>
+        /// Apaga todas as linhas relacionadas com a linha a ser apagada, sejam irmãs, filhas ou pai.
+        /// </summary>
         public void ApagaLinhasFilhoEPai_docCompra(CmpBEDocumentoCompra docCompra, CmpBELinhaDocumentoCompra linhaPai)
         {
             // Percorre linhas e encontra todas as que sejam filho da linhaPai. Apaga primeiro filhos e depois pai.
@@ -229,17 +256,25 @@ namespace HelperFunctionsPrimavera10
             }
         }
 
-        // Devolve DataTable pois objecto criado por BSO.Consulta é uma StdBELista que não é enumerable (não permite usar Foreach loop ou LINQ)
+        /// <summary>
+        /// O mesmo que BSO.Consulta mas devolve DataTable em vez de StdBELista que não é enumerable (não permite usar Foreach loop ou LINQ).
+        /// </summary>
         public DataTable GetDataTableDeSQL(string querySQL)
         {
             DataTable TDULista = _BSO.Consulta(querySQL).DataSet.GetTable();
             return TDULista;
         }
 
-        // Abre InputForm e devolve string. Pode retornar:
-        // 1 - String com valor se user preencheu textbox.
-        // 2 - String null se não user preencheu textbox e permiteNull = true, ou se cancelou o form.
-        //     Ou seja, pode retornar null mesmo que permiteNull seja true!!
+        /// <summary>
+        /// Abre InputForm e devolve string. Pode retornar:
+        ///  1 - String com valor se user preencheu textbox.
+        ///  2 - String null se não user preencheu textbox e permiteNull = true, ou se cancelou o form.
+        /// Ou seja, pode retornar null mesmo que permiteNull seja true!!
+        /// </summary>
+        /// <param name="titulo"></param>
+        /// <param name="descricao"></param>
+        /// <param name="valorDefeito"></param>
+        /// <param name="permiteNull"></param>
         public string MostraInputForm(string titulo, string descricao, string valorDefeito, bool permiteNull = true)
         {
             using (InputForm inputForm = new InputForm(titulo, descricao, valorDefeito, permiteNull))

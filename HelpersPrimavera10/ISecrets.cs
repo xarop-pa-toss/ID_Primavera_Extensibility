@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HelperFunctionsPrimavera10
+namespace HelpersPrimavera10
 {
     public interface ISecrets
     {
@@ -16,13 +16,13 @@ namespace HelperFunctionsPrimavera10
         ErpBS100.ErpBS BSO();
         StdPlatBS100.StdBSInterfPub PSO();
 
-        string Empresa();
-        string Utilizador();
-        string Password();
+        //string Empresa();
+        //string Utilizador();
+        //string Password();
 
         string BDServidorInstancia();
-        string BDNomeDB();
-        string BDUtilizador();
-        string BDPassword();
+        //string BDNomeDB();
+        //string BDUtilizador();
+        //string BDPassword();
     }
 }

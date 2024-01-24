@@ -1,4 +1,4 @@
-﻿using HelperFunctionsPrimavera10;
+﻿using HelpersPrimavera10;
 using Primavera.Extensibility.Base.Editors;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using System;

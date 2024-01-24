@@ -4,7 +4,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace HelperFunctionsPrimavera10
+namespace HelpersPrimavera10
 {
     public partial class InputForm : Form
     {

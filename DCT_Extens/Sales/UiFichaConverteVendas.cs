@@ -1,5 +1,5 @@
 using BasBE100;
-using HelperFunctionsPrimavera10;
+using HelpersPrimavera10;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Sales.Editors;
 using System;

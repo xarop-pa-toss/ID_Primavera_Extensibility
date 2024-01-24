@@ -59,8 +59,8 @@
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\ErpBS100.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HelperFunctionsPrimavera10">
-      <HintPath>..\HelperFunctionsPrimavera10\bin\Debug\HelperFunctionsPrimavera10.dll</HintPath>
+    <Reference Include="HelpersPrimavera10">
+      <HintPath>..\HelpersPrimavera10\bin\Debug\HelpersPrimavera10.dll</HintPath>
     </Reference>
     <Reference Include="IBasBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\IBasBS100.dll</HintPath>
@@ -177,12 +177,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\UiFichaClientes.cs" />
-    <Compile Include="FormCustom.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="FormCustom.Designer.cs">
-      <DependentUpon>FormCustom.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FormCargaDescarga.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -204,7 +198,6 @@
     <Compile Include="InicializarPriMotores.cs" />
     <Compile Include="GS1_Geral.cs" />
     <Compile Include="Internal\UiEditorInternos.cs" />
-    <Compile Include="PriCustomCode1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -253,9 +246,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FormCustom.resx">
-      <DependentUpon>FormCustom.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormCargaDescarga.resx">
       <DependentUpon>FormCargaDescarga.cs</DependentUpon>
     </EmbeddedResource>

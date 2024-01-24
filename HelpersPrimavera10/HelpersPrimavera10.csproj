@@ -8,8 +8,8 @@
     <ProjectGuid>{5CEC4B60-044C-4A7D-894F-40912C5DE64D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HelperFunctionsPrimavera10</RootNamespace>
-    <AssemblyName>HelperFunctionsPrimavera10</AssemblyName>
+    <RootNamespace>HelpersPrimavera10</RootNamespace>
+    <AssemblyName>HelpersPrimavera10</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

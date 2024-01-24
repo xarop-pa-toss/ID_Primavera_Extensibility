@@ -1,5 +1,5 @@
 ﻿using ErpBS100;
-using HelperFunctionsPrimavera10;
+using HelpersPrimavera10;
 using Primavera.Extensibility.CustomForm;
 using PRISDK100;
 using StdPlatBS100;

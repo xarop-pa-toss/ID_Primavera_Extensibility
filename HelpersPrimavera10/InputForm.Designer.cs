@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace HelperFunctionsPrimavera10
+namespace HelpersPrimavera10
 {
     partial class InputForm
     {
@@ -20,7 +20,7 @@ namespace HelperFunctionsPrimavera10
                 components.Dispose();
             }
             base.Dispose(disposing);
-         }
+        }
 
         #region Windows Form Designer generated code
 
@@ -38,7 +38,7 @@ namespace HelperFunctionsPrimavera10
             // 
             // lbl_Descricao
             // 
-            this.lbl_Descricao.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lbl_Descricao.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_Descricao.AutoSize = true;
             this.lbl_Descricao.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -50,7 +50,7 @@ namespace HelperFunctionsPrimavera10
             // 
             // txtBox_Resposta
             // 
-            this.txtBox_Resposta.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtBox_Resposta.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBox_Resposta.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBox_Resposta.Location = new System.Drawing.Point(12, 56);
