@@ -60,6 +60,9 @@
     <Reference Include="HelperFunctionsPrimavera10">
       <HintPath>..\..\HelperFunctionsPrimavera10\bin\Debug\HelperFunctionsPrimavera10.dll</HintPath>
     </Reference>
+    <Reference Include="HelpersPrimavera10">
+      <HintPath>..\..\HelpersPrimavera10\bin\Debug\HelpersPrimavera10.dll</HintPath>
+    </Reference>
     <Reference Include="IBasBS100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\IBasBS100.dll</HintPath>
     </Reference>
@@ -141,39 +144,40 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Motor\InicializarPriMotores.cs" />
+    <Compile Include="Motor\Secrets.cs" />
     <Compile Include="Purchases\ImportaDocs.cs" />
-    <Compile Include="FormImportaDocs_WF.cs">
+    <Compile Include="Forms\FormImportaDocs_WF.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormImportaDocs_WF.Designer.cs">
+    <Compile Include="Forms\FormImportaDocs_WF.Designer.cs">
       <DependentUpon>FormImportaDocs_WF.cs</DependentUpon>
     </Compile>
     <Compile Include="Motor\OpenFormCode.cs" />
-    <Compile Include="Motor\PriEngine.cs" />
     <Compile Include="QueriesSQL.cs" />
-    <Compile Include="FormPropDocVenda.cs">
+    <Compile Include="Forms\FormPropDocVenda.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="FormPropDocVenda.Designer.cs">
+    <Compile Include="Forms\FormPropDocVenda.Designer.cs">
       <DependentUpon>FormPropDocVenda.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FormQueryStatus_WF.cs">
+    <Compile Include="Forms\FormQueryStatus_WF.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormQueryStatus_WF.Designer.cs">
+    <Compile Include="Forms\FormQueryStatus_WF.Designer.cs">
       <DependentUpon>FormQueryStatus_WF.cs</DependentUpon>
     </Compile>
     <Compile Include="Sales\UiEditorVendas.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FormImportaDocs_WF.resx">
+    <EmbeddedResource Include="Forms\FormImportaDocs_WF.resx">
       <DependentUpon>FormImportaDocs_WF.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormPropDocVenda.resx">
+    <EmbeddedResource Include="Forms\FormPropDocVenda.resx">
       <DependentUpon>FormPropDocVenda.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormQueryStatus_WF.resx">
+    <EmbeddedResource Include="Forms\FormQueryStatus_WF.resx">
       <DependentUpon>FormQueryStatus_WF.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

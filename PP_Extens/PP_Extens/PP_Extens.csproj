@@ -53,6 +53,9 @@
     <Reference Include="HelperFunctionsPrimavera10">
       <HintPath>..\..\HelperFunctionsPrimavera10\bin\Debug\HelperFunctionsPrimavera10.dll</HintPath>
     </Reference>
+    <Reference Include="HelpersPrimavera10">
+      <HintPath>..\..\HelpersPrimavera10\bin\Debug\HelpersPrimavera10.dll</HintPath>
+    </Reference>
     <Reference Include="IBasBS100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\IBasBS100.dll</HintPath>
     </Reference>
@@ -83,6 +86,9 @@
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Attributes.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Primavera.Extensibility.Base">
+      <HintPath>..\..\HelpersPrimavera10\bin\Debug\Primavera.Extensibility.Base.dll</HintPath>
+    </Reference>
     <Reference Include="Primavera.Extensibility.BusinessEntities">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.BusinessEntities.dll</HintPath>
       <Private>False</Private>
@@ -110,6 +116,9 @@
     <Reference Include="Primavera.Extensibility.Inventory">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Inventory.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Primavera.Extensibility.Platform">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\Primavera.Extensibility.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Primavera.Extensibility.Sales">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Sales.dll</HintPath>
@@ -143,16 +152,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormServicoDados.cs" />
-    <Compile Include="Sales\InputForm.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Sales\InputForm.Designer.cs">
-      <DependentUpon>InputForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Motor\InicializarPriMotores.cs" />
+    <Compile Include="Motor\Secrets.cs" />
     <Compile Include="PP_CaixasJM.cs" />
-    <Compile Include="Helpers\PriEngine.cs" />
-    <Compile Include="MSS_Gerais.cs" />
     <Compile Include="PP_Geral.cs" />
     <Compile Include="PP_UtilCBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -168,11 +170,6 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Sales\InputForm.resx">
-      <DependentUpon>InputForm.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

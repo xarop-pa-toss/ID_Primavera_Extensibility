@@ -14,7 +14,9 @@ namespace PP_PPCS
         {
             FormImportaDocs_WF formImportaDocs = new FormImportaDocs_WF();
             FormQueryStatus_WF formQueryStatus = new FormQueryStatus_WF();
+
             formImportaDocs.ShowDialog();
+
             PSO.UI.AdicionaFormMDI(formImportaDocs);
             PSO.UI.AdicionaFormMDI(formQueryStatus);
         }

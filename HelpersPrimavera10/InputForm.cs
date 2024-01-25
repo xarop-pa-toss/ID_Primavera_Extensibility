@@ -1,6 +1,4 @@
-﻿using Primavera.Extensibility.CustomForm;
-using StdPlatBS100;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -44,10 +42,8 @@ namespace HelpersPrimavera10
                     "Valor vazio",
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
 
-                if (resposta == DialogResult.Cancel) { btn_Cancelar.PerformClick(); }
-                else { InputForm_Load(sender, e); }
-            } 
-            else 
+                if (resposta == DialogResult.Cancel) { btn_Cancelar.PerformClick(); } else { InputForm_Load(sender, e); }
+            } else
             {
                 Resposta = txtBox_Resposta.Text;
                 this.DialogResult = DialogResult.OK;

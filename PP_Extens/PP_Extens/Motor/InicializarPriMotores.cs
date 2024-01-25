@@ -1,9 +1,10 @@
-using HelpersPrimavera10;
+﻿using HelpersPrimavera10;
+using PP_PPCS;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Platform.Services;
 
 
-namespace DCT_Extens
+namespace PP_Extens
 {
     public class InicializarPriMotores : Plataforma
     {

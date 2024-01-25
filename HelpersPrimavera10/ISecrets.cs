@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Deployment.Internal;
-using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HelpersPrimavera10
+﻿namespace HelpersPrimavera10
 {
     public interface ISecrets
     {

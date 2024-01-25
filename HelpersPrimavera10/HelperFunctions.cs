@@ -1,18 +1,17 @@
-﻿using Primavera.Extensibility.CustomCode;
+﻿using CmpBE100;
+using ErpBS100;
+using IntBE100;
+using Primavera.Extensibility.CustomCode;
+using PRISDK100;
+using StdBE100;
+using StdPlatBS100;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using ErpBS100; 
-using StdPlatBS100; 
-using StdBE100; 
-using IntBE100; 
-using CmpBE100;
-using VndBE100;
-using PRISDK100;
 using System.Data;
-using System.IO;
 using System.Data.SqlClient;
-using System.Windows.Forms;
+using System.IO;
+using System.Linq;
+using VndBE100;
 
 namespace HelpersPrimavera10
 {
@@ -21,7 +20,7 @@ namespace HelpersPrimavera10
     /// </summary>
     public class HelperFunctions : CustomCode
     {
-        private static ErpBS _BSO {  get; set; }
+        private static ErpBS _BSO { get; set; }
         private static StdBSInterfPub _PSO { get; set; }
         private static clsSDKContexto _SDKContexto { get; set; }
         private static ISecrets _secrets;
@@ -37,7 +36,7 @@ namespace HelpersPrimavera10
         public HelperFunctions(ISecrets secrets)
         {
             if (_secrets == null) { _secrets = secrets; }
-            
+
             PriMotores.InicializarContexto(_secrets);
             _BSO = PriMotores.Motor;
             _PSO = PriMotores.Plataforma;
@@ -97,9 +96,12 @@ namespace HelpersPrimavera10
             }
 
             // Criação ficheiro
-            try {
+            try
+            {
                 File.WriteAllText(ficheiroPath, texto);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 _PSO.MensagensDialogos.MostraErro("Aconteceu um erro e não foi possivel criar o ficheiro Log.", sDetalhe: ex.ToString());
             }
         }
@@ -139,7 +141,7 @@ namespace HelpersPrimavera10
         public void QuerySQL(string querySQL, string tabelaIdentityInsert = null)
         {
             string nomeBDdaEmpresa = _PSO.BaseDados.DaNomeBDdaEmpresa(_BSO.Contexto.CodEmp);
-            string connString = 
+            string connString =
                 $"Data Source={_secrets.BDServidorInstancia()};" +
                 "Network Library=DBMSSOCN;" +
                 $"Initial Catalog={nomeBDdaEmpresa};" +
@@ -173,7 +175,7 @@ namespace HelpersPrimavera10
                     EscreverParaFicheiroTxt(ex.ToString(), "Helpers_AlterarPropriedadeTabelaNaBD_LigacaoBD", EscreveTxtPastaPath);
                 }
             }
-    }
+        }
 
         /// <summary>
         /// Apaga todas as linhas relacionadas com a linha a ser apagada, sejam irmãs, filhas ou pai.
@@ -187,7 +189,7 @@ namespace HelpersPrimavera10
             // Usar LINQ para obter os indices das linhas com o seu IDLinhaPai = IDLinha da linha pai passada como argumento
             List<int> indicesLista = docVenda.Linhas
                 .Select((linha, indice) => new { Linha = linha, Indice = indice })
-                .Where(item => item.Linha.IdLinhaPai == idPai || item.Linha.IdLinha == idPai )
+                .Where(item => item.Linha.IdLinhaPai == idPai || item.Linha.IdLinha == idPai)
                 .Select(item => item.Indice)
                 .OrderByDescending(index => index)
                 .ToList();

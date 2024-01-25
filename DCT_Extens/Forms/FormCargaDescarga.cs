@@ -29,7 +29,7 @@ namespace DCT_Extens
 
         private void FormCargaDescarga_Load(object sender, EventArgs e)
         {
-            _BSO = PriMotores.Motor; 
+            _BSO = PriMotores.Motor;
             _PSO = PriMotores.Plataforma;
             _SDKContexto = PriMotores.PriSDKContexto;
 
