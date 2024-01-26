@@ -26,6 +26,8 @@ namespace DCT_Extens
             _SDKContexto = PriMotores.PriSDKContexto;
 
             InitializeComponent();
+
+            this.Text = "Reimpressão de Documentos";
         }
 
         private void FormReimpressao_Load(object sender, EventArgs e)

@@ -12,11 +12,12 @@ namespace PP_Extens
 {
     public class PP_UtilCBL : UtilLigacaoCBL
     {
+        private double diff, totalDeb, totalCred, totalIvaDeb, totalIvaCred, totalDocOrig, totalIvaDocOrig;
+
         public override void AntesDeProcessarCBL(ref bool Cancel, ExtensibilityEventArgs e)
         {
             const double ERRO = 0.02;
             CblBEDocumento objCBL = new CblBEDocumento();
-            double diff, totalDeb, totalCred, totalIvaDeb, totalIvaCred, totalDocOrig, totalIvaDocOrig;
             string tipodoc;
             int i, l;
 

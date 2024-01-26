@@ -6,32 +6,40 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Windows.Forms; using ErpBS100; using StdPlatBS100; using StdBE100; using VndBE100;
+using System.Windows.Forms; 
+using ErpBS100; 
+using StdPlatBS100; 
+using StdBE100; 
+using VndBE100;
 using System.Security.Cryptography;
 using BasBE100;
+using HelpersPrimavera10;
+using PRISDK100;
+using Primavera.Extensibility.CustomForm;
 
 namespace PP_PPCS
 {
-    public partial class FormImportaDocs_WF : Form
+    public partial class FormImportaDocs_WF : CustomForm
     {
         private ErpBS _BSO;
-        private StdPlatBS _PSO;
+        private StdBSInterfPub _PSO;
+        private clsSDKContexto _sdkContexto;
         private DateTime _dataOrigem, _dataDestino;
         private DataTable _RSet;
         private QueriesSQL queriesSQL;
 
         public FormImportaDocs_WF()
         {
+            _PSO = PriMotores.Plataforma;
+            _BSO = PriMotores.Motor;
+            _sdkContexto = PriMotores.PriSDKContexto;  
+
             InitializeComponent();
         }
 
         private void FormImportaDocs_WF_Load(object sender, EventArgs e)
         {
-            Motor.PriEngine.CreateContext("PRIPPCS", "id", "*Pelicano*");
-            _BSO = Motor.PriEngine.Engine;
-            _PSO = Motor.PriEngine.Platform;
             //prigrelha_Docs_WF.Inicializa(Motor.PriEngine.PriSDKContexto);
-
             datepicker_DataDocImportar_WF.Value = DateTime.Now;
             datepicker_DataDocNovo.Value = DateTime.Now;
 
@@ -43,7 +51,6 @@ namespace PP_PPCS
         {
             queriesSQL.FecharSQL();
         }
-
 
         //private void InicializarPriGrelhaDocs()
         //{
@@ -125,7 +132,7 @@ namespace PP_PPCS
         //    QueriesSQL.DropTabela(_tabela);
         //    QueriesSQL.FecharSQL();
         //}
-
+        
         private void InicializarDataGrid(DateTime dataImport)
         {
             for (int i = 0; i < 13; i++) {

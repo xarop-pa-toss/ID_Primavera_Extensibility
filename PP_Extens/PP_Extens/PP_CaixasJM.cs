@@ -17,6 +17,7 @@ namespace PP_Extens
 {
     internal class PP_CaixasJM : CustomCode
     {
+        private HelpersPrimavera10.HelperFunctions _Helpers = new HelpersPrimavera10.HelperFunctions();
         private readonly VndBEDocumentoVenda _docVenda;
         private StdPlatBS100.StdBSInterfPub _PSO;
         private ErpBS _BSO;
@@ -101,7 +102,7 @@ namespace PP_Extens
             while (string.IsNullOrEmpty(armazemOrigem))
             {
                 try {
-                    resposta = PP_Geral.MostraInputForm("Armazém de origem das caixas", armazemInputBoxDescricao, "0", false, _BSO);
+                    resposta = _Helpers.MostraInputForm("Armazém de origem das caixas", armazemInputBoxDescricao, "0", false);
                     armazemOrigem = armazemDict[resposta];
                 }
                 catch (KeyNotFoundException e) {
@@ -111,7 +112,7 @@ namespace PP_Extens
 
             Dictionary<string, string> campos = new Dictionary<string, string>
             {
-                {"CDU_ID", PP_Geral.GetGUID()},
+                {"CDU_ID", PP_Geral.CreateGUID()},
                 {"CDU_CabecDocID", _docVenda.ID},
                 {"CDU_TipoDoc", _docVenda.Tipodoc },
                 {"CDU_NumDoc", _docVenda.NumDoc.ToString() },

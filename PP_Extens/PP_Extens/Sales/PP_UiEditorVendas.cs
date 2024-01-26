@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using PRISDK100;
 using BasBE100; using StdBE100; using VndBE100; using StdPlatBS100.UserForms;
 using StdPlatBS100;
+using HelpersPrimavera10;
 using System.Runtime.CompilerServices;
 
 /// <summary>
@@ -15,6 +16,8 @@ namespace PP_Extens.Sales
 {
     public class PP_UiEditorVendas : EditorVendas
     {
+        private HelperFunctions _Helpers = new HelperFunctions();
+
         public override void TeclaPressionada(int KeyCode, int Shift, ExtensibilityEventArgs e)
         {
             base.TeclaPressionada(KeyCode, Shift, e);
@@ -37,8 +40,6 @@ namespace PP_Extens.Sales
 
                 BSO.Vendas.Documentos.PreencheDadosRelacionados(DocumentoVenda);
             }
-
-            FormServicoDados formServicoDados = new FormServicoDados();
         }
 
         public override void ClienteIdentificado(string Cliente, ref bool Cancel, ExtensibilityEventArgs e)
@@ -88,7 +89,7 @@ namespace PP_Extens.Sales
                 serie.Inicio();
                 if (serie.Valor("CDU_PedeVendedor").Equals(true))
                 {
-                    string s = PP_Geral.MostraInputForm("Vendedor", "Código de Vendedor", "", true, BSO);
+                    string s = .MostraInputForm("Vendedor", "Código de Vendedor", "", true, BSO);
 
                     //InputForm inputForm = new InputForm("Código do vendedor:", "0", PSO, BSO);
                     //resultado = inputForm.ShowDialog();
@@ -105,7 +106,7 @@ namespace PP_Extens.Sales
                 // Pede Documento se a série o exigir
                 if (serie.Valor("CDU_PedeDocumento").Equals(true))
                 {
-                    string nrDoc = PP_Geral.MostraInputForm("Documento", "Nº de documento manual:", "", true, BSO);
+                    string nrDoc = _Helpers.MostraInputForm("Documento", "Nº de documento manual:", "", true);
 
                     // Queremos os caracteres de 0 a 10. Substring dá erro se fizermos isso e a string de entrada for mais curta que 10 caracteres
                     // Math.Min devolve o menor dos dois valores.
@@ -127,7 +128,7 @@ namespace PP_Extens.Sales
 
                         if (geral.nz(ref matriculaHabitual).Length > 0 && geral.nz(ref matricula) == "") { DocumentoVenda.Matricula = geral.nz(ref matriculaHabitual); }
 
-                        matricula = PP_Geral.MostraInputForm("Matricula", "Matricula da viatura:", geral.nz(ref matricula), true, BSO);
+                        matricula = _Helpers.MostraInputForm("Matricula", "Matricula da viatura:", geral.nz(ref matricula), true);
                         DocumentoVenda.Matricula = geral.nz(ref matricula);
 
                         cli = null;
@@ -144,7 +145,7 @@ namespace PP_Extens.Sales
                     string s = BSO.Base.Clientes.DaValorAtributo(DocumentoVenda.Entidade, "CDU_NotaFactura");
                     if (s.Length > 1)
                     {
-                        s = PP_Geral.MostraInputForm("Nota", "Nota na Fatura", "", true, BSO);
+                        s = _Helpers.MostraInputForm("Nota", "Nota na Fatura", "", true);
                         DocumentoVenda.CamposUtil["CDU_NotaFactura"].Valor = geral.nz(ref s);
                     }
                 }
@@ -164,14 +165,14 @@ namespace PP_Extens.Sales
             if (Convert.ToBoolean(BSO.Base.Series.DaValorAtributo("V", DocumentoVenda.Tipodoc, DocumentoVenda.Serie, "CDU_PedeFornecedor")))
             {
                 string cdu = linha.CamposUtil["CDU_Fornecedor"].Valor.ToString();
-                s = PP_Geral.MostraInputForm("Fornecedor", "Fornecedor:", Geral.nz(ref cdu), true, BSO);
+                s = _Helpers.MostraInputForm("Fornecedor", "Fornecedor:", Geral.nz(ref cdu), true);
                 linha.CamposUtil["CDU_Fornecedor"].Valor = Geral.nz(ref s).Trim();
             }
 
             bool memUltLote = BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_MemorizaLote");
             if (memUltLote) { s = BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_UltimoLote"); }
 
-            s = PP_Geral.MostraInputForm("Lote", "Introduza o lote do artigo:\n\n**** ATENÇÃO ****\n\nFornecedorMêsDia\nExemplo: 0010718", s, false, BSO);
+            s = _Helpers.MostraInputForm("Lote", "Introduza o lote do artigo:\n\n**** ATENÇÃO ****\n\nFornecedorMêsDia\nExemplo: 0010718", s, false);
             s = Geral.nz(ref s).ToUpper().Trim();
             linha.CamposUtil["CDU_LoteAux"].Valor = s;
 
@@ -210,7 +211,7 @@ namespace PP_Extens.Sales
                 {
                     try
                     {
-                        resposta = PP_Geral.MostraInputForm("Forma de Obtenção", descricao, "", false, BSO);
+                        resposta = _Helpers.MostraInputForm("Forma de Obtenção", descricao, "", false);
                         
                         if (string.IsNullOrEmpty(resposta)) { break; }
                         
@@ -334,7 +335,7 @@ namespace PP_Extens.Sales
                 // Verifica se o campo CDU_SeloViatura está vazio
                 if (string.IsNullOrEmpty(DocumentoVenda.CamposUtil["CDU_SeloViatura"].Valor.ToString()) && DocumentoVenda.Tipodoc == "GRP")
                 {
-                    string selo = PP_Geral.MostraInputForm("Selo", "Selo da viatura de transporte:", "", false, BSO);
+                    string selo = _Helpers.MostraInputForm("Selo", "Selo da viatura de transporte:", "", false);
                     DocumentoVenda.CamposUtil["CDU_SeloViatura"].Valor = selo;
                     }
                 }
@@ -384,7 +385,7 @@ namespace PP_Extens.Sales
             StdBEExecSql sql = new StdBEExecSql();
             StdBEExecSql sql2 = new StdBEExecSql();
             VndBEDocumentoVenda dv = DocumentoVenda;
-            tempGUID = PP_Geral.GetGUID();
+            tempGUID = PP_Geral.CreateGUID();
 
             sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
             sql.Tabela = "PSI_TempCabecDoc";

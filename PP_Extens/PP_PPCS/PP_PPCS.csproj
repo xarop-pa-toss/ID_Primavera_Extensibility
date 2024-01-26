@@ -148,7 +148,7 @@
     <Compile Include="Motor\Secrets.cs" />
     <Compile Include="Purchases\ImportaDocs.cs" />
     <Compile Include="Forms\FormImportaDocs_WF.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\FormImportaDocs_WF.Designer.cs">
       <DependentUpon>FormImportaDocs_WF.cs</DependentUpon>

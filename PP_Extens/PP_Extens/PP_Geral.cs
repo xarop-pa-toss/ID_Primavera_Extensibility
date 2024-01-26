@@ -4,6 +4,7 @@ using StdBE100; using StdPlatBS100;
 using PP_Extens;
 using Primavera.Extensibility.Extensions;
 using ErpBS100;
+using HelpersPrimavera10;
 using System.Drawing.Printing;
 
 // Conversão de PORTIPESCA/Modules/Geral
@@ -11,39 +12,10 @@ namespace PP_Extens
 {
     public class PP_Geral : CustomCode
     {
-        public static string GetGUID()
+        public static string CreateGUID()
         {
             Guid x = Guid.NewGuid();
             return x.ToString();
-        }
-
-        // Como CreateCustomFormInstance() não deixa abrir Forms com parâmetros, e o resultado não é uma instância do form em si,
-        // temos de ter alternativa para enviar informação para dentro do form.
-        // Foi criada uma class FormServicoDados que serve como proxy com propriedades static. Não é limpo, mas não vi outra opção.
-        // Para evitar erro do user (dev), foi encapsulada em PP_Geral.cs para obrigar a preencher parâmetros
-        public static string MostraInputForm(string titulo, string descricao, string valorDefeito, bool permiteNull, ErpBS BSO)
-        {
-            string resposta = null;
-
-            using (var formInstancia = BSO.Extensibility.CreateCustomFormInstance(typeof(InputForm)))
-            {
-                FormServicoDados.Titulo = titulo;
-                FormServicoDados.Descricao = descricao;
-                FormServicoDados.ValorDefeito = valorDefeito;
-
-                if (formInstancia.IsSuccess())
-                {
-                    (formInstancia.Result as InputForm).ShowDialog();
-                    resposta = FormServicoDados.Resposta;
-                }
-                
-                FormServicoDados.Limpar();
-                if (string.IsNullOrWhiteSpace(resposta) && !permiteNull) {
-                    System.Windows.Forms.MessageBox.Show("Campo não pode estar vazio.");
-                    MostraInputForm(titulo, descricao, valorDefeito, permiteNull, BSO); }
-
-                return resposta;
-            }
         }
 
         public string nz <T> (ref T s)
@@ -66,7 +38,7 @@ namespace PP_Extens
             Fim
         }
 
-        public static string MesAnterior(MesAnt t)
+        public static string GetMesAnterior(MesAnt t)
         {
             DateTime data;
             StdBSMensagensDialogos Dialogos = new StdBSMensagensDialogos();
