@@ -25,6 +25,8 @@ namespace DCT_Extens
         public FormCargaDescarga()
         {
             InitializeComponent();
+
+            this.Text = "Alteração de morada de Descarga"; 
         }
 
         private void FormCargaDescarga_Load(object sender, EventArgs e)

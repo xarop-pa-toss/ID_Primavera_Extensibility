@@ -73,7 +73,6 @@ C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debu
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\obj\Debug\PP_Extens.csproj.CopyComplete
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\obj\Debug\PP_Extens.csproj.GenerateResource.cache
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\obj\Debug\PP_Extens.InputForm.resources
-C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\HelperFunctionsPrimavera10.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\Primavera.Lithium.ElectronicSeals.Client.Rest.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\Primavera.Lithium.AccountingAutomation.Client.Rest.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\Primavera.MicroServices.Platform.Entities.dll

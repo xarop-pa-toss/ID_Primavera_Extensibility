@@ -46,7 +46,8 @@
             this.priGrelha_Moradas.Cols = null;
             this.priGrelha_Moradas.ColsFrozen = -1;
             this.priGrelha_Moradas.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.priGrelha_Moradas.Location = new System.Drawing.Point(15, 89);
+            this.priGrelha_Moradas.Location = new System.Drawing.Point(20, 91);
+            this.priGrelha_Moradas.Margin = new System.Windows.Forms.Padding(4);
             this.priGrelha_Moradas.Name = "priGrelha_Moradas";
             this.priGrelha_Moradas.NumeroMaxRegistosSemPag = 150000;
             this.priGrelha_Moradas.NumeroRegistos = 0;
@@ -70,7 +71,7 @@
             this.priGrelha_Moradas.PermiteStatusBar = true;
             this.priGrelha_Moradas.PermiteVistas = true;
             this.priGrelha_Moradas.PosicionaColunaSeguinte = true;
-            this.priGrelha_Moradas.Size = new System.Drawing.Size(876, 348);
+            this.priGrelha_Moradas.Size = new System.Drawing.Size(1168, 428);
             this.priGrelha_Moradas.TabIndex = 0;
             this.priGrelha_Moradas.TituloGrelha = "";
             this.priGrelha_Moradas.TituloMapa = "";
@@ -95,13 +96,14 @@
             this.f4_Entidade.Categoria = PRISDK100.clsSDKTypes.EnumCategoria.Clientes;
             this.f4_Entidade.ChaveFisica = "";
             this.f4_Entidade.ChaveNumerica = false;
-            this.f4_Entidade.F4Modal = false;
+            this.f4_Entidade.F4Modal = true;
             this.f4_Entidade.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.f4_Entidade.IDCategoria = "Clientes";
-            this.f4_Entidade.Location = new System.Drawing.Point(15, 25);
+            this.f4_Entidade.Location = new System.Drawing.Point(20, 20);
+            this.f4_Entidade.Margin = new System.Windows.Forms.Padding(4);
             this.f4_Entidade.MaxLengthDescricao = 0;
             this.f4_Entidade.MaxLengthF4 = 50;
-            this.f4_Entidade.MinimumSize = new System.Drawing.Size(37, 21);
+            this.f4_Entidade.MinimumSize = new System.Drawing.Size(49, 26);
             this.f4_Entidade.Modulo = "BAS";
             this.f4_Entidade.MostraDescricao = true;
             this.f4_Entidade.MostraLink = true;
@@ -115,7 +117,7 @@
             this.f4_Entidade.ResourcePersonalizada = false;
             this.f4_Entidade.Restricao = "";
             this.f4_Entidade.SelectionFormula = "";
-            this.f4_Entidade.Size = new System.Drawing.Size(434, 21);
+            this.f4_Entidade.Size = new System.Drawing.Size(579, 26);
             this.f4_Entidade.TabIndex = 1;
             this.f4_Entidade.TextoDescricao = "";
             this.f4_Entidade.WidthEspacamento = 100;
@@ -125,9 +127,10 @@
             // 
             // btn_Actualizar
             // 
-            this.btn_Actualizar.Location = new System.Drawing.Point(455, 25);
+            this.btn_Actualizar.Location = new System.Drawing.Point(607, 20);
+            this.btn_Actualizar.Margin = new System.Windows.Forms.Padding(4);
             this.btn_Actualizar.Name = "btn_Actualizar";
-            this.btn_Actualizar.Size = new System.Drawing.Size(100, 41);
+            this.btn_Actualizar.Size = new System.Drawing.Size(133, 50);
             this.btn_Actualizar.TabIndex = 2;
             this.btn_Actualizar.Text = "Actualizar";
             this.btn_Actualizar.UseVisualStyleBackColor = true;
@@ -136,9 +139,10 @@
             // btn_Confirmar
             // 
             this.btn_Confirmar.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btn_Confirmar.Location = new System.Drawing.Point(561, 25);
+            this.btn_Confirmar.Location = new System.Drawing.Point(748, 20);
+            this.btn_Confirmar.Margin = new System.Windows.Forms.Padding(4);
             this.btn_Confirmar.Name = "btn_Confirmar";
-            this.btn_Confirmar.Size = new System.Drawing.Size(100, 41);
+            this.btn_Confirmar.Size = new System.Drawing.Size(133, 50);
             this.btn_Confirmar.TabIndex = 3;
             this.btn_Confirmar.Text = "Confirmar";
             this.btn_Confirmar.UseVisualStyleBackColor = true;
@@ -146,15 +150,15 @@
             // 
             // FormCargaDescarga
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.btn_Confirmar);
             this.Controls.Add(this.btn_Actualizar);
             this.Controls.Add(this.f4_Entidade);
             this.Controls.Add(this.priGrelha_Moradas);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "FormCargaDescarga";
-            this.Size = new System.Drawing.Size(907, 453);
+            this.Size = new System.Drawing.Size(1209, 537);
             this.Text = "FormCargaDescarga";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormCargaDescarga_FormClosed);
             this.Load += new System.EventHandler(this.FormCargaDescarga_Load);

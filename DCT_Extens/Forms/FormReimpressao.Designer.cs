@@ -199,7 +199,7 @@ namespace DCT_Extens
             this.f4_Cliente.CausesValidation = false;
             this.f4_Cliente.ChaveFisica = "";
             this.f4_Cliente.ChaveNumerica = false;
-            this.f4_Cliente.F4Modal = false;
+            this.f4_Cliente.F4Modal = true;
             this.f4_Cliente.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.f4_Cliente.IDCategoria = "Clientes";
             this.f4_Cliente.Location = new System.Drawing.Point(13, 201);
