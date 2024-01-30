@@ -47,3 +47,17 @@ C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\fr\CctBS100.resources.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\pt-cl\CctBS100.resources.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\obj\Debug\PP_PPCS.FormQueryStatus_WF.resources
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\HelpersPrimavera10.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\Primavera.Lithium.ElectronicSeals.Client.Rest.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\Primavera.Lithium.AccountingAutomation.Client.Rest.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\Primavera.MicroServices.Platform.Entities.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\Primavera.Lithium.DigitalArchive.Client.Rest.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\HelpersPrimavera10.pdb
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\ca\Primavera.Lithium.ElectronicSeals.Client.Rest.resources.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\es\Primavera.Lithium.ElectronicSeals.Client.Rest.resources.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\it\Primavera.Lithium.ElectronicSeals.Client.Rest.resources.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\pt\Primavera.Lithium.ElectronicSeals.Client.Rest.resources.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\ca\Primavera.Lithium.DigitalArchive.Client.Rest.resources.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\es\Primavera.Lithium.DigitalArchive.Client.Rest.resources.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\it\Primavera.Lithium.DigitalArchive.Client.Rest.resources.dll
+C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_PPCS\bin\Debug\pt\Primavera.Lithium.DigitalArchive.Client.Rest.resources.dll

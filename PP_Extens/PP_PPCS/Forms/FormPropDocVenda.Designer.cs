@@ -28,7 +28,6 @@ namespace PP_PPCS
         /// </summary>
         private void InitializeComponent()
         {
-            this.label3 = new System.Windows.Forms.Label();
             this.cBoxSerie = new System.Windows.Forms.ComboBox();
             this.cBoxNumero = new System.Windows.Forms.ComboBox();
             this.btnActualizar = new System.Windows.Forms.Button();
@@ -38,36 +37,30 @@ namespace PP_PPCS
             ((System.ComponentModel.ISupportInitialize)(this.priGrelha1)).BeginInit();
             this.SuspendLayout();
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 49);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Número";
-            // 
             // cBoxSerie
             // 
             this.cBoxSerie.FormattingEnabled = true;
-            this.cBoxSerie.Location = new System.Drawing.Point(408, 16);
+            this.cBoxSerie.Location = new System.Drawing.Point(544, 20);
+            this.cBoxSerie.Margin = new System.Windows.Forms.Padding(4);
             this.cBoxSerie.Name = "cBoxSerie";
-            this.cBoxSerie.Size = new System.Drawing.Size(77, 21);
+            this.cBoxSerie.Size = new System.Drawing.Size(85, 24);
             this.cBoxSerie.TabIndex = 4;
             // 
             // cBoxNumero
             // 
             this.cBoxNumero.FormattingEnabled = true;
-            this.cBoxNumero.Location = new System.Drawing.Point(63, 46);
+            this.cBoxNumero.Location = new System.Drawing.Point(637, 20);
+            this.cBoxNumero.Margin = new System.Windows.Forms.Padding(4);
             this.cBoxNumero.Name = "cBoxNumero";
-            this.cBoxNumero.Size = new System.Drawing.Size(121, 21);
+            this.cBoxNumero.Size = new System.Drawing.Size(82, 24);
             this.cBoxNumero.TabIndex = 5;
             // 
             // btnActualizar
             // 
-            this.btnActualizar.Location = new System.Drawing.Point(661, 37);
+            this.btnActualizar.Location = new System.Drawing.Point(748, 20);
+            this.btnActualizar.Margin = new System.Windows.Forms.Padding(4);
             this.btnActualizar.Name = "btnActualizar";
-            this.btnActualizar.Size = new System.Drawing.Size(99, 37);
+            this.btnActualizar.Size = new System.Drawing.Size(132, 46);
             this.btnActualizar.TabIndex = 6;
             this.btnActualizar.Text = "Actualizar";
             this.btnActualizar.UseVisualStyleBackColor = true;
@@ -75,9 +68,10 @@ namespace PP_PPCS
             // 
             // btnSair
             // 
-            this.btnSair.Location = new System.Drawing.Point(661, 443);
+            this.btnSair.Location = new System.Drawing.Point(881, 545);
+            this.btnSair.Margin = new System.Windows.Forms.Padding(4);
             this.btnSair.Name = "btnSair";
-            this.btnSair.Size = new System.Drawing.Size(99, 33);
+            this.btnSair.Size = new System.Drawing.Size(132, 41);
             this.btnSair.TabIndex = 7;
             this.btnSair.Text = "Sair";
             this.btnSair.UseVisualStyleBackColor = true;
@@ -92,7 +86,8 @@ namespace PP_PPCS
             this.priGrelha1.Cols = null;
             this.priGrelha1.ColsFrozen = -1;
             this.priGrelha1.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.priGrelha1.Location = new System.Drawing.Point(16, 94);
+            this.priGrelha1.Location = new System.Drawing.Point(21, 93);
+            this.priGrelha1.Margin = new System.Windows.Forms.Padding(4);
             this.priGrelha1.Name = "priGrelha1";
             this.priGrelha1.NumeroMaxRegistosSemPag = 150000;
             this.priGrelha1.NumeroRegistos = 0;
@@ -116,7 +111,7 @@ namespace PP_PPCS
             this.priGrelha1.PermiteStatusBar = true;
             this.priGrelha1.PermiteVistas = true;
             this.priGrelha1.PosicionaColunaSeguinte = true;
-            this.priGrelha1.Size = new System.Drawing.Size(761, 391);
+            this.priGrelha1.Size = new System.Drawing.Size(1015, 504);
             this.priGrelha1.TabIndex = 8;
             this.priGrelha1.TituloGrelha = "";
             this.priGrelha1.TituloMapa = "";
@@ -140,11 +135,11 @@ namespace PP_PPCS
             this.f4TipoDoc.F4Modal = false;
             this.f4TipoDoc.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.f4TipoDoc.IDCategoria = "DocumentosVenda";
-            this.f4TipoDoc.Location = new System.Drawing.Point(16, 16);
-            this.f4TipoDoc.Margin = new System.Windows.Forms.Padding(2);
+            this.f4TipoDoc.Location = new System.Drawing.Point(21, 20);
+            this.f4TipoDoc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.f4TipoDoc.MaxLengthDescricao = 0;
             this.f4TipoDoc.MaxLengthF4 = 50;
-            this.f4TipoDoc.MinimumSize = new System.Drawing.Size(28, 17);
+            this.f4TipoDoc.MinimumSize = new System.Drawing.Size(37, 21);
             this.f4TipoDoc.Modulo = "VND";
             this.f4TipoDoc.MostraDescricao = true;
             this.f4TipoDoc.MostraLink = true;
@@ -158,17 +153,18 @@ namespace PP_PPCS
             this.f4TipoDoc.ResourcePersonalizada = false;
             this.f4TipoDoc.Restricao = "";
             this.f4TipoDoc.SelectionFormula = "";
-            this.f4TipoDoc.Size = new System.Drawing.Size(387, 22);
+            this.f4TipoDoc.Size = new System.Drawing.Size(516, 27);
             this.f4TipoDoc.TabIndex = 14;
             this.f4TipoDoc.TextoDescricao = "";
             this.f4TipoDoc.WidthEspacamento = 60;
             this.f4TipoDoc.WidthF4 = 1100;
             this.f4TipoDoc.WidthLink = 1300;
             this.f4TipoDoc.TextChange += new PRISDK100.F4.TextChangeHandler(this.f4TipoDoc_TextChange);
+            this.f4TipoDoc.Load += new System.EventHandler(this.f4TipoDoc_Load);
             // 
             // FormPropDocVenda
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.f4TipoDoc);
             this.Controls.Add(this.priGrelha1);
@@ -176,19 +172,17 @@ namespace PP_PPCS
             this.Controls.Add(this.btnActualizar);
             this.Controls.Add(this.cBoxNumero);
             this.Controls.Add(this.cBoxSerie);
-            this.Controls.Add(this.label3);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "FormPropDocVenda";
-            this.Size = new System.Drawing.Size(794, 498);
+            this.Size = new System.Drawing.Size(1059, 613);
             this.Text = "FormPropDocVenda";
             this.Load += new System.EventHandler(this.FormPropDocVenda_Load);
             ((System.ComponentModel.ISupportInitialize)(this.priGrelha1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cBoxSerie;
         private System.Windows.Forms.ComboBox cBoxNumero;
         private System.Windows.Forms.Button btnActualizar;

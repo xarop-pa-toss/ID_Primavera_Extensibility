@@ -17,7 +17,7 @@ namespace PP_PPCS
 
             formImportaDocs.ShowDialog();
 
-            PSO.UI.AdicionaFormMDI(formImportaDocs);
+            //PSO.UI.AdicionaFormMDI(formImportaDocs);
             PSO.UI.AdicionaFormMDI(formQueryStatus);
         }
     }

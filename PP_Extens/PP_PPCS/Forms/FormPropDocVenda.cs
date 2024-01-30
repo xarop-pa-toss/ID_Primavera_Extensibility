@@ -62,5 +62,10 @@ namespace PP_PPCS
         {
 
         }
+
+        private void f4TipoDoc_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
