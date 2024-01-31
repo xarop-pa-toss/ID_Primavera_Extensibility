@@ -1,10 +1,9 @@
 ﻿using HelpersPrimavera10;
-using PP_PPCS;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Platform.Services;
 
 
-namespace PP_PPCS
+namespace PP_Qualidade
 {
     public class InicializarPriMotores : Plataforma
     {

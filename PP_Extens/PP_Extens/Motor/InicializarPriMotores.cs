@@ -1,5 +1,4 @@
 ﻿using HelpersPrimavera10;
-using PP_PPCS;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Platform.Services;
 
