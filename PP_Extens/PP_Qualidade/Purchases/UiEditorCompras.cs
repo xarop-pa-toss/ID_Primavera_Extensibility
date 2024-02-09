@@ -1,7 +1,9 @@
+using BasBE100;
 using CmpBE100;
 using InvBE100;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Purchases.Editors;
+using StdPlatBS100;
 using System;
 using System.Data;
 using System.Globalization;
@@ -12,7 +14,6 @@ namespace PP_Qualidade.Purchases
     public class UiEditorCompras : EditorCompras
     {
         HelpersPrimavera10.HelperFunctions _Helpers = new HelpersPrimavera10.HelperFunctions();
-
 
 
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
@@ -166,19 +167,67 @@ namespace PP_Qualidade.Purchases
             foreach (CmpBELinhaDocumentoCompra linha in DocumentoCompra.Linhas)
             {
                 i++;
-                if (linha.TipoLinha == "10" &&
-                    linha.Lote == "L01" &&
-                    BSO.Base.Artigos.DaValorAtributo(linha.Artigo, "MovStock") == "S" &&
-                    BSO.Base.Artigos.DaValorAtributo(linha.Artigo, "TratamentoLotes") &&
-                    BSO.Base.Artigos.DaValorAtributo(linha.Artigo, "CDU_Pescado"))
+                if (linha.TipoLinha == "10")
                 {
-                    if (BSO.Inventario.ArtigosLotes.Existe(linha.Artigo, $"{Tipo}{Serie}/{NumDoc.ToString()}.{i.ToString()}"))
+                    if (linha.Lote == "L01" &&
+                        BSO.Base.Artigos.DaValorAtributo(linha.Artigo, "MovStock") == "S" &&
+                        BSO.Base.Artigos.DaValorAtributo(linha.Artigo, "TratamentoLotes") &&
+                        BSO.Base.Artigos.DaValorAtributo(linha.Artigo, "CDU_Pescado"))
                     {
+                        if (BSO.Inventario.ArtigosLotes.Existe(linha.Artigo, $"{Tipo}{Serie}/{NumDoc}.{i}"))
+                        {
+                            using (InvBEArtigoLote lote = new InvBEArtigoLote())
+                            {
+                                lote.Artigo = linha.Artigo;
+                                lote.Lote = $"{Tipo}{Serie}/{NumDoc}.{i}";
+                                lote.Descricao = $"Lote {lote.Lote}";
+                                lote.DataFabrico = linha.DataEntrega;
+                                lote.Activo = true;
 
+                                BSO.Inventario.ArtigosLotes.Actualiza(lote);
+                            }
+                        }
+
+                        if (!BSO.Base.ArtigosCodBarras.Existe(linha.Artigo, linha.Unidade))
+                        {
+                            using (BasBEArtigoCodBarra cbar = new BasBEArtigoCodBarra())
+                            {
+                                cbar.Artigo = linha.Artigo;
+                                cbar.CodBarras = $"{Tipo}{Serie}/{NumDoc}.{i}";
+                                cbar.Unidade = linha.Unidade;
+
+                                BSO.Base.ArtigosCodBarras.Actualiza(cbar);
+                            }
+                        }
+
+                        _Helpers.QuerySQL(
+                            $" UPDATE LinhasCompras " +
+                            $" SET Lote = '{Tipo}{Serie}/{NumDoc}.{i}' " +
+                            $" WHERE Id = '{linha.IdLinha}';");
+
+                        _Helpers.QuerySQL(
+                            $" UPDATE LinhasCompras " +
+                            $" SET Lote = '{Tipo}{Serie}/{NumDoc}.{i}' " +
+                            $" WHERE Id = '{linha.IdLinha}';");
                     }
                 }
-
             }
+            #endregion
+
+            #region Imprimir Talões Entrada
+            const string REPORT = "TIRP_01";
+
+            PSO.FuncoesUtilizador.Executa("ImprimirTaloesRP");
+            _Helpers.QuerySQL(
+               " UPDATE LinhasCompras " +
+               " SET CDU_ImprimirET = 0 " +
+               " FROM LinhasCompras lc " +
+               " INNER JOIN CabecCompras cc ON lc.IdCabecCompras = cc.Id " +
+               " WHERE ISNULL(lc.CDU_ImprimirET, 0) <> 0 " +
+               $" AND cc.Filial = '{Filial}' " +
+               $" AND cc.TipoDoc = '{Tipo}' " +
+               $" AND cc.Serie = '{Serie}' " +
+               $" AND cc.NumDoc = {NumDoc};");
             #endregion
         }
     }
