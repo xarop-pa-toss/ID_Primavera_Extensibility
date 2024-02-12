@@ -1,14 +1,20 @@
+using HelpersPrimavera10;
 using IntBE100;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Internal.Editors;
 using Primavera.Extensibility.Internal.Editors.Details;
+using StdBE100;
 using System;
+using System.Collections.Generic;
+using System.Data;
 
 
 namespace PP_Qualidade.Internal
 {
     public class UiEditorInternos : EditorInternos
     {
+        HelperFunctions _Helpers = new HelperFunctions();
+
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.AntesDeGravar(ref Cancel, e);
@@ -107,13 +113,153 @@ namespace PP_Qualidade.Internal
                 Cancel = true;
         }
 
+        public override void DepoisDeGravar(string Filial, string Tipo, string Serie, int NumDoc, ExtensibilityEventArgs e)
+        {
+            base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
+
+            if (Tipo != "PA") return;
+
+            #region Tratar Lotes Novos de DocInterno
+            if (DocumentoInterno.Linhas.NumItens == 0) return;
+
+            for (int i = 1; i > DocumentoInterno.Linhas.NumItens; i++) 
+            {
+                IntBELinhaDocumentoInterno linha = DocumentoInterno.Linhas.GetEdita(i);
+                if (linha.TipoLinha != "10") continue;
+                if (!
+                    (linha.Lote == "L01"
+                    && BSO.D
+
+            }
+            #endregion
+
+            #region Imprimir Talões de Produção Acabados
+            #endregion
+        }
+
         public override void ArtigoIdentificado(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.ArtigoIdentificado(Artigo, NumLinha, ref Cancel, e);
 
             if (BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_Pescado")) return;
 
+            #region Tratar Artigo de Pescado
+            IIntBELinhaDocumentoInterno linha = DocumentoInterno.Linhas.GetEdita(NumLinha);
 
+            linha.CamposUtil["CDU_Caixas"].Valor = 1;
+            if (linha.Lote == "L01") linha.PrecoUnitario = 0;
+
+            linha.CamposUtil["CDU_Caixas"].Valor = _Helpers.MostraInputForm("Caixas", "Número de caixas: ", "", false);
+
+            if (BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_VendaEmCaixa"))
+            {
+                linha.Quantidade = (double)linha.CamposUtil["CDU_Caixas"].Valor;
+
+                // Quilos por cada caixa (permite decimal)
+                DataTable KilosPorCaixa = _Helpers.GetDataTableDeSQL(
+                    $"SELECT TOP(1) CDU_KilosPorCaixa AS Kgrs " +
+                    $"FROM LinhasInternos li " +
+                    $"  INNER JOIN CabecInternos ci ON li.IdCabecInternos = ci.Id " +
+                    $"WHERE li.Artigo = '{Artigo}' " +
+                    $"ORDER BY ci.Data DESC, ci.NumDoc DESC, li.NumLinha;");
+
+                string kilosDefault = KilosPorCaixa.Rows.Count > 0 ? KilosPorCaixa.Rows[0].ToString() : BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_KilosPorCaixa");
+                string kilosStr = _Helpers.MostraInputForm("Quilos", "Quilos por Caixa:", kilosDefault);
+
+                if (!double.TryParse(kilosStr, out double kilosDbl))
+                {
+                    PSO.MensagensDialogos.MostraErro("O valor inserido para os Quilos por caixa não é válido.");
+                    Cancel = true;
+                    return;
+                }
+                linha.CamposUtil["CDU_KilosPorCaixa"].Valor = kilosDbl;
+
+            } else
+            {
+                string kilosStr = _Helpers.MostraInputForm("Quantidades:", "Quantidades", "Kgrs");
+                if (!double.TryParse(kilosStr, out double kilosDbl))
+                {
+                    PSO.MensagensDialogos.MostraErro("O valor inserido para os Quilos por caixa não é válido.");
+                    kilosDbl = 0;
+                }
+                linha.Quantidade = kilosDbl;
+            }
+            #endregion
+        }
+
+        public override void ArtigoInexistente(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
+        {
+            base.ArtigoInexistente(Artigo, NumLinha, ref Cancel, e);
+
+            if (DocumentoInterno.Tipodoc != "PA" || !Artigo.StartsWith("#")) return;
+
+            string loteAux = Artigo.Substring(1).ToUpper();
+            string artAux = BSO.Base.Artigos.DaArtigoComCodBarras(ref loteAux);
+            
+            if (BSO.Base.Artigos.Existe(artAux))
+            {
+                DataTable origemDoLoteTbl = _Helpers.GetDataTableDeSQL($"SELECT * FROM usr_Origemdolote('{loteAux}', '{artAux}')");
+
+                if (NumLinha == 1)
+                {
+                    IntBELinhaDocumentoInterno linha, linha2;
+
+                    BSO.Internos.Documentos.AdicionaLinha(DocumentoInterno, artAux);
+                    linha = DocumentoInterno.Linhas.GetEdita(NumLinha + 1);
+                    linha.Lote = "L01";
+                    linha.PrecoUnitario = 0;
+                    linha.Desconto1 = 0;
+                    linha.Quantidade = (double)origemDoLoteTbl.Rows[0]["Quantidade"];
+                    linha.CamposUtil["CDU_Pescado"].Valor = true;
+                    linha.CamposUtil["CDU_NomeCientifico"].Valor = origemDoLoteTbl.Rows[0]["NomeCientifico"];
+                    linha.CamposUtil["CDU_Origem"].Valor = origemDoLoteTbl.Rows[0]["Origem"];
+                    linha.CamposUtil["CDU_FormaObtencao"].Valor = origemDoLoteTbl.Rows[0]["FormaObtencao"];
+                    linha.CamposUtil["CDU_ZonaFAO"].Valor = origemDoLoteTbl.Rows[0]["ZonaFAO"];
+                    linha.CamposUtil["CDU_Caixas"].Valor = origemDoLoteTbl.Rows[0]["Caixas"];
+
+                    BSO.Internos.Documentos.AdicionaLinha(DocumentoInterno, artAux);
+                    linha2 = DocumentoInterno.Linhas.GetEdita(NumLinha + 2);
+                    linha2.Lote = loteAux;
+                    linha2.PrecoUnitario = 1;
+                    linha2.Quantidade = 0 - (double)origemDoLoteTbl.Rows[0]["Quantidade"];
+                    linha2.CamposUtil["CDU_Pescado"].Valor = true;
+                    linha2.CamposUtil["CDU_NomeCientifico"].Valor = origemDoLoteTbl.Rows[0]["NomeCientifico"];
+                    linha2.CamposUtil["CDU_Origem"].Valor = origemDoLoteTbl.Rows[0]["Origem"];
+                    linha2.CamposUtil["CDU_FormaObtencao"].Valor = origemDoLoteTbl.Rows[0]["FormaObtencao"];
+                    linha2.CamposUtil["CDU_ZonaFAO"].Valor = origemDoLoteTbl.Rows[0]["ZonaFAO"];
+                    linha2.CamposUtil["CDU_Caixas"].Valor = origemDoLoteTbl.Rows[0]["Caixas"];
+                }
+                else
+                {
+                    IntBELinhaDocumentoInterno linha;
+                    IntBELinhaDocumentoInterno primeiraLinha = DocumentoInterno.Linhas.GetEdita(1);
+
+                    if (!
+                        ((primeiraLinha.Artigo == artAux
+                        && primeiraLinha.CamposUtil["CDU_NomeCientifico"].Valor == origemDoLoteTbl.Rows[0]["NomeCientifico"]
+                        && primeiraLinha.CamposUtil["CDU_Origem"].Valor == origemDoLoteTbl.Rows[0]["Origem"]
+                        && primeiraLinha.CamposUtil["CDU_FormaObtencao"].Valor == origemDoLoteTbl.Rows[0]["FormaObtencao"]
+                        && primeiraLinha.CamposUtil["CDU_ZonaFAO"].Valor == origemDoLoteTbl.Rows[0]["ZonaFAO"]
+                        )
+                        || (bool)BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_ProdTransf")))
+                    {
+                        PSO.MensagensDialogos.MostraAviso("O artigo a lançar não possui as características do primeiro artigo.", StdPlatBS100.StdBSTipos.IconId.PRI_Exclama);
+                    }
+
+                        BSO.Internos.Documentos.AdicionaLinha(DocumentoInterno, artAux);
+                        linha = DocumentoInterno.Linhas.GetEdita(NumLinha + 1);
+                        linha.Lote = loteAux;
+                        linha.PrecoUnitario = 1;
+                        linha.Quantidade = 0 - (double)origemDoLoteTbl.Rows[0]["Quantidade"];
+                        linha.CamposUtil["CDU_Pescado"].Valor = true;
+                        linha.CamposUtil["CDU_NomeCientifico"].Valor = origemDoLoteTbl.Rows[0]["NomeCientifico"];
+                        linha.CamposUtil["CDU_Origem"].Valor = origemDoLoteTbl.Rows[0]["Origem"];
+                        linha.CamposUtil["CDU_FormaObtencao"].Valor = origemDoLoteTbl.Rows[0]["FormaObtencao"];
+                        linha.CamposUtil["CDU_ZonaFAO"].Valor = origemDoLoteTbl.Rows[0]["ZonaFAO"];
+                        linha.CamposUtil["CDU_Caixas"].Valor = origemDoLoteTbl.Rows[0]["Caixas"];
+                }
+            }
+            DocumentoInterno.Linhas.Remove(NumLinha);
         }
     }
 }
