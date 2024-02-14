@@ -1,9 +1,13 @@
+using BasBE100;
 using HelpersPrimavera10;
 using IntBE100;
+using InvBE100;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Internal.Editors;
 using Primavera.Extensibility.Internal.Editors.Details;
+using Primavera.Extensibility.Platform.Services;
 using StdBE100;
+using StdPlatBS100;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -128,12 +132,61 @@ namespace PP_Qualidade.Internal
                 if (linha.TipoLinha != "10") continue;
                 if (!
                     (linha.Lote == "L01"
-                    && BSO.D
+                    && BSO.Base.Artigos.DaValorAtributo(linha.Artigo, "MovStock") == "S"
+                    && BSO.Base.Artigos.DaValorAtributo(linha.Artigo, "TratamentoLotes")
+                    && BSO.Base.Artigos.DaValorAtributo(linha.Artigo, "CDU_Pescado")))
+                {
+                    continue;
+                }
 
+                if (!BSO.Inventario.ArtigosLotes.Existe(linha.Artigo, $"{Tipo}{Serie}/{NumDoc}.{i}"))
+                {
+                    InvBEArtigoLote lote = new InvBEArtigoLote()
+                    {
+                        Artigo = linha.Artigo,
+                        Lote = $"{Tipo}{Serie}/{NumDoc}.{i}",
+                        Descricao = $"Lote {NumDoc}.{i}",
+                        DataFabrico = linha.DataEntrega,
+                        Activo = true
+                    };
+                    if (DateTime.TryParse(linha.CamposUtil["CDU_Validade"].Valor.ToString(), out DateTime data)) { lote.Validade = data; }
+
+                    BSO.Inventario.ArtigosLotes.Actualiza(lote);
+                }
+
+                if (!BSO.Base.ArtigosCodBarras.Existe(linha.Artigo, linha.Unidade))
+                {
+                    BasBEArtigoCodBarra cbar = new BasBEArtigoCodBarra()
+                    {
+                        Artigo = linha.Artigo,
+                        CodBarras = $"{Tipo}{Serie}/{NumDoc}.{i}",
+                        Unidade = linha.Unidade
+                    };
+
+                    BSO.Base.ArtigosCodBarras.Actualiza(cbar);
+                }
+
+                _Helpers.QuerySQL(
+                    $"UPDATE LinhasInternos" +
+                    $"SET Lote = '{Tipo}{Serie}/{NumDoc}.{i}'" +
+                    $"WHERE Id = '{linha.ID}';");
+
+                _Helpers.QuerySQL(
+                    $"UPDATE LinhasSTK" +
+                    $"SET Lote = '{Tipo}{Serie}/{NumDoc}.{i}'" +
+                    $"WHERE IdLinhaOrig = '{linha.ID}';");
             }
             #endregion
 
             #region Imprimir Talões de Produção Acabados
+            StdBSTipos.ResultMsg resposta = PSO.MensagensDialogos.MostraMensagem(
+                StdBSTipos.TipoMsg.PRI_SimNao,
+                "Imprimir talões para caixas?");
+
+            if (resposta == StdBSTipos.ResultMsg.PRI_Sim)
+            {
+                PSO.FuncoesUtilizador.Executa("ImprimirTaloesPA");
+            }
             #endregion
         }
 
