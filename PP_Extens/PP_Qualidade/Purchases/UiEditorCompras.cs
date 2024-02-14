@@ -157,7 +157,6 @@ namespace PP_Qualidade.Purchases
         {
             base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
 
-
             #region Tratar Lotes Novos
             if (Tipo != "RP" || DocumentoCompra.Linhas.NumItens == 0) { return; }
 
