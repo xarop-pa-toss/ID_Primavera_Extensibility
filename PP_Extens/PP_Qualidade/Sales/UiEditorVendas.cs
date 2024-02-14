@@ -1,9 +1,8 @@
+using BasBE100;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Sales.Editors;
-using BasBE100;
 using System.Data;
 using VndBE100;
-using System.Runtime.InteropServices;
 
 
 namespace PP_Qualidade.Sales
@@ -15,13 +14,13 @@ namespace PP_Qualidade.Sales
         public override void ArtigoIdentificado(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.ArtigoIdentificado(Artigo, NumLinha, ref Cancel, e);
-        
+
             BasBEArtigo art = BSO.Base.Artigos.Edita(Artigo);
             VndBELinhaDocumentoVenda linha = DocumentoVenda.Linhas.GetEdita(NumLinha);
 
             if ((bool)art.CamposUtil["CDU_VendaEmCaixa"].Valor)
             {
-                string kgsPorCaixa = _Helpers.MostraInputForm("Quilos", "Quilos por caixa:" , art.CamposUtil["CDU_KilosPorCaixa"].ToString());
+                string kgsPorCaixa = _Helpers.MostraInputForm("Quilos", "Quilos por caixa:", art.CamposUtil["CDU_KilosPorCaixa"].ToString());
 
                 if (decimal.TryParse(kgsPorCaixa, out decimal kilosPorCaixa))
                 {
@@ -82,13 +81,6 @@ namespace PP_Qualidade.Sales
         {
             base.ClienteIdentificado(Cliente, ref Cancel, e);
 
-            string nrDoc;
-            string s;
-            string matricula;
-            string mor;
-            ADODB.Recordset morada;
-            ADODB.Recordset vend;
-            ADODB.Recordset serie;
             BasBECliente cliente = BSO.Base.Clientes.Edita(Cliente);
 
             if ((bool)cliente.CamposUtil["CDU_DiversasMoradas"].Valor)
@@ -102,70 +94,68 @@ namespace PP_Qualidade.Sales
                 {
                     string morInput = _Helpers.MostraInputForm("Código da Morada", "Morada do documento:", moradaTbl.Rows[0]["MoradaAlternativa"].ToString());
                     moradaTbl = _Helpers.GetDataTableDeSQL(
-                        "SELECT MoradaAlternativa, Morada, Morada2, Localidade, CP, CPLocalidade, Distrito From MoradasAlternativasClientes Where (Cliente = N'" + DocumentoVenda.Entidade + "') And (MoradaAlternativa = N'" + mor + "');");
+                        "SELECT MoradaAlternativa, Morada, Morada2, Localidade, CP, CPLocalidade, Distrito From MoradasAlternativasClientes Where (Cliente = N'" + DocumentoVenda.Entidade + "') And (MoradaAlternativa = N'" + morInput + "');");
 
-                    if (!morada.EOF)
+                    if (moradaTbl.Rows.Count > 0)
                     {
-                        DocumentoVenda.morada = CStr(nz(morada!morada));
-                        DocumentoVenda.Localidade = CStr(nz(morada!Localidade));
-                        DocumentoVenda.Morada2 = CStr(nz(morada!Morada2));
-                        DocumentoVenda.CodigoPostal = CStr(nz(morada!cp));
-                        DocumentoVenda.LocalidadeCodigoPostal = CStr(nz(morada!cplocalidade));
+                        DocumentoVenda.Morada = moradaTbl.Rows[0]["Morada"].ToString();
+                        DocumentoVenda.Localidade = moradaTbl.Rows[0]["Localidade"].ToString();
+                        DocumentoVenda.Morada2 = moradaTbl.Rows[0]["Morada2"].ToString();
+                        DocumentoVenda.CodigoPostal = moradaTbl.Rows[0]["CP"].ToString();
+                        DocumentoVenda.LocalidadeCodigoPostal = moradaTbl.Rows[0]["CPLocalidade"].ToString();
                     }
                 }
-
-                morada.Close();
+                moradaTbl.Dispose();
+                cliente.Dispose();
             }
 
-            cli = null;
 
-            serie = Aplicacao.BSO.DSO.BDAPL.Execute("Select CDU_PedeVendedor, CDU_PedeDocumento, CDU_PedeMatricula From SeriesVendas Where TipoDoc = '" + DocumentoVenda.TipoDoc + "' And Serie = '" + DocumentoVenda.Serie + "';");
+            DataTable serieTbl = _Helpers.GetDataTableDeSQL(
+                "SELECT CDU_PedeVendedor, CDU_PedeDocumento, CDU_PedeMatricula" +
+                "FROM SeriesVendas " +
+               $"WHERE TipoDoc = '{DocumentoVenda.Tipodoc}' AND Serie = '{DocumentoVenda.Serie}';");
 
-            if (nz(DocumentoVenda.DataDescarga) == "")
+            if (DocumentoVenda.DataHoraDescarga == null)
             {
-                DocumentoVenda.DataDescarga = DocumentoVenda.DataCarga;
+                DocumentoVenda.DataHoraDescarga = DocumentoVenda.DataHoraCarga.AddSeconds(10);
             }
 
-            if (!serie.EOF)
+            if (serieTbl.Rows.Count > 0)
             {
-                if (serie!CDU_PedeVendedor)
-        {
-                    s = _Helpers.MostraInputForm("Código de Vendedor:", "Vendedor", "0");
-                    vend = Aplicacao.BSO.DSO.BDAPL.Execute("SELECT Vendedor FROM Vendedores WHERE Vendedor = '" + s + "';");
+                if ((bool)serieTbl.Rows[0]["CDU_PedeVendedor"])
+                {
+                    string vendedorInput = _Helpers.MostraInputForm("Vendedor","Código de Vendedor:", "0");
+                    DataTable vendedorTbl = _Helpers.GetDataTableDeSQL(
+                        $"SELECT Vendedor FROM Vendedores WHERE Vendedor = '{vendedorInput}';");
 
-                    if (vend.EOF)
-                    {
-                        MsgBox("Vendedor '" + s + "' inexistente!", vbExclamation + vbOKOnly);
-                    } else
-                    {
-                        DocumentoVenda.Responsavel = s;
-                    }
+                    if (vendedorTbl.Rows.Count > 0)
+                        DocumentoVenda.Responsavel = vendedorInput;
+                    else
+                        PSO.MensagensDialogos.MostraAviso($"Vendedor '{vendedorInput}' inexistente!", StdPlatBS100.StdBSTipos.IconId.PRI_Exclama);
 
-                    vend.Close();
+                    vendedorTbl.Dispose();
                 }
 
-                if (serie!CDU_PedeDocumento)
-        {
-                    nrDoc = _Helpers.MostraInputForm("Nº de documento manual:", "Documento");
-                    DocumentoVenda.CamposUtil.Item("CDU_NroManual").Valor = Left(Trim(nrDoc), 10);
-                    DocumentoVenda.DocsOriginais = Left(Trim(nrDoc), 10);
+                if ((bool)serieTbl.Rows[0]["CDU_PedeDocumento"])
+                {
+                    string nrDocInput = _Helpers.MostraInputForm("Documento", "Nº de documento manual:", "");
+                    DocumentoVenda.CamposUtil["CDU_NroManual"].Valor = nrDocInput.Trim().Substring(0, 10);
+                    DocumentoVenda.DocsOriginais = nrDocInput.Trim().Substring(0, 10);
                 }
 
-                if (serie!CDU_PedeMatricula)
-        {
+                if ((bool)serieTbl.Rows[0]["CDU_PedeMatricula"])
+                {
                     if (DocumentoVenda.TipoEntidade == "C")
                     {
-                        cli = Aplicacao.BSO.Comercial.Clientes.Edita(cliente);
-
-                        if ((Len(nz(cli.CamposUtil("CDU_MatriculaHabitual"))) > 0) && (nz(DocumentoVenda.matricula) == ""))
+                        if (cliente.CamposUtil["CDU_MatriculaHabitual"].Valor.ToString().Length > 0 && DocumentoVenda.Matricula == "")
                         {
-                            DocumentoVenda.matricula = cli.CamposUtil("CDU_MatriculaHabitual");
+                            DocumentoVenda.Matricula = cliente.CamposUtil["CDU_MatriculaHabitual"].Valor.ToString();
                         }
 
-                        matricula = _Helpers.MostraInputForm("Matrícula da viatura:", , nz(DocumentoVenda.matricula));
-                        DocumentoVenda.matricula = nz(matricula);
+                        string matricula = _Helpers.MostraInputForm("Matrícula da viatura:", "Matrícula", DocumentoVenda.Matricula);
+                        DocumentoVenda.Matricula = matricula;
 
-                        cli = null;
+                        cliente.Dispose();
                     }
                 }
             }
