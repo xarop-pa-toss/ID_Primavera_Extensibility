@@ -230,16 +230,14 @@ namespace PP_Qualidade.Sales
                     {
                         VndBELinhaDocumentoVenda linha = DocumentoVenda.Linhas.GetEdita(i);
                         
-                        if (string.IsNullOrEmpty(linha.Artigo) && (linha.Quantidade == 0 || linha.PrecUnit == 0))
-                        {
+                        if (string.IsNullOrEmpty(linha.Artigo) && (linha.Quantidade == 0 || linha.PrecUnit == 0)) {
                             linhasInvalidas += i.ToString() + ", ";
                         }
                     }
                 }
 
                 StdBSTipos.ResultMsg resultado;
-                if (!string.IsNullOrWhiteSpace(linhasInvalidas.Trim()))
-                {
+                if (!string.IsNullOrWhiteSpace(linhasInvalidas.Trim())) {
                     resultado = PSO.MensagensDialogos.MostraMensagem(
                         StdBSTipos.TipoMsg.PRI_SimNao,
                         "Atenção, há linhas com quantidades ou preços a zero nas linhas:" + Environment.NewLine +
@@ -253,12 +251,39 @@ namespace PP_Qualidade.Sales
                         "Confirma a gravação do documento?");
                 }
 
-                if (resultado == StdBSTipos.ResultMsg.PRI_Nao) { Cancel = true; return; } 
-                else 
+                if (resultado == StdBSTipos.ResultMsg.PRI_Nao) { Cancel = true; return; }
+                #endregion
+
+                #region CDU_CodFornecedor
+                string codFornecedor;
+                bool linhaDescricaoFornecedor = false;
+                var cduCodFornecedor = BSO.Base.Clientes.DaValorAtributo(DocumentoVenda.Entidade, "CDU_CodFornecedor");
+
+                if (cduCodFornecedor != null 
+                    && DocumentoVenda.TipoEntidade == "C"
+                    && DocumentoVenda.Linhas.NumItens > 0)
                 {
+                    codFornecedor = cduCodFornecedor;
 
+                    foreach (VndBELinhaDocumentoVenda linha in DocumentoVenda.Linhas)
+                    {
+                        if (linha.TipoLinha == "60" && linha.Descricao.Substring(0, 11) == "Fornecedor:") {
+                            linhaDescricaoFornecedor = true;
+                            break;
+                        }
+                    }
+
+                    if (linhaDescricaoFornecedor) {
+                        codFornecedor = _Helpers.MostraInputForm("Fornecedor", "Código de fornecedor:", codFornecedor);
+
+                        if (!string.IsNullOrWhiteSpace(codFornecedor)) {
+                            BSO.Vendas.Documentos.AdicionaLinha
+                        }
+                    } else
+                    {
+                        
+                    }
                 }
-
                 #endregion
             }
         }
