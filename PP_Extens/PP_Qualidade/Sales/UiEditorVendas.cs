@@ -1,6 +1,8 @@
 using BasBE100;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Sales.Editors;
+using StdPlatBS100;
+using System;
 using System.Data;
 using VndBE100;
 
@@ -158,6 +160,106 @@ namespace PP_Qualidade.Sales
                         cliente.Dispose();
                     }
                 }
+            }
+        }
+
+        public override void ArtigoInexistente(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
+        {
+            base.ArtigoInexistente(Artigo, NumLinha, ref Cancel, e);
+
+            string artaux;
+            string loteaux;
+
+            if (Artigo.StartsWith("#"))
+            {
+                loteaux = Artigo.Substring(1).ToUpper();
+                artaux = BSO.Base.Artigos.DaArtigoComCodBarras(ref loteaux);
+
+                if (BSO.Base.Artigos.Existe(artaux))
+                {
+                    DataTable origemLoteTbl = _Helpers.GetDataTableDeSQL($"SELECT * FROM usr_Origemdolote('{loteaux}','{artaux}');");
+
+                    if (origemLoteTbl.Rows.Count > 0)
+                    {
+                        double quantidade = (double)origemLoteTbl.Rows[0]["Quantidade"];
+                        string armazem = "", localizacao = "";
+
+                        BSO.Vendas.Documentos.AdicionaLinha(DocumentoVenda, artaux, ref quantidade, ref armazem, ref localizacao, 0, 0, loteaux);
+                        DocumentoVenda.Linhas.GetEdita(DocumentoVenda.Linhas.NumItens - 1).CamposUtil["CDU_Pescado"].Valor = true;
+                        DocumentoVenda.Linhas.GetEdita(DocumentoVenda.Linhas.NumItens - 1).CamposUtil["CDU_NomeCientifico"].Valor = origemLoteTbl.Rows[0]["NomeCientifico"];
+                        DocumentoVenda.Linhas.GetEdita(DocumentoVenda.Linhas.NumItens - 1).CamposUtil["CDU_Origem"].Valor = origemLoteTbl.Rows[0]["Origem"];
+                        DocumentoVenda.Linhas.GetEdita(DocumentoVenda.Linhas.NumItens - 1).CamposUtil["CDU_FormaObtencao"].Valor = origemLoteTbl.Rows[0]["FormaObtencao"];
+                        DocumentoVenda.Linhas.GetEdita(DocumentoVenda.Linhas.NumItens - 1).CamposUtil["CDU_ZonaFAO"].Valor = origemLoteTbl.Rows[0]["ZonaFAO"];
+                        DocumentoVenda.Linhas.GetEdita(DocumentoVenda.Linhas.NumItens - 1).CamposUtil["CDU_Caixas"].Valor = origemLoteTbl.Rows[0]["Caixas"];
+                    }
+                    origemLoteTbl.Dispose();
+                }
+                DocumentoVenda.Linhas.Remove(NumLinha - 1);
+            }
+        }
+
+        public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
+        {
+            base.AntesDeGravar(ref Cancel, e);
+
+            string matricula;
+
+            if (!DocumentoVenda.EmModoEdicao)
+            {
+                bool pedeMatricula = (bool)_Helpers.GetDataTableDeSQL(
+                    "SELECT CDU_PedeMatricula " +
+                    "FROM SeriesVendas " +
+                   $"WHERE TipoDoc = '{DocumentoVenda.Tipodoc}' AND Serie = '{DocumentoVenda.Serie}';")
+                    .Rows[0][0];
+
+                if (pedeMatricula) 
+                {
+                    matricula = _Helpers.MostraInputForm("Matricula", "Matrícula da Viatura:", DocumentoVenda.Matricula);
+
+                    if (matricula != DocumentoVenda.Matricula)
+                    {
+                        DocumentoVenda.Matricula = matricula;
+                    }
+                }
+
+                #region Check Quantidade e PrecUnit para valores inválidos (0)
+                string linhasInvalidas = "";
+                if (DocumentoVenda.Linhas.NumItens > 0)
+                {
+                    for (int i = 1; i <= DocumentoVenda.Linhas.NumItens; i++) 
+                    {
+                        VndBELinhaDocumentoVenda linha = DocumentoVenda.Linhas.GetEdita(i);
+                        
+                        if (string.IsNullOrEmpty(linha.Artigo) && (linha.Quantidade == 0 || linha.PrecUnit == 0))
+                        {
+                            linhasInvalidas += i.ToString() + ", ";
+                        }
+                    }
+                }
+
+                StdBSTipos.ResultMsg resultado;
+                if (!string.IsNullOrWhiteSpace(linhasInvalidas.Trim()))
+                {
+                    resultado = PSO.MensagensDialogos.MostraMensagem(
+                        StdBSTipos.TipoMsg.PRI_SimNao,
+                        "Atenção, há linhas com quantidades ou preços a zero nas linhas:" + Environment.NewLine +
+                        linhasInvalidas + Environment.NewLine +
+                        "Continuar com a gravação do documento?",
+                        StdBSTipos.IconId.PRI_Critico);
+                } else
+                {
+                    resultado = PSO.MensagensDialogos.MostraMensagem(
+                        StdBSTipos.TipoMsg.PRI_SimNao,
+                        "Confirma a gravação do documento?");
+                }
+
+                if (resultado == StdBSTipos.ResultMsg.PRI_Nao) { Cancel = true; return; } 
+                else 
+                {
+
+                }
+
+                #endregion
             }
         }
     }
