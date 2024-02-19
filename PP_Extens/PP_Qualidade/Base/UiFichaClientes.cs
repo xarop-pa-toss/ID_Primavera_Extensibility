@@ -17,7 +17,6 @@ namespace PP_Qualidade.Base
                 Cancel = true;
                 PSO.MensagensDialogos.MostraErro("O cliente necessita de ter definida a Morada, Localidade e Distrito", StdPlatBS100.StdBSTipos.IconId.PRI_Exclama);
             }
-
         }
     }
 }

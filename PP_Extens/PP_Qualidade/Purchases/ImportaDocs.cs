@@ -1,25 +1,21 @@
 using BasBE100;
 using CctBE100;
 using CmpBE100;
-using ErpBS100;
-using Primavera.Extensibility.BusinessEntities;
 using Primavera.Extensibility.Purchases.Editors;
 using StdBE100;
 using StdPlatBS100;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using VndBE100;
 using System.Data;
 using HelpersPrimavera10;
 
-namespace PP_PPCS
+namespace PP_Qualidade
 {
     public class ImportaDocs : EditorCompras
     {
         private HelperFunctions _Helpers = new HelperFunctions();
+
         public ImportaDocs()
         {
         }
@@ -74,7 +70,7 @@ namespace PP_PPCS
                 // Verificar se a entidade fornecedor existe
                 if (!BSO.Base.Fornecedores.Existe(EntLocal)) {
                     string docFull = TipoDoc + " N.º " + NumDoc.ToString() + "/" + Serie;
-                    localstr = _Helpers.MostraInputForm(
+                    localstr = _Helpers.MostraInputForm( 
                         "",
                         "A entidade (" + Entidade + ") no documento " + docFull + Environment.NewLine +
                         "Não existe ou não possui correspondencia." + Environment.NewLine +

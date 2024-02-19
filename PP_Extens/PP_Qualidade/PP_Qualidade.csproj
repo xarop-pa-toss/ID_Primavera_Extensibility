@@ -35,6 +35,12 @@
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\BasBE100.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CctBE100">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\CctBE100.dll</HintPath>
+    </Reference>
+    <Reference Include="CctBS100">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\CctBS100.dll</HintPath>
+    </Reference>
     <Reference Include="CmpBE100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\CmpBE100.dll</HintPath>
       <Private>False</Private>
@@ -49,6 +55,9 @@
     <Reference Include="IBasBS100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\IBasBS100.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="ICctBS100">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\ICctBS100.dll</HintPath>
     </Reference>
     <Reference Include="ICmpBS100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\ICmpBS100.dll</HintPath>
@@ -90,6 +99,13 @@
     <Reference Include="Primavera.Extensibility.CustomCode">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\Primavera.Extensibility.CustomCode.dll</HintPath>
     </Reference>
+    <Reference Include="Primavera.Extensibility.CustomForm">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\Primavera.Extensibility.CustomForm.dll</HintPath>
+    </Reference>
+    <Reference Include="Primavera.Extensibility.Extensions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=11cd844aca152173, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\Primavera.Extensibility.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="Primavera.Extensibility.Integration">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Integration.dll</HintPath>
       <Private>False</Private>
@@ -112,6 +128,10 @@
     <Reference Include="Primavera.Platform.Collections">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\Primavera.Platform.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="PRISDK100, Version=10.0.0.0, Culture=neutral, PublicKeyToken=11cd844aca152173, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\PRISDK100.dll</HintPath>
+    </Reference>
     <Reference Include="StdBE100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\StdBE100.dll</HintPath>
       <Private>False</Private>
@@ -122,8 +142,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Linq" />
     <Reference Include="System.Threading.Tasks" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -136,12 +158,34 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\UiFichaClientes.cs" />
+    <Compile Include="Forms\FormImportaDocs_WF.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FormImportaDocs_WF.Designer.cs">
+      <DependentUpon>FormImportaDocs_WF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormQueryStatus_WF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormQueryStatus_WF.Designer.cs">
+      <DependentUpon>FormQueryStatus_WF.cs</DependentUpon>
+    </Compile>
     <Compile Include="Internal\UiEditorInternos.cs" />
     <Compile Include="Motor\InicializarPriMotores.cs" />
     <Compile Include="Motor\Secrets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Purchases\ImportaDocs.cs" />
     <Compile Include="Purchases\UiEditorCompras.cs" />
+    <Compile Include="QueriesSQL.cs" />
     <Compile Include="Sales\UiEditorVendas.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\FormImportaDocs_WF.resx">
+      <DependentUpon>FormImportaDocs_WF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormQueryStatus_WF.resx">
+      <DependentUpon>FormQueryStatus_WF.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
