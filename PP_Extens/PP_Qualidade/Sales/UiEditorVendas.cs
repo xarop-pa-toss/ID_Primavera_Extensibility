@@ -1,6 +1,7 @@
 using BasBE100;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Sales.Editors;
+using StdBE100;
 using StdPlatBS100;
 using System;
 using System.Data;
@@ -277,14 +278,66 @@ namespace PP_Qualidade.Sales
                         codFornecedor = _Helpers.MostraInputForm("Fornecedor", "Código de fornecedor:", codFornecedor);
 
                         if (!string.IsNullOrWhiteSpace(codFornecedor)) {
-                            BSO.Vendas.Documentos.AdicionaLinha
+                            BSO.Vendas.Documentos.AdicionaLinhaEspecial(DocumentoVenda, BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, Descricao: $"Fornecedor: {codFornecedor}");
                         }
-                    } else
-                    {
-                        
                     }
                 }
                 #endregion
+
+                #region CDU_PedirNEncomenda
+                string requisicao;
+                bool linhaDescricaoEncomenda = false;
+
+                if ((bool)BSO.Base.Clientes.DaValorAtributo(DocumentoVenda.Entidade, "CDU_PedirNEncomenda")
+                    && DocumentoVenda.TipoEntidade == "C"
+                    && DocumentoVenda.Linhas.NumItens > 0)
+                {
+                    requisicao = DocumentoVenda.Requisicao;
+
+                    foreach (VndBELinhaDocumentoVenda linha in DocumentoVenda.Linhas)
+                    {
+                        if (linha.TipoLinha == "60" && linha.Descricao.Substring(0, 10) == "Encomenda:")
+                        {
+                            linhaDescricaoEncomenda = true;
+                            break;
+                        }
+                    }
+
+                    if (linhaDescricaoEncomenda){
+                        requisicao = _Helpers.MostraInputForm("N. Encomenda", "Número de encomenda:", "");
+
+                        if (!string.IsNullOrWhiteSpace(requisicao))
+                        {
+                            BSO.Vendas.Documentos.AdicionaLinhaEspecial(
+                                DocumentoVenda,
+                                BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario,
+                                Descricao: "Encomenda: " + requisicao);
+
+                            DocumentoVenda.Requisicao = requisicao;
+                        }
+                    }
+                }
+                #endregion
+
+                #region CDU_VerificacoesDocumentos
+                string verificacoes = BSO.Base.Clientes.DaValorAtributo(DocumentoVenda.Entidade, "CDU_VerificacoesDocumentos");
+
+                if (string.IsNullOrWhiteSpace(verificacoes))
+                {
+                    verificacoes = verificacoes.Replace("?", "?" + Environment.NewLine + Environment.NewLine);
+                    StdBSTipos.ResultMsg resultado2 = PSO.MensagensDialogos.MostraMensagem(
+                        StdBSTipos.TipoMsg.PRI_SimNao,
+                        verificacoes,
+                        StdBSTipos.IconId.PRI_Exclama);
+
+                    if (resultado2 == StdBSTipos.ResultMsg.PRI_Sim)
+                    {
+                        Cancel = true;
+                        return;
+                    }
+                }
+                #endregion
+
             }
         }
     }
