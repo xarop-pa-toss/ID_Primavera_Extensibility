@@ -36,6 +36,7 @@
   <ItemGroup>
     <Reference Include="BasBE100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\BasBE100.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="BasBS100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\BasBS100.dll</HintPath>
@@ -65,6 +66,7 @@
     </Reference>
     <Reference Include="IBasBS100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\IBasBS100.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ICctBS100">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\ICctBS100.dll</HintPath>
@@ -80,6 +82,10 @@
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Primavera.Extensibility.Attributes">
       <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Attributes.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Primavera.Extensibility.Base">
+      <HintPath>..\..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\APL\Primavera.Extensibility.Base.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Primavera.Extensibility.BusinessEntities">
@@ -169,6 +175,7 @@
       <DependentUpon>FormQueryStatus_WF.cs</DependentUpon>
     </Compile>
     <Compile Include="Sales\UiEditorVendas.cs" />
+    <Compile Include="Base\UiFichaClientes.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Forms\FormImportaDocs_WF.resx">

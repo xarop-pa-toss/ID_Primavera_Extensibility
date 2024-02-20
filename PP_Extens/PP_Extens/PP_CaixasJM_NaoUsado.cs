@@ -15,14 +15,14 @@ using ErpBS100;
 
 namespace PP_Extens
 {
-    internal class PP_CaixasJM : CustomCode
+    internal class PP_CaixasJM_NaoUsado : CustomCode
     {
         private HelpersPrimavera10.HelperFunctions _Helpers = new HelpersPrimavera10.HelperFunctions();
         private readonly VndBEDocumentoVenda _docVenda;
         private StdPlatBS100.StdBSInterfPub _PSO;
         private ErpBS _BSO;
 
-        public PP_CaixasJM(StdBSInterfPub PSO, ErpBS BSO, VndBEDocumentoVenda docVenda)
+        public PP_CaixasJM_NaoUsado(StdBSInterfPub PSO, ErpBS BSO, VndBEDocumentoVenda docVenda)
         {
             _docVenda = docVenda;
             _PSO = PSO;

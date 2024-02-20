@@ -8,24 +8,103 @@ using BasBE100; using StdBE100; using VndBE100; using StdPlatBS100.UserForms;
 using StdPlatBS100;
 using HelpersPrimavera10;
 using System.Runtime.CompilerServices;
+using static System.Net.Mime.MediaTypeNames;
 
 /// <summary>
 /// Conversão de PORTIPESCA/Forms/EditorVendas
 /// </summary>
 namespace PP_Extens.Sales
 {
-    public class PP_UiEditorVendas : EditorVendas
+    public class UiEditorVendas : EditorVendas
     {
         private HelperFunctions _Helpers = new HelperFunctions();
 
-        public override void TeclaPressionada(int KeyCode, int Shift, ExtensibilityEventArgs e)
+        public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
-            base.TeclaPressionada(KeyCode, Shift, e);
+            base.AntesDeGravar(ref Cancel, e);
+            PP_Geral geral = new PP_Geral();
+            VndBELinhasDocumentoVenda linhas = DocumentoVenda.Linhas;
 
-            if (KeyCode == Convert.ToInt32(ConsoleKey.F3))
+            for (int i = 1; i < linhas.NumItens; i++)
             {
-                PreVisualizarSemGravarNovo();
+                string artigo = DocumentoVenda.Linhas.GetEdita(i).Artigo;
+                if (!string.IsNullOrEmpty(geral.nz(ref artigo)))
+                {
+                    if (linhas.GetEdita(i).Unidade == "CX")
+                    {
+                        PSO.MensagensDialogos.MostraErro("Para que exista uma correta gestão dos stocks não se pode utilizar a unidade 'CX'!!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
+                        Cancel = true;
+                        return;
+                    }
+                    if (geral.UnidadeCaixa(linhas.GetEdita(i).Unidade))
+                    {
+                        linhas.GetEdita(i).CamposUtil["CDU_VendaEmCaixa"].Valor = true;
+                        linhas.GetEdita(i).CamposUtil["CDU_KilosPorCaixa"].Valor = geral.ObterKgDaUnidade(linhas.GetEdita(i).Unidade);
+                        linhas.GetEdita(i).CamposUtil["CDU_Caixas"].Valor = linhas.GetEdita(i).Quantidade;
+                    } else
+                    {
+                        linhas.GetEdita(i).CamposUtil["CDU_VendaEmCaixa"].Valor = false;
+                        linhas.GetEdita(i).CamposUtil["CDU_KilosPorCaixa"].Valor = 0;
+
+                        int cx = Convert.ToInt16(linhas.GetEdita(i).CamposUtil["CDU_Caixas"].Valor);
+                        if (geral.nzn(ref cx) <= 0) { linhas.GetEdita(i).CamposUtil["CDU_Caixas"].Valor = 0; }
+                    }
+                }
+            } // for loop end
+
+            bool cancelTTE = false;
+
+            if (DocumentoVenda.Tipodoc == "ET") { cancelTTE = true; } else if (DocumentoVenda.EmModoEdicao == false && Cancel == false)
+            {
+                // Verifica se o campo CDU_SeloViatura está vazio
+                if (string.IsNullOrEmpty(DocumentoVenda.CamposUtil["CDU_SeloViatura"].Valor.ToString()) && DocumentoVenda.Tipodoc == "GRP")
+                {
+                    string selo = _Helpers.MostraInputForm("Selo", "Selo da viatura de transporte:", "", false);
+                    DocumentoVenda.CamposUtil["CDU_SeloViatura"].Valor = selo;
+                }
             }
+
+            //StdBELista query = BSO.Consulta("Select CDU_PedeMatricula From SeriesVendas Where TipoDoc = '" + DocumentoVenda.Tipodoc + "' And Serie = '" + DocumentoVenda.Serie + "';");
+
+            //if (!query.Vazia())
+            //{
+            //    string m = DocumentoVenda.Matricula;
+            //    string matricula = 
+
+            //    if (geral.nz(ref matricula) != DocumentoVenda.Matricula) { DocumentoVenda.Matricula = geral.nz(ref matricula); }
+            //}
+            //query.Termina();
+
+            // Cria string com número de linhas em sequência
+            string s = "";
+            if (linhas.NumItens > 0)
+            {
+                for (int i = 1; i < linhas.NumItens + 1; i++)
+                {
+                    string artigo = linhas.GetEdita(i).Artigo;
+                    if (geral.nz(ref artigo) != "" && (linhas.GetEdita(i).Quantidade == 0 || linhas.GetEdita(i).PrecUnit == 0)) { s = s + " " + i.ToString(); }
+                }
+            }
+            if (s.Trim() != "") { }
+
+
+            #region Verificação CDU_ContemPescado (campo do CabecDoc)
+            for (int linhaInd = 1; linhaInd <= DocumentoVenda.Linhas.NumItens; linhaInd++)
+            {
+                if ((bool)DocumentoVenda.Linhas.GetEdita(linhaInd).CamposUtil["CDU_Pescado"].Valor)
+                {
+                    DocumentoVenda.CamposUtil["CDU_ContemPescado"].Valor = true;
+                    break;
+                }
+            } 
+        }
+
+        public override void DepoisDeGravar(string Filial, string Tipo, string Serie, int NumDoc, ExtensibilityEventArgs e)
+        {
+            PP_CaixasJM_NaoUsado CaixasJM = new PP_CaixasJM_NaoUsado(PSO, BSO, DocumentoVenda);
+            CaixasJM.ProcessarCaixas();
+
+            base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
         }
 
         public override void TipoDocumentoIdentificado(string Tipo, ref bool Cancel, ExtensibilityEventArgs e)
@@ -98,8 +177,7 @@ namespace PP_Extens.Sales
                     //PSO.MensagensDialogos.MostraDialogoInput(ref s, "Vendedor", "Código de Vendedor:", strValorDefeito: "0");
                     StdBELista vend = BSO.Consulta("SELECT Vendedor FROM Vendedores WHERE Vendedor = '" + s + "';");
 
-                    if (vend.Vazia()) { PSO.MensagensDialogos.MostraAviso("Vendedor " + s + " inexistente!", StdBSTipos.IconId.PRI_Exclama); }
-                    else { DocumentoVenda.Responsavel = s; }
+                    if (vend.Vazia()) { PSO.MensagensDialogos.MostraAviso("Vendedor " + s + " inexistente!", StdBSTipos.IconId.PRI_Exclama); } else { DocumentoVenda.Responsavel = s; }
                     vend.Termina();
                 }//
 
@@ -156,32 +234,33 @@ namespace PP_Extens.Sales
         {
             base.ArtigoIdentificado(Artigo, NumLinha, ref Cancel, e);
             PP_Geral Geral = new PP_Geral();
-            string s = null;
             string[] artArr = { "147", "147C", "147T" };
 
             VndBELinhaDocumentoVenda linha = DocumentoVenda.Linhas.GetEdita(NumLinha);
             if (artArr.Contains(linha.Artigo)) { linha.CamposUtil["CDU_Fornecedor"].Valor = "*0021"; }
 
+            string fornecedorStr;
             if (Convert.ToBoolean(BSO.Base.Series.DaValorAtributo("V", DocumentoVenda.Tipodoc, DocumentoVenda.Serie, "CDU_PedeFornecedor")))
             {
                 string cdu = linha.CamposUtil["CDU_Fornecedor"].Valor.ToString();
-                s = _Helpers.MostraInputForm("Fornecedor", "Fornecedor:", Geral.nz(ref cdu), true);
+                fornecedorStr = _Helpers.MostraInputForm("Fornecedor", "Fornecedor:", Geral.nz(ref cdu), true);
                 linha.CamposUtil["CDU_Fornecedor"].Valor = Geral.nz(ref s).Trim();
             }
 
+            string loteStr;
             bool memUltLote = BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_MemorizaLote");
-            if (memUltLote) { s = BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_UltimoLote"); }
+            if (memUltLote) { loteStr = BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_UltimoLote"); }
 
-            s = _Helpers.MostraInputForm("Lote", "Introduza o lote do artigo:\n\n**** ATENÇÃO ****\n\nFornecedorMêsDia\nExemplo: 0010718", s, false);
-            s = Geral.nz(ref s).ToUpper().Trim();
-            linha.CamposUtil["CDU_LoteAux"].Valor = s;
+            loteStr = _Helpers.MostraInputForm("Lote", "Introduza o lote do artigo:\n\n**** ATENÇÃO ****\n\nFornecedorMêsDia\nExemplo: 0010718", s, false);
+            loteStr = Geral.nz(ref loteStr).ToUpper().Trim();
+            linha.CamposUtil["CDU_LoteAux"].Valor = loteStr;
 
             if (memUltLote)
             {
                 StdBEExecSql sql = new StdBEExecSql();
-                sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;  
+                sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
                 sql.Tabela = "Artigo";                          //UPDATE Artigo
-                sql.AddCampo("CDU_UltimoLote", s);              // SET CDU_UltimoLote = s
+                sql.AddCampo("CDU_UltimoLote", loteStr);              // SET CDU_UltimoLote = s
                 sql.AddCampo("Artigo", Artigo, true);           // WHERE Artigo (coluna) = Artigo (variavel)
                 sql.AddQuery();
                 PSO.ExecSql.Executa(sql);
@@ -212,9 +291,9 @@ namespace PP_Extens.Sales
                     try
                     {
                         resposta = _Helpers.MostraInputForm("Forma de Obtenção", descricao, "", false);
-                        
+
                         if (string.IsNullOrEmpty(resposta)) { break; }
-                        
+
                         obtencao = obtencaoDict[resposta];
                         linha.CamposUtil["CDU_FormaObtencao"].Valor = obtencao;
                         break;
@@ -260,7 +339,7 @@ namespace PP_Extens.Sales
 
                 // UPDATE da ficha de ARTIGO
                 // Grava fornecedor na ficha do artigo no campo CDU_Fornecedor
-                string forn = linha.CamposUtil["CDU_Fornecedor"].Valor.ToString();                
+                string forn = linha.CamposUtil["CDU_Fornecedor"].Valor.ToString();
                 StdBEExecSql sql = new StdBEExecSql();
                 sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
                 sql.Tabela = "Artigo";                              //UPDATE Artigo
@@ -293,85 +372,25 @@ namespace PP_Extens.Sales
             }
         }
 
-        public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)   
+        public override void TeclaPressionada(int KeyCode, int Shift, ExtensibilityEventArgs e)
         {
-            base.AntesDeGravar(ref Cancel, e);
-            PP_Geral geral = new PP_Geral();
-            VndBELinhasDocumentoVenda linhas = DocumentoVenda.Linhas;
+            base.TeclaPressionada(KeyCode, Shift, e);
 
-            for (int i = 1; i < linhas.NumItens; i++)
+            if (KeyCode == Convert.ToInt32(ConsoleKey.F3))
             {
-                string artigo = DocumentoVenda.Linhas.GetEdita(i).Artigo;
-                if (!string.IsNullOrEmpty(geral.nz(ref artigo)))
-                {
-                    if (linhas.GetEdita(i).Unidade == "CX")
-                    {
-                        PSO.MensagensDialogos.MostraErro("Para que exista uma correta gestão dos stocks não se pode utilizar a unidade 'CX'!!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
-                        Cancel = true;
-                        return;
-                    }
-                    if (geral.UnidadeCaixa(linhas.GetEdita(i).Unidade))
-                    {
-                        linhas.GetEdita(i).CamposUtil["CDU_VendaEmCaixa"].Valor = true;
-                        linhas.GetEdita(i).CamposUtil["CDU_KilosPorCaixa"].Valor = geral.ObterKgDaUnidade(linhas.GetEdita(i).Unidade);
-                        linhas.GetEdita(i).CamposUtil["CDU_Caixas"].Valor = linhas.GetEdita(i).Quantidade;
-                    }
-                    else
-                    {
-                        linhas.GetEdita(i).CamposUtil["CDU_VendaEmCaixa"].Valor = false;
-                        linhas.GetEdita(i).CamposUtil["CDU_KilosPorCaixa"].Valor = 0;
-
-                        int cx = Convert.ToInt16(linhas.GetEdita(i).CamposUtil["CDU_Caixas"].Valor);
-                        if (geral.nzn(ref cx) <= 0) { linhas.GetEdita(i).CamposUtil["CDU_Caixas"].Valor = 0; }
-                    }
-                }
-            } // for loop end
-
-            bool cancelTTE = false;
-
-            if (DocumentoVenda.Tipodoc == "ET") { cancelTTE = true; }
-            else if (DocumentoVenda.EmModoEdicao == false && Cancel == false)
-            {
-                // Verifica se o campo CDU_SeloViatura está vazio
-                if (string.IsNullOrEmpty(DocumentoVenda.CamposUtil["CDU_SeloViatura"].Valor.ToString()) && DocumentoVenda.Tipodoc == "GRP")
-                {
-                    string selo = _Helpers.MostraInputForm("Selo", "Selo da viatura de transporte:", "", false);
-                    DocumentoVenda.CamposUtil["CDU_SeloViatura"].Valor = selo;
-                    }
-                }
-
-                //StdBELista query = BSO.Consulta("Select CDU_PedeMatricula From SeriesVendas Where TipoDoc = '" + DocumentoVenda.Tipodoc + "' And Serie = '" + DocumentoVenda.Serie + "';");
-
-                //if (!query.Vazia())
-                //{
-                //    string m = DocumentoVenda.Matricula;
-                //    string matricula = 
-
-                //    if (geral.nz(ref matricula) != DocumentoVenda.Matricula) { DocumentoVenda.Matricula = geral.nz(ref matricula); }
-                //}
-                //query.Termina();
-
-            // Cria string com número de linhas em sequência
-            string s = "";
-            if (linhas.NumItens > 0)
-            {
-                for (int i = 1; i < linhas.NumItens + 1; i++)
-                {
-                    string artigo = linhas.GetEdita(i).Artigo;
-                    if (geral.nz(ref artigo) != "" && (linhas.GetEdita(i).Quantidade == 0 || linhas.GetEdita(i).PrecUnit == 0)) { s = s + " " + i.ToString(); }
-                }
+                PreVisualizarSemGravarNovo();
             }
-            if (s.Trim() != "") {  }
         }
 
-        public override void DepoisDeGravar(string Filial, string Tipo, string Serie, int NumDoc, ExtensibilityEventArgs e)
+        public override void DepoisDeTransformar(ExtensibilityEventArgs e)
         {
-            PP_CaixasJM CaixasJM = new PP_CaixasJM(PSO, BSO, DocumentoVenda);
-            CaixasJM.ProcessarCaixas();
+            base.DepoisDeTransformar(e);
 
-            base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
+            if (DocumentoVenda.Entidade == "62" && DocumentoVenda.Tipodoc == "FC")
+            {
+                DocumentoVenda.CamposUtil["CDU_RefGuiaRemessa"].Valor = DocumentoVenda.Linhas.GetEdita(1).Descricao;
+            }
         }
-
 
         internal void PreVisualizarSemGravarNovo()
         {
