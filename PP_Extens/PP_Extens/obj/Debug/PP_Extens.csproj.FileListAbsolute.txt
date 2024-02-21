@@ -39,7 +39,6 @@ C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debu
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\ConstantesPrimavera100.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\ErpBS100.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\IBasBS100.dll
-C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\ICmpBS100.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\PRISDK100.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\FuncoesComuns100.dll
 C:\Users\VM\source\repos\ID_Primavera_Extensibility\PP_Extens\PP_Extens\bin\Debug\Primavera.MicroServices.Base.dll

@@ -19,6 +19,7 @@ namespace PP_Extens
     public class UiEditorCompras : EditorCompras
     {
         HelperFunctions _Helpers = new HelperFunctions();
+        PP_Geral _PP_Geral = new PP_Geral();
 
         public override void ArtigoIdentificado(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
         {
@@ -150,15 +151,32 @@ namespace PP_Extens
 
         private bool VerificacaoTotalKg()
         {
-            if (DocumentoCompra.Linhas.NumItens == 0) { return false; }
+            if (DocumentoCompra.Linhas.NumItens == 0) return false;
 
             double kg = 0;
             
             foreach (CmpBELinhaDocumentoCompra linha in DocumentoCompra.Linhas)
             {
+                if (!(bool)linha.CamposUtil["CDU_Pescado"].Valor) continue;
 
+                if (linha.Unidade == "KG") {
+                    kg = kg + Math.Abs(linha.Quantidade);
+                } 
+                else if (_PP_Geral.UnidadeCaixa(linha.Unidade))                {
+                    kg = kg + Math.Abs(linha.Quantidade) * _PP_Geral.ObterKgDaUnidade(linha.Unidade);
+                }
             }
 
+            StdBSTipos.ResultMsg resultado = PSO.MensagensDialogos.MostraMensagem(
+                StdBSTipos.TipoMsg.PRI_SimNao,
+                "Resumo do documento:" + Environment.NewLine +
+                $"{kg} Kilos." + Environment.NewLine + Environment.NewLine +
+                "Confirma?",
+                StdBSTipos.IconId.PRI_Informativo);
+
+            if (resultado == StdBSTipos.ResultMsg.PRI_Sim) return true;
+
+            return false;
         }
     }
 }

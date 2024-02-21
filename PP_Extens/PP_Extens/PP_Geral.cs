@@ -107,7 +107,7 @@ namespace PP_Extens
 
         public bool UnidadeCaixa(string unidade)
         {
-            return unidade.StartsWith("C");
+            return (unidade.Length >= 2 && unidade.StartsWith("C") && double.TryParse(unidade.Substring(1), out _));
         }
 
         public double ObterKgDaUnidade (string unidade)

@@ -96,7 +96,8 @@ namespace PP_Extens.Sales
                     DocumentoVenda.CamposUtil["CDU_ContemPescado"].Valor = true;
                     break;
                 }
-            } 
+            }
+            #endregion
         }
 
         public override void DepoisDeGravar(string Filial, string Tipo, string Serie, int NumDoc, ExtensibilityEventArgs e)
@@ -244,14 +245,14 @@ namespace PP_Extens.Sales
             {
                 string cdu = linha.CamposUtil["CDU_Fornecedor"].Valor.ToString();
                 fornecedorStr = _Helpers.MostraInputForm("Fornecedor", "Fornecedor:", Geral.nz(ref cdu), true);
-                linha.CamposUtil["CDU_Fornecedor"].Valor = Geral.nz(ref s).Trim();
+                linha.CamposUtil["CDU_Fornecedor"].Valor = Geral.nz(ref fornecedorStr).Trim();
             }
 
-            string loteStr;
+            string loteStr = "";
             bool memUltLote = BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_MemorizaLote");
             if (memUltLote) { loteStr = BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_UltimoLote"); }
 
-            loteStr = _Helpers.MostraInputForm("Lote", "Introduza o lote do artigo:\n\n**** ATENÇÃO ****\n\nFornecedorMêsDia\nExemplo: 0010718", s, false);
+            loteStr = _Helpers.MostraInputForm("Lote", "Introduza o lote do artigo:\n\n**** ATENÇÃO ****\n\nFornecedorMêsDia\nExemplo: 0010718", loteStr, false);
             loteStr = Geral.nz(ref loteStr).ToUpper().Trim();
             linha.CamposUtil["CDU_LoteAux"].Valor = loteStr;
 
