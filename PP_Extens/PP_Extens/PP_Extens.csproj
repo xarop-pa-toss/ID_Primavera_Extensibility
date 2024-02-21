@@ -163,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\UiFichaClientes.cs" />
+    <Compile Include="Internal\UiUtilLigacaoCBL.cs" />
     <Compile Include="Motor\InicializarPriMotores.cs" />
     <Compile Include="Motor\Secrets.cs" />
     <Compile Include="PP_CaixasJM_NaoUsado.cs" />
