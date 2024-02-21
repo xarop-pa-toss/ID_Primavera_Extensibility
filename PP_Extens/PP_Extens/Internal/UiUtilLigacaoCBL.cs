@@ -136,13 +136,11 @@ namespace PP_Extens.Internal
                 if (linha.Natureza == "D") 
                 {
                     totalDeb += linha.Valor;
-
                     if (linha.Conta.StartsWith("243")) { totalIvaDeb += linha.Valor; }
                 }
                 else if (linha.Natureza == "C") 
                 {
                     totalCred += linha.Valor;
-
                     if (linha.Conta.StartsWith("243")) { totalIvaCred += linha.Valor; }
                 }
             }
