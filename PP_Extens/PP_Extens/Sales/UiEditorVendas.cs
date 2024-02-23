@@ -102,12 +102,12 @@ namespace PP_Extens.Sales
 
         public override void DepoisDeGravar(string Filial, string Tipo, string Serie, int NumDoc, ExtensibilityEventArgs e)
         {
-            PP_CaixasJM_NaoUsado CaixasJM = new PP_CaixasJM_NaoUsado(PSO, BSO, DocumentoVenda);
-            CaixasJM.ProcessarCaixas();
-
             base.DepoisDeGravar(Filial, Tipo, Serie, NumDoc, e);
-        }
 
+            //PP_CaixasJM CaixasJM = new PP_CaixasJM(PSO, BSO, DocumentoVenda);
+            //CaixasJM.ProcessarCaixas();
+        }
+//
         public override void TipoDocumentoIdentificado(string Tipo, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.TipoDocumentoIdentificado(Tipo, ref Cancel, e);
@@ -121,7 +121,7 @@ namespace PP_Extens.Sales
                 BSO.Vendas.Documentos.PreencheDadosRelacionados(DocumentoVenda);
             }
         }
-
+//
         public override void ClienteIdentificado(string Cliente, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.ClienteIdentificado(Cliente, ref Cancel, e);
@@ -258,14 +258,15 @@ namespace PP_Extens.Sales
 
             if (memUltLote)
             {
-                StdBEExecSql sql = new StdBEExecSql();
-                sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-                sql.Tabela = "Artigo";                          //UPDATE Artigo
-                sql.AddCampo("CDU_UltimoLote", loteStr);              // SET CDU_UltimoLote = s
-                sql.AddCampo("Artigo", Artigo, true);           // WHERE Artigo (coluna) = Artigo (variavel)
-                sql.AddQuery();
-                PSO.ExecSql.Executa(sql);
-                sql = null;
+                using (StdBEExecSql sql = new StdBEExecSql())
+                {
+                    sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
+                    sql.Tabela = "Artigo";                          //UPDATE Artigo
+                    sql.AddCampo("CDU_UltimoLote", loteStr);        // SET CDU_UltimoLote = s
+                    sql.AddCampo("Artigo", Artigo, true);           // WHERE Artigo (coluna) = Artigo (variavel)
+                    sql.AddQuery();
+                    PSO.ExecSql.Executa(sql);
+                }
             }
 
             // Pergunta FORMA DE OBTENÇÃO do pescado
@@ -291,7 +292,7 @@ namespace PP_Extens.Sales
                 {
                     try
                     {
-                        resposta = _Helpers.MostraInputForm("Forma de Obtenção", descricao, "", false);
+                        resposta = _Helpers.MostraInputForm("Forma de Obtenção", descricao, "", true);
 
                         if (string.IsNullOrEmpty(resposta)) { break; }
 
@@ -332,7 +333,7 @@ namespace PP_Extens.Sales
             if (DocumentoVenda.Tipodoc == "ET")
             {
                 string fornecedor = linha.CamposUtil["CDU_LOTEAUX"].Valor.ToString();
-                int length = Convert.ToInt16(fornecedor) - 4;
+                int length = Convert.ToInt16(fornecedor.Length) - 4;
                 linha.CamposUtil["CDU_Fornecedor"].Valor = fornecedor.Substring(0, length);
 
                 string sqlstr = linha.CamposUtil["CDU_NomeCientifico"].Valor + ", " + linha.CamposUtil["CDU_FormaObtencao"].Valor + ", " + linha.CamposUtil["CDU_FormaObtencao"].Valor;
@@ -353,7 +354,7 @@ namespace PP_Extens.Sales
                 StdBEExecSql sql2 = new StdBEExecSql();
                 sql2.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
                 sql2.Tabela = "Artigo";                              //UPDATE Artigo
-                sql2.AddCampo("DataUltimaUtilizacao", DateTime.Now); // SET DataUltimaUtilizacao = data corrente
+                sql2.AddCampo("DataUltimaActualizacao", DateTime.Now); // SET DataUltimaUtilizacao = data corrente
                 sql2.AddCampo("Artigo", linha.Artigo, true);         // WHERE Artigo = linha.Artigo
                 sql2.AddQuery();
                 PSO.ExecSql.Executa(sql2);
@@ -402,98 +403,114 @@ namespace PP_Extens.Sales
             if (nLinhas == 0) { MessageBox.Show("Não há nenhum documento válido no Editor de Vendas!\n Certifique-se que o Editor de Vendas contém um documento com a Entidade preenchida e com pelo menos uma linha!"); return; }
 
             // Preenchimento das tabelas de utilizador usadas para a PreVisualização. Mostra a PreVisualização e depois apaga os conteudos das tabelas.
-            StdBEExecSql sql = new StdBEExecSql();
-            StdBEExecSql sql2 = new StdBEExecSql();
             VndBEDocumentoVenda dv = DocumentoVenda;
             tempGUID = PP_Geral.CreateGUID();
 
-            sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-            sql.Tabela = "PSI_TempCabecDoc";
-            sql.AddCampo("id", tempGUID);
-            sql.AddCampo("tipodoc", dv.Tipodoc);
-            sql.AddCampo("data", dv.DataDoc);
-            sql.AddCampo("entidade", dv.Entidade);
-            sql.AddCampo("moeda", dv.Moeda);
-            sql.AddCampo("requisicao", dv.Requisicao);
-            sql.AddCampo("datavencimento", dv.DataVenc);
-            sql.AddCampo("condpag", dv.CondPag);
-            sql.AddCampo("respcobranca", dv.Responsavel);
-            sql.AddCampo("modoexp", dv.ModoExp);
-            sql.AddCampo("regimeiva", dv.RegimeIva);
-            sql.AddCampo("numcontribuinte", dv.NumContribuinte);
-            sql.AddCampo("nome", dv.Nome);
-            sql.AddCampo("morada", dv.Morada);
-            sql.AddCampo("morada2", dv.Morada2);
-            sql.AddCampo("localidade", dv.Localidade);
-            sql.AddCampo("codpostal", dv.CodigoPostal);
-            sql.AddCampo("codpostallocalidade", dv.LocalidadeCodigoPostal);
-            double totalmerc = dv.RegimeIva == "1" ? (dv.TotalMerc + dv.TotalIva) : dv.TotalMerc;
-            sql.AddCampo("TotalMerc", totalmerc);
-            sql.AddCampo("TotalIva", dv.TotalIva);
-            sql.AddCampo("TotalDesc", dv.TotalDesc);
-            sql.AddCampo("TotalOutros", dv.TotalOutros);
-            sql.AddCampo("TotalRetencao", dv.TotalRetencao);
-            sql.AddCampo("TotalRetencaoGarantia", dv.TotalRetencaoGarantia);
-            sql.AddCampo("DescPag", dv.DescFinanceiro);
-            sql.AddCampo("DescEntidade", dv.DescEntidade);
-            
-            sql.AddQuery();
-            PSO.ExecSql.Executa(sql);
-            sql.Dispose();
-
-            sql2.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-            sql2.Tabela = "PSI_TempLinhasDoc";
-            for (int x = 1; x <= dv.Linhas.NumItens; x++)
+            using (StdBEExecSql sql = new StdBEExecSql())
             {
-                VndBELinhaDocumentoVenda ldv = dv.Linhas.GetEdita(x);
+                sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
+                sql.Tabela = "PSI_TempCabecDoc";
+                sql.AddCampo("id", tempGUID);
+                sql.AddCampo("tipodoc", dv.Tipodoc);
+                sql.AddCampo("data", dv.DataDoc);
+                sql.AddCampo("entidade", dv.Entidade);
+                sql.AddCampo("moeda", dv.Moeda);
+                sql.AddCampo("requisicao", dv.Requisicao);
+                sql.AddCampo("datavencimento", dv.DataVenc);
+                sql.AddCampo("condpag", dv.CondPag);
+                sql.AddCampo("respcobranca", dv.Responsavel);
+                sql.AddCampo("modoexp", dv.ModoExp);
+                sql.AddCampo("regimeiva", dv.RegimeIva);
+                sql.AddCampo("numcontribuinte", dv.NumContribuinte);
+                sql.AddCampo("nome", dv.Nome);
+                sql.AddCampo("morada", dv.Morada);
+                sql.AddCampo("morada2", dv.Morada2);
+                sql.AddCampo("localidade", dv.Localidade);
+                sql.AddCampo("codpostal", dv.CodigoPostal);
+                sql.AddCampo("codpostallocalidade", dv.LocalidadeCodigoPostal);
+                double totalmerc = dv.RegimeIva == "1" ? (dv.TotalMerc + dv.TotalIva) : dv.TotalMerc;
+                sql.AddCampo("TotalMerc", totalmerc);
+                sql.AddCampo("TotalIva", dv.TotalIva);
+                sql.AddCampo("TotalDesc", dv.TotalDesc);
+                sql.AddCampo("TotalOutros", dv.TotalOutros);
+                sql.AddCampo("TotalRetencao", dv.TotalRetencao);
+                sql.AddCampo("TotalRetencaoGarantia", dv.TotalRetencaoGarantia);
+                sql.AddCampo("DescPag", dv.DescFinanceiro);
+                sql.AddCampo("DescEntidade", dv.DescEntidade);
 
-                sql2.AddCampo("IdCabecDoc", tempGUID);
-                sql2.AddCampo("NumLinha", x);
-                sql2.AddCampo("TipoLinha", ldv.TipoLinha);
-                sql2.AddCampo("artigo", ldv.Artigo);
-                sql2.AddCampo("Quantidade", ldv.Quantidade);
-                sql2.AddCampo("PrecUnit", ldv.PrecUnit);
-                sql2.AddCampo("TaxaIva", ldv.TaxaIva);
-                sql2.AddCampo("TaxaIvaEcotaxa", ldv.TaxaIvaEcotaxa);
-                sql2.AddCampo("CodIva", ldv.CodIva);
-                sql2.AddCampo("Desconto1", ldv.Desconto1);
-                sql2.AddCampo("Desconto2", ldv.Desconto2);
-                sql2.AddCampo("Desconto3", ldv.Desconto3);
-                sql2.AddCampo("PrecoLiquido", ldv.PrecoLiquido);
-                sql2.AddCampo("Descricao", ldv.Descricao);
-                sql2.AddCampo("Unidade", ldv.Unidade);
-                sql2.AddCampo("TotalIliquido", ldv.TotalIliquido);
-                sql2.AddCampo("TotalDA", ldv.TotalDA);
-                sql2.AddCampo("TotalDC", ldv.TotalDC);
-                sql2.AddCampo("TotalDF", ldv.TotalDF);
-                sql2.AddCampo("TotalIva", ldv.TotalIva);
-                sql2.AddCampo("TotalEcotaxa", ldv.TotalEcotaxa);
-                sql2.AddCampo("CDU_Pescado", ldv.CamposUtil["CDU_Pescado"].Valor);
-                sql2.AddCampo("CDU_NomeCientifico", ldv.CamposUtil["CDU_NomeCientifico"].Valor);
-                sql2.AddCampo("CDU_Origem", ldv.CamposUtil["CDU_Origem"].Valor);
-                sql2.AddCampo("CDU_FormaObtencao", ldv.CamposUtil["CDU_FormaObtencao"].Valor);
-                sql2.AddCampo("CDU_ZonaFAO", ldv.CamposUtil["CDU_ZonaFAO"].Valor);
-                sql2.AddCampo("CDU_Caixas", ldv.CamposUtil["CDU_Caixas"].Valor);
-                sql2.AddCampo("CDU_VendaEmCaixa", ldv.CamposUtil["CDU_VendaEmCaixa"].Valor);
-                sql2.AddCampo("CDU_KilosPorCaixa", ldv.CamposUtil["CDU_KilosPorCaixa"].Valor);
-                sql2.AddCampo("CDU_LoteAux", ldv.CamposUtil["CDU_LoteAux"].Valor);
-                
-                sql2.AddQuery();
-                PSO.ExecSql.Executa(sql2);
-                sql2.Dispose();
+                sql.AddQuery();
+                PSO.ExecSql.Executa(sql);
             }
+
+            using (StdBEExecSql sql = new StdBEExecSql())
+            {
+                sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
+                sql.Tabela = "PSI_TempLinhasDoc";
+                for (int x = 1; x <= dv.Linhas.NumItens; x++)
+                {
+                    VndBELinhaDocumentoVenda ldv = dv.Linhas.GetEdita(x);
+
+                    sql.AddCampo("IdCabecDoc", tempGUID);
+                    sql.AddCampo("NumLinha", x);
+                    sql.AddCampo("TipoLinha", ldv.TipoLinha);
+                    sql.AddCampo("artigo", ldv.Artigo);
+                    sql.AddCampo("Quantidade", ldv.Quantidade);
+                    sql.AddCampo("PrecUnit", ldv.PrecUnit);
+                    sql.AddCampo("TaxaIva", ldv.TaxaIva);
+                    sql.AddCampo("TaxaIvaEcotaxa", ldv.TaxaIvaEcotaxa);
+                    sql.AddCampo("CodIva", ldv.CodIva);
+                    sql.AddCampo("Desconto1", ldv.Desconto1);
+                    sql.AddCampo("Desconto2", ldv.Desconto2);
+                    sql.AddCampo("Desconto3", ldv.Desconto3);
+                    sql.AddCampo("PrecoLiquido", ldv.PrecoLiquido);
+                    sql.AddCampo("Descricao", ldv.Descricao);
+                    sql.AddCampo("Unidade", ldv.Unidade);
+                    sql.AddCampo("TotalIliquido", ldv.TotalIliquido);
+                    sql.AddCampo("TotalDA", ldv.TotalDA);
+                    sql.AddCampo("TotalDC", ldv.TotalDC);
+                    sql.AddCampo("TotalDF", ldv.TotalDF);
+                    sql.AddCampo("TotalIva", ldv.TotalIva);
+                    sql.AddCampo("TotalEcotaxa", ldv.TotalEcotaxa);
+                    sql.AddCampo("CDU_Pescado", ldv.CamposUtil["CDU_Pescado"].Valor);
+                    sql.AddCampo("CDU_NomeCientifico", ldv.CamposUtil["CDU_NomeCientifico"].Valor);
+                    sql.AddCampo("CDU_Origem", ldv.CamposUtil["CDU_Origem"].Valor);
+                    sql.AddCampo("CDU_FormaObtencao", ldv.CamposUtil["CDU_FormaObtencao"].Valor);
+                    sql.AddCampo("CDU_ZonaFAO", ldv.CamposUtil["CDU_ZonaFAO"].Valor);
+                    sql.AddCampo("CDU_Caixas", ldv.CamposUtil["CDU_Caixas"].Valor);
+                    sql.AddCampo("CDU_VendaEmCaixa", ldv.CamposUtil["CDU_VendaEmCaixa"].Valor);
+                    sql.AddCampo("CDU_KilosPorCaixa", ldv.CamposUtil["CDU_KilosPorCaixa"].Valor);
+                    sql.AddCampo("CDU_LoteAux", ldv.CamposUtil["CDU_LoteAux"].Valor);
+
+                    sql.AddQuery();
+                    PSO.ExecSql.Executa(sql);
+                }
+            }
+
             // Inicializar recebe uma string mas só usa as primeiras 3 letras. Corresponde ao nome da pasta dos mapas em Mapas/LP/...
             PSO.Mapas.Inicializar("ERP");
             PSO.Mapas.SetParametro("ID", tempGUID);
             PSO.Mapas.ImprimeListagem("PP_MR_02", eCultura: StdBETipos.EnumGlobalCultures.CULT_PT, blnImpressaoCheque: false);
-            //PP_MR_02
-            //tempGUID = tempGUID.Substring(2, 36);
-            StdBEExecSql sqlDelete = new StdBEExecSql();
-            sqlDelete.tpQuery = StdBETipos.EnumTpQuery.tpDELETE;
-            sqlDelete.Tabela = "PSI_TempCabecDoc";
 
-            BSO.Consulta("DELETE FROM PSI_TempLinhasDoc WHERE IdCabecDoc = '" + tempGUID + "'");
-            BSO.Consulta("DELETE FROM PSI_TempCabecDoc WHERE Id = '" + tempGUID + "'");
+            //PP_MR_02
+            using (StdBEExecSql sqlDelete = new StdBEExecSql())
+            {
+                sqlDelete.tpQuery = StdBETipos.EnumTpQuery.tpDELETE;
+                sqlDelete.Tabela = "PSI_TempCabecDoc";
+                sqlDelete.AddCampo("Id", tempGUID, true);
+
+                sqlDelete.AddQuery();
+                PSO.ExecSql.Executa(sqlDelete);
+            }
+
+            using (StdBEExecSql sqlDelete = new StdBEExecSql())
+            {
+                sqlDelete.tpQuery = StdBETipos.EnumTpQuery.tpDELETE;
+                sqlDelete.Tabela = "PSI_TempLinhasDoc";
+                sqlDelete.AddCampo("IdCabecDoc", tempGUID, true);
+
+                sqlDelete.AddQuery();
+                PSO.ExecSql.Executa(sqlDelete);
+            }
         }
     }
 }

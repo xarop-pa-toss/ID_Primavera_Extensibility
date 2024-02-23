@@ -102,8 +102,6 @@ namespace PP_Extens
                 if (!VerificacaoTotalKg()) { Cancel = true; return; }
             }
 
-
-
             #endregion
         }
 
@@ -116,9 +114,9 @@ namespace PP_Extens
             if (numDocFornStr == "1")
             {
                 StdBSTipos.ResultMsg resultado = PSO.MensagensDialogos.MostraMensagem(
-                    StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimNao,
+                    StdBSTipos.TipoMsg.PRI_SimNao,
                     @"Tem a certeza que quer deixar com o valor '1' o número do documento do fornecedor?",
-                    StdPlatBS100.StdBSTipos.IconId.PRI_Exclama);
+                    StdBSTipos.IconId.PRI_Exclama);
 
                 if (resultado != StdBSTipos.ResultMsg.PRI_Sim) { return false; }
             }

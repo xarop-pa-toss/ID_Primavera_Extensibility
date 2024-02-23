@@ -38,7 +38,7 @@ namespace HelpersPrimavera10
             // 
             // lbl_Descricao
             // 
-            this.lbl_Descricao.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.lbl_Descricao.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_Descricao.AutoSize = true;
             this.lbl_Descricao.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -50,19 +50,19 @@ namespace HelpersPrimavera10
             // 
             // txtBox_Resposta
             // 
-            this.txtBox_Resposta.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.txtBox_Resposta.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBox_Resposta.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBox_Resposta.Location = new System.Drawing.Point(12, 56);
+            this.txtBox_Resposta.Location = new System.Drawing.Point(19, 45);
             this.txtBox_Resposta.Name = "txtBox_Resposta";
-            this.txtBox_Resposta.Size = new System.Drawing.Size(341, 24);
+            this.txtBox_Resposta.Size = new System.Drawing.Size(327, 24);
             this.txtBox_Resposta.TabIndex = 1;
             this.txtBox_Resposta.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBox_Resposta_KeyPress);
             // 
             // btn_OK
             // 
             this.btn_OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_OK.Location = new System.Drawing.Point(187, 95);
+            this.btn_OK.Location = new System.Drawing.Point(180, 84);
             this.btn_OK.Name = "btn_OK";
             this.btn_OK.Size = new System.Drawing.Size(80, 30);
             this.btn_OK.TabIndex = 2;
@@ -73,7 +73,7 @@ namespace HelpersPrimavera10
             // btn_Cancelar
             // 
             this.btn_Cancelar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Cancelar.Location = new System.Drawing.Point(273, 95);
+            this.btn_Cancelar.Location = new System.Drawing.Point(266, 84);
             this.btn_Cancelar.Name = "btn_Cancelar";
             this.btn_Cancelar.Size = new System.Drawing.Size(80, 30);
             this.btn_Cancelar.TabIndex = 3;
@@ -85,7 +85,7 @@ namespace HelpersPrimavera10
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(365, 134);
+            this.ClientSize = new System.Drawing.Size(365, 123);
             this.Controls.Add(this.btn_Cancelar);
             this.Controls.Add(this.btn_OK);
             this.Controls.Add(this.txtBox_Resposta);
