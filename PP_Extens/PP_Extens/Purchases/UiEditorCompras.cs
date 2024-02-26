@@ -127,9 +127,11 @@ namespace PP_Extens
 
         private bool VerificacaoDataStock()
         {
-            if (!DateTime.TryParse(DocumentoCompra.CamposUtil["CDU_DataStock"].Valor.ToString(), out DateTime data)) {
+            if (DocumentoCompra.CamposUtil["CDU_DataStock"].Valor == null) {
                 DocumentoCompra.CamposUtil["CDU_DataStock"].Valor = DateTime.Today;
             }
+
+            DateTime.TryParse(DocumentoCompra.CamposUtil["CDU_DataStock"].Valor.ToString(), out DateTime data);
 
             string dataStockStr = _Helpers.MostraInputForm(
                 "",

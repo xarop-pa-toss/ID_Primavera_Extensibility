@@ -84,7 +84,7 @@ namespace PP_Extens.Internal
                     for (int i = 1; i <= DocumentoCBL.LinhasGeral.NumItens; i++)
                     {
                         linha = DocumentoCBL.LinhasGeral.GetEdita(i);
-                        if (linha.Valor > diff && linha.Conta.StartsWith("[3,6]"))
+                        if (linha.Valor > diff && (linha.Conta.StartsWith("3") || linha.Conta.StartsWith("6")))
                         {
                             diff = linha.Valor;
                             linhaCounter = i;
@@ -113,7 +113,7 @@ namespace PP_Extens.Internal
                     for (int i = 1; i <= DocumentoCBL.LinhasGeral.NumItens; i++)
                     {
                         linha = DocumentoCBL.LinhasGeral.GetEdita(i);
-                        if (linha.Valor > diff && linha.Conta.StartsWith("[243]"))
+                        if (linha.Valor > diff && linha.Conta.StartsWith("243"))
                         {
                             diff = linha.Valor;
                             linhaCounter = i;
