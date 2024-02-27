@@ -12,7 +12,7 @@ namespace PP_PPCS
     {
         public void Abrir_formImportaDocs_WF()
         {
-            FormImportaDocs_WF formImportaDocs = new FormImportaDocs_WF();
+            FormImportaDocs formImportaDocs = new FormImportaDocs();
             FormQueryStatus_WF formQueryStatus = new FormQueryStatus_WF();
 
             formImportaDocs.ShowDialog();

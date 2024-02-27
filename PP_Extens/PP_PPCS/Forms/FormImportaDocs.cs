@@ -9,7 +9,7 @@ using Primavera.Extensibility.CustomForm;
 
 namespace PP_PPCS
 {
-    public partial class FormImportaDocs_WF : CustomForm
+    public partial class FormImportaDocs : CustomForm
     {
         private ErpBS _BSO;
         private StdBSInterfPub _PSO;
@@ -18,7 +18,7 @@ namespace PP_PPCS
         private DataTable _RSet;
         private QueriesSQL queriesSQL;
 
-        public FormImportaDocs_WF()
+        public FormImportaDocs()
         {
             _PSO = PriMotores.Plataforma;
             _BSO = PriMotores.Motor;

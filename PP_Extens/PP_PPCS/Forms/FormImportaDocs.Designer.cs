@@ -1,7 +1,7 @@
 ﻿
 namespace PP_PPCS
 {
-    partial class FormImportaDocs_WF
+    partial class FormImportaDocs
     {
         /// <summary>
         /// Required designer variable.

@@ -116,6 +116,7 @@ namespace PP_PPCS.Sales
                         catch
                         {
                             PSO.MensagensDialogos.MostraErro("Número de documento inserido precisa de ter 10 dígitos.");
+                            Cancel = true;
                         }
                     }
                 }

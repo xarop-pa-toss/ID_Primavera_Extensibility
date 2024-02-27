@@ -153,11 +153,11 @@
     <Compile Include="Motor\InicializarPriMotores.cs" />
     <Compile Include="Motor\Secrets.cs" />
     <Compile Include="Purchases\ImportaDocs.cs" />
-    <Compile Include="Forms\FormImportaDocs_WF.cs">
+    <Compile Include="Forms\FormImportaDocs.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\FormImportaDocs_WF.Designer.cs">
-      <DependentUpon>FormImportaDocs_WF.cs</DependentUpon>
+    <Compile Include="Forms\FormImportaDocs.Designer.cs">
+      <DependentUpon>FormImportaDocs.cs</DependentUpon>
     </Compile>
     <Compile Include="Motor\OpenFormCode.cs" />
     <Compile Include="QueriesSQL.cs" />
@@ -178,8 +178,8 @@
     <Compile Include="Base\UiFichaClientes.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\FormImportaDocs_WF.resx">
-      <DependentUpon>FormImportaDocs_WF.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\FormImportaDocs.resx">
+      <DependentUpon>FormImportaDocs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormPropDocVenda.resx">
       <DependentUpon>FormPropDocVenda.cs</DependentUpon>
