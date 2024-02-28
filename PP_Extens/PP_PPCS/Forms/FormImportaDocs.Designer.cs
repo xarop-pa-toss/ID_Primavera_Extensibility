@@ -58,7 +58,7 @@ namespace PP_PPCS
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(6, 18);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(324, 13);
+            this.label3.Size = new System.Drawing.Size(374, 15);
             this.label3.TabIndex = 30;
             this.label3.Text = "A - Documento anulado   S - Importar documento   N - Não importar";
             // 
@@ -86,7 +86,7 @@ namespace PP_PPCS
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(399, 428);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(118, 13);
+            this.label2.Size = new System.Drawing.Size(135, 15);
             this.label2.TabIndex = 34;
             this.label2.Text = "Data para documentos:";
             // 
@@ -95,7 +95,7 @@ namespace PP_PPCS
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 428);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(108, 13);
+            this.label1.Size = new System.Drawing.Size(124, 15);
             this.label1.TabIndex = 33;
             this.label1.Text = "Data docs a importar:";
             // 
@@ -143,11 +143,10 @@ namespace PP_PPCS
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker1.TabIndex = 43;
             // 
-            // FormImportaDocs_WF
+            // FormImportaDocs
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(909, 518);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.datepicker_DataDocNovo);
             this.Controls.Add(this.DataGrid1);
@@ -158,8 +157,9 @@ namespace PP_PPCS
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btn_Sair_WF);
             this.Controls.Add(this.btn_Processar_WF);
-            this.Name = "FormImportaDocs_WF";
-            this.Text = "FormImportaDocs_WF";
+            this.Name = "FormImportaDocs";
+            this.Size = new System.Drawing.Size(909, 518);
+            this.Text = "Importar Documentos";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormImportaDocs_WF_FormClosing);
             this.Load += new System.EventHandler(this.FormImportaDocs_WF_Load);
             this.groupBox1.ResumeLayout(false);

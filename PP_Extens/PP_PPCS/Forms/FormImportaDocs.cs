@@ -18,11 +18,15 @@ namespace PP_PPCS
         private DataTable _RSet;
         private QueriesSQL queriesSQL;
 
+        // ALTERAR AQUI AMBIENTE A USAR
+        // 'teste' ou 'prod'
+        const string AMBIENTE = "teste";
+
         public FormImportaDocs()
         {
             _PSO = PriMotores.Plataforma;
             _BSO = PriMotores.Motor;
-            _sdkContexto = PriMotores.PriSDKContexto;  
+            _sdkContexto = PriMotores.PriSDKContexto;
 
             InitializeComponent();
         }
@@ -244,10 +248,7 @@ namespace PP_PPCS
         {
             string _tabela = "A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
 
-            // ALTERAR AQUI AMBIENTE A USAR
-            // 'teste' ou 'prod'
-            string ambiente = "teste";
-            queriesSQL = new QueriesSQL(ambiente);
+            queriesSQL = new QueriesSQL(AMBIENTE);
 
             queriesSQL.AbrirSQL(); 
 

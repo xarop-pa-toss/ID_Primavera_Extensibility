@@ -10,7 +10,7 @@ namespace PP_PPCS
 {
     public class PriCustomCode1 : CustomCode
     {
-        public void Abrir_formImportaDocs_WF()
+        public void Abrir_formImportaDocs()
         {
             FormImportaDocs formImportaDocs = new FormImportaDocs();
             FormQueryStatus_WF formQueryStatus = new FormQueryStatus_WF();
