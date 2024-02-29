@@ -27,7 +27,6 @@ namespace PP_PPCS.Sales
             }
             base.AntesDeGravar(ref Cancel, e);
         }
-
         
         public override void ArtigoIdentificado(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
         {
@@ -75,7 +74,6 @@ namespace PP_PPCS.Sales
             DocVenda.Dispose();
             base.ArtigoIdentificado(Artigo, NumLinha, ref Cancel, e);
         }
-
 
         public override void ClienteIdentificado(string Cliente, ref bool Cancel, ExtensibilityEventArgs e)
         {
