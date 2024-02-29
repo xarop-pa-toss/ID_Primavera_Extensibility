@@ -32,9 +32,9 @@ namespace PP_PPCS
             this.btnActualizar = new System.Windows.Forms.Button();
             this.btnSair = new System.Windows.Forms.Button();
             this.f4TipoDoc = new PRISDK100.F4();
-            this.priGrelha1 = new PRISDK100.PriGrelha();
+            this.priGrelhaDocs = new PRISDK100.PriGrelha();
             this.numUpDownNumDoc = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.priGrelha1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.priGrelhaDocs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownNumDoc)).BeginInit();
             this.SuspendLayout();
             // 
@@ -112,47 +112,47 @@ namespace PP_PPCS
             this.f4TipoDoc.WidthLink = 1300;
             this.f4TipoDoc.TextChange += new PRISDK100.F4.TextChangeHandler(this.f4TipoDoc_TextChange);
             // 
-            // priGrelha1
+            // priGrelhaDocs
             // 
-            this.priGrelha1.BackColor = System.Drawing.Color.White;
-            this.priGrelha1.BandaMenuContexto = "";
-            this.priGrelha1.BotaoConfigurarActiveBar = true;
-            this.priGrelha1.BotaoProcurarActiveBar = false;
-            this.priGrelha1.CaminhoTemplateImpressao = "";
-            this.priGrelha1.Cols = null;
-            this.priGrelha1.ColsFrozen = -1;
-            this.priGrelha1.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.priGrelha1.Location = new System.Drawing.Point(21, 93);
-            this.priGrelha1.Margin = new System.Windows.Forms.Padding(4);
-            this.priGrelha1.Name = "priGrelha1";
-            this.priGrelha1.NumeroMaxRegistosSemPag = 150000;
-            this.priGrelha1.NumeroRegistos = 0;
-            this.priGrelha1.NumLinhasCabecalho = 1;
-            this.priGrelha1.OrientacaoMapa = PRISDK100.clsSDKTypes.OrientacaoImpressao.oiDefault;
-            this.priGrelha1.ParentFormModal = false;
-            this.priGrelha1.PermiteActiveBar = false;
-            this.priGrelha1.PermiteActualizar = true;
-            this.priGrelha1.PermiteAgrupamentosUser = true;
-            this.priGrelha1.PermiteConfigurarDetalhes = false;
-            this.priGrelha1.PermiteContextoVazia = false;
-            this.priGrelha1.PermiteDataFill = false;
-            this.priGrelha1.PermiteDetalhes = true;
-            this.priGrelha1.PermiteEdicao = false;
-            this.priGrelha1.PermiteFiltros = true;
-            this.priGrelha1.PermiteGrafico = true;
-            this.priGrelha1.PermiteGrandeTotal = false;
-            this.priGrelha1.PermiteOrdenacao = true;
-            this.priGrelha1.PermitePaginacao = false;
-            this.priGrelha1.PermiteScrollBars = true;
-            this.priGrelha1.PermiteStatusBar = true;
-            this.priGrelha1.PermiteVistas = true;
-            this.priGrelha1.PosicionaColunaSeguinte = true;
-            this.priGrelha1.Size = new System.Drawing.Size(964, 444);
-            this.priGrelha1.TabIndex = 8;
-            this.priGrelha1.TituloGrelha = "";
-            this.priGrelha1.TituloMapa = "";
-            this.priGrelha1.TypeNameLinha = "";
-            this.priGrelha1.TypeNameLinhas = "";
+            this.priGrelhaDocs.BackColor = System.Drawing.Color.White;
+            this.priGrelhaDocs.BandaMenuContexto = "";
+            this.priGrelhaDocs.BotaoConfigurarActiveBar = true;
+            this.priGrelhaDocs.BotaoProcurarActiveBar = false;
+            this.priGrelhaDocs.CaminhoTemplateImpressao = "";
+            this.priGrelhaDocs.Cols = null;
+            this.priGrelhaDocs.ColsFrozen = -1;
+            this.priGrelhaDocs.Font = new System.Drawing.Font("Tahoma", 8.25F);
+            this.priGrelhaDocs.Location = new System.Drawing.Point(21, 93);
+            this.priGrelhaDocs.Margin = new System.Windows.Forms.Padding(4);
+            this.priGrelhaDocs.Name = "priGrelhaDocs";
+            this.priGrelhaDocs.NumeroMaxRegistosSemPag = 150000;
+            this.priGrelhaDocs.NumeroRegistos = 0;
+            this.priGrelhaDocs.NumLinhasCabecalho = 1;
+            this.priGrelhaDocs.OrientacaoMapa = PRISDK100.clsSDKTypes.OrientacaoImpressao.oiDefault;
+            this.priGrelhaDocs.ParentFormModal = false;
+            this.priGrelhaDocs.PermiteActiveBar = false;
+            this.priGrelhaDocs.PermiteActualizar = true;
+            this.priGrelhaDocs.PermiteAgrupamentosUser = true;
+            this.priGrelhaDocs.PermiteConfigurarDetalhes = false;
+            this.priGrelhaDocs.PermiteContextoVazia = false;
+            this.priGrelhaDocs.PermiteDataFill = false;
+            this.priGrelhaDocs.PermiteDetalhes = true;
+            this.priGrelhaDocs.PermiteEdicao = false;
+            this.priGrelhaDocs.PermiteFiltros = true;
+            this.priGrelhaDocs.PermiteGrafico = true;
+            this.priGrelhaDocs.PermiteGrandeTotal = false;
+            this.priGrelhaDocs.PermiteOrdenacao = true;
+            this.priGrelhaDocs.PermitePaginacao = false;
+            this.priGrelhaDocs.PermiteScrollBars = true;
+            this.priGrelhaDocs.PermiteStatusBar = true;
+            this.priGrelhaDocs.PermiteVistas = true;
+            this.priGrelhaDocs.PosicionaColunaSeguinte = true;
+            this.priGrelhaDocs.Size = new System.Drawing.Size(964, 444);
+            this.priGrelhaDocs.TabIndex = 8;
+            this.priGrelhaDocs.TituloGrelha = "";
+            this.priGrelhaDocs.TituloMapa = "";
+            this.priGrelhaDocs.TypeNameLinha = "";
+            this.priGrelhaDocs.TypeNameLinhas = "";
             // 
             // numUpDownNumDoc
             // 
@@ -167,7 +167,7 @@ namespace PP_PPCS
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.numUpDownNumDoc);
             this.Controls.Add(this.f4TipoDoc);
-            this.Controls.Add(this.priGrelha1);
+            this.Controls.Add(this.priGrelhaDocs);
             this.Controls.Add(this.btnSair);
             this.Controls.Add(this.btnActualizar);
             this.Controls.Add(this.cBoxSerie);
@@ -176,7 +176,7 @@ namespace PP_PPCS
             this.Size = new System.Drawing.Size(1000, 605);
             this.Text = "FormPropDocVenda";
             this.Load += new System.EventHandler(this.FormPropDocVenda_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.priGrelha1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.priGrelhaDocs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownNumDoc)).EndInit();
             this.ResumeLayout(false);
 
@@ -187,7 +187,7 @@ namespace PP_PPCS
         private System.Windows.Forms.Button btnActualizar;
         private System.Windows.Forms.Button btnSair;
         private PRISDK100.F4 f4TipoDoc;
-        private PRISDK100.PriGrelha priGrelha1;
+        private PRISDK100.PriGrelha priGrelhaDocs;
         private System.Windows.Forms.NumericUpDown numUpDownNumDoc;
     }
 }
