@@ -55,7 +55,7 @@ namespace PP_PPCS
             this.btnActualizar.Margin = new System.Windows.Forms.Padding(4);
             this.btnActualizar.Name = "btnActualizar";
             this.btnActualizar.Size = new System.Drawing.Size(132, 46);
-            this.btnActualizar.TabIndex = 6;
+            this.btnActualizar.TabIndex = 1;
             this.btnActualizar.Text = "Actualizar";
             this.btnActualizar.UseVisualStyleBackColor = true;
             this.btnActualizar.Click += new System.EventHandler(this.btnActualizar_Click);
@@ -169,7 +169,7 @@ namespace PP_PPCS
             this.btnGravar.Location = new System.Drawing.Point(882, 22);
             this.btnGravar.Name = "btnGravar";
             this.btnGravar.Size = new System.Drawing.Size(128, 45);
-            this.btnGravar.TabIndex = 16;
+            this.btnGravar.TabIndex = 2;
             this.btnGravar.Text = "Gravar";
             this.btnGravar.UseVisualStyleBackColor = true;
             this.btnGravar.Click += new System.EventHandler(this.btnGravar_Click);

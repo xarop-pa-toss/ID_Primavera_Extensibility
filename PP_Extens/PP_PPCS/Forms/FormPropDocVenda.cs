@@ -157,15 +157,15 @@ namespace PP_PPCS
         private void priGrelhaDocs_LeaveRow(object Sender, PriGrelha.LeaveRowEventArgs e)
         {
             System.Windows.Forms.MessageBox.Show("Test");
-        }
+        } 
 
         private void btnGravar_Click(object sender, EventArgs e)
         {
             string NumLinha, Artigo, CDU_LoteAux, Descricao, CDU_NomeCientifico, CDU_Caixas, CDU_KilosPorCaixa, Quantidade, Unidade, CDU_Fornecedor, CDU_Origem, CDU_FormaObtencao, CDU_ZonaFAO, Id;
 
-            for (int i = 1; i < priGrelhaDocs.Grelha.DataRowCnt; i++)
+            for (int i = 1; i <= priGrelhaDocs.Grelha.DataRowCnt; i++)
             {
-                NumLinha = priGrelhaDocs.GetGRID_GetValorCelula(i, "N.L");
+                NumLinha = priGrelhaDocs.GetGRID_GetValorCelula(i, "N.L.");
                 Artigo = priGrelhaDocs.GetGRID_GetValorCelula(i, "Artigo");
                 CDU_LoteAux = priGrelhaDocs.GetGRID_GetValorCelula(i, "Lote");
                 Descricao = priGrelhaDocs.GetGRID_GetValorCelula(i, "Descrição");
@@ -208,8 +208,6 @@ namespace PP_PPCS
                         _PSO.MensagensDialogos.MostraErro($"Não foi possivel gravar a linha {NumLinha} - {Artigo} com o ID {Id}");
                     }
                 }
-
-
             }
         }
 
