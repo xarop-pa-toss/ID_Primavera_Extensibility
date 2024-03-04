@@ -210,10 +210,5 @@ namespace PP_PPCS
                 }
             }
         }
-
-        private void priGrelhaDocs_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

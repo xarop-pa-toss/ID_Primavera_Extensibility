@@ -15,6 +15,72 @@ namespace PP_Qualidade.Purchases
     {
         HelpersPrimavera10.HelperFunctions _Helpers = new HelpersPrimavera10.HelperFunctions();
 
+        public override void ArtigoIdentificado(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
+        {
+            base.ArtigoIdentificado(Artigo, NumLinha, ref Cancel, e);
+
+            CmpBELinhaDocumentoCompra linha = DocumentoCompra.Linhas.GetEdita(LinhaActual);
+
+            if (BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_Pescado"))
+            {
+                #region Tratar artigo de pescado
+
+                linha.CamposUtil["CDU_Caixas"].Valor = 1;
+                linha.PrecUnit = 0;
+
+                string nroCaixasStr = _Helpers.MostraInputForm("Caixas", "Nro. de caixas:", null);
+                linha.CamposUtil["CDU_Caixas"].Valor = nroCaixasStr != null ? Convert.ToInt32(nroCaixasStr) : 0;
+
+                if (BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_VendaEmCaixa"))
+                {
+                    linha.Quantidade = (double)linha.CamposUtil["CDU_Caixas"].Valor;
+
+                    DataTable dt = _Helpers.GetDataTableDeSQL(
+                        " SELECT TOP(1) CDU_KilosPorCaixa As Kgrs " +
+                        " FROM LinhasCompras lc " +
+                        "   INNER JOIN CabecCompras cc ON lc.IdCabecCompras = cc.Id " +
+                       $" WHERE lc.Artigo = '{Artigo}' " +
+                       $" ORDER BY cc.DataDoc Desc, cc.NumDoc Desc, lc.NumLinha;");
+
+                    string defaultInputFormText = dt.Rows.Count == 0
+                        ? BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_KilosPorCaixa")
+                        : dt.Rows[0][0].ToString();
+
+                    string kilosPorCaixa = _Helpers.MostraInputForm("Quilos por caixa", "Quilos por caixa:", defaultInputFormText);
+                    kilosPorCaixa = kilosPorCaixa.Replace(',', '.');
+
+                    if (!double.TryParse(kilosPorCaixa, out double result))
+                    {
+                        PSO.MensagensDialogos.MostraErro("Valor inválido para 'Quilos por caixa'");
+                        Cancel = true;
+                        return;
+                    }
+                    linha.CamposUtil["CDU_KilosPorCaixa"].Valor = result;
+                }
+
+
+                string quantidades = _Helpers.MostraInputForm("", "Quantidades:", "Kgrs");
+                quantidades = quantidades.Replace(',', '.');
+
+                if (!double.TryParse(quantidades, out double res))
+                {
+                    PSO.MensagensDialogos.MostraErro("Valor inválido para 'Quantidade");
+                    Cancel = true;
+                    return;
+                }
+                linha.CamposUtil["CDU_KilosPorCaixa"].Valor = res;
+
+
+
+                #endregion
+
+                // Preencher CDU com Conformes
+                linha.CamposUtil["CDU_ConfCOrganl"].Valor = "Conforme";
+                linha.CamposUtil["CDU_AvGeral"].Valor = "Conforme";
+                linha.CamposUtil["CDU_Parasitas"].Valor = "Conforme";
+            }
+        }
+
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.AntesDeGravar(ref Cancel, e);
@@ -85,72 +151,6 @@ namespace PP_Qualidade.Purchases
                 }
             }
             #endregion
-        }
-
-        public override void ArtigoIdentificado(string Artigo, int NumLinha, ref bool Cancel, ExtensibilityEventArgs e)
-        {
-            base.ArtigoIdentificado(Artigo, NumLinha, ref Cancel, e);
-
-            CmpBELinhaDocumentoCompra linha = DocumentoCompra.Linhas.GetEdita(LinhaActual);
-
-            if (BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_Pescado"))
-            {
-                #region Tratar artigo de pescado
-
-                linha.CamposUtil["CDU_Caixas"].Valor = 1;
-                linha.PrecUnit = 0;
-
-                string nroCaixasStr = _Helpers.MostraInputForm("Caixas", "Nro. de caixas:", null);
-                linha.CamposUtil["CDU_Caixas"].Valor = nroCaixasStr != null ? Convert.ToInt32(nroCaixasStr) : 0;
-
-                if (BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_VendaEmCaixa"))
-                {
-                    linha.Quantidade = (double)linha.CamposUtil["CDU_Caixas"].Valor;
-
-                    DataTable dt = _Helpers.GetDataTableDeSQL(
-                        " SELECT TOP(1) CDU_KilosPorCaixa As Kgrs " +
-                        " FROM LinhasCompras lc " +
-                        "   INNER JOIN CabecCompras cc ON lc.IdCabecCompras = cc.Id " +
-                       $" WHERE lc.Artigo = '{Artigo}' " +
-                       $" ORDER BY cc.DataDoc Desc, cc.NumDoc Desc, lc.NumLinha;");
-
-                    string defaultInputFormText = dt.Rows.Count == 0
-                        ? BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_KilosPorCaixa")
-                        : dt.Rows[0][0].ToString();
-
-                    string kilosPorCaixa = _Helpers.MostraInputForm("Quilos por caixa", "Quilos por caixa:", defaultInputFormText);
-                    kilosPorCaixa = kilosPorCaixa.Replace(',', '.');
-
-                    if (!double.TryParse(kilosPorCaixa, out double result))
-                    {
-                        PSO.MensagensDialogos.MostraErro("Valor inválido para 'Quilos por caixa'");
-                        Cancel = true;
-                        return;
-                    }
-                    linha.CamposUtil["CDU_KilosPorCaixa"].Valor = result;
-                }
-
-
-                string quantidades = _Helpers.MostraInputForm("", "Quantidades:", "Kgrs");
-                quantidades = quantidades.Replace(',', '.');
-
-                if (!double.TryParse(quantidades, out double res))
-                {
-                    PSO.MensagensDialogos.MostraErro("Valor inválido para 'Quantidade");
-                    Cancel = true;
-                    return;
-                }
-                linha.CamposUtil["CDU_KilosPorCaixa"].Valor = res;
-
-
-
-                #endregion
-
-                // Preencher CDU com Conformes
-                linha.CamposUtil["CDU_ConfCOrganl"].Valor = "Conforme";
-                linha.CamposUtil["CDU_AvGeral"].Valor = "Conforme";
-                linha.CamposUtil["CDU_Parasitas"].Valor = "Conforme";
-            }
         }
 
         public override void DepoisDeGravar(string Filial, string Tipo, string Serie, int NumDoc, ExtensibilityEventArgs e)

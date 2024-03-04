@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Data;
-using ErpBS100;
-using StdPlatBS100;
+using System.Windows.Forms; 
+using ErpBS100; 
+using StdPlatBS100; 
 using HelpersPrimavera10;
 using PRISDK100;
 using Primavera.Extensibility.CustomForm;
-using System.Windows.Forms;
 
 namespace PP_Qualidade
 {
-    public partial class FormImportaDocs_WF : CustomForm
+    public partial class FormImportaDocs : CustomForm
     {
         private ErpBS _BSO;
         private StdBSInterfPub _PSO;
@@ -18,11 +18,15 @@ namespace PP_Qualidade
         private DataTable _RSet;
         private QueriesSQL queriesSQL;
 
-        public FormImportaDocs_WF()
+        // ALTERAR AQUI AMBIENTE A USAR
+        // 'teste' ou 'prod'
+        const string AMBIENTE = "teste";
+
+        public FormImportaDocs()
         {
             _PSO = PriMotores.Plataforma;
             _BSO = PriMotores.Motor;
-            _sdkContexto = PriMotores.PriSDKContexto;  
+            _sdkContexto = PriMotores.PriSDKContexto;
 
             InitializeComponent();
         }
@@ -244,10 +248,7 @@ namespace PP_Qualidade
         {
             string _tabela = "A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
 
-            // ALTERAR AQUI AMBIENTE A USAR
-            // 'teste' ou 'prod'
-            string ambiente = "teste";
-            queriesSQL = new QueriesSQL(ambiente);
+            queriesSQL = new QueriesSQL(AMBIENTE);
 
             queriesSQL.AbrirSQL(); 
 

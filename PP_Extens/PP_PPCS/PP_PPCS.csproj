@@ -152,7 +152,7 @@
   <ItemGroup>
     <Compile Include="Motor\InicializarPriMotores.cs" />
     <Compile Include="Motor\Secrets.cs" />
-    <Compile Include="Purchases\ImportaDocs.cs" />
+    <Compile Include="Forms\ImportaDocs.cs" />
     <Compile Include="Forms\FormImportaDocs.cs">
       <SubType>UserControl</SubType>
     </Compile>

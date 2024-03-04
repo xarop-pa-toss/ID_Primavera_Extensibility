@@ -155,7 +155,6 @@ namespace PP_PPCS
             this.priGrelhaDocs.TypeNameLinha = "";
             this.priGrelhaDocs.TypeNameLinhas = "";
             this.priGrelhaDocs.LeaveRow += new PRISDK100.PriGrelha.LeaveRowHandler(this.priGrelhaDocs_LeaveRow);
-            this.priGrelhaDocs.Load += new System.EventHandler(this.priGrelhaDocs_Load);
             // 
             // numUpDownNumDoc
             // 
@@ -178,6 +177,7 @@ namespace PP_PPCS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.btnGravar);
             this.Controls.Add(this.numUpDownNumDoc);
             this.Controls.Add(this.f4TipoDoc);
@@ -187,7 +187,7 @@ namespace PP_PPCS
             this.Controls.Add(this.cBoxSerie);
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "FormPropDocVenda";
-            this.Size = new System.Drawing.Size(1576, 601);
+            this.Size = new System.Drawing.Size(1574, 599);
             this.Text = "FormPropDocVenda";
             this.Load += new System.EventHandler(this.FormPropDocVenda_Load);
             ((System.ComponentModel.ISupportInitialize)(this.priGrelhaDocs)).EndInit();
