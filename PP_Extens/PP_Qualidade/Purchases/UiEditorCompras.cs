@@ -29,7 +29,7 @@ namespace PP_Qualidade.Purchases
                 linha.PrecUnit = 0;
 
                 string nroCaixasStr = _Helpers.MostraInputForm("Caixas", "Nro. de caixas:", null);
-                linha.CamposUtil["CDU_Caixas"].Valor = nroCaixasStr != null ? Convert.ToInt32(nroCaixasStr) : 0;
+                linha.CamposUtil["CDU_Caixas"].Valor = string.IsNullOrWhiteSpace(nroCaixasStr) ? 0 : Convert.ToInt32(nroCaixasStr);
 
                 if (BSO.Base.Artigos.DaValorAtributo(Artigo, "CDU_VendaEmCaixa"))
                 {
@@ -69,9 +69,6 @@ namespace PP_Qualidade.Purchases
                     return;
                 }
                 linha.CamposUtil["CDU_KilosPorCaixa"].Valor = res;
-
-
-
                 #endregion
 
                 // Preencher CDU com Conformes
@@ -98,7 +95,7 @@ namespace PP_Qualidade.Purchases
             #region Pede Data Stock
             try
             {
-                string dataDefaultStr = DocumentoCompra.CamposUtil["CDU_DataStock"].Valor.ToString() ?? DateTime.Now.ToString();
+                string dataDefaultStr = DocumentoCompra.CamposUtil["CDU_DataStock"].Valor == null ? DateTime.Now.ToString() : DocumentoCompra.CamposUtil["CDU_DataStock"].Valor.ToString();
                 string dataStockStr = _Helpers.MostraInputForm("Data Stock", "Data a considerar para o stock:", dataDefaultStr);
                 if (string.IsNullOrEmpty(dataStockStr))
                 {
