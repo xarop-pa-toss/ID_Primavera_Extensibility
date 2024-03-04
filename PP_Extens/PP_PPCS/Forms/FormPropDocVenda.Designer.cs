@@ -34,6 +34,7 @@ namespace PP_PPCS
             this.f4TipoDoc = new PRISDK100.F4();
             this.priGrelhaDocs = new PRISDK100.PriGrelha();
             this.numUpDownNumDoc = new System.Windows.Forms.NumericUpDown();
+            this.btnGravar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.priGrelhaDocs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownNumDoc)).BeginInit();
             this.SuspendLayout();
@@ -41,7 +42,7 @@ namespace PP_PPCS
             // cBoxSerie
             // 
             this.cBoxSerie.FormattingEnabled = true;
-            this.cBoxSerie.Location = new System.Drawing.Point(544, 20);
+            this.cBoxSerie.Location = new System.Drawing.Point(540, 20);
             this.cBoxSerie.Margin = new System.Windows.Forms.Padding(4);
             this.cBoxSerie.Name = "cBoxSerie";
             this.cBoxSerie.Size = new System.Drawing.Size(88, 24);
@@ -50,7 +51,7 @@ namespace PP_PPCS
             // 
             // btnActualizar
             // 
-            this.btnActualizar.Location = new System.Drawing.Point(747, 21);
+            this.btnActualizar.Location = new System.Drawing.Point(743, 21);
             this.btnActualizar.Margin = new System.Windows.Forms.Padding(4);
             this.btnActualizar.Name = "btnActualizar";
             this.btnActualizar.Size = new System.Drawing.Size(132, 46);
@@ -61,7 +62,7 @@ namespace PP_PPCS
             // 
             // btnSair
             // 
-            this.btnSair.Location = new System.Drawing.Point(853, 554);
+            this.btnSair.Location = new System.Drawing.Point(1421, 545);
             this.btnSair.Margin = new System.Windows.Forms.Padding(4);
             this.btnSair.Name = "btnSair";
             this.btnSair.Size = new System.Drawing.Size(132, 41);
@@ -86,7 +87,7 @@ namespace PP_PPCS
             this.f4TipoDoc.F4Modal = false;
             this.f4TipoDoc.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.f4TipoDoc.IDCategoria = "DocumentosVenda";
-            this.f4TipoDoc.Location = new System.Drawing.Point(21, 20);
+            this.f4TipoDoc.Location = new System.Drawing.Point(17, 20);
             this.f4TipoDoc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.f4TipoDoc.MaxLengthDescricao = 0;
             this.f4TipoDoc.MaxLengthF4 = 50;
@@ -122,7 +123,7 @@ namespace PP_PPCS
             this.priGrelhaDocs.Cols = null;
             this.priGrelhaDocs.ColsFrozen = -1;
             this.priGrelhaDocs.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.priGrelhaDocs.Location = new System.Drawing.Point(21, 93);
+            this.priGrelhaDocs.Location = new System.Drawing.Point(17, 93);
             this.priGrelhaDocs.Margin = new System.Windows.Forms.Padding(4);
             this.priGrelhaDocs.Name = "priGrelhaDocs";
             this.priGrelhaDocs.NumeroMaxRegistosSemPag = 150000;
@@ -135,9 +136,9 @@ namespace PP_PPCS
             this.priGrelhaDocs.PermiteAgrupamentosUser = true;
             this.priGrelhaDocs.PermiteConfigurarDetalhes = false;
             this.priGrelhaDocs.PermiteContextoVazia = false;
-            this.priGrelhaDocs.PermiteDataFill = false;
+            this.priGrelhaDocs.PermiteDataFill = true;
             this.priGrelhaDocs.PermiteDetalhes = true;
-            this.priGrelhaDocs.PermiteEdicao = false;
+            this.priGrelhaDocs.PermiteEdicao = true;
             this.priGrelhaDocs.PermiteFiltros = true;
             this.priGrelhaDocs.PermiteGrafico = true;
             this.priGrelhaDocs.PermiteGrandeTotal = false;
@@ -147,24 +148,35 @@ namespace PP_PPCS
             this.priGrelhaDocs.PermiteStatusBar = true;
             this.priGrelhaDocs.PermiteVistas = true;
             this.priGrelhaDocs.PosicionaColunaSeguinte = true;
-            this.priGrelhaDocs.Size = new System.Drawing.Size(964, 444);
+            this.priGrelhaDocs.Size = new System.Drawing.Size(1536, 444);
             this.priGrelhaDocs.TabIndex = 8;
             this.priGrelhaDocs.TituloGrelha = "";
             this.priGrelhaDocs.TituloMapa = "";
             this.priGrelhaDocs.TypeNameLinha = "";
             this.priGrelhaDocs.TypeNameLinhas = "";
+            this.priGrelhaDocs.LeaveRow += new PRISDK100.PriGrelha.LeaveRowHandler(this.priGrelhaDocs_LeaveRow);
             // 
             // numUpDownNumDoc
             // 
-            this.numUpDownNumDoc.Location = new System.Drawing.Point(639, 21);
+            this.numUpDownNumDoc.Location = new System.Drawing.Point(635, 21);
             this.numUpDownNumDoc.Name = "numUpDownNumDoc";
-            this.numUpDownNumDoc.Size = new System.Drawing.Size(84, 22);
+            this.numUpDownNumDoc.Size = new System.Drawing.Size(84, 20);
             this.numUpDownNumDoc.TabIndex = 15;
+            // 
+            // btnGravar
+            // 
+            this.btnGravar.Location = new System.Drawing.Point(882, 22);
+            this.btnGravar.Name = "btnGravar";
+            this.btnGravar.Size = new System.Drawing.Size(128, 45);
+            this.btnGravar.TabIndex = 16;
+            this.btnGravar.Text = "Gravar";
+            this.btnGravar.UseVisualStyleBackColor = true;
             // 
             // FormPropDocVenda
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnGravar);
             this.Controls.Add(this.numUpDownNumDoc);
             this.Controls.Add(this.f4TipoDoc);
             this.Controls.Add(this.priGrelhaDocs);
@@ -173,7 +185,7 @@ namespace PP_PPCS
             this.Controls.Add(this.cBoxSerie);
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "FormPropDocVenda";
-            this.Size = new System.Drawing.Size(1000, 605);
+            this.Size = new System.Drawing.Size(1576, 601);
             this.Text = "FormPropDocVenda";
             this.Load += new System.EventHandler(this.FormPropDocVenda_Load);
             ((System.ComponentModel.ISupportInitialize)(this.priGrelhaDocs)).EndInit();
@@ -189,5 +201,6 @@ namespace PP_PPCS
         private PRISDK100.F4 f4TipoDoc;
         private PRISDK100.PriGrelha priGrelhaDocs;
         private System.Windows.Forms.NumericUpDown numUpDownNumDoc;
+        private System.Windows.Forms.Button btnGravar;
     }
 }

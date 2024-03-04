@@ -12,6 +12,7 @@ using ErpBS100;
 using StdPlatBS100;
 using System.Data;
 using ConstantesPrimavera100;
+using UpgradeHelpers.Spread;
 
 namespace PP_PPCS
 {
@@ -85,10 +86,11 @@ namespace PP_PPCS
 
             if (numDocTbl.Rows.Count > 0)
             {
-                foreach (DataRow row in numDocTbl.Rows)
-                {
-                    numUpDownNumDoc.Value = (decimal)row[0];
-                }
+                decimal numDocMax = Convert.ToDecimal(numDocTbl.Rows[0][0]);
+
+                numUpDownNumDoc.Minimum = 1;
+                numUpDownNumDoc.Maximum = numDocMax;
+                numUpDownNumDoc.Value = numDocMax;
             }
         }
 
@@ -110,20 +112,22 @@ namespace PP_PPCS
             StdBELista idCabecDocList = _BSO.Consulta(
                 "SELECT Id " +
                 "FROM CabecDoc " +
-               $"WHERE Filial = N'000' AND TipoDoc = N'{tipoDoc}' AND Serie = N'{serie} AND NumDoc = {numDoc};");
+               $"WHERE Filial = N'000' AND TipoDoc = N'{tipoDoc}' AND Serie = N'{serie}' AND NumDoc = {numDoc};");
 
             idCabecDocList.Inicio();
-            string id = idCabecDocList.Valor(0);
-            id = id.Substring(1, id.Length - 2);
+            Guid id = idCabecDocList.Valor(0);
+
+            string idStr = id.ToString();
+            idStr = idStr.Substring(1, idStr.Length - 2);
 
 
             string priGrelhaQuery =
                 "SELECT NumLinha, Artigo, CDU_LoteAux, Descricao, CDU_NomeCientifico, CDU_Caixas, CDU_KilosPorCaixa, Quantidade, Unidade, CDU_Fornecedor, CDU_Origem, CDU_FormaObtencao, CDU_ZonaFAO, Id " +
                 "FROM LinhasDoc " +
-               $"WHERE IdCabecDoc = '{id} " +
+               $"WHERE IdCabecDoc = '{id}' " +
                $"ORDER BY NumLinha;";
 
-            StdBELista priGrelhaList = BSO.Consulta(priGrelhaQuery);
+            StdBELista priGrelhaList = _BSO.Consulta(priGrelhaQuery);
             if (!priGrelhaList.Vazia())
             {
                 priGrelhaDocs.DataBind(priGrelhaList);
@@ -137,27 +141,66 @@ namespace PP_PPCS
             priGrelhaDocs.PermiteAgrupamentosUser = true;
             priGrelhaDocs.PermiteScrollBars = true;
             priGrelhaDocs.PermiteVistas = false;
-            priGrelhaDocs.PermiteEdicao = false;
-            priGrelhaDocs.PermiteDataFill = false;
+            priGrelhaDocs.PermiteEdicao = true;
+            priGrelhaDocs.PermiteDataFill = true;
             priGrelhaDocs.PermiteFiltros = false;
             priGrelhaDocs.PermiteActiveBar = false;
             priGrelhaDocs.PermiteContextoVazia = false;
 
-            priGrelhaDocs.AddColKey(strColKey: "N.L.", intTipo: 5, strTitulo: "N.L.", dblLargura: 24, strCamposBaseDados: "NumLinha", blnMostraSempre: true, blnVisivel: true);
-            priGrelhaDocs.AddColKey(strColKey: "Artigo", intTipo: 5, strTitulo: "Artigo", dblLargura: 29.5, strCamposBaseDados: "Artigo", blnMostraSempre: true, blnVisivel: true);
-            priGrelhaDocs.AddColKey(strColKey: "Lote", intTipo: 5, strTitulo: "Lote", dblLargura: 42, strCamposBaseDados: "CDU_LoteAux", blnMostraSempre: true);
-            priGrelhaDocs.AddColKey(strColKey: "Descrição", intTipo: 5, strTitulo: "Descrição", dblLargura: 95, strCamposBaseDados: "Descricao", blnMostraSempre: true);
-            priGrelhaDocs.AddColKey(strColKey: "Nome Científico", intTipo: 5, strTitulo: "Nome Científico", dblLargura: 95, strCamposBaseDados: "CDU_NomeCientifico", blnMostraSempre: true);
-            priGrelhaDocs.AddColKey(strColKey: "Cx.", intTipo: 5, strTitulo: "Cx.", dblLargura: 30, strCamposBaseDados: "CDU_Caixas", blnDrillDown: true, blnMostraSempre: true);
-            priGrelhaDocs.AddColKey(strColKey: "Kg/Cx.", intTipo: 5, strTitulo: "Kg/Cx.", dblLargura: 30, strCamposBaseDados: "CDU_KilosPorCaixa", blnMostraSempre: true);
-            priGrelhaDocs.AddColKey(strColKey: "Quant.", intTipo: 5, strTitulo: "País", dblLargura: 36, strCamposBaseDados: "Quantidade", blnMostraSempre: true);
-            priGrelhaDocs.AddColKey(strColKey: "Un.", intTipo: 5, strTitulo: "Un.", dblLargura: 20, strCamposBaseDados: "Unidade", blnMostraSempre: true);
-            priGrelhaDocs.AddColKey(strColKey: "Forn.", intTipo: 5, strTitulo: "Forn.", dblLargura: 27, strCamposBaseDados: "CDU_Fornecedor", blnMostraSempre: true);
-            priGrelhaDocs.AddColKey(strColKey: "Origem", intTipo: 5, strTitulo: "Origem", dblLargura: 50, strCamposBaseDados: "CDU_Origem", blnMostraSempre: true);
-            priGrelhaDocs.AddColKey(strColKey: "Obtenção", intTipo: 5, strTitulo: "Obtenção", dblLargura: 57, strCamposBaseDados: "CDU_FormaObtencao", blnMostraSempre: true);
-            priGrelhaDocs.AddColKey(strColKey: "Zona FAO", intTipo: 5, strTitulo: "Zona FAO", dblLargura: 81, strCamposBaseDados: "CDU_ZonaFAO", blnMostraSempre: true);
-            priGrelhaDocs.AddColKey(strColKey: "Id", intTipo: 5, strTitulo: "ID", dblLargura: 24, strCamposBaseDados: "Id", blnMostraSempre: true);
+            priGrelhaDocs.AddColKey(strColKey: "N.L.", intTipo: FpCellType.CellTypeStaticText, strTitulo: "N.L.", dblLargura: 4, strCamposBaseDados: "NumLinha", blnMostraSempre: true, blnVisivel: true);
+            priGrelhaDocs.AddColKey(strColKey: "Artigo", intTipo: FpCellType.CellTypeEdit, strTitulo: "Artigo", dblLargura: 5, strCamposBaseDados: "Artigo", blnMostraSempre: true, blnVisivel: true);
+            priGrelhaDocs.AddColKey(strColKey: "Lote", intTipo: FpCellType.CellTypeEdit, strTitulo: "Lote", dblLargura: 5, strCamposBaseDados: "CDU_LoteAux", blnMostraSempre: true);
+            priGrelhaDocs.AddColKey(strColKey: "Descrição", intTipo: FpCellType.CellTypeEdit, strTitulo: "Descrição", dblLargura: 25, strCamposBaseDados: "Descricao", blnMostraSempre: true);
+            priGrelhaDocs.AddColKey(strColKey: "Nome Científico", intTipo: FpCellType.CellTypeEdit, strTitulo: "Nome Científico", dblLargura: 15, strCamposBaseDados: "CDU_NomeCientifico", blnMostraSempre: true);
+            priGrelhaDocs.AddColKey(strColKey: "Cx.", intTipo: FpCellType.CellTypeEdit, strTitulo: "Cx.", dblLargura: 5, strCamposBaseDados: "CDU_Caixas", blnDrillDown: true, blnMostraSempre: true);
+            priGrelhaDocs.AddColKey(strColKey: "Kg/Cx.", intTipo: FpCellType.CellTypeEdit, strTitulo: "Kg/Cx.", dblLargura: 5, strCamposBaseDados: "CDU_KilosPorCaixa", blnMostraSempre: true);
+            priGrelhaDocs.AddColKey(strColKey: "Quant.", intTipo: FpCellType.CellTypeEdit, strTitulo: "País", dblLargura: 6, strCamposBaseDados: "Quantidade", blnMostraSempre: true);
+            priGrelhaDocs.AddColKey(strColKey: "Un.", intTipo: FpCellType.CellTypeEdit, strTitulo: "Un.", dblLargura: 4, strCamposBaseDados: "Unidade", blnMostraSempre: true);
+            priGrelhaDocs.AddColKey(strColKey: "Forn.", intTipo: FpCellType.CellTypeEdit, strTitulo: "Forn.", dblLargura: 5, strCamposBaseDados: "CDU_Fornecedor", blnMostraSempre: true);
+            priGrelhaDocs.AddColKey(strColKey: "Origem", intTipo: FpCellType.CellTypeEdit, strTitulo: "Origem", dblLargura: 9, strCamposBaseDados: "CDU_Origem", blnMostraSempre: true);
+            priGrelhaDocs.AddColKey(strColKey: "Obtenção", intTipo: FpCellType.CellTypeEdit, strTitulo: "Obtenção", dblLargura: 15, strCamposBaseDados: "CDU_FormaObtencao", blnMostraSempre: true);
+            priGrelhaDocs.AddColKey(strColKey: "Zona FAO", intTipo: FpCellType.CellTypeEdit, strTitulo: "Zona FAO", dblLargura: 15, strCamposBaseDados: "CDU_ZonaFAO", blnMostraSempre: true);
+            priGrelhaDocs.AddColKey(strColKey: "Id", intTipo: FpCellType.CellTypeStaticText, strTitulo: "ID", dblLargura: 20, strCamposBaseDados: "Id", blnMostraSempre: true);
+        }
 
+        private void priGrelhaDocs_LeaveRow(object Sender, PriGrelha.LeaveRowEventArgs e)
+        {
+            string NumLinha, Artigo, CDU_LoteAux, Descricao, CDU_NomeCientifico, CDU_Caixas, CDU_KilosPorCaixa, Quantidade, Unidade, CDU_Fornecedor, CDU_Origem, CDU_FormaObtencao, CDU_ZonaFAO, Id;
+
+            NumLinha = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "N.L");
+            Artigo = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Artigo");
+            CDU_LoteAux = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Lote");
+            Descricao = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Descrição");
+            CDU_NomeCientifico = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Nome Científico");
+            CDU_Caixas = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Cx.");
+            CDU_KilosPorCaixa = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Kg/Cx.");
+            Quantidade = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Quant.");
+            Unidade = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Un.");
+            CDU_Fornecedor = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Forn.");
+            CDU_Origem = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Origem");
+            CDU_FormaObtencao = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Obtenção");
+            CDU_ZonaFAO = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Zona FAO");
+            Id = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Id");
+
+            using (StdBEExecSql sql = new StdBEExecSql())
+            {
+                sql.Tabela = "LinhasDoc";
+                sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
+                sql.AddCampo("NumLinha",  NumLinha); 
+                sql.AddCampo("Artigo", Artigo); 
+                sql.AddCampo("CDU_LoteAux", CDU_LoteAux); 
+                sql.AddCampo("Descricao", Descricao); 
+                sql.AddCampo("CDU_NomeCientifico", CDU_NomeCientifico); 
+                sql.AddCampo("CDU_Caixas", CDU_Caixas); 
+                sql.AddCampo("CDU_KilosPorCaixa", CDU_KilosPorCaixa); 
+                sql.AddCampo("Quantidade", Quantidade); 
+                sql.AddCampo("Unidade", Unidade); 
+                sql.AddCampo("CDU_Fornecedor", CDU_Fornecedor); 
+                sql.AddCampo("CDU_Origem", CDU_Origem); 
+                sql.AddCampo("CDU_FormaObtencao", CDU_FormaObtencao); 
+                sql.AddCampo("CDU_ZonaFAO", CDU_ZonaFAO);
+                sql.AddCampo("Id", Id, true);
+            }
         }
     }
 }
