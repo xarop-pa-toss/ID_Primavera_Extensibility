@@ -132,21 +132,21 @@ namespace PP_PPCS
             this.priGrelhaDocs.OrientacaoMapa = PRISDK100.clsSDKTypes.OrientacaoImpressao.oiDefault;
             this.priGrelhaDocs.ParentFormModal = false;
             this.priGrelhaDocs.PermiteActiveBar = false;
-            this.priGrelhaDocs.PermiteActualizar = true;
+            this.priGrelhaDocs.PermiteActualizar = false;
             this.priGrelhaDocs.PermiteAgrupamentosUser = true;
             this.priGrelhaDocs.PermiteConfigurarDetalhes = false;
             this.priGrelhaDocs.PermiteContextoVazia = false;
-            this.priGrelhaDocs.PermiteDataFill = true;
+            this.priGrelhaDocs.PermiteDataFill = false;
             this.priGrelhaDocs.PermiteDetalhes = true;
-            this.priGrelhaDocs.PermiteEdicao = true;
-            this.priGrelhaDocs.PermiteFiltros = true;
-            this.priGrelhaDocs.PermiteGrafico = true;
+            this.priGrelhaDocs.PermiteEdicao = false;
+            this.priGrelhaDocs.PermiteFiltros = false;
+            this.priGrelhaDocs.PermiteGrafico = false;
             this.priGrelhaDocs.PermiteGrandeTotal = false;
             this.priGrelhaDocs.PermiteOrdenacao = true;
             this.priGrelhaDocs.PermitePaginacao = false;
             this.priGrelhaDocs.PermiteScrollBars = true;
-            this.priGrelhaDocs.PermiteStatusBar = true;
-            this.priGrelhaDocs.PermiteVistas = true;
+            this.priGrelhaDocs.PermiteStatusBar = false;
+            this.priGrelhaDocs.PermiteVistas = false;
             this.priGrelhaDocs.PosicionaColunaSeguinte = true;
             this.priGrelhaDocs.Size = new System.Drawing.Size(1536, 444);
             this.priGrelhaDocs.TabIndex = 8;
@@ -155,6 +155,7 @@ namespace PP_PPCS
             this.priGrelhaDocs.TypeNameLinha = "";
             this.priGrelhaDocs.TypeNameLinhas = "";
             this.priGrelhaDocs.LeaveRow += new PRISDK100.PriGrelha.LeaveRowHandler(this.priGrelhaDocs_LeaveRow);
+            this.priGrelhaDocs.Load += new System.EventHandler(this.priGrelhaDocs_Load);
             // 
             // numUpDownNumDoc
             // 
@@ -171,6 +172,7 @@ namespace PP_PPCS
             this.btnGravar.TabIndex = 16;
             this.btnGravar.Text = "Gravar";
             this.btnGravar.UseVisualStyleBackColor = true;
+            this.btnGravar.Click += new System.EventHandler(this.btnGravar_Click);
             // 
             // FormPropDocVenda
             // 

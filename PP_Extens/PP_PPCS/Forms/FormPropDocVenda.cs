@@ -137,15 +137,6 @@ namespace PP_PPCS
         private void InicializaPrigrelha()
         {
             priGrelhaDocs.TituloGrelha = "DocumentosVenda";
-            priGrelhaDocs.PermiteActualizar = true;
-            priGrelhaDocs.PermiteAgrupamentosUser = true;
-            priGrelhaDocs.PermiteScrollBars = true;
-            priGrelhaDocs.PermiteVistas = false;
-            priGrelhaDocs.PermiteEdicao = true;
-            priGrelhaDocs.PermiteDataFill = true;
-            priGrelhaDocs.PermiteFiltros = false;
-            priGrelhaDocs.PermiteActiveBar = false;
-            priGrelhaDocs.PermiteContextoVazia = false;
 
             priGrelhaDocs.AddColKey(strColKey: "N.L.", intTipo: FpCellType.CellTypeStaticText, strTitulo: "N.L.", dblLargura: 4, strCamposBaseDados: "NumLinha", blnMostraSempre: true, blnVisivel: true);
             priGrelhaDocs.AddColKey(strColKey: "Artigo", intTipo: FpCellType.CellTypeEdit, strTitulo: "Artigo", dblLargura: 5, strCamposBaseDados: "Artigo", blnMostraSempre: true, blnVisivel: true);
@@ -165,42 +156,66 @@ namespace PP_PPCS
 
         private void priGrelhaDocs_LeaveRow(object Sender, PriGrelha.LeaveRowEventArgs e)
         {
+            System.Windows.Forms.MessageBox.Show("Test");
+        }
+
+        private void btnGravar_Click(object sender, EventArgs e)
+        {
             string NumLinha, Artigo, CDU_LoteAux, Descricao, CDU_NomeCientifico, CDU_Caixas, CDU_KilosPorCaixa, Quantidade, Unidade, CDU_Fornecedor, CDU_Origem, CDU_FormaObtencao, CDU_ZonaFAO, Id;
 
-            NumLinha = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "N.L");
-            Artigo = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Artigo");
-            CDU_LoteAux = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Lote");
-            Descricao = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Descrição");
-            CDU_NomeCientifico = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Nome Científico");
-            CDU_Caixas = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Cx.");
-            CDU_KilosPorCaixa = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Kg/Cx.");
-            Quantidade = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Quant.");
-            Unidade = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Un.");
-            CDU_Fornecedor = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Forn.");
-            CDU_Origem = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Origem");
-            CDU_FormaObtencao = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Obtenção");
-            CDU_ZonaFAO = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Zona FAO");
-            Id = priGrelhaDocs.GetGRID_GetValorCelula(e.Row, "Id");
-
-            using (StdBEExecSql sql = new StdBEExecSql())
+            for (int i = 1; i < priGrelhaDocs.Grelha.DataRowCnt; i++)
             {
-                sql.Tabela = "LinhasDoc";
-                sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-                sql.AddCampo("NumLinha",  NumLinha); 
-                sql.AddCampo("Artigo", Artigo); 
-                sql.AddCampo("CDU_LoteAux", CDU_LoteAux); 
-                sql.AddCampo("Descricao", Descricao); 
-                sql.AddCampo("CDU_NomeCientifico", CDU_NomeCientifico); 
-                sql.AddCampo("CDU_Caixas", CDU_Caixas); 
-                sql.AddCampo("CDU_KilosPorCaixa", CDU_KilosPorCaixa); 
-                sql.AddCampo("Quantidade", Quantidade); 
-                sql.AddCampo("Unidade", Unidade); 
-                sql.AddCampo("CDU_Fornecedor", CDU_Fornecedor); 
-                sql.AddCampo("CDU_Origem", CDU_Origem); 
-                sql.AddCampo("CDU_FormaObtencao", CDU_FormaObtencao); 
-                sql.AddCampo("CDU_ZonaFAO", CDU_ZonaFAO);
-                sql.AddCampo("Id", Id, true);
+                NumLinha = priGrelhaDocs.GetGRID_GetValorCelula(i, "N.L");
+                Artigo = priGrelhaDocs.GetGRID_GetValorCelula(i, "Artigo");
+                CDU_LoteAux = priGrelhaDocs.GetGRID_GetValorCelula(i, "Lote");
+                Descricao = priGrelhaDocs.GetGRID_GetValorCelula(i, "Descrição");
+                CDU_NomeCientifico = priGrelhaDocs.GetGRID_GetValorCelula(i, "Nome Científico");
+                CDU_Caixas = priGrelhaDocs.GetGRID_GetValorCelula(i, "Cx.");
+                CDU_KilosPorCaixa = priGrelhaDocs.GetGRID_GetValorCelula(i, "Kg/Cx.");
+                Quantidade = priGrelhaDocs.GetGRID_GetValorCelula(i, "Quant.");
+                Unidade = priGrelhaDocs.GetGRID_GetValorCelula(i, "Un.");
+                CDU_Fornecedor = priGrelhaDocs.GetGRID_GetValorCelula(i, "Forn.");
+                CDU_Origem = priGrelhaDocs.GetGRID_GetValorCelula(i, "Origem");
+                CDU_FormaObtencao = priGrelhaDocs.GetGRID_GetValorCelula(i, "Obtenção");
+                CDU_ZonaFAO = priGrelhaDocs.GetGRID_GetValorCelula(i, "Zona FAO");
+                Id = priGrelhaDocs.GetGRID_GetValorCelula(i, "Id");
+
+                using (StdBEExecSql sql = new StdBEExecSql())
+                {
+                    try
+                    {
+                        sql.Tabela = "LinhasDoc";
+                        sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
+                        sql.AddCampo("NumLinha", NumLinha);
+                        sql.AddCampo("Artigo", Artigo);
+                        sql.AddCampo("CDU_LoteAux", CDU_LoteAux);
+                        sql.AddCampo("Descricao", Descricao);
+                        sql.AddCampo("CDU_NomeCientifico", CDU_NomeCientifico);
+                        sql.AddCampo("CDU_Caixas", CDU_Caixas);
+                        sql.AddCampo("CDU_KilosPorCaixa", CDU_KilosPorCaixa);
+                        sql.AddCampo("Quantidade", Quantidade);
+                        sql.AddCampo("Unidade", Unidade);
+                        sql.AddCampo("CDU_Fornecedor", CDU_Fornecedor);
+                        sql.AddCampo("CDU_Origem", CDU_Origem);
+                        sql.AddCampo("CDU_FormaObtencao", CDU_FormaObtencao);
+                        sql.AddCampo("CDU_ZonaFAO", CDU_ZonaFAO);
+                        sql.AddCampo("Id", Id, true);
+
+                        _PSO.ExecSql.Executa(sql);
+                    }
+                    catch (Exception ex)
+                    {
+                        _PSO.MensagensDialogos.MostraErro($"Não foi possivel gravar a linha {NumLinha} - {Artigo} com o ID {Id}");
+                    }
+                }
+
+
             }
+        }
+
+        private void priGrelhaDocs_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
