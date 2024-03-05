@@ -26,8 +26,8 @@ namespace PP_Extens.Sales
 
         public CaixasJM() 
         {
-            _BSO = _Helpers.BSO; 
-            _PSO = _Helpers.PSO;
+            _BSO = PriMotores.Motor;
+            _PSO = PriMotores.Plataforma;
 
             Reset();
         }
