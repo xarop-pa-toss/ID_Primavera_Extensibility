@@ -18,6 +18,7 @@ namespace PP_Extens.Sales
     public class UiEditorVendas : EditorVendas
     {
         private HelperFunctions _Helpers = new HelperFunctions();
+        private CaixasJM _CaixasJM = new CaixasJM();
 
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
@@ -312,9 +313,9 @@ namespace PP_Extens.Sales
         {
             base.ValidaLinha(NumLinha, e);
             PP_Geral Geral = new PP_Geral();
-            VndBELinhaDocumentoVenda linha = DocumentoVenda.Linhas.GetEdita(NumLinha);
 
-            double precUnit = linha.PrecUnit;
+            #region CDU_Pescado
+            VndBELinhaDocumentoVenda linha = DocumentoVenda.Linhas.GetEdita(NumLinha);
 
             if (Convert.ToBoolean(linha.CamposUtil["CDU_Pescado"].Valor))
             {
@@ -328,8 +329,16 @@ namespace PP_Extens.Sales
                     if (Geral.nzn(ref caixas) <= 0) { linha.CamposUtil["CDU_Caixas"].Valor = 0; }
                 }
             }
+            #endregion
 
-            // Adicionado para o MSS - 12/04/2021
+            #region Caixas JM (ver também CaixasJM.cs)
+            if (DocumentoVenda.Entidade.StartsWith("306"))
+            {
+                _CaixasJM.PreencherLinhasDoc(DocumentoVenda);
+            }
+            #endregion
+
+            #region Adicionado para o MSS - 12/04/2021
             if (DocumentoVenda.Tipodoc == "ET")
             {
                 string fornecedor = linha.CamposUtil["CDU_LOTEAUX"].Valor.ToString();
@@ -370,7 +379,7 @@ namespace PP_Extens.Sales
                 PSO.ExecSql.Executa(sql3);
 
                 sql = null; sql2 = null; sql3 = null;
-                // FIM do UPDATE
+                #endregion
             }
         }
 

@@ -200,6 +200,11 @@ namespace PP_Qualidade.Sales
             }
         }
 
+        public override void ValidaLinha(int NumLinha, ExtensibilityEventArgs e)
+        {
+            base.ValidaLinha(NumLinha, e);
+        }
+
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.AntesDeGravar(ref Cancel, e);
