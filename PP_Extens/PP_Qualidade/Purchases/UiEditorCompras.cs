@@ -95,7 +95,7 @@ namespace PP_Qualidade.Purchases
             #region Pede Data Stock
             try
             {
-                string dataDefaultStr = DocumentoCompra.CamposUtil["CDU_DataStock"].Valor == null ? DateTime.Now.ToString() : DocumentoCompra.CamposUtil["CDU_DataStock"].Valor.ToString();
+                string dataDefaultStr = DocumentoCompra.CamposUtil["CDU_DataStock"].Valor == null ? DateTime.Now.ToString("dd-MM-yyyy") : Convert.ToDateTime(DocumentoCompra.CamposUtil["CDU_DataStock"].Valor).ToString("dd-MM-yyyy");
                 string dataStockStr = _Helpers.MostraInputForm("Data Stock", "Data a considerar para o stock:", dataDefaultStr);
                 if (string.IsNullOrEmpty(dataStockStr))
                 {

@@ -263,7 +263,7 @@ namespace HelpersPrimavera10
         /// </summary>
         public DataTable GetDataTableDeSQL(string querySQL)
         {
-            DataTable TDULista = _BSO.Consulta(querySQL).DataSet.GetTable();
+            DataTable TDULista = _BSO.ConsultaDataTable(querySQL);
             return TDULista;
         }
 
