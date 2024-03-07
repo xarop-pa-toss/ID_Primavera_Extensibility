@@ -373,7 +373,7 @@ namespace PP_Extens.Sales
                 StdBEExecSql sql3 = new StdBEExecSql();
                 sql3.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
                 sql3.Tabela = "Artigo";                              //UPDATE Artigo
-                sql3.AddCampo("CDU_FormaObtencao", obt); // SET DataUltimaUtilizacao = data corrente
+                sql3.AddCampo("CDU_FormaObtencao", obt);            // SET DataUltimaUtilizacao = data corrente
                 sql3.AddCampo("Artigo", linha.Artigo, true);         // WHERE Artigo = linha.Artigo
                 sql3.AddQuery();
                 PSO.ExecSql.Executa(sql3);
