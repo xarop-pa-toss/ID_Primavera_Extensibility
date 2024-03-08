@@ -27,7 +27,11 @@ namespace DCT_Extens
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.AntesDeGravar(ref Cancel, e);
-            
+
+            #region Validação Segmento-Terceiro
+            if (string.IsNullOrEmpty(Cliente.SegmentoTerceiro)) { Cliente.SegmentoTerceiro = "001"; }
+            #endregion
+
             #region Verificação de permissões de utilizador para anulação de clientes
             if (_estadoInicialAnulado != this.Cliente.Inactivo)
             {

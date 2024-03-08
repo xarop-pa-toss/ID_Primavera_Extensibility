@@ -286,10 +286,5 @@ namespace DCT_Extens.Sales
             }
             #endregion
         }
-
-        private void FormCargaDescarga_FormClosed(object sender, FormClosedEventArgs e)
-        {
-
-        }
     }
 }
