@@ -275,7 +275,6 @@ namespace DCT_Extens.Sales
             #endregion
         }
 
-        // AntesDeImprimir está com "mapatest". Alterar pro real.
         public override void AntesDeImprimir(ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.AntesDeImprimir(ref Cancel, e);
@@ -283,7 +282,7 @@ namespace DCT_Extens.Sales
             #region Alteração de mapa para cliente 21366
             if (new List<string> { "GRL", "FAL" }.Contains(DocumentoVenda.Tipodoc) && DocumentoVenda.Entidade.Equals("21366"))
             {
-                DocumentoVenda.MapaImpressao = "mapatest";
+                DocumentoVenda.MapaImpressao = "GCPGR";
             }
             #endregion
         }

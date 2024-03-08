@@ -67,55 +67,70 @@ namespace PP_Extens.Sales
 
         internal void PreencherLinhasDoc(VndBEDocumentoVenda docVenda)
         {
-            PreencherEstruturasDados(docVenda.Linhas);
-
-            #region Apagar linhas relevantes
             // Interessam aqui dois casos:
             // Actualização de Valor - ValidaLinha activou numa linha já existente (no caso de actualização de um valor), a linha "em branco" irá existir entre os artigos e as caixas.
             // Linha Nova - ValidaLinha activou na linha entre os artigos e as caixas ou por baixo das caixas.
             // Tem de se discernir entre eles para saber se se cria uma linha em branco ou não.
+            // De qualquer forma, todas as linhas de caixa e as abaixo são apagadas e reinseridas com recalculos de quantidade
 
-            for (int i = docVenda.Linhas.NumItens; i >= 1; i--)
+            // Começamos por recalcular todas as quantidades de CaixasJM (corre todas as linhas do documento até aos artigo caixa).
+            // Guardamos em memória também quaisquer linhas que existam abaixo das de artigo caixa.
+            GuardarLinhas(docVenda.Linhas);
+
+            #region Apagar linha em branco + linhas caixas + linhas abaixo
+            bool paraApagar = false;
+            bool linhaEmBranco = false;
+            List<int> linhasParaRemover = new List<int>();
+
+            for (int i = 1; i <= docVenda.Linhas.NumItens; i++)
             {
                 VndBELinhaDocumentoVenda linha = docVenda.Linhas.GetEdita(i);
-                if (linha.Artigo.StartsWith("147"))
-                {
-                    for (int k = docVenda.Linhas.NumItens - i; k <= docVenda.Linhas.NumItens; k++) 
-                    {
-                        docVenda.Linhas.Remove(k);
-                    }
-                    break;
+                if (linha.Artigo.StartsWith("147")) {
+                    paraApagar = true; 
+                }
+                if (linha.Descricao == " ") { 
+                    paraApagar = true;
+                    linhaEmBranco = true;
+                }
+
+                if (paraApagar) { 
+                    linhasParaRemover.Add(i); 
                 }
             }
+
+            linhasParaRemover.Reverse();
+            foreach (int linhaIndice in linhasParaRemover) { docVenda.Linhas.Remove(linhaIndice); }
             #endregion
 
-            #region Escrever linha em branco, linhas de Caixas, e linhas abaixo das de Caixas
+            #region Escrever linha em branco + linhas de caixas + linhas abaixo
+            if (linhaEmBranco) {
+                _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docVenda, BasBE100.BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, 0, " ");
+            }
+
             foreach (DataRow linhaCaixa in _CaixasJMTabela.Rows)
             {
                 double quantidadeCaixa = (double)linhaCaixa["Quantidade"];
-
                 _BSO.Vendas.Documentos.AdicionaLinha(docVenda, linhaCaixa["ArtigoCaixa"].ToString(), ref quantidadeCaixa);
             }
 
-            foreach (VndBELinhaDocumentoVenda linhaAposCaixa in _linhasAbaixoDasCaixasList)
+            foreach (VndBELinhaDocumentoVenda linhaAbaixoCaixa in _linhasAbaixoDasCaixasList)
             {
-                docVenda.Linhas.Add(linhaAposCaixa);
+                docVenda.Linhas.Add(linhaAbaixoCaixa);
             }
             #endregion
-
-
         }
 
-        private void PreencherEstruturasDados(VndBELinhasDocumentoVenda linhasDoc)
+        private void GuardarLinhas(VndBELinhasDocumentoVenda linhasDoc)
         {
             Reset();
 
-            bool linhasAposCaixas = false;
+            bool linhasAbaixoCaixas = false;
 
             foreach (VndBELinhaDocumentoVenda linhaDoc in linhasDoc)
             {
                 string artigo = linhaDoc.Artigo;
                 string artigoCaixa = _BSO.Base.Artigos.DaValorAtributo(artigo, "CDU_CaixaJM");
+                double quantidadeCaixas = Convert.ToDouble(linhaDoc.CamposUtil["CDU_Caixas"].Valor);
 
                 // 1 - Skip linha se não for um artigo com CaixaJM ou se não for uma linha que exista abaixo de uma linha de caixa
                 if (!string.IsNullOrEmpty(artigoCaixa))
@@ -124,20 +139,20 @@ namespace PP_Extens.Sales
                     if (linha != null)
                     {
                         // Update linha existente na tabela
-                        linha["Quantidade"] = (double)linha["Quantidade"] + linhaDoc.Quantidade;
-                        linhasAposCaixas = true;
+                        linha["Quantidade"] = (double)linha["Quantidade"] + quantidadeCaixas;
+                        linhasAbaixoCaixas = true;
                     } else
                     {
                         // Adiciona linha
                         DataRow novaLinha = _CaixasJMTabela.NewRow();
                         novaLinha["ArtigoCaixa"] = artigoCaixa;
-                        novaLinha["Quantidade"] = linhaDoc.Quantidade;
+                        novaLinha["Quantidade"] = quantidadeCaixas;
                         _CaixasJMTabela.Rows.Add(novaLinha);
 
-                        linhasAposCaixas = true;
+                        linhasAbaixoCaixas = true;
                     }
                 }
-                else if (linhasAposCaixas)
+                else if (linhasAbaixoCaixas && !linhaDoc.Artigo.StartsWith("147"))
                 {
                     _linhasAbaixoDasCaixasList.Add(linhaDoc);
                     continue;

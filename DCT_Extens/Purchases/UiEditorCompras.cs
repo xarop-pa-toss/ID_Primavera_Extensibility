@@ -13,9 +13,9 @@ namespace DCT_Extens.Purchases
         private clsSDKContexto sdk;
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
-            sdk = new clsSDKContexto();
-            sdk.Inicializa(BSO, "ERP");
-            PSO.InicializaPlataforma(sdk);
+            //sdk = new clsSDKContexto();
+            //sdk.Inicializa(BSO, "ERP");
+            //PSO.InicializaPlataforma(sdk);
 
             base.AntesDeGravar(ref Cancel, e);
 
@@ -31,7 +31,11 @@ namespace DCT_Extens.Purchases
                 {
                     artigo = BSO.Base.Artigos.Edita(linha.Artigo);
 
-                    if (linha.TipoLinha.Equals(10) && (bool)artigo.CamposUtil["CDU_ArtBLOQC"].Valor) { Cancel = true; }
+                    if (linha.TipoLinha.Equals(10) && (bool)artigo.CamposUtil["CDU_ArtBLOQC"].Valor) 
+                    {
+                        PSO.MensagensDialogos.MostraErro($"O artigo {linha.Artigo} encontra-se bloqueado para Encomendas!");
+                        Cancel = true;
+                    }
                 }
             }
             #endregion

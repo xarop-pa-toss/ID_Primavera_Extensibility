@@ -334,7 +334,7 @@ namespace PP_Extens.Sales
             #region Caixas JM (ver também CaixasJM.cs)
             if (DocumentoVenda.Entidade.StartsWith("306"))
             {
-                _CaixasJM.PreencherLinhasDoc(DocumentoVenda);
+                    _CaixasJM.PreencherLinhasDoc(DocumentoVenda);
             }
             #endregion
 
