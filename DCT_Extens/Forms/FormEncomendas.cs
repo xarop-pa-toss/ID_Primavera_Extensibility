@@ -13,6 +13,7 @@ namespace DCT_Extens
         private ErpBS100.ErpBS _BSO;
         private StdBSInterfPub _PSO;
         private HelperFunctions _Helpers = new HelperFunctions();
+        private string tipoDocStr;
 
         public FormEncomendas()
         {
@@ -49,6 +50,7 @@ namespace DCT_Extens
             string query = null;
             if (radio_Vendas.Checked)
             {
+                tipoDocStr = "VENDA";
                 query = $"SELECT " +
                         $"   cds.fechado AS Fechado, " +
                         $"   cd.TipoDoc AS Documento, " +
@@ -74,6 +76,7 @@ namespace DCT_Extens
 
             } else if (radio_Compras.Checked)
             {
+                tipoDocStr = "COMPRA";
                 query = $"SELECT " +
                         $"   ccs.fechado AS Fechado, " +
                         $"   cc.TipoDoc AS Documento, " +
@@ -118,17 +121,22 @@ namespace DCT_Extens
 
             foreach (DataGridViewRow linha in dataGrid_Docs.Rows)
             {
+                string tabela = tipoDocStr == "VENDA" ? "CabecDocStatus" : "CabecComprasStatus";
+                string IdCabecTipo = tipoDocStr == "VENDA" ? "IdCabecDoc" : "IdCabecCompras";
+
                 try
                 {
                     if ((bool)linha.Cells[0].Value)
                     {
                         StdBEExecSql sql = new StdBEExecSql();
                         sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-                        sql.Tabela = "CabecDocStatus";
+                        sql.Tabela = tabela;
                         sql.AddCampo("Fechado", "1");
-                        sql.AddCampo("IdCabecDoc", "" + linha.Cells[7].Value + "", true);
+                        sql.AddCampo(IdCabecTipo, "" + linha.Cells[7].Value + "", true);
 
                         PSO.ExecSql.Executa(sql);
+
+                        PSO.MensagensDialogos.MostraMensagem(StdBSTipos.TipoMsg.PRI_SimplesOk, "Todos os documentos foram fechados com sucesso.");
                     }
                 }
                 catch (Exception ex)
@@ -136,14 +144,10 @@ namespace DCT_Extens
                     _Helpers.EscreverParaFicheiroTxt(ex.ToString(), "FormEncomendas_UpdateDB_Click");
                     PSO.MensagensDialogos.MostraErro("Não foi possivel fechar todos os documentos seleccionados.");
                     ActualizaDataGrid();
-                    break;
+                    return;
                 }
             }
-
-            // Se o catch não apanhar nada é porque fechou tudo ok
-            PSO.MensagensDialogos.MostraMensagem(StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimplesOk, "Todos os documentos foram fechados com sucesso.");
             ActualizaDataGrid();
-
         }
     }
 }
