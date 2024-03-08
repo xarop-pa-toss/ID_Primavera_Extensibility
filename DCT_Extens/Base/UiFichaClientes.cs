@@ -1,4 +1,5 @@
-﻿using HelpersPrimavera10;
+﻿using BasBE100;
+using HelpersPrimavera10;
 using Primavera.Extensibility.Base.Editors;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using System;
@@ -12,30 +13,37 @@ namespace DCT_Extens
     {
         private HelperFunctions _Helpers = new HelperFunctions();
         private string vendedorOriginal;
-
+        private bool _estadoInicialAnulado;
 
         public override void AntesDeEditar(string Cliente, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.AntesDeEditar(Cliente, ref Cancel, e);
             vendedorOriginal = this.Cliente.Vendedor;
+
+            // Corresponde à checkbox Anulado na ficha
+            _estadoInicialAnulado = BSO.Base.Clientes.Edita(Cliente).Inactivo;
         }
 
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.AntesDeGravar(ref Cancel, e);
+            
             #region Verificação de permissões de utilizador para anulação de clientes
-            DataTable TDU = _Helpers.GetDataTableDeSQL("SELECT CDU_Utilizador FROM TDU_PermissaoAnularClientes");
-
-            string userActual = BSO.Contexto.UtilizadorActual;
-            var autorizacao = from DataRow linha in TDU.Rows
-                              where (string)linha["CDU_Utilizador"] == userActual
-                              select (string)linha["CDU_Utilizador"];
-
-            // Se o utilizador actual não tiver permissão, a variavel 'autorizacao' é uma lista vazia.
-            if (!autorizacao.Any())
+            if (_estadoInicialAnulado != this.Cliente.Inactivo)
             {
-                PSO.MensagensDialogos.MostraAviso("Não tem permissão para alterar o estado Anulado de um cliente. \n Este registo não será gravado.", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
-                Cancel = true;
+                DataTable TDU = _Helpers.GetDataTableDeSQL("SELECT CDU_Utilizador FROM TDU_PermissaoAnularClientes");
+
+                string userActual = BSO.Contexto.UtilizadorActual;
+                var autorizacao = from DataRow linha in TDU.Rows
+                                  where (string)linha["CDU_Utilizador"] == userActual
+                                  select (string)linha["CDU_Utilizador"];
+
+                // Se o utilizador actual não tiver permissão, a variavel 'autorizacao' é uma lista vazia.
+                if (!autorizacao.Any())
+                {
+                    PSO.MensagensDialogos.MostraAviso("Não tem permissão para alterar o estado Anulado de um cliente. \n Este registo não será gravado.", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
+                    Cancel = true;
+                }
             }
             #endregion
         }
