@@ -141,22 +141,24 @@ namespace PP_Extens.Sales
                     {
                         // Update linha existente na tabela
                         linha["Quantidade"] = (double)linha["Quantidade"] + quantidadeCaixas;
-                        linhasAbaixoCaixas = true;
-                    } else
+                    } 
+                    else 
                     {
-                        // Adiciona linha
+                        // Adiciona linha se não existir
                         DataRow novaLinha = _CaixasJMTabela.NewRow();
                         novaLinha["ArtigoCaixa"] = artigoCaixa;
                         novaLinha["Quantidade"] = quantidadeCaixas;
                         _CaixasJMTabela.Rows.Add(novaLinha);
-
-                        linhasAbaixoCaixas = true;
                     }
                 }
-                else if (linhasAbaixoCaixas && !linhaDoc.Artigo.StartsWith("147"))
+                else if (new List<string> { "147F02", "147F03", "147CF2" }.Any(s => linhaDoc.Artigo.Contains(s)))
+                {
+                    linhasAbaixoCaixas = true;
+                }
+                else if (linhasAbaixoCaixas)
                 {
                     _linhasAbaixoDasCaixasList.Add(linhaDoc);
-                    continue;
+                    continue; 
                 }
             }
         }
