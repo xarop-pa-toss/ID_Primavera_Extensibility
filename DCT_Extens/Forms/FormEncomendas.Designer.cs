@@ -115,9 +115,9 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(424, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 17);
+            this.label1.Size = new System.Drawing.Size(98, 21);
             this.label1.TabIndex = 28;
-            this.label1.Text = "Documento";
+            this.label1.Text = "Tipo Doc.";
             // 
             // btn_Sair
             // 
@@ -143,7 +143,7 @@
             // dtPicker_DataFinal
             // 
             this.dtPicker_DataFinal.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtPicker_DataFinal.Location = new System.Drawing.Point(710, 34);
+            this.dtPicker_DataFinal.Location = new System.Drawing.Point(710, 36);
             this.dtPicker_DataFinal.Name = "dtPicker_DataFinal";
             this.dtPicker_DataFinal.Size = new System.Drawing.Size(100, 20);
             this.dtPicker_DataFinal.TabIndex = 23;
@@ -151,14 +151,14 @@
             // dtPicker_DataInicial
             // 
             this.dtPicker_DataInicial.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtPicker_DataInicial.Location = new System.Drawing.Point(568, 34);
+            this.dtPicker_DataInicial.Location = new System.Drawing.Point(568, 36);
             this.dtPicker_DataInicial.Name = "dtPicker_DataInicial";
             this.dtPicker_DataInicial.Size = new System.Drawing.Size(100, 20);
             this.dtPicker_DataInicial.TabIndex = 22;
             // 
             // txtBox_TipoDoc
             // 
-            this.txtBox_TipoDoc.Location = new System.Drawing.Point(427, 34);
+            this.txtBox_TipoDoc.Location = new System.Drawing.Point(427, 36);
             this.txtBox_TipoDoc.Name = "txtBox_TipoDoc";
             this.txtBox_TipoDoc.Size = new System.Drawing.Size(100, 20);
             this.txtBox_TipoDoc.TabIndex = 21;
@@ -210,7 +210,7 @@
             this.Controls.Add(this.dtPicker_DataFinal);
             this.Controls.Add(this.dtPicker_DataInicial);
             this.Controls.Add(this.txtBox_TipoDoc);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormEncomendas";
             this.Size = new System.Drawing.Size(994, 580);
             this.Text = "Fechar Encomendas";

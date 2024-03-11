@@ -135,8 +135,6 @@ namespace DCT_Extens
                         sql.AddCampo(IdCabecTipo, "" + linha.Cells[7].Value + "", true);
 
                         PSO.ExecSql.Executa(sql);
-
-                        PSO.MensagensDialogos.MostraMensagem(StdBSTipos.TipoMsg.PRI_SimplesOk, "Todos os documentos foram fechados com sucesso.");
                     }
                 }
                 catch (Exception ex)
@@ -147,6 +145,8 @@ namespace DCT_Extens
                     return;
                 }
             }
+
+            PSO.MensagensDialogos.MostraMensagem(StdBSTipos.TipoMsg.PRI_SimplesOk, "Todos os documentos foram fechados com sucesso.");
             ActualizaDataGrid();
         }
     }

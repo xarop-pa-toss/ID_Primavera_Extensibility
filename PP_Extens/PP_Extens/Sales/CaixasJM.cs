@@ -79,7 +79,7 @@ namespace PP_Extens.Sales
 
             #region Apagar linha em branco + linhas caixas + linhas abaixo
             bool paraApagar = false;
-            bool linhaEmBranco = false;
+            bool adicionarLinhaEmBranco = true;
             List<int> linhasParaRemover = new List<int>();
 
             for (int i = 1; i <= docVenda.Linhas.NumItens; i++)
@@ -88,9 +88,10 @@ namespace PP_Extens.Sales
                 if (linha.Artigo.StartsWith("147")) {
                     paraApagar = true; 
                 }
-                if (linha.Descricao == " ") { 
-                    paraApagar = true;
-                    linhaEmBranco = true;
+
+                if (linha.TipoLinha == "60" && string.IsNullOrWhiteSpace(linha.Descricao)) { 
+                    paraApagar = false;
+                    adicionarLinhaEmBranco = false;
                 }
 
                 if (paraApagar) { 
@@ -103,7 +104,7 @@ namespace PP_Extens.Sales
             #endregion
 
             #region Escrever linha em branco + linhas de caixas + linhas abaixo
-            if (linhaEmBranco) {
+            if (adicionarLinhaEmBranco) {
                 _BSO.Vendas.Documentos.AdicionaLinhaEspecial(docVenda, BasBE100.BasBETiposGcp.vdTipoLinhaEspecial.vdLinha_Comentario, 0, " ");
             }
 

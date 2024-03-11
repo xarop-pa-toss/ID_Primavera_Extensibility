@@ -31,7 +31,7 @@ namespace DCT_Extens.Purchases
                 {
                     artigo = BSO.Base.Artigos.Edita(linha.Artigo);
 
-                    if (linha.TipoLinha.Equals(10) && (bool)artigo.CamposUtil["CDU_ArtBLOQC"].Valor) 
+                    if (linha.TipoLinha.Equals("10") && (bool)artigo.CamposUtil["CDU_ArtBLOQC"].Valor) 
                     {
                         PSO.MensagensDialogos.MostraErro($"O artigo {linha.Artigo} encontra-se bloqueado para Encomendas!");
                         Cancel = true;
@@ -45,19 +45,19 @@ namespace DCT_Extens.Purchases
         {
             base.ArtigoIdentificado(Artigo, NumLinha, ref Cancel, e);
 
-            #region Bloqueio de encomendas por artigo
-            BasBEArtigo artigo = BSO.Base.Artigos.Edita(DocumentoCompra.Linhas.GetEdita(NumLinha).Artigo);
+            //#region Bloqueio de encomendas por artigo
+            //BasBEArtigo artigo = BSO.Base.Artigos.Edita(DocumentoCompra.Linhas.GetEdita(NumLinha).Artigo);
 
-            if ((bool)artigo.CamposUtil["CDU_ArtBLOQC"].Valor
-                && DocumentoCompra.Entidade != "44"
-                && new List<string> { "ECF", "ECL", "ECP" }.Contains(DocumentoCompra.Tipodoc))
-            {
+            //if ((bool)artigo.CamposUtil["CDU_ArtBLOQC"].Valor
+            //    && DocumentoCompra.Entidade != "44"
+            //    && new List<string> { "ECF", "ECL", "ECP" }.Contains(DocumentoCompra.Tipodoc))
+            //{
 
-                PSO.MensagensDialogos.MostraAviso("Este artigo está bloqueado para Encomendas!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
-                DocumentoCompra.Linhas.GetEdita(NumLinha).Artigo = null;
-                Cancel = true;
-            }
-            #endregion
+            //    PSO.MensagensDialogos.MostraAviso("Este artigo está bloqueado para Encomendas!", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
+            //    DocumentoCompra.Linhas.GetEdita(NumLinha).Artigo = null;
+            //    Cancel = true;
+            //}
+            //#endregion
         }
     }
 }
