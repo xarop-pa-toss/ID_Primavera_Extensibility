@@ -417,7 +417,7 @@ namespace PP_Extens.Sales
 
             using (StdBEExecSql sql = new StdBEExecSql())
             {
-                sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
+                sql.tpQuery = StdBETipos.EnumTpQuery.tpINSERT;
                 sql.Tabela = "PSI_TempCabecDoc";
                 sql.AddCampo("id", tempGUID);
                 sql.AddCampo("tipodoc", dv.Tipodoc);
@@ -448,57 +448,57 @@ namespace PP_Extens.Sales
                 sql.AddCampo("DescEntidade", dv.DescEntidade);
 
                 sql.AddQuery();
-                PSO.ExecSql.Executa(sql);
             }
 
-            using (StdBEExecSql sql = new StdBEExecSql())
+            for (int x = 1; x <= dv.Linhas.NumItens; x++)
             {
-                sql.tpQuery = StdBETipos.EnumTpQuery.tpUPDATE;
-                sql.Tabela = "PSI_TempLinhasDoc";
-                for (int x = 1; x <= dv.Linhas.NumItens; x++)
+                using (StdBEExecSql sqlLinha = new StdBEExecSql())
                 {
+                    sqlLinha.tpQuery = StdBETipos.EnumTpQuery.tpINSERT;
+                    sqlLinha.Tabela = "PSI_TempLinhasDoc";
+
                     VndBELinhaDocumentoVenda ldv = dv.Linhas.GetEdita(x);
 
-                    sql.AddCampo("IdCabecDoc", tempGUID);
-                    sql.AddCampo("NumLinha", x);
-                    sql.AddCampo("TipoLinha", ldv.TipoLinha);
-                    sql.AddCampo("artigo", ldv.Artigo);
-                    sql.AddCampo("Quantidade", ldv.Quantidade);
-                    sql.AddCampo("PrecUnit", ldv.PrecUnit);
-                    sql.AddCampo("TaxaIva", ldv.TaxaIva);
-                    sql.AddCampo("TaxaIvaEcotaxa", ldv.TaxaIvaEcotaxa);
-                    sql.AddCampo("CodIva", ldv.CodIva);
-                    sql.AddCampo("Desconto1", ldv.Desconto1);
-                    sql.AddCampo("Desconto2", ldv.Desconto2);
-                    sql.AddCampo("Desconto3", ldv.Desconto3);
-                    sql.AddCampo("PrecoLiquido", ldv.PrecoLiquido);
-                    sql.AddCampo("Descricao", ldv.Descricao);
-                    sql.AddCampo("Unidade", ldv.Unidade);
-                    sql.AddCampo("TotalIliquido", ldv.TotalIliquido);
-                    sql.AddCampo("TotalDA", ldv.TotalDA);
-                    sql.AddCampo("TotalDC", ldv.TotalDC);
-                    sql.AddCampo("TotalDF", ldv.TotalDF);
-                    sql.AddCampo("TotalIva", ldv.TotalIva);
-                    sql.AddCampo("TotalEcotaxa", ldv.TotalEcotaxa);
-                    sql.AddCampo("CDU_Pescado", ldv.CamposUtil["CDU_Pescado"].Valor);
-                    sql.AddCampo("CDU_NomeCientifico", ldv.CamposUtil["CDU_NomeCientifico"].Valor);
-                    sql.AddCampo("CDU_Origem", ldv.CamposUtil["CDU_Origem"].Valor);
-                    sql.AddCampo("CDU_FormaObtencao", ldv.CamposUtil["CDU_FormaObtencao"].Valor);
-                    sql.AddCampo("CDU_ZonaFAO", ldv.CamposUtil["CDU_ZonaFAO"].Valor);
-                    sql.AddCampo("CDU_Caixas", ldv.CamposUtil["CDU_Caixas"].Valor);
-                    sql.AddCampo("CDU_VendaEmCaixa", ldv.CamposUtil["CDU_VendaEmCaixa"].Valor);
-                    sql.AddCampo("CDU_KilosPorCaixa", ldv.CamposUtil["CDU_KilosPorCaixa"].Valor);
-                    sql.AddCampo("CDU_LoteAux", ldv.CamposUtil["CDU_LoteAux"].Valor);
+                    sqlLinha.AddCampo("IdCabecDoc", tempGUID);
+                    sqlLinha.AddCampo("NumLinha", x);
+                    sqlLinha.AddCampo("TipoLinha", ldv.TipoLinha);
+                    sqlLinha.AddCampo("artigo", ldv.Artigo);
+                    sqlLinha.AddCampo("Quantidade", ldv.Quantidade);
+                    sqlLinha.AddCampo("PrecUnit", ldv.PrecUnit);
+                    sqlLinha.AddCampo("TaxaIva", ldv.TaxaIva);
+                    sqlLinha.AddCampo("TaxaIvaEcotaxa", ldv.TaxaIvaEcotaxa);
+                    sqlLinha.AddCampo("CodIva", ldv.CodIva);
+                    sqlLinha.AddCampo("Desconto1", ldv.Desconto1);
+                    sqlLinha.AddCampo("Desconto2", ldv.Desconto2);
+                    sqlLinha.AddCampo("Desconto3", ldv.Desconto3);
+                    sqlLinha.AddCampo("PrecoLiquido", ldv.PrecoLiquido);
+                    sqlLinha.AddCampo("Descricao", ldv.Descricao);
+                    sqlLinha.AddCampo("Unidade", ldv.Unidade);
+                    sqlLinha.AddCampo("TotalIliquido", ldv.TotalIliquido);
+                    sqlLinha.AddCampo("TotalDA", ldv.TotalDA);
+                    sqlLinha.AddCampo("TotalDC", ldv.TotalDC);
+                    sqlLinha.AddCampo("TotalDF", ldv.TotalDF);
+                    sqlLinha.AddCampo("TotalIva", ldv.TotalIva);
+                    sqlLinha.AddCampo("TotalEcotaxa", ldv.TotalEcotaxa);
+                    sqlLinha.AddCampo("CDU_Pescado", ldv.CamposUtil["CDU_Pescado"].Valor);
+                    sqlLinha.AddCampo("CDU_NomeCientifico", ldv.CamposUtil["CDU_NomeCientifico"].Valor);
+                    sqlLinha.AddCampo("CDU_Origem", ldv.CamposUtil["CDU_Origem"].Valor);
+                    sqlLinha.AddCampo("CDU_FormaObtencao", ldv.CamposUtil["CDU_FormaObtencao"].Valor);
+                    sqlLinha.AddCampo("CDU_ZonaFAO", ldv.CamposUtil["CDU_ZonaFAO"].Valor);
+                    sqlLinha.AddCampo("CDU_Caixas", ldv.CamposUtil["CDU_Caixas"].Valor);
+                    sqlLinha.AddCampo("CDU_VendaEmCaixa", ldv.CamposUtil["CDU_VendaEmCaixa"].Valor);
+                    sqlLinha.AddCampo("CDU_KilosPorCaixa", ldv.CamposUtil["CDU_KilosPorCaixa"].Valor);
+                    sqlLinha.AddCampo("CDU_LoteAux", ldv.CamposUtil["CDU_LoteAux"].Valor);
 
-                    sql.AddQuery();
-                    PSO.ExecSql.Executa(sql);
+                    sqlLinha.AddQuery();
+                    PSO.ExecSql.Executa(sqlLinha);
                 }
             }
 
             // Inicializar recebe uma string mas só usa as primeiras 3 letras. Corresponde ao nome da pasta dos mapas em Mapas/LP/...
             PSO.Mapas.Inicializar("ERP");
-            PSO.Mapas.SetParametro("ID", tempGUID);
-            PSO.Mapas.ImprimeListagem("PP_MR_02", eCultura: StdBETipos.EnumGlobalCultures.CULT_PT, blnImpressaoCheque: false);
+            PSO.Mapas.SetParametro("Id", tempGUID);
+            PSO.Mapas.ImprimeListagem("PP_MR_02", "Documento Não Emitido", eCultura: StdBETipos.EnumGlobalCultures.CULT_PT, bMapaSistema: true, blnImpressaoCheque: false);
 
             //PP_MR_02
             using (StdBEExecSql sqlDelete = new StdBEExecSql())
@@ -523,5 +523,3 @@ namespace PP_Extens.Sales
         }
     }
 }
-
-
