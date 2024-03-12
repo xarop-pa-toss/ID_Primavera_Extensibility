@@ -498,9 +498,9 @@ namespace PP_Extens.Sales
             // Inicializar recebe uma string mas só usa as primeiras 3 letras. Corresponde ao nome da pasta dos mapas em Mapas/LP/...
             PSO.Mapas.Inicializar("ERP");
             PSO.Mapas.SetParametro("Id", tempGUID);
-            PSO.Mapas.ImprimeListagem("PP_MR_02", "Documento Não Emitido", eCultura: StdBETipos.EnumGlobalCultures.CULT_PT, bMapaSistema: true, blnImpressaoCheque: false);
-
+            PSO.Mapas.ImprimeListagem("PP_MR_02", bMapaSistema: false, blnImpressaoCheque: false);
             //PP_MR_02
+
             using (StdBEExecSql sqlDelete = new StdBEExecSql())
             {
                 sqlDelete.tpQuery = StdBETipos.EnumTpQuery.tpDELETE;
