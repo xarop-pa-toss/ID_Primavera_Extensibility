@@ -421,7 +421,10 @@ namespace PP_Extens.Sales
                 sql.Tabela = "PSI_TempCabecDoc";
                 sql.AddCampo("id", tempGUID);
                 sql.AddCampo("tipodoc", dv.Tipodoc);
+                sql.AddCampo("serie", dv.Serie);
+                sql.AddCampo("numdoc", dv.NumDoc);
                 sql.AddCampo("data", dv.DataDoc);
+                sql.AddCampo("filial", dv.Filial);
                 sql.AddCampo("entidade", dv.Entidade);
                 sql.AddCampo("moeda", dv.Moeda);
                 sql.AddCampo("requisicao", dv.Requisicao);
@@ -448,6 +451,7 @@ namespace PP_Extens.Sales
                 sql.AddCampo("DescEntidade", dv.DescEntidade);
 
                 sql.AddQuery();
+                PSO.ExecSql.Executa(sql);
             }
 
             for (int x = 1; x <= dv.Linhas.NumItens; x++)
@@ -497,8 +501,17 @@ namespace PP_Extens.Sales
 
             // Inicializar recebe uma string mas só usa as primeiras 3 letras. Corresponde ao nome da pasta dos mapas em Mapas/LP/...
             PSO.Mapas.Inicializar("ERP");
+
+            //string selFormula =
+            //    "{PSI_TempCabecDoc.NumDoc}=" + DocumentoVenda.NumDoc.ToString() + " and " +
+            //    "{PSI_TempCabecDoc.TipoDoc}=" + DocumentoVenda.Tipodoc + " and " +
+            //    "{PSI_TempCabecDoc.Serie}=" + DocumentoVenda.Serie + ";";
+
+            PSO.Mapas.AddFormula("NomeLicença", $"'{BSO.Licenca.Nome}'");
+            PSO.Mapas.SetFormula("DadosEmpresa", "StringVar Morada:='" + BSO.Contexto.IDMorada + "';");
+            //PSO.Mapas.SelectionFormula = selFormula;
             PSO.Mapas.SetParametro("Id", tempGUID);
-            PSO.Mapas.ImprimeListagem("PP_MR_02", bMapaSistema: false, blnImpressaoCheque: false);
+            PSO.Mapas.ImprimeListagem("PP_MR_02",  eCultura: StdBETipos.EnumGlobalCultures.CULT_PT);
             //PP_MR_02
 
             using (StdBEExecSql sqlDelete = new StdBEExecSql())
