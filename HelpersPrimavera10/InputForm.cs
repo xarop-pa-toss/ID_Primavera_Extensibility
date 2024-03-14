@@ -25,7 +25,7 @@ namespace HelpersPrimavera10
         {
             // Ajustar as altura do form à altura da descrição
             this.SuspendLayout();
-            this.Size = new Size(this.Width, this.Height + lbl_Descricao.Height + 30);
+            this.Size = new Size(this.Width, this.Height + lbl_Descricao.Height - 15);
             this.ResumeLayout();
         }
 
