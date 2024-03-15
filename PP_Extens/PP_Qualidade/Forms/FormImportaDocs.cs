@@ -248,7 +248,7 @@ namespace PP_Qualidade
         {
             string _tabela = "A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
 
-            queriesSQL = new QueriesSQL(AMBIENTE);
+            queriesSQL = new QueriesSQL();
 
             queriesSQL.AbrirSQL(); 
 

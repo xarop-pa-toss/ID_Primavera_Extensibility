@@ -12,7 +12,7 @@
         //string Utilizador();
         //string Password();
 
-        string BDServidorInstancia();
+        string GetBDServidorInstancia();
         //string BDNomeDB();
         //string BDUtilizador();
         //string BDPassword();

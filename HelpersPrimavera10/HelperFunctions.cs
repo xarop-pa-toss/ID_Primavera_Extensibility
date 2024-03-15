@@ -142,7 +142,7 @@ namespace HelpersPrimavera10
         {
             string nomeBDdaEmpresa = _PSO.BaseDados.DaNomeBDdaEmpresa(_BSO.Contexto.CodEmp);
             string connString =
-                $"Data Source={_secrets.BDServidorInstancia()};" +
+                $"Data Source={_secrets.GetBDServidorInstancia()};" +
                 "Network Library=DBMSSOCN;" +
                 $"Initial Catalog={nomeBDdaEmpresa};" +
                 "Integrated Security=True";

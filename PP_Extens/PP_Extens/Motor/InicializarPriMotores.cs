@@ -15,6 +15,8 @@ namespace PP_Extens
             secrets.SetBSO(this.BSO);
             secrets.SetPSO(this.PSO);
 
+            Secrets.Ambiente = Secrets.AmbienteEnum.TesteRicardo;
+
             // HelperFunctions inicializa PriMotores no seu construtor
             HelperFunctions _Helpers = new HelperFunctions(secrets);
         }

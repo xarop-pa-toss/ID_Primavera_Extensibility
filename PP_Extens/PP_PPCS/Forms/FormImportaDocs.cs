@@ -18,10 +18,6 @@ namespace PP_PPCS
         private DataTable _RSet;
         private QueriesSQL queriesSQL;
 
-        // ALTERAR AQUI AMBIENTE A USAR
-        // 'teste' ou 'prod'
-        const string AMBIENTE = "teste";
-
         public FormImportaDocs()
         {
             _PSO = PriMotores.Plataforma;
@@ -248,8 +244,7 @@ namespace PP_PPCS
         {
             string _tabela = "A" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00") + DateTime.Now.Day.ToString("00") + DateTime.Now.ToString("HHmmss").Replace(":", "");
 
-            queriesSQL = new QueriesSQL(AMBIENTE);
-
+            queriesSQL = new QueriesSQL();
             queriesSQL.AbrirSQL(); 
 
             // Se o programa não conseguir criar e popular a tabela temporária, termina programa com uma mensagem de erro.
