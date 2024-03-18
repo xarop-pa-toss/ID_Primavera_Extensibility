@@ -149,6 +149,11 @@ namespace DCT_Extens
             PSO.MensagensDialogos.MostraMensagem(StdBSTipos.TipoMsg.PRI_SimplesOk, "Todos os documentos foram fechados com sucesso.");
             ActualizaDataGrid();
         }
+
+        private void btn_Sair_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
 

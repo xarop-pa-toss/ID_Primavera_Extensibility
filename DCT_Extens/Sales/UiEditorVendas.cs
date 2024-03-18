@@ -1,4 +1,5 @@
 using BasBE100;
+using ConstantesPrimavera100;
 using HelpersPrimavera10;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Extensions;
@@ -193,6 +194,8 @@ namespace DCT_Extens.Sales
             {
                 foreach (VndBELinhaDocumentoVenda linha in DocumentoVenda.Linhas)
                 {
+                    if (linha.TipoLinha != "10") { continue; }
+
                     artigo = BSO.Base.Artigos.Edita(linha.Artigo);
 
                     // CDU_ARTBLOQD está para retornar null por defeito (se nunca foi picado) o que é... mau.
@@ -255,6 +258,38 @@ namespace DCT_Extens.Sales
                             }
                         }
                     }
+                }
+            }
+            #endregion
+
+            #region Verificação de limite de crédito do cliente antes de converter um documento de venda
+            string strCliente = BSO.Vendas.Documentos.DaValorAtributo(DocumentoVenda.Filial, DocumentoVenda.Tipodoc, DocumentoVenda.Serie, DocumentoVenda.NumDoc, "Entidade");
+            BasBECliente cliente = BSO.Base.Clientes.Edita(strCliente);
+            double valorDocOrigem = BSO.Vendas.Documentos.DaValorAtributo(DocumentoVenda.Filial, DocumentoVenda.Tipodoc, DocumentoVenda.Serie, DocumentoVenda.NumDoc, "TotalDocumento");
+
+            // Se ultrapassar Limite de Crédito
+            if (cliente.LimiteCredValor && (valorDocOrigem + cliente.DebitoContaCorrente > cliente.Limitecredito))
+            {
+                double valorAcimaDoLimite = cliente.Limitecredito - (valorDocOrigem + cliente.DebitoContaCorrente);
+
+                var resultado = PSO.MensagensDialogos.MostraMensagem(
+                    StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimNao,
+                    $"O documento {DocumentoVenda.Tipodoc} {DocumentoVenda.Serie}/{DocumentoVenda.NumDoc} ira colocar o cliente acima do seu limite de crédito." + Environment.NewLine +
+                    $"Deseja continuar com a conversão deste documento?",
+
+                    StdPlatBS100.StdBSTipos.IconId.PRI_Exclama,
+
+                    $"Cliente: {strCliente} - {cliente.Nome}" + Environment.NewLine +
+                    $"Limite: {cliente.Limitecredito}" + Environment.NewLine +
+                    $"Débito Actual: {cliente.DebitoContaCorrente}" + Environment.NewLine +
+                    $"Excedente: {valorAcimaDoLimite * -1}");
+
+                if (resultado == StdPlatBS100.StdBSTipos.ResultMsg.PRI_Sim)
+                {
+                    PSO.MensagensDialogos.MostraMensagem(StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimplesOk, $"{strCliente}: {valorAcimaDoLimite}€ acima do limite de {cliente.Limitecredito}€\n");
+                } else
+                {
+                    Cancel = true;
                 }
             }
             #endregion

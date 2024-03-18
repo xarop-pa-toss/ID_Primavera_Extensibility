@@ -268,6 +268,7 @@ namespace DCT_Extens
             this.priGrelha_Docs.TituloMapa = "";
             this.priGrelha_Docs.TypeNameLinha = "";
             this.priGrelha_Docs.TypeNameLinhas = "";
+            this.priGrelha_Docs.ActualizaDados += new PRISDK100.PriGrelha.ActualizaDadosHandler(this.priGrelha_Docs_ActualizaDados);
             // 
             // btn_SeleccionarTodos
             // 

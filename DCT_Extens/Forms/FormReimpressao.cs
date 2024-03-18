@@ -207,8 +207,8 @@ namespace DCT_Extens
         #region Funções de Actualização dos controlos
         private void ActualizaPriGrelha()
         {
-            DateTime dataInicial = dtPicker_DataDocInicial.Value;
-            DateTime dataFinal = dtPicker_DataDocFinal.Value;
+            DateTime dataInicial = dtPicker_DataDocInicial.Value.Date;
+            DateTime dataFinal = dtPicker_DataDocFinal.Value.Date;
 
             if (listBox_TipoDoc.SelectedItems.Count.Equals(0))
             {
@@ -222,7 +222,7 @@ namespace DCT_Extens
                 .Select(x => x.Split(' ')[0].Trim())
                 .ToList();
 
-            // Os membros da lista são primeiro interpolados no inicio e no fim com plicas $"'{x}'") e depois juntados com virgulas entre eles
+            // Os membros da lista são primeiro interpolados no inicio e no fim com plicas $"'{x}'") e depois juntos com virgulas entre eles
             int ultimoIndice = tipoDocList.Count - 1;
             string tipoDocString = string.Join(", ", tipoDocList.Select(x => $"'{x}'"));
 
@@ -230,10 +230,10 @@ namespace DCT_Extens
             StringBuilder queryBuilder = new StringBuilder();
             queryBuilder.Append(" SELECT NULL AS Cf, CONVERT(varchar, Data, 103) AS Data, TipoDoc, Serie, NumDoc, TipoEntidade, Entidade, Moeda, TotalDocumento");
             queryBuilder.Append(" FROM CabecDoc");
-            queryBuilder.Append($" WHERE Data BETWEEN CONVERT(datetime, '{dataInicial}', 103) AND CONVERT(datetime, '{dataFinal}', 103)");
+            queryBuilder.Append($" WHERE Data >= CONVERT(datetime, '{dataInicial}', 103) AND Data <= CONVERT(datetime, '{dataFinal}', 103)");
             queryBuilder.Append($" AND TipoDoc IN ({tipoDocString})");
             // Se f4_Cliente estiver nulo, busca todos os docs.
-            if (string.IsNullOrWhiteSpace(f4_Cliente.Text)) { queryBuilder.Append($" AND Entidade = {f4_Cliente.Text}"); }
+            if (!string.IsNullOrWhiteSpace(f4_Cliente.Text)) { queryBuilder.Append($" AND Entidade = '{f4_Cliente.Text}'"); }
             queryBuilder.Append(" ORDER BY TipoDoc, NumDoc DESC;");
 
             // Preencher PriGrelha com resultados da query. DataBind deve ser feito a uma StdBELista (retornado por BSO.Consulta)
@@ -258,5 +258,10 @@ namespace DCT_Extens
         }
 
         #endregion
+
+        private void priGrelha_Docs_ActualizaDados(object Sender, EventArgs e)
+        {
+            btn_Actualizar_Click(this, e);
+        }
     }
 }
