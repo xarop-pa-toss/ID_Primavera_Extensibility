@@ -13,15 +13,22 @@ namespace DCT_Extens
     {
         private HelperFunctions _Helpers = new HelperFunctions();
         private string vendedorOriginal;
-        private bool _estadoInicialAnulado;
+        private string _estadoInicialCredito;
+
+        public override void AntesDeCriar(ExtensibilityEventArgs e)
+        {
+            base.AntesDeCriar(e);
+            _estadoInicialCredito = null;
+        }
 
         public override void AntesDeEditar(string Cliente, ref bool Cancel, ExtensibilityEventArgs e)
         {
             base.AntesDeEditar(Cliente, ref Cancel, e);
             vendedorOriginal = this.Cliente.Vendedor;
 
-            // Corresponde à checkbox Anulado na ficha
-            _estadoInicialAnulado = BSO.Base.Clientes.Edita(Cliente).Inactivo;
+            // Corresponde aos dois radio buttons do TipoCredito.
+            // "1" é Por Limite e "2" é Suspenso
+            _estadoInicialCredito = BSO.Base.Clientes.Edita(Cliente).TipoCredito;
         }
 
         public override void AntesDeGravar(ref bool Cancel, ExtensibilityEventArgs e)
@@ -32,8 +39,9 @@ namespace DCT_Extens
             if (string.IsNullOrEmpty(Cliente.SegmentoTerceiro)) { Cliente.SegmentoTerceiro = "001"; }
             #endregion
 
-            #region Verificação de permissões de utilizador para anulação de clientes
-            if (_estadoInicialAnulado != this.Cliente.Inactivo)
+            #region Verificação de permissões de utilizador para alteração do TipoCredito (Por Limite (1) ou Suspenso (2))
+            // Pode ser nulo se a ficha de cliente estiver limpa (cliente novo); deixa de ser nulo quando o cliente é gravado.
+            if (!string.IsNullOrEmpty(_estadoInicialCredito) && _estadoInicialCredito != this.Cliente.TipoCredito)
             {
                 DataTable TDU = _Helpers.GetDataTableDeSQL("SELECT CDU_Utilizador FROM TDU_PermissaoAnularClientes");
 
@@ -45,7 +53,7 @@ namespace DCT_Extens
                 // Se o utilizador actual não tiver permissão, a variavel 'autorizacao' é uma lista vazia.
                 if (!autorizacao.Any())
                 {
-                    PSO.MensagensDialogos.MostraAviso("Não tem permissão para alterar o estado Anulado de um cliente. \n Este registo não será gravado.", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
+                    PSO.MensagensDialogos.MostraAviso("Não tem permissão para alterar o tipo de crédito de um cliente. \n Este registo não será gravado.", StdPlatBS100.StdBSTipos.IconId.PRI_Critico);
                     Cancel = true;
                 }
             }
