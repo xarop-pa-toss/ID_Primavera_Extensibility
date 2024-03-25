@@ -262,15 +262,13 @@ namespace DCT_Extens.Sales
             }
             #endregion
 
-            #region Verificação de limite de crédito do cliente antes de converter um documento de venda
-            string strCliente = BSO.Vendas.Documentos.DaValorAtributo(DocumentoVenda.Filial, DocumentoVenda.Tipodoc, DocumentoVenda.Serie, DocumentoVenda.NumDoc, "Entidade");
-            BasBECliente cliente = BSO.Base.Clientes.Edita(strCliente);
-            double valorDocOrigem = BSO.Vendas.Documentos.DaValorAtributo(DocumentoVenda.Filial, DocumentoVenda.Tipodoc, DocumentoVenda.Serie, DocumentoVenda.NumDoc, "TotalDocumento");
+            #region Verificação de limite de crédito do cliente
+            BasBECliente cliente = BSO.Base.Clientes.Edita(DocumentoVenda.Entidade);
 
             // Se ultrapassar Limite de Crédito
-            if (cliente.LimiteCredValor && (valorDocOrigem + cliente.DebitoContaCorrente > cliente.Limitecredito))
+            if (cliente.LimiteCredValor && (DocumentoVenda.TotalDocumento + cliente.DebitoContaCorrente > cliente.Limitecredito))
             {
-                double valorAcimaDoLimite = cliente.Limitecredito - (valorDocOrigem + cliente.DebitoContaCorrente);
+                double valorAcimaDoLimite = cliente.Limitecredito - (DocumentoVenda.TotalDocumento + cliente.DebitoContaCorrente);
 
                 var resultado = PSO.MensagensDialogos.MostraMensagem(
                     StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimNao,
@@ -279,14 +277,14 @@ namespace DCT_Extens.Sales
 
                     StdPlatBS100.StdBSTipos.IconId.PRI_Exclama,
 
-                    $"Cliente: {strCliente} - {cliente.Nome}" + Environment.NewLine +
+                    $"Cliente: {DocumentoVenda.Entidade} - {cliente.Nome}" + Environment.NewLine +
                     $"Limite: {cliente.Limitecredito}" + Environment.NewLine +
                     $"Débito Actual: {cliente.DebitoContaCorrente}" + Environment.NewLine +
                     $"Excedente: {valorAcimaDoLimite * -1}");
 
                 if (resultado == StdPlatBS100.StdBSTipos.ResultMsg.PRI_Sim)
                 {
-                    PSO.MensagensDialogos.MostraMensagem(StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimplesOk, $"{strCliente}: {valorAcimaDoLimite}€ acima do limite de {cliente.Limitecredito}€\n");
+                    PSO.MensagensDialogos.MostraMensagem(StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimplesOk, $"{DocumentoVenda.Entidade}: {valorAcimaDoLimite}€ acima do limite de {cliente.Limitecredito}€\n");
                 } else
                 {
                     Cancel = true;

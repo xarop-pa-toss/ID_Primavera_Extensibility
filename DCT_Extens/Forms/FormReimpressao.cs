@@ -49,19 +49,13 @@ namespace DCT_Extens
             catch (Exception err)
             {
                 loadError = err.ToString();
-            }
-        }
-
-        private void FormReimpressao_Shown(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(loadError))
-            {
                 _Helpers.EscreverParaFicheiroTxt(loadError, "FormReimpressao_ErroLoad");
                 PSO.MensagensDialogos.MostraErro("Não foi possível abrir o form de Reimpressão de Documentos. Por favor contacte a Infodinâmica para apoio técnico.");
 
                 this.Close();
             }
         }
+
 
         private void btn_Imprimir_Click(object sender, EventArgs e)
         {
