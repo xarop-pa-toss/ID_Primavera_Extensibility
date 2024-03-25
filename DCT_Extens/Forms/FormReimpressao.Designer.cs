@@ -323,7 +323,6 @@ namespace DCT_Extens
             this.Name = "FormReimpressao";
             this.Size = new System.Drawing.Size(872, 730);
             this.Text = "FormReimpressão";
-            this.Shown += new System.EventHandler(this.FormReimpressao_Shown);
             this.Load += new System.EventHandler(this.FormReimpressao_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numUpDown_NumVias)).EndInit();
