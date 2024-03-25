@@ -273,14 +273,14 @@ namespace DCT_Extens.Sales
                 var resultado = PSO.MensagensDialogos.MostraMensagem(
                     StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimNao,
                     $"O documento {DocumentoVenda.Tipodoc} {DocumentoVenda.Serie}/{DocumentoVenda.NumDoc} ira colocar o cliente acima do seu limite de crédito." + Environment.NewLine +
-                    $"Deseja continuar com a conversão deste documento?",
+                    $"Deseja continuar com a gravação deste documento?",
 
                     StdPlatBS100.StdBSTipos.IconId.PRI_Exclama,
 
                     $"Cliente: {DocumentoVenda.Entidade} - {cliente.Nome}" + Environment.NewLine +
                     $"Limite: {cliente.Limitecredito}" + Environment.NewLine +
                     $"Débito Actual: {cliente.DebitoContaCorrente}" + Environment.NewLine +
-                    $"Excedente: {valorAcimaDoLimite * -1}");
+                    $"Excedente: {Math.Round(valorAcimaDoLimite, 2) * -1}");
 
                 if (resultado == StdPlatBS100.StdBSTipos.ResultMsg.PRI_Sim)
                 {
