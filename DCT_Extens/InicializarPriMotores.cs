@@ -8,19 +8,19 @@ namespace DCT_Extens
     public class InicializarPriMotores : Plataforma
     {
 
-        public override void AntesDeCriarMenus(ExtensibilityEventArgs e)
+        public override void DepoisDeCriarMenus(ExtensibilityEventArgs e)
         {
-            base.AntesDeCriarMenus(e);
+            base.DepoisDeCriarMenus(e);
 
             Secrets secrets = new Secrets();
             secrets.SetBSO(this.BSO);
             secrets.SetPSO(this.PSO);
 
-            string instancia = BSO.Consulta("SELECT @@SERVERNAME AS ServerName;").DaValor<string>(0);
-            secrets.SetBDServidorInstancia(instancia);
-
             // HelperFunctions inicializa PriMotores no seu construtor
-            HelperFunctions _Helpers = new HelperFunctions(secrets);
+            HelperFunctions Helpers = new HelperFunctions(secrets);
+
+            System.Data.DataTable instanciaTable = Helpers.GetDataTableDeSQL("SELECT @@SERVERNAME AS ServerName;");
+            secrets.SetBDServidorInstancia(instanciaTable.Rows[0][0].ToString());
         }
     }
 }
