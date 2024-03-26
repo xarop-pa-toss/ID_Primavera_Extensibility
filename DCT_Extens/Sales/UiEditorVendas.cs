@@ -280,7 +280,7 @@ namespace DCT_Extens.Sales
 
                     $"Cliente: {DocumentoVenda.Entidade} - {cliente.Nome}" + Environment.NewLine +
                     $"Limite: {cliente.Limitecredito}€" + Environment.NewLine +
-                    $"Débito Actual: {cliente.DebitoContaCorrente}€" + Environment.NewLine +
+                    $"Débito Actual: {Math.Round(cliente.DebitoContaCorrente, 2)}€" + Environment.NewLine +
                     $"Excedente: {excedente}€");
 
                 if (resultado == StdPlatBS100.StdBSTipos.ResultMsg.PRI_Nao)
