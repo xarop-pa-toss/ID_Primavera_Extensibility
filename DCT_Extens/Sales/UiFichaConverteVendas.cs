@@ -34,7 +34,8 @@ namespace DCT_Extens.Sales
             // Se ultrapassar Limite de Crédito
             if (cliente.LimiteCredValor && (valorDocOrigem + cliente.DebitoContaCorrente > cliente.Limitecredito))
             {
-                double valorAcimaDoLimite = cliente.Limitecredito - (valorDocOrigem + cliente.DebitoContaCorrente);
+                double valorAcimaDoLimite = Math.Round(cliente.Limitecredito - (valorDocOrigem + cliente.DebitoContaCorrente), 2);
+                double excedente = Math.Round(valorAcimaDoLimite, 2) * -1;
 
                 var resultado = PSO.MensagensDialogos.MostraMensagem(
                     StdPlatBS100.StdBSTipos.TipoMsg.PRI_SimNao,
@@ -44,13 +45,13 @@ namespace DCT_Extens.Sales
                     StdPlatBS100.StdBSTipos.IconId.PRI_Exclama,
 
                     $"Cliente: {strCliente} - {cliente.Nome}" + Environment.NewLine +
-                    $"Limite: {cliente.Limitecredito}" + Environment.NewLine +
-                    $"Débito Actual: {cliente.DebitoContaCorrente}" + Environment.NewLine +
-                    $"Excedente: {valorAcimaDoLimite * -1}");
+                    $"Limite: {cliente.Limitecredito}€" + Environment.NewLine +
+                    $"Débito Actual: {cliente.DebitoContaCorrente}€" + Environment.NewLine +
+                    $"Excedente: {excedente}€");
 
                 if (resultado == StdPlatBS100.StdBSTipos.ResultMsg.PRI_Sim)
                 {
-                    _clientesQueUltrapassamLimiteList.Add($"{strCliente}: {valorAcimaDoLimite}€ acima do limite de {cliente.Limitecredito}€\n");
+                    _clientesQueUltrapassamLimiteList.Add($"{strCliente}: {excedente}€ acima do limite de {cliente.Limitecredito}€\n");
                 } else
                 {
                     Cancel = true;
