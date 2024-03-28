@@ -1,5 +1,4 @@
 ﻿using HelpersPrimavera10;
-using PP_PPCS;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Platform.Services;
 using System.Data;
@@ -20,10 +19,11 @@ namespace PP_PPCS
             DataTable instanciaTable = BSO.ConsultaDataTable("SELECT @@SERVERNAME AS ServerName;");
             secrets.BDServidorInstancia = instanciaTable.Rows[0][0].ToString();
 
+            // Neste projecto, Secrets tem um Enum com o endereço do servidor remoto para quando é preciso manipular a base de dados da PPCS
             Secrets.Ambiente = Secrets.AmbienteEnum.TesteRicardo;
 
             // HelperFunctions inicializa PriMotores no seu construtor
-            HelperFunctions Helpers = new HelperFunctions(secrets);
+            new HelperFunctions(secrets);
         }
     }
 }

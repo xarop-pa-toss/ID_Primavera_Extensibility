@@ -1,6 +1,7 @@
 using HelpersPrimavera10;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Platform.Services;
+using System.Data;
 
 
 namespace DCT_Extens
@@ -13,14 +14,14 @@ namespace DCT_Extens
             base.DepoisDeCriarMenus(e);
 
             Secrets secrets = new Secrets();
-            secrets.SetBSO(this.BSO);
-            secrets.SetPSO(this.PSO);
+            secrets.BSO = this.BSO;
+            secrets.PSO = this.PSO;
+
+            DataTable instanciaTable = BSO.ConsultaDataTable("SELECT @@SERVERNAME AS ServerName;");
+            secrets.BDServidorInstancia = instanciaTable.Rows[0][0].ToString();
 
             // HelperFunctions inicializa PriMotores no seu construtor
-            HelperFunctions Helpers = new HelperFunctions(secrets);
-
-            System.Data.DataTable instanciaTable = Helpers.GetDataTableDeSQL("SELECT @@SERVERNAME AS ServerName;");
-            secrets.SetBDServidorInstancia(instanciaTable.Rows[0][0].ToString());
+            new HelperFunctions(secrets);
         }
     }
 }
