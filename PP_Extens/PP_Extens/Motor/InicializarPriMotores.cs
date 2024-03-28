@@ -2,6 +2,7 @@
 using PP_PPCS;
 using Primavera.Extensibility.BusinessEntities.ExtensibilityService.EventArgs;
 using Primavera.Extensibility.Platform.Services;
+using System.Data;
 
 
 namespace PP_Extens
@@ -13,13 +14,18 @@ namespace PP_Extens
             base.DepoisDeCriarMenus(e);
 
             Secrets secrets = new Secrets();
-            secrets.SetBSO(this.BSO);
-            secrets.SetPSO(this.PSO);
+            secrets.BSO = this.BSO;
+            secrets.PSO = this.PSO;
+
+            DataTable instanciaTable = BSO.ConsultaDataTable("SELECT @@SERVERNAME AS ServerName;");
+            secrets.BDServidorInstancia = instanciaTable.Rows[0][0].ToString();
 
             Secrets.Ambiente = Secrets.AmbienteEnum.TesteRicardo;
 
             // HelperFunctions inicializa PriMotores no seu construtor
-            HelperFunctions _Helpers = new HelperFunctions(secrets);
+            HelperFunctions Helpers = new HelperFunctions(secrets);
+
+
         }
     }
 }
